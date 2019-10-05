@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'LED BOARD';
+    src: url('LEDBOARD.woff2') format('woff2'),
+        url('LEDBOARD.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+

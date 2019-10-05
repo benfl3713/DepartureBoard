@@ -1,0 +1,19 @@
+<div class="singleboard">
+  <div class="singleboard-row">
+    <h1 class="led inline-row tab">1st</h1>
+    <h1 class="led inline-row tab2">{{firstTime  | date: 'HH:mm'}}</h1>
+    <h1 class="led inline-row tab">{{firstPlatform}}</h1>
+    <h1 class="led inline-row tab">{{firstDestination}}</h1>
+    <h1 class="led inline-row status" [ngClass]="{ 'ontime': firstStatus=='ontime', 'late': firstStatus.includes('EXP')}">{{firstStatus}}</h1>
+  </div>
+  <div class="singleboard-row">
+    <marquee behavior="scroll" direction="left" scrollamount="20" class="led info">{{information}}</marquee>
+  </div>
+  <div class="singleboard-row">
+    <h1 class="led inline-row tab">2nd</h1>
+    <h1 class="led inline-row tab2">{{secondTime  | date: 'HH:mm'}}</h1>
+    <h1 class="led inline-row tab">{{secondPlatform}}</h1>
+    <h1 class="led inline-row tab">{{secondDestination}}</h1>
+    <h1 class="led inline-row status" [ngClass]="{ 'ontime': secondStatus=='ONTIME', 'late': secondStatus.includes('EXP')}">{{secondStatus}}</h1>
+  </div>
+</div>

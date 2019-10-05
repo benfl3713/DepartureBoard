@@ -16,9 +16,22 @@ namespace TrainDataAPI
         public string Origin { get; set; }
         public string Destination { get; set; }
         public ServiceStatus Status { get; set; }
-        public List<StationStop> Stops { get; set; }
         public string ServiceTimeTableUrl { get; set; }
         public Type FromDataSouce { get; set; }
+        public List<StationStop> Stops
+        {
+            get
+            {
+                _stops.Sort((s1, s2) => s1.AimedDeparture.CompareTo(s2.AimedDeparture));
+                return _stops;
+            }
+            set
+            {
+                _stops = Stops;
+            }
+        }
+
+        private List<StationStop> _stops { get; set; }
 
         public Departure(string stationName, string stationCode, int platform, string operatorName, DateTime aimedDeparture, DateTime expectedDeparture, string destination, ServiceStatus status, string origin = "", DateTime? lastUpdated = null, string serviceTimeTable = null, Type from = null)
         {

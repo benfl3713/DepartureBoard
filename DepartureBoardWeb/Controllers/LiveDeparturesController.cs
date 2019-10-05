@@ -23,7 +23,7 @@ namespace DepartureBoardWeb.Controllers
         public JsonResult GetLatestDepaturesSingleBoard([FromBody] string stationCode)
         {
             stationCode = stationCode.ToUpper();
-            ITrainDatasource trainDatasource = new TransportAPI();
+            ITrainDatasource trainDatasource = new RealTimeTrainsAPI();
             List<Departure> departures = trainDatasource.GetLiveDepartures(stationCode);
             if (departures.Count == 0)
                 return null;
@@ -53,19 +53,22 @@ namespace DepartureBoardWeb.Controllers
         private string StopInformationBuilder(Departure departure)
         {
             departure.LoadStops();
-            string information = "Calling at ";
+            string information = "";
             bool foundFirst = false;
             foreach(StationStop stop in departure.Stops)
             {
                 if (stop.StationCode.ToUpper() == departure.StationCode.ToUpper())
                 {
                     foundFirst = true;
+                    information = "Calling at ";
                     continue;
                 }
                 if (!foundFirst)
                     continue;
                 information += $"{stop.StationName} ({stop.AimedDeparture.ToString("HH:mm")})       ";
             }
+            if (information == "Calling at ")
+                information = "";
             return information;
         }
     }

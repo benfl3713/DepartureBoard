@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-singleboard',
@@ -10,7 +11,11 @@ import { ActivatedRoute } from '@angular/router';
 export class SingleBoard {
   private headers = new HttpHeaders().set('Content-Type', "application/json");
   
-  constructor(private http: HttpClient, private route: ActivatedRoute) {
+  constructor(private http: HttpClient, private route: ActivatedRoute, private datePipe: DatePipe) {
+    setInterval(() => {
+      this.time = new Date();
+    }, 1000);
+
     route.params.subscribe(() => {
       this.stationCode = this.route.snapshot.paramMap.get('station');
       this.GetDepartures();
@@ -18,6 +23,7 @@ export class SingleBoard {
       });
   }
   stationCode: string;
+  time = new Date();
 
   //first
   firstTime: Date;
@@ -52,9 +58,9 @@ export class SingleBoard {
     this.firstPlatform = <number>Object(data)["departures"][0]["platform"];
     this.firstDestination = <string>Object(data)["departures"][0]["destination"];
     var tempfirststatus = ServiceStatus[this.getEnumKeyByEnumValue(ServiceStatus, Object(data)["departures"][0]["status"])]
-    if (tempfirststatus = ServiceStatus.LATE) {
+    if (tempfirststatus == ServiceStatus.LATE) {
       var fexpected = new Date(Date.parse(Object(data)["departures"][0]["expectedDeparture"]));
-      this.firstStatus = "EXP " + fexpected.getHours() + ":" + fexpected.getMinutes();
+      this.firstStatus = "EXP " + this.datePipe.transform(fexpected, 'HH:mm');
     }
     else {
       this.firstStatus = ServiceStatus[tempfirststatus];
@@ -73,7 +79,7 @@ export class SingleBoard {
     var tempsecondstatus = ServiceStatus[this.getEnumKeyByEnumValue(ServiceStatus, Object(data)["departures"][1]["status"])]
     if (tempsecondstatus == ServiceStatus.LATE) {
       var sexpected = new Date(Date.parse(Object(data)["departures"][1]["expectedDeparture"]));
-      this.secondStatus = "EXP " + sexpected.getHours() +":"+ sexpected.getMinutes();
+      this.secondStatus = "EXP " + this.datePipe.transform(sexpected, 'HH:mm');
     }
     else {
       this.secondStatus = ServiceStatus[tempsecondstatus];;

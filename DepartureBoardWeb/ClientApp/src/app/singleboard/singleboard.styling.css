@@ -30,3 +30,8 @@
   font-size: 2em;
   white-space: nowrap;
 }
+.time {
+  text-align:center;
+  padding-top:50px;
+  font-size:4em;
+}

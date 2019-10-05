@@ -62,7 +62,7 @@ namespace TrainDataAPI
                 {
                     try
                     {
-                        int.TryParse(Jdeparture["platform"].ToString(), out int platform);
+                        int.TryParse((Jdeparture["platform"]??"1").ToString(), out int platform);
                         string operatorName = Jdeparture["operator_name"].ToString();
                         DateTime.TryParse(date + " " + Jdeparture["aimed_departure_time"].ToString(), out DateTime aimedDepatureTime);
                         if (aimedDepatureTime == DateTime.MinValue)
@@ -106,7 +106,7 @@ namespace TrainDataAPI
                     {
                         string stationCode = JStop["station_code"].ToString();
                         string stationName = JStop["station_name"].ToString();
-                        int.TryParse((JStop["platform"] ?? "").ToString(), out int platform);
+                        int.TryParse((JStop["platform"] ?? "1").ToString(), out int platform);
                         Enum.TryParse(JStop["stop_type"].ToString(), out StationStop.StopType stopType);
                         DateTime.TryParse($"{JStop["aimed_departure_date"].ToString()} {JStop["aimed_departure_time"].ToString()}", out DateTime aimedDepartureDate);
                         if (aimedDepartureDate == DateTime.MinValue)

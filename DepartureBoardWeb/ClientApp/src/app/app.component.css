@@ -1,10 +1,9 @@
-@media (max-width: 767px) {
+/*@media (max-width: 767px) {
   /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */
-  .body-content {
+  /*.body-content {
     padding-top: 50px;
   }
-}
-
-.led {
-  font-family: 'ledfont', Arial, sans-serif;
+}*/
+body {
+  background-color: black;
 }

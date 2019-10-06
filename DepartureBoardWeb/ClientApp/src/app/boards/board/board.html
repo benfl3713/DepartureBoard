@@ -1,0 +1,23 @@
+<div class="board led Column">
+  <div class="board-row">
+    <h5 class="inline-row">{{DepartureTime | date: 'HH:mm'}}</h5>
+    <h5 class="inline-row status">Platform {{Platform}}</h5>
+  </div>
+  <div class="board-row">
+    <h6 class="inline-row">{{Destination}}</h6>
+  </div>
+  <table class="stops">
+    <tr class="board-row">
+      <td class="inline-row">Calling at:</td>
+      <td class="inline-row status">{{CurrentPage}}/{{TotalPages}}</td>
+    </tr>
+    <tr class="board-row" *ngFor="let stop of DisplayedStops">
+      <td class="inline-row"><div class="stopname">{{stop.StationName}}</div></td>
+      <td class="inline-row status">{{stop.Time | date: 'HH:mm'}}</td>
+    </tr>
+  </table>
+  <div class="board-row bottom">
+    <h6 [ngClass]="{ 'ontime': Status=='ONTIME', 'late': Status.includes('EXP')}">{{Status}}</h6>
+    <h6 class="operator">{{Operator}}</h6>
+  </div>
+</div>

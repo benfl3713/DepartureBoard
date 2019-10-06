@@ -108,9 +108,18 @@ namespace TrainDataAPI
                         string stationName = (JStop["description"] ?? "").ToString();
                         int.TryParse((JStop["platform"] ?? "").ToString(), out int platform);
 
-                        DateTime.TryParse($"{runDate} {JStop["gbttBookedDeparture"].ToString().Substring(0, 2)}:{JStop["gbttBookedDeparture"].ToString().Substring(2, 2)}", out DateTime aimedDepartureDate);
+                        DateTime aimedDepartureDate;
+                        DateTime expectedDepartureDate;
 
-                        DateTime.TryParse($"{runDate} {JStop["realtimeDeparture"].ToString().Substring(0, 2)}:{JStop["realtimeDeparture"].ToString().Substring(2, 2)}", out DateTime expectedDepartureDate);
+                        if (JStop["gbttBookedDeparture"] != null)
+                            DateTime.TryParse($"{runDate} {JStop["gbttBookedDeparture"].ToString().Substring(0, 2)}:{JStop["gbttBookedDeparture"].ToString().Substring(2, 2)}", out aimedDepartureDate);
+                        else
+                            DateTime.TryParse($"{runDate} {JStop["gbttBookedArrival"].ToString().Substring(0, 2)}:{JStop["gbttBookedArrival"].ToString().Substring(2, 2)}", out aimedDepartureDate);
+
+                        if(JStop["realtimeDeparture"] != null)
+                            DateTime.TryParse($"{runDate} {JStop["realtimeDeparture"].ToString().Substring(0, 2)}:{JStop["realtimeDeparture"].ToString().Substring(2, 2)}", out expectedDepartureDate);
+                        else
+                            DateTime.TryParse($"{runDate} {JStop["realtimeArrival"].ToString().Substring(0, 2)}:{JStop["realtimeArrival"].ToString().Substring(2, 2)}", out expectedDepartureDate);
 
                         StationStop stop = new StationStop(stationCode, stationName, StationStop.StopType.LI, platform, aimedDepartureDate, expectedDepartureDate);
                         stops.Add(stop);

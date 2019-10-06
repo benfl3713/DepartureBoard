@@ -11,3 +11,35 @@ html {
 .inline-row {
   display: inline;
 }
+
+.status {
+  text-align: right;
+  float: right;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.ontime {
+  color: #00d619;
+}
+
+.late {
+  color: #ff1f1f;
+}
+
+.info {
+  font-size: 2em;
+  white-space: nowrap;
+}
+.time {
+  text-align: center;
+  padding-top: 50px;
+  font-size: 4em;
+}
+.Row {
+  display: table;
+}
+
+.Column {
+  display: table-cell;
+}

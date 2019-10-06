@@ -22,12 +22,9 @@ namespace TrainDataAPI
         {
             get
             {
-                _stops.Sort((s1, s2) => s1.AimedDeparture.CompareTo(s2.AimedDeparture));
+                if (_stops == null)
+                    return null;
                 return _stops;
-            }
-            set
-            {
-                _stops = Stops;
             }
         }
 
@@ -52,8 +49,32 @@ namespace TrainDataAPI
         public void LoadStops()
         {
             if (FromDataSouce != null && !string.IsNullOrEmpty(ServiceTimeTableUrl) && Activator.CreateInstance(FromDataSouce) is ITrainDatasource trainDatasource) {
-                Stops = trainDatasource.GetStationStops(ServiceTimeTableUrl);
+                _stops = trainDatasource.GetStationStops(ServiceTimeTableUrl);
+                _stops.Sort((s1, s2) => s1.AimedDeparture.CompareTo(s2.AimedDeparture));
             }
+        }
+
+        public void ClearStops()
+        {
+            _stops = null;
+        }
+
+        public void StopsAsOfDepartureStation()
+        {
+            List<StationStop> toRemove = new List<StationStop>();
+            foreach (StationStop stop in _stops)
+            {
+                if (stop.StationCode != StationCode)
+                {
+                    toRemove.Add(stop);
+                }
+                else
+                {
+                    toRemove.Add(stop);
+                    break;
+                }
+            }
+            toRemove.ForEach(s => _stops.Remove(s));
         }
         
 

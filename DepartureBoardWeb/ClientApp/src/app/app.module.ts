@@ -7,26 +7,32 @@ import { DatePipe } from '@angular/common'
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { BoardComponent } from './board/board.component';
+import { BoardsComponent } from './boards/boards.component';
 import { SingleBoard } from './singleboard/singleboard';
+
+import { Board } from './boards/board/board';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
-    BoardComponent,
-    SingleBoard
+    BoardsComponent,
+    SingleBoard,
+    Board
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: BoardComponent, pathMatch: 'full' },
+      { path: '', redirectTo: '/COV', pathMatch: 'full' },
+      { path: ':station', component: BoardsComponent, pathMatch: 'full' },
+      { path: ':station/:displays', component: BoardsComponent, pathMatch: 'full' },
       { path: 'singleboard/:station', component: SingleBoard, pathMatch: 'full' },
     ])
   ],
   providers: [DatePipe],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [Board]
 })
 export class AppModule { }

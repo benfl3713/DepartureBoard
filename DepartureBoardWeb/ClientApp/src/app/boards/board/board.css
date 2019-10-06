@@ -1,0 +1,29 @@
+.board {
+  width: 300px;
+  padding: 10px;
+  height: 450px;
+  position: relative;
+  margin-right: 20px;
+}
+.board-row{
+  margin-bottom:10px;
+}
+div .bottom {
+  position: absolute;
+  bottom: 0px;
+}
+
+.stopname {
+  width: 200px;
+  white-space: nowrap;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.operator {
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+  width: 250px;
+  text-overflow: ellipsis;
+}

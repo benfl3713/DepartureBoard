@@ -6,32 +6,11 @@
   width:100%;
 }
 
-.status {
-  text-align: right;
-  float: right;
-  padding-right: 10px;
-  padding-left: 10px;
-  }
-
 .tab{
   margin-right:50px;
 }
 .tab2 {
   margin-right: 70px;
 }
-.ontime {
-  color: #00d619;
-}
 
-.late {
-  color: #ff1f1f;
-}
-.info {
-  font-size: 2em;
-  white-space: nowrap;
-}
-.time {
-  text-align:center;
-  padding-top:50px;
-  font-size:4em;
-}
+

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using TrainDataAPI;
 
 namespace DepartureBoardWeb.Controllers
@@ -12,13 +13,6 @@ namespace DepartureBoardWeb.Controllers
     [ApiController]
     public class LiveDeparturesController : Controller
     {
-        [HttpPost("[action]")]
-        public JsonResult GetLatestDepatures()
-        {
-            ITrainDatasource trainDatasource = new TransportAPI();
-            return Json("TESt");
-        }
-
         [HttpPost("[action]")]
         public JsonResult GetLatestDepaturesSingleBoard([FromBody] string stationCode)
         {
@@ -33,6 +27,31 @@ namespace DepartureBoardWeb.Controllers
             return Json(new SingleBoardData(departures, information));
         }
 
+        [HttpPost("[action]")]
+        public JsonResult GetLatestDepatures()
+        {
+            if (Request.Form.TryGetValue("stationCode", out StringValues stationCodeValues) && stationCodeValues.Count > 0
+                && Request.Form.TryGetValue("amount", out StringValues amountValues) && amountValues.Count > 0)
+            {
+                string stationCode = stationCodeValues[0].ToUpper();
+                int.TryParse(amountValues[0], out int count);
+                ITrainDatasource trainDatasource = new RealTimeTrainsAPI();
+                List<Departure> departures = trainDatasource.GetLiveDepartures(stationCode);
+                if (departures.Count == 0)
+                    return null;
+
+                departures = departures.Take(count).ToList();
+                departures.ForEach(d => d.LoadStops());
+                foreach (Departure departure in departures)
+                {
+                    departure.StopsAsOfDepartureStation();
+                    departure.FromDataSouce = null;
+                }
+                return Json(departures);
+            }
+            return null;
+        }
+
         private class SingleBoardData
         {
             public List<Departure> Departures { get; set; }
@@ -45,7 +64,7 @@ namespace DepartureBoardWeb.Controllers
                 foreach(Departure departure in Departures)
                 {
                     departure.FromDataSouce = null;
-                    departure.Stops = null;
+                    departure.ClearStops();
                 }
             }
         }

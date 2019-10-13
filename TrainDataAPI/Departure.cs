@@ -82,7 +82,8 @@ namespace TrainDataAPI
         {
             ONTIME,
             LATE,
-            CANCELLED
+            CANCELLED,
+            ARRIVED
         }
     }
 }

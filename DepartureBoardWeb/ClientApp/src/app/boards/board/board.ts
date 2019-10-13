@@ -22,8 +22,8 @@ export class Board{
   public Status: string;
   public Operator: string;
 
-  private CurrentPage: number = 0;
-  private TotalPages: number = 0;
+  CurrentPage: number = 0;
+  TotalPages: number = 0;
 
   Pager() {
     if (this.CurrentPage != this.TotalPages) {

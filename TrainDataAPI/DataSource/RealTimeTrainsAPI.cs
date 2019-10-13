@@ -69,6 +69,9 @@ namespace TrainDataAPI
                         string destination = Jdeparture["locationDetail"]["destination"][0]["description"].ToString();
                         Departure.ServiceStatus status = (expectedDepatureTime == aimedDepatureTime) ? Departure.ServiceStatus.ONTIME : Departure.ServiceStatus.LATE;
 
+                        if (Jdeparture["locationDetail"]["realtimeArrivalActual"] != null && bool.TryParse(Jdeparture["locationDetail"]["realtimeArrivalActual"].ToString(), out bool hasArrived) && hasArrived)
+                            status = Departure.ServiceStatus.ARRIVED;
+
                         string origin = Jdeparture["locationDetail"]["origin"][0]["description"].ToString();
 
                         string serviceTimeTable = $"https://api.rtt.io/api/v1/json/service/{Jdeparture["serviceUid"].ToString()}/{date.Replace('-', '/')}";

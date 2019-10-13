@@ -1,4 +1,4 @@
-import { Component, ViewChild, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
+import { Component, ViewChild, ComponentFactoryResolver, ViewContainerRef, ComponentRef } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
@@ -12,10 +12,11 @@ import { ServiceStatus } from '../singleboard/singleboard'
 })
 export class BoardsComponent {
   private headers = new HttpHeaders().set('Content-Type', "application/json");
-  private time = new Date();
+  time = new Date();
   public displays: number = 6;
   public stationCode: string = "COV";
   @ViewChild('Boards', { read: ViewContainerRef }) Boards: ViewContainerRef;
+  private boardsRefs: Array<ComponentRef<Board>> = new Array<ComponentRef<Board>>();
 
   constructor(private http: HttpClient, private route: ActivatedRoute, private datePipe: DatePipe, private resolver: ComponentFactoryResolver) {
     setInterval(() => {

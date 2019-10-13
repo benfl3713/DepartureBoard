@@ -14,7 +14,7 @@
     <h1 class="led inline-row tab2">{{secondTime  | date: 'HH:mm'}}</h1>
     <h1 class="led inline-row tab">{{secondPlatform}}</h1>
     <h1 class="led inline-row tab">{{secondDestination}}</h1>
-    <h1 class="led inline-row status" [ngClass]="{ 'ontime': secondStatus=='ONTIME', 'late': secondStatus.includes('EXP')}">{{secondStatus}}</h1>
+    <h1 class="led inline-row status" [ngClass]="{ 'ontime': secondStatus=='ONTIME', 'late': secondStatus.includes('EXP'), 'arrived': secondStatus=='ARRIVED'}">{{secondStatus}}</h1>
   </div>
   <h1 class="led time">{{ time | date: 'HH:mm:ss' }}</h1>
 </div>

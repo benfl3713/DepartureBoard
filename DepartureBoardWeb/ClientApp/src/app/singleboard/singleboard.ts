@@ -96,5 +96,6 @@ export class SingleBoard {
 export enum ServiceStatus {
   ONTIME,
   LATE,
-  CANCELLED
+  CANCELLED,
+  ARRIVED
 }

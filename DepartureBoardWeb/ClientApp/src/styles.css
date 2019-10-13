@@ -27,6 +27,10 @@ html {
   color: #ff1f1f;
 }
 
+.arrived {
+  color: #c842f5;
+}
+
 .info {
   font-size: 2em;
   white-space: nowrap;

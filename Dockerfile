@@ -11,7 +11,7 @@ WORKDIR /app/DepartureBoardWeb\
 RUN dotnet restore
 
 #Setup Ng
-WORKDIR /app/DepartureBoardWeb\ClientApp
+WORKDIR /app/DepartureBoardWeb/ClientApp
 RUN npm link @angular/cli
 RUN npm install
 

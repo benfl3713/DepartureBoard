@@ -14,8 +14,8 @@ RUN dotnet restore
 RUN dotnet publish -c Release -o /deploy
 
 # Generate runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:2.2
+FROM microsoft/dotnet:2.2-aspnetcore-runtime
 WORKDIR /app
 EXPOSE 80
-COPY --from=build-env /app/DepartureBoardWeb/deploy .
+COPY --from=build-env ./app/DepartureBoardWeb/deploy .
 ENTRYPOINT ["dotnet", "DepartureBoardWeb.dll"]

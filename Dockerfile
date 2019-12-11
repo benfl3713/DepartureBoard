@@ -7,10 +7,16 @@ WORKDIR /app
 
 # Copy csproj and restore
 COPY ./ ./
-WORKDIR /app/DepartureBoardWeb
+WORKDIR /app/DepartureBoardWeb\
 RUN dotnet restore
 
+#Setup Ng
+WORKDIR /app/DepartureBoardWeb/ClientApp
+RUN npm link @angular/cli
+RUN npm install
+
 # Copy everything else and build
+WORKDIR /app/DepartureBoardWeb\
 RUN dotnet publish -c Release -o /deploy
 
 # Generate runtime image

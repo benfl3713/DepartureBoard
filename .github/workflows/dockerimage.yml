@@ -2,8 +2,8 @@ name: Docker build
 on: [push]
 
 jobs:
-  build:
-    name: Build
+  Build Docker Image:
+    name: Build Docker Image
     runs-on: ubuntu-latest
     steps:
 

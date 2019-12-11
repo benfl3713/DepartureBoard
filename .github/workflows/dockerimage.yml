@@ -3,17 +3,30 @@ name: Docker Image CI
 on: [push]
 
 jobs:
-
-  build:
+  Build:
 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: jerray/publish-docker-action@v1.0.3
+    - uses: actions/checkout@v1
     - name: Build the Docker image
-      uses: benfl3713/departureboard/departure-board@master
+      run: docker build . --file Dockerfile --tag departure-board
+      
+  Publish:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Docker Publish
+      uses: manusa/actions-publish-docker@v1.0.1
       with:
+        # Name of the Docker image
+        name: departure-board
+        # Tag for the Docker image
+        tag: docker.pkg.github.com/benfl3713/departureboard/departure-board
+        # Username for Docker registry
         username: ${{ secrets.DOCKER_USERNAME }}
+        # Password for Docker registry
         password: ${{ secrets.DOCKER_PASSWORD }}
+        # Registry URL
         registry: docker.pkg.github.com
-        repository: benfl3713/departureboard/departure-board

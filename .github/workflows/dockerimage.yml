@@ -22,8 +22,6 @@ jobs:
       with:
         # Name of the Docker image
         name: departure-board
-        # Tag for the Docker image
-        tag: docker.pkg.github.com/benfl3713/departureboard/departure-board
         # Username for Docker registry
         username: ${{ secrets.DOCKER_USERNAME }}
         # Password for Docker registry

@@ -3,13 +3,13 @@ name: .NET Core
 on: [push]
 
 jobs:
-  build:
+  Build_DepartureBoard:
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v1
-    - name: Setup .NET Core
+    - name: Build DepartureBoard
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.2.108

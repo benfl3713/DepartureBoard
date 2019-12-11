@@ -2,7 +2,7 @@ name: Docker build
 on: [push]
 
 jobs:
-  Build Docker Image:
+  Build_Docker_Image:
     name: Build Docker Image
     runs-on: ubuntu-latest
     steps:

@@ -16,12 +16,11 @@ RUN npm link @angular/cli
 RUN npm install
 
 # Copy everything else and build
-WORKDIR /app/DepartureBoardWeb\
+WORKDIR /app/DepartureBoardWeb/
 RUN dotnet publish -c Release -o /deploy
 
 # Generate runtime image
 FROM microsoft/dotnet:2.2-aspnetcore-runtime
-WORKDIR /app
+COPY --from=build-env /app/DepartureBoardWeb/deploy .
 EXPOSE 80
-COPY --from=build-env ./app/DepartureBoardWeb/deploy .
 ENTRYPOINT ["dotnet", "DepartureBoardWeb.dll"]

@@ -7,7 +7,7 @@ WORKDIR /app
 
 # Copy csproj and restore
 COPY ./ ./
-WORKDIR /app/DepartureBoardWeb\
+WORKDIR /app/DepartureBoardWeb/
 RUN dotnet restore
 
 #Setup Ng
@@ -17,7 +17,7 @@ RUN npm install
 
 # Copy everything else and build
 WORKDIR /app/DepartureBoardWeb/
-RUN dotnet publish -c Release -o /deploy
+RUN dotnet publish -c Release -o /app/DepartureBoardWeb/deploy
 
 # Generate runtime image
 FROM microsoft/dotnet:2.2-aspnetcore-runtime

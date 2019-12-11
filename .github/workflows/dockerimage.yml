@@ -15,10 +15,10 @@ jobs:
     - name: Docker build
       run: |
         docker login docker.pkg.github.com -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-        docker build -t docker.pkg.github.com/benfl3713/departureboard/departure-board .
+        docker build -t docker.pkg.github.com/benfl3713/departureboard/departure-board:latest .
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Docker Publish
-      run: docker push docker.pkg.github.com/benfl3713/departureboard/departure-board
+      run: docker push docker.pkg.github.com/benfl3713/departureboard/departure-board:latest

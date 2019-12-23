@@ -10,6 +10,11 @@ html{
   font-family: 'ledfont', Arial, sans-serif;
   color: #ff9729;
 }
+.footer {
+  color: #ff9729;
+  text-align: right;
+  font-size: 0.3em;
+}
 
 .inline-row {
   display: inline;

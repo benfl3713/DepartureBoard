@@ -1,6 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
-html {
+html, body {
   background-color: black;
+}
+html{
+  overflow-x: hidden;
 }
 
 .led {
@@ -46,4 +49,7 @@ html {
 
 .Column {
   display: table-cell;
+}
+body {
+  margin-left: 5px;
 }

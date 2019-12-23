@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  departure-board:
+    build:
+        context: .
+        dockerfile: "./Dockerfile"
+    image: departure-board:latest
+    ports:
+      - "80:80"

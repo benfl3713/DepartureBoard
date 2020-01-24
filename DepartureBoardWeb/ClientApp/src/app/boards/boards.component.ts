@@ -28,6 +28,7 @@ export class BoardsComponent {
       if (this.isNumber(this.route.snapshot.paramMap.get('displays'))) {
         this.displays = Number(this.route.snapshot.paramMap.get('displays'));
       }
+      document.title = "Departure Board - " + this.stationCode;
       this.GetDepartures();
       setInterval(() => this.GetDepartures(), 16000);
     });

@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: departure-board
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: departure-board
+  template:
+    metadata:
+      labels:
+        app: departure-board
+    spec:
+      containers:
+      - name: departure-board
+        image: benfl3713/departure-board:latest
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80

@@ -28,7 +28,7 @@ namespace TrainDataAPI
 
         private void AddCredendials(ref RestRequest request)
         {
-            request.AddHeader("Authorization", "Basic cnR0YXBpX2JlbmZsMzcxMzozNDBlNmI3NzI3YzFiZjFmOWJjZGI1NTZjZWJiNDI0NTUwZTFlOTdi");
+            request.AddHeader("Authorization", $"Basic {ConfigService.RealTimeTrainsToken}");
         }
 
         private List<Departure> DeserialiseDeparture(string json)
@@ -79,10 +79,10 @@ namespace TrainDataAPI
                         Departure departure = new Departure(stationName, stationCode, platform, operatorName, aimedDepatureTime, expectedDepatureTime, destination, status, origin, null, serviceTimeTable, GetType());
                         departures.Add(departure);
                     }
-                    catch(Exception e) { }
+                    catch { }
                 }
             }
-            catch(Exception e)
+            catch
             {
 
             }

@@ -13,6 +13,7 @@
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 deploy/
+DepartureBoardWeb/config.xml
 
 # Build results
 [Dd]ebug/

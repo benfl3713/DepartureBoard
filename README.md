@@ -1,4 +1,6 @@
 # DepartureBoard
+![](https://github.com/benfl3713/DepartureBoard/workflows/Docker/badge.svg?branch=master)
+![](https://github.com/benfl3713/DepartureBoard/workflows/.NET%20Core/badge.svg?branch=master)
 
 This image creates a web server showing live train times in the UK and is designed to look like the led departure boards you see in the station
 

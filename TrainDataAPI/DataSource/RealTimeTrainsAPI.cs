@@ -127,10 +127,10 @@ namespace TrainDataAPI
                         StationStop stop = new StationStop(stationCode, stationName, StationStop.StopType.LI, platform, aimedDepartureDate, expectedDepartureDate);
                         stops.Add(stop);
                     }
-                    catch(Exception e) { }
+                    catch { }
                 }
             }
-            catch(Exception e)
+            catch
             {
 
             }

@@ -25,7 +25,7 @@ jobs:
       run: docker push docker.pkg.github.com/benfl3713/departureboard/departure-board   
       
     - name: Docker Publish - Branch
-      if: github.ref == 'refs/heads/master'
+      if: github.ref != 'refs/heads/master'
       run: | 
         docker tag docker.pkg.github.com/benfl3713/departureboard/departure-board docker.pkg.github.com/benfl3713/departureboard/departure-board:${github.ref}
         docker push docker.pkg.github.com/benfl3713/departureboard/departure-board

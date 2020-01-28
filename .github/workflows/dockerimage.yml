@@ -12,6 +12,11 @@ jobs:
       with:
         fetch-depth: 1
 
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
+
     - name: Docker build
       run: |
         docker login docker.pkg.github.com -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
@@ -22,24 +27,10 @@ jobs:
 
     - name: Docker Publish
       if: github.ref == 'refs/heads/master'
-      run: docker push docker.pkg.github.com/benfl3713/departureboard/departure-board
-  Public_Docker_Image:
-    name: Publish Docker Image
-    runs-on: ubuntu-latest
-    needs: [Build_Docker_Image]
-    steps:
-
-    - name: Checkout
-      uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
-
-    - name: Docker Publish
-      if: github.ref == 'refs/heads/master'
-      run: |
-        docker login docker.pkg.github.com -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+      run: docker push docker.pkg.github.com/benfl3713/departureboard/departure-board   
+      
+    - name: Docker Publish - Branch
+      if: github.ref != 'refs/heads/master'
+      run: | 
+        docker tag docker.pkg.github.com/benfl3713/departureboard/departure-board docker.pkg.github.com/benfl3713/departureboard/departure-board:${{ steps.extract_branch.outputs.branch }}
         docker push docker.pkg.github.com/benfl3713/departureboard/departure-board
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-

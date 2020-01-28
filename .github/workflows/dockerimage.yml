@@ -20,10 +20,11 @@ jobs:
     - name: Docker build
       run: |
         docker login docker.pkg.github.com -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-        docker build -t docker.pkg.github.com/benfl3713/departureboard/departure-board .
+        docker build -t docker.pkg.github.com/benfl3713/departureboard/departure-board --build-args RTT_Token=$RTT_Token .
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        RTT_Token: ${{ secrets.RTT_Token }}
 
     - name: Docker Publish
       if: github.ref == 'refs/heads/master'

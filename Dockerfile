@@ -6,6 +6,8 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
 WORKDIR /app
 
 # Copy csproj and restore
+ARG RTT_Token=[INSERT_REALTIMETRAINS_TOKEN_HERE]
+
 COPY ./ ./
 WORKDIR /app/DepartureBoardWeb/
 RUN dotnet restore
@@ -18,6 +20,9 @@ RUN npm install
 # Copy everything else and build
 WORKDIR /app/DepartureBoardWeb/
 RUN dotnet publish -c Release -o /app/DepartureBoardWeb/deploy
+#Creates config file
+RUN rm /app/DepartureBoardWeb/deploy/config.xml
+RUN echo "<Config><RealTimeTrainsToken>$RTT_Token</RealTimeTrainsToken></Config>" > /app/DepartureBoardWeb/deploy/config.xml
 
 # Generate runtime image
 FROM microsoft/dotnet:2.2-aspnetcore-runtime

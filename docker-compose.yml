@@ -5,6 +5,8 @@ services:
     build:
         context: .
         dockerfile: "./Dockerfile"
+        args:
+          RTT_Token: "cnR0YXBpX2JlbmZsMzcxMzozNDBlNmI3NzI3YzFiZjFmOWJjZGI1NTZjZWJiNDI0NTUwZTFlOTdi"
     image: departure-board:latest
     ports:
-      - "80:80"
+      - "9005:80"

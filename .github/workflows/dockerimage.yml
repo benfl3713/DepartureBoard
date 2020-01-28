@@ -21,4 +21,5 @@ jobs:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Docker Publish
+      if: github.ref == 'refs/heads/master'
       run: docker push docker.pkg.github.com/benfl3713/departureboard/departure-board

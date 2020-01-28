@@ -1,4 +1,4 @@
-bin\
-obj\
-DepartureBoardWeb\ClientApp\dist\
-DepartureBoardWeb\ClientApp\node_modules
+bin/
+obj/
+DepartureBoardWeb/ClientApp/dist/
+DepartureBoardWeb/ClientApp/node_modules

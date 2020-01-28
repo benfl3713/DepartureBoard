@@ -12,6 +12,11 @@ jobs:
       with:
         fetch-depth: 1
 
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
+
     - name: Docker build
       run: |
         docker login docker.pkg.github.com -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
@@ -27,5 +32,5 @@ jobs:
     - name: Docker Publish - Branch
       if: github.ref != 'refs/heads/master'
       run: | 
-        docker tag docker.pkg.github.com/benfl3713/departureboard/departure-board docker.pkg.github.com/benfl3713/departureboard/departure-board:${github.ref}
+        docker tag docker.pkg.github.com/benfl3713/departureboard/departure-board docker.pkg.github.com/benfl3713/departureboard/departure-board:${{ steps.extract_branch.outputs.branch }}
         docker push docker.pkg.github.com/benfl3713/departureboard/departure-board

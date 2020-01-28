@@ -26,6 +26,7 @@ jobs:
   Public_Docker_Image:
     name: Publish Docker Image
     runs-on: ubuntu-latest
+    needs: [Build_Docker_Image]
     steps:
 
     - name: Checkout

@@ -1,4 +1,4 @@
-name: Docker build
+name: Docker
 on: [push]
 
 jobs:
@@ -23,3 +23,22 @@ jobs:
     - name: Docker Publish
       if: github.ref == 'refs/heads/master'
       run: docker push docker.pkg.github.com/benfl3713/departureboard/departure-board
+  Public_Docker_Image:
+    name: Publish Docker Image
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+
+    - name: Docker Publish
+      if: github.ref == 'refs/heads/master'
+      run: |
+        docker login docker.pkg.github.com -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+        docker push docker.pkg.github.com/benfl3713/departureboard/departure-board
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+

@@ -25,10 +25,10 @@ import { Board } from './boards/board/board';
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', redirectTo: '/COV', pathMatch: 'full' },
+      { path: '', redirectTo: '/EUS', pathMatch: 'full' },
+      { path: 'singleboard/:station', component: SingleBoard, pathMatch: 'full' },
       { path: ':station', component: BoardsComponent, pathMatch: 'full' },
       { path: ':station/:displays', component: BoardsComponent, pathMatch: 'full' },
-      { path: 'singleboard/:station', component: SingleBoard, pathMatch: 'full' },
     ])
   ],
   providers: [DatePipe],

@@ -36,8 +36,8 @@ jobs:
         docker tag docker.pkg.github.com/benfl3713/departureboard/departure-board benfl3713/departure-board
         docker push benfl3713/departure-board
       
-    - name: Docker Publish - Branch
-      if: github.ref != 'refs/heads/master'
-      run: | 
-        docker tag docker.pkg.github.com/benfl3713/departureboard/departure-board docker.pkg.github.com/benfl3713/departureboard/departure-board:${{ steps.extract_branch.outputs.branch }}
-        docker push docker.pkg.github.com/benfl3713/departureboard/departure-board
+    # - name: Docker Publish - Branch
+    #   if: github.ref != 'refs/heads/master'
+    #   run: | 
+    #     docker tag docker.pkg.github.com/benfl3713/departureboard/departure-board docker.pkg.github.com/benfl3713/departureboard/departure-board:${{ steps.extract_branch.outputs.branch }}
+    #     docker push docker.pkg.github.com/benfl3713/departureboard/departure-board

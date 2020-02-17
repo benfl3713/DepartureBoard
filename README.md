@@ -7,6 +7,7 @@ This image creates a web server showing live train times in the UK and is design
 # How to Use
 1. To change the station just modify the url. E.g  *http://your-site.com/EUS* will show euston station times
 2. To change the amount of boards on the screen just add a number to the end. E.g http://your-site.com/EUS/12
+3. To view a platform style board just modify the url with a prefix of 'singleboard'. E.g *http://your-site.com/singleboard/EUS*
 
 # Working Example 
 To view a running example head over to

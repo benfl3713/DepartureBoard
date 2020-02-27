@@ -1,14 +1,3 @@
 steps:
-  - block: ":speech_balloon: DBCompare Branch Parameters"
-    branches: '!master'
-    fields:
-      - text: ':parcel: Baseline Bundle Number'
-        key: 'master-bundle-number'
-        hint: 'E.g 19.12.2.1234'
-      - text: ':fork: Comparison Bundle Number'
-        key: 'branch-bundle-number'
-        hint: 'E.g 19.12.2.1234'
-      - text: 'Vendors'
-        key: 'vendors'
-        hint: 'Vendor Code(s) or blank for all'
-        required: false
+  - label: ':building_construction: Build Departure Board'
+    command: "dotnet build --configuration Release"

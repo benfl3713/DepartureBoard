@@ -3,4 +3,4 @@ dotnet publish -c Release -o ./${BUILDKITE_BUILD_NUMBER}/DepartureBoardWeb/deplo
 cd ./${BUILDKITE_BUILD_NUMBER}/DepartureBoardWeb/deploy
 zip -r ../output.zip *
 cd ..
-rm -r ./${BUILDKITE_BUILD_NUMBER}/DepartureBoardWeb/deploy
+rm -r ./deploy

@@ -1,0 +1,6 @@
+steps:
+  - label: ':building_construction: Build Departure Board'
+    command: "dotnet build --configuration Release"
+    
+  - label: ':package: Create Bundled Departure Board'
+    command: ".buildkite/publish.sh"

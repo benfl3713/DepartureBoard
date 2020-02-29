@@ -4,4 +4,3 @@ steps:
     
   - label: ':package: Create Bundled Departure Board'
     command: ".buildkite/publish.sh"
-    artifact_paths: "/${BUILDKITE_BUILD_NUMBER}/DepartureBoardWeb/output.zip"

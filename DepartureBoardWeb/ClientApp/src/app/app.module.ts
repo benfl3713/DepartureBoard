@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common'
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { HomeComponent } from "./home/home.component";
 import { BoardsComponent } from './boards/boards.component';
 import { SingleBoard } from './singleboard/singleboard';
 
@@ -16,6 +17,7 @@ import { Board } from './boards/board/board';
   declarations: [
     AppComponent,
     NavMenuComponent,
+    HomeComponent,
     BoardsComponent,
     SingleBoard,
     Board
@@ -25,7 +27,7 @@ import { Board } from './boards/board/board';
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', redirectTo: '/EUS', pathMatch: 'full' },
+      { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'singleboard/:station', component: SingleBoard, pathMatch: 'full' },
       { path: ':station', component: BoardsComponent, pathMatch: 'full' },
       { path: ':station/:displays', component: BoardsComponent, pathMatch: 'full' },

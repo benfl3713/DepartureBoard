@@ -58,3 +58,6 @@ html{
 body {
   margin-left: 5px;
 }
+.centre-text {
+  text-align: center;
+}

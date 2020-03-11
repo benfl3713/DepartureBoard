@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: departure-board
 spec:
-  replicas: 5
+  replicas: 10
   selector:
     matchLabels:
       app: departure-board
@@ -17,7 +17,10 @@ spec:
         image: benfl3713/departure-board:latest
         resources:
           limits:
-            memory: "128Mi"
-            cpu: "500m"
+            memory: "50Mi"
+            cpu: "80m"
+          requests:
+            memory: "50Mi"
+            cpu: "80m"
         ports:
         - containerPort: 80

@@ -15,7 +15,7 @@ export class BoardsComponent {
   time = new Date();
   public displays: number = 6;
   public stationCode: string = "COV";
-  @ViewChild('Boards', { read: ViewContainerRef }) Boards: ViewContainerRef;
+  @ViewChild('Boards', { read: ViewContainerRef, static: false }) Boards: ViewContainerRef;
   private boardsRefs: Array<ComponentRef<Board>> = new Array<ComponentRef<Board>>();
 
   constructor(private http: HttpClient, private route: ActivatedRoute, private datePipe: DatePipe, private resolver: ComponentFactoryResolver) {

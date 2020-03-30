@@ -12,6 +12,7 @@ import { BoardsComponent } from './boards/boards.component';
 import { SingleBoard } from './singleboard/singleboard';
 
 import { Board } from './boards/board/board';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { Board } from './boards/board/board';
       { path: 'singleboard/:station', component: SingleBoard, pathMatch: 'full' },
       { path: ':station', component: BoardsComponent, pathMatch: 'full' },
       { path: ':station/:displays', component: BoardsComponent, pathMatch: 'full' },
-    ])
+    ]),
+    BrowserAnimationsModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent],

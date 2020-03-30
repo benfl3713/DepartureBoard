@@ -2,7 +2,13 @@
 html, body {
   background-color: black;
 }
-html{
+
+body {
+  margin-left: 5px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+html {
   overflow-x: hidden;
 }
 
@@ -10,6 +16,7 @@ html{
   font-family: 'ledfont', Arial, sans-serif;
   color: #ff9729;
 }
+
 .footer {
   color: #ff9729;
   text-align: right;
@@ -43,11 +50,13 @@ html{
   font-size: 2em;
   white-space: nowrap;
 }
+
 .time {
   text-align: center;
   padding-top: 50px;
   font-size: 4em;
 }
+
 .Row {
   display: table;
 }
@@ -55,9 +64,7 @@ html{
 .Column {
   display: table-cell;
 }
-body {
-  margin-left: 5px;
-}
+
 .centre-text {
   text-align: center;
 }

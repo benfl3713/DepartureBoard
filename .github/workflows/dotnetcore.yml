@@ -11,7 +11,5 @@ jobs:
     - uses: actions/checkout@v1
     - name: Setup dotnet
       uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 2.2.108
     - name: Build Departure Board with dotnet
       run: dotnet build --configuration Release

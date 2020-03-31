@@ -1,20 +1,20 @@
 <div class="container">
-<h2 id="search-title" class="led centre-text" style="padding-left:10px;" [routerLink]='["/search"]'>Search</h2>
-<form class="example-form">
-  <mat-form-field id="search-box">
-    <input type="text"
-           placeholder="Station Name"
-           aria-label="station name"
-           matInput
-           [formControl]="searchBox"
-           [matAutocomplete]="auto"
-           (keyup)="filter()">
-    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-      <mat-option *ngFor="let station of filteredOptions | keyvalue" [value]="station.value">
-        {{station.value}}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
-  <button mat-button id="btnSearch" (click)="Search()">Search</button>
-</form>
-  </div>
+  <h2 id="search-title" class="led centre-text" style="padding-left:10px;" [routerLink]='["/search"]'>Search</h2>
+  <form class="example-form">
+    <mat-form-field id="search-box">
+      <input type="text"
+             placeholder="Station Name"
+             aria-label="station name"
+             matInput
+             [formControl]="searchBox"
+             [matAutocomplete]="auto"
+             (keyup)="filter()">
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option *ngFor="let station of filteredOptions | keyvalue" [value]="station.value">
+          {{station.value}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <button mat-button id="btnSearch" (click)="Search()">Search</button>
+  </form>
+</div>

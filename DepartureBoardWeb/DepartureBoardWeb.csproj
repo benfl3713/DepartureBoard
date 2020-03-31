@@ -24,11 +24,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="config.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TrainDataAPI\TrainDataAPI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="config.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

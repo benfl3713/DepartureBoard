@@ -25,7 +25,7 @@ RUN rm /app/DepartureBoardWeb/deploy/config.xml
 RUN echo "<Config><RealTimeTrainsToken>$RTT_Token</RealTimeTrainsToken></Config>" > /app/DepartureBoardWeb/deploy/config.xml
 
 # Generate runtime image
-FROM microsoft/dotnet:3.1-aspnetcore-runtime
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 COPY --from=build-env /app/DepartureBoardWeb/deploy .
 EXPOSE 80
 ENTRYPOINT ["dotnet", "DepartureBoardWeb.dll"]

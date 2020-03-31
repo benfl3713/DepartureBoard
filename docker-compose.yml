@@ -6,7 +6,7 @@ services:
         context: .
         dockerfile: "./Dockerfile"
         args:
-          RTT_Token: "cnR0YXBpX2JlbmZsMzcxMzozNDBlNmI3NzI3YzFiZjFmOWJjZGI1NTZjZWJiNDI0NTUwZTFlOTdi"
+          RTT_Token: "[INSERT_REALTIMETRAINS_TOKEN_HERE]"
     image: departure-board:latest
     ports:
       - "9005:80"

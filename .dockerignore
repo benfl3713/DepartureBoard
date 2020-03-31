@@ -1,4 +1,12 @@
+.vs/
+.github/
+.vscode/
+deployment/
 bin/
 obj/
 DepartureBoardWeb/ClientApp/dist/
 DepartureBoardWeb/ClientApp/node_modules
+DepartureBoardWeb/bin/
+DepartureBoardWeb/obj/
+TrainDataAPI/bin/
+TrainDataAPI/obj/

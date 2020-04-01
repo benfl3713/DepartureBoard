@@ -33,6 +33,7 @@ export class BoardsComponent {
 			  if (queryParams['platform'] && this.isNumber(queryParams['platform'])) {
 				  this.platform = queryParams['platform'];
 			  }
+			  else { this.platform = null }
 			  document.title = "Departure Board - " + this.stationCode;
 			  this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode).subscribe(name => document.title = "Departure Board - " + name)
 			  this.GetDepartures();

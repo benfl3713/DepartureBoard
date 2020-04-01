@@ -1,10 +1,10 @@
 <div class="board led col">
   <div class="board-row">
     <h5 class="inline-row">{{DepartureTime | date: 'HH:mm'}}</h5>
-    <h5 class="inline-row status">Platform {{Platform}}</h5>
+    <h5 class="inline-row status clickable" (click)="FilterPlatform(Platform)">Platform {{Platform}}</h5>
   </div>
   <div class="board-row">
-    <h6 class="inline-row">{{Destination}}</h6>
+    <h6 class="inline-row" (click)="ChangeStation(Destination)">{{Destination}}</h6>
   </div>
   <table class="stops">
     <tr class="board-row">

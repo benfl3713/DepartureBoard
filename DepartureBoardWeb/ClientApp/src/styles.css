@@ -67,3 +67,6 @@ html {
 .centre-text {
   text-align: center;
 }
+.clickable{
+  cursor: pointer;
+}

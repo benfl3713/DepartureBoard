@@ -22,6 +22,7 @@ export class SingleBoard {
 			  if (queryParams['platform'] && this.isNumber(queryParams['platform'])) {
 				  this.platform = queryParams['platform'];
 			  }
+			  else { this.platform = null }
 			  this.GetDepartures();
 			  setInterval(() => this.GetDepartures(), 10000);
 		  })});

@@ -25,7 +25,16 @@ namespace DepartureBoardWeb.Controllers
 
 		private Dictionary<string, string> Search(string query)
 		{
-			return _stationLookup.Stations.Where(s => s.Value.Contains(query, StringComparison.OrdinalIgnoreCase)).ToDictionary(x => x.Key, x => x.Value);
+			Dictionary<string, string> stations = _stationLookup.Stations.ToDictionary(entry => entry.Key, entry => entry.Value);
+			return stations.Where(s => s.Value.Contains(query, StringComparison.OrdinalIgnoreCase)).OrderByDescending(s => s.Value.StartsWith(query, StringComparison.OrdinalIgnoreCase)).ToDictionary(x => x.Key, x => x.Value);
+		}
+
+		[HttpGet("[action]")]
+		public JsonResult GetStationNameFromCode(string code = "")
+		{
+			code = code.ToUpper();
+			_stationLookup.Stations.TryGetValue(code, out string stationName);
+			return Json(stationName ?? code);
 		}
 	}
 }

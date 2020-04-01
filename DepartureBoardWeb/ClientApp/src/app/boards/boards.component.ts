@@ -28,7 +28,8 @@ export class BoardsComponent {
       if (this.isNumber(this.route.snapshot.paramMap.get('displays'))) {
         this.displays = Number(this.route.snapshot.paramMap.get('displays'));
       }
-      document.title = "Departure Board - " + this.stationCode;
+		  document.title = "Departure Board - " + this.stationCode;
+		  this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode).subscribe(name => document.title = "Departure Board - " + name)
       this.GetDepartures();
       setInterval(() => this.GetDepartures(), 16000);
     });

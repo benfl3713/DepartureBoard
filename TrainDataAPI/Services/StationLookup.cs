@@ -29,31 +29,37 @@ namespace TrainDataAPI.Services
 			private set { _stations = value; }
 		}
 		private Dictionary<string, string> _stations;
+		private readonly object _stationsLock = new object();
 		private DateTime _lastUpdated = DateTime.MinValue;
 
 		public void LoadStationList()
 		{
-			_stations = new Dictionary<string, string>();
-			try
+			lock (_stationsLock)
 			{
-				using (StreamReader sr = new StreamReader(Path))
+				_stations = new Dictionary<string, string>();
+				try
 				{
-					string currentLine;
-					// currentLine will be null when the StreamReader reaches the end of file
-					while ((currentLine = sr.ReadLine()) != null)
+					using (StreamReader sr = new StreamReader(Path))
 					{
-						//skip line if header
-						if (currentLine == "Station Name,CRS Code")
-							continue;
-						string[] values = currentLine.Split(',');
-						string stationName = values[0];
-						string stationCode = values[1];
-						_stations.Add(stationCode, stationName);
+						string currentLine;
+						// currentLine will be null when the StreamReader reaches the end of file
+						while ((currentLine = sr.ReadLine()) != null)
+						{
+							//skip line if header
+							if (currentLine == "Station Name,CRS Code")
+								continue;
+							currentLine.Replace("\"", string.Empty);
+							string[] values = currentLine.Split(',');
+							string stationName = values[0];
+							string stationCode = values[1];
+							_stations.Add(stationCode, stationName);
+						}
 					}
+					AddMissingStations();
+					_lastUpdated = DateTime.Now;
 				}
-				_lastUpdated = DateTime.Now;
+				catch (Exception ex) { Console.WriteLine(ex.Message); }
 			}
-			catch (Exception ex) { Console.WriteLine(ex.Message); }
 		}
 
 		public void LoadStationListFromWeb()
@@ -79,6 +85,14 @@ namespace TrainDataAPI.Services
 					LoadStationListFromWeb();
 			}
 			catch (Exception ex) { Console.WriteLine(ex.Message); }
+		}
+
+		/// <summary>
+		/// Used to add stations that are missing from the national rail data source
+		/// </summary>
+		private void AddMissingStations()
+		{
+			_stations.Add("KNW", "Kenilworth");
 		}
 	}
 }

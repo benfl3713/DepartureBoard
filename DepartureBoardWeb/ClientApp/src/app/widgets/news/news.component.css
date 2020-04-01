@@ -1,0 +1,18 @@
+#news-title {
+  padding-bottom: 10px;
+}
+
+.container {
+  border: 2px solid #ff9729;
+  border-radius: 8px;
+  color: #ff9729;
+  padding: 10px;
+}
+
+.news-item {
+  padding: 5px;
+  border: 1px solid #ff9729;
+  border-radius: 8px;
+  color: #ff9729;
+  margin-bottom: 10px;
+}

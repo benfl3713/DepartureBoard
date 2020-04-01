@@ -15,7 +15,7 @@ export class SearchComponent implements OnInit {
 	searchBox = new FormControl();
 	filteredOptions: any;
 
-	constructor(private http: HttpClient, private router: Router) { }
+	constructor(private http: HttpClient, private router: Router) { document.title = "Departure Board"; }
 
 	ngOnInit(): void {
 		this.http.get("/api/StationLookup").subscribe(s => { this.stations = s;});
@@ -24,7 +24,7 @@ export class SearchComponent implements OnInit {
 	filter() {
 		var query = this.searchBox.value;
 		if (query) {
-			this.http.get("/api/StationLookup?query=" + query).subscribe(s => { this.filteredOptions = s; });
+			this.http.get("/api/StationLookup?query=" + query).subscribe(s => { this.filteredOptions = s;});
 	  }
 		else {
 			this.filteredOptions = Array<string>();
@@ -42,5 +42,9 @@ export class SearchComponent implements OnInit {
 
   private getKeyByValue(object, value) {
 	  return Object.keys(object).find(key => object[key] === value);
-  }
+	}
+
+	asIsOrder(a, b) {
+		return 1;
+	}
 }

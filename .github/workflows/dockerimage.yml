@@ -21,7 +21,7 @@ jobs:
       run: |
         docker login docker.pkg.github.com -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
         docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
-        docker build -t docker.pkg.github.com/benfl3713/departureboard/departure-board --build-arg RTT_Token=$RTT_Token .
+        docker build -t docker.pkg.github.com/benfl3713/departureboard/departure-board:latest --build-arg RTT_Token=$RTT_Token .
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
@@ -32,9 +32,9 @@ jobs:
     - name: Docker Publish
       if: github.ref == 'refs/heads/master'
       run: | 
-        docker push docker.pkg.github.com/benfl3713/departureboard/departure-board
-        docker tag docker.pkg.github.com/benfl3713/departureboard/departure-board benfl3713/departure-board
-        docker push benfl3713/departure-board
+        docker push docker.pkg.github.com/benfl3713/departureboard/departure-board:latest
+        docker tag docker.pkg.github.com/benfl3713/departureboard/departure-board:latest benfl3713/departure-board:latest
+        docker push benfl3713/departure-board:latest
       
     # - name: Docker Publish - Branch
     #   if: github.ref != 'refs/heads/master'

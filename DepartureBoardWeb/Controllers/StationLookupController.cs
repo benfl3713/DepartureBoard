@@ -8,10 +8,10 @@ using TrainDataAPI.Services;
 
 namespace DepartureBoardWeb.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class StationLookupController : Controller
-    {
+	[Route("api/[controller]")]
+	[ApiController]
+	public class StationLookupController : Controller
+	{
 		public StationLookup _stationLookup;
 		public StationLookupController(StationLookup stationLookup) { _stationLookup = stationLookup; }
 
@@ -35,6 +35,18 @@ namespace DepartureBoardWeb.Controllers
 			code = code.ToUpper();
 			_stationLookup.Stations.TryGetValue(code, out string stationName);
 			return Json(stationName ?? code);
+		}
+
+		[HttpGet("[action]")]
+		public JsonResult GetStationCodeFromName(string name)
+		{
+			Dictionary<string, string> stations = _stationLookup.Stations.ToDictionary(entry => entry.Key, entry => entry.Value);
+			stations =  stations.Where(s => s.Value.Equals(name, StringComparison.OrdinalIgnoreCase)).ToDictionary(x => x.Key, x => x.Value);
+			if(stations.Count == 1)
+			{
+				return Json(stations.Keys.First());
+			}
+			return null;
 		}
 	}
 }

@@ -4,7 +4,7 @@
     <h5 class="inline-row status clickable" (click)="FilterPlatform(Platform)">Platform {{Platform}}</h5>
   </div>
   <div class="board-row">
-    <h6 class="inline-row" (click)="ChangeStation(Destination)">{{Destination}}</h6>
+    <h6 class="inline-row clickable" (click)="ChangeStation(Destination)">{{Destination}}</h6>
   </div>
   <table class="stops">
     <tr class="board-row">
@@ -12,7 +12,7 @@
       <td class="inline-row status">{{CurrentPage}}/{{TotalPages}}</td>
     </tr>
     <tr class="board-row" *ngFor="let stop of DisplayedStops">
-      <td class="inline-row"><div class="stopname">{{stop.StationName}}</div></td>
+      <td class="inline-row"><div class="stopname clickable" (click)="ChangeStation(stop.StationName)">{{stop.StationName}}</div></td>
       <td class="inline-row status">{{stop.Time | date: 'HH:mm'}}</td>
     </tr>
   </table>

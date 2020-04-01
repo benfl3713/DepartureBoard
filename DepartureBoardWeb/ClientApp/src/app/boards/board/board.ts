@@ -58,7 +58,11 @@ export class Board{
 	}
 
 	ChangeStation(stationName: string) {
-
+		this.http.get("/api/StationLookup/GetStationCodeFromName?name=" + stationName).subscribe(s => {
+			if (s) {
+				this.router.navigate([s])
+			}
+		});
 	}
 }
 export class Stop {

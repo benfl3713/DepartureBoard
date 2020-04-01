@@ -8,8 +8,8 @@ namespace TrainDataAPI
 {
     public class TransportAPI : ITrainDatasource
     {
-        private string app_id = "e9360520";
-        private string app_key = "02918527a18d82e3a69d1ce19d01dac1";
+        private string app_id = "";
+        private string app_key = "";
 
         public TransportAPI()
         {

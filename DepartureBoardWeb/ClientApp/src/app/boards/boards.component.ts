@@ -13,7 +13,8 @@ import { ServiceStatus } from '../singleboard/singleboard'
 export class BoardsComponent {
   private headers = new HttpHeaders().set('Content-Type', "application/json");
   time = new Date();
-  public displays: number = 6;
+	public displays: number = 6;
+	public platform: number;
   public stationCode: string = "COV";
   @ViewChild('Boards', { read: ViewContainerRef, static: false }) Boards: ViewContainerRef;
   private boardsRefs: Array<ComponentRef<Board>> = new Array<ComponentRef<Board>>();
@@ -23,16 +24,20 @@ export class BoardsComponent {
       this.time = new Date();
     }, 1000);
 
-    route.params.subscribe(() => {
-      this.stationCode = this.route.snapshot.paramMap.get('station').toUpperCase();
-      if (this.isNumber(this.route.snapshot.paramMap.get('displays'))) {
-        this.displays = Number(this.route.snapshot.paramMap.get('displays'));
-      }
-		  document.title = "Departure Board - " + this.stationCode;
-		  this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode).subscribe(name => document.title = "Departure Board - " + name)
-      this.GetDepartures();
-      setInterval(() => this.GetDepartures(), 16000);
-    });
+	  route.params.subscribe(() => {
+		  route.queryParams.subscribe(queryParams => {
+			  this.stationCode = this.route.snapshot.paramMap.get('station').toUpperCase();
+			  if (this.isNumber(this.route.snapshot.paramMap.get('displays'))) {
+				  this.displays = Number(this.route.snapshot.paramMap.get('displays'));
+			  }
+			  if (queryParams['platform'] && this.isNumber(queryParams['platform'])) {
+				  this.platform = queryParams['platform'];
+			  }
+			  document.title = "Departure Board - " + this.stationCode;
+			  this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode).subscribe(name => document.title = "Departure Board - " + name)
+			  this.GetDepartures();
+			  setInterval(() => this.GetDepartures(), 16000);
+		  })});
   }
 
   GetDepartures() {
@@ -42,8 +47,12 @@ export class BoardsComponent {
     const formData = new FormData();
     formData.append("stationCode", this.stationCode);
     formData.append("amount", this.displays.toString());
+	  var url = "/api/LiveDepartures/GetLatestDepatures";
 
-    this.http.post<object[]>("/api/LiveDepartures/GetLatestDepatures", formData).subscribe(response => {
+	  if (this.platform) {
+		  url = url + "?platform=" + this.platform;
+	  }
+	  this.http.post<object[]>(url, formData).subscribe(response => {
       this.ProcessDepartures(response);
     });
   }

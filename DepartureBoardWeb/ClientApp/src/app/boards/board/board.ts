@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ServiceStatus } from '../../singleboard/singleboard'
+import { Router, Params, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-board',
@@ -10,7 +11,7 @@ import { ServiceStatus } from '../../singleboard/singleboard'
 export class Board{
   private headers = new HttpHeaders().set('Content-Type', "application/json");
 
-  constructor(private http: HttpClient) {
+	constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute) {
     setInterval(() => this.Pager(), 8000);
   }
 
@@ -42,7 +43,27 @@ export class Board{
     }
     this.TotalPages = Math.ceil(this.Stops.length / 9);
     this.Pager();
-  }
+	}
+
+	FilterPlatform(platform: number) {
+		if (platform) {
+			const queryParams: Params = { platform };
+			this.router.navigate(
+				[],
+				{
+					queryParams: queryParams,
+					queryParamsHandling: 'merge', // remove to replace all query params by provided
+				});
+		}
+	}
+
+	ChangeStation(stationName: string) {
+		this.http.get("/api/StationLookup/GetStationCodeFromName?name=" + stationName).subscribe(s => {
+			if (s) {
+				this.router.navigate([s])
+			}
+		});
+	}
 }
 export class Stop {
   public StationName: string;

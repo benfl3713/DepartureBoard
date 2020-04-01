@@ -16,13 +16,19 @@ export class SingleBoard {
       this.time = new Date();
     }, 1000);
 
-    route.params.subscribe(() => {
-      this.stationCode = this.route.snapshot.paramMap.get('station');
-      this.GetDepartures();
-      setInterval(() => this.GetDepartures(), 10000);
-      });
+	  route.params.subscribe(() => {
+		  route.queryParams.subscribe(queryParams => {
+			  this.stationCode = this.route.snapshot.paramMap.get('station');
+			  if (queryParams['platform'] && this.isNumber(queryParams['platform'])) {
+				  this.platform = queryParams['platform'];
+			  }
+			  else { this.platform = null }
+			  this.GetDepartures();
+			  setInterval(() => this.GetDepartures(), 10000);
+		  })});
   }
-  stationCode: string;
+	stationCode: string;
+	platform: number;
   time = new Date();
 
   //first
@@ -41,8 +47,12 @@ export class SingleBoard {
   GetDepartures() {
     if (this.stationCode == null || this.stationCode == "") {
       return;
-    }
-    this.http.post<object[]>("/api/LiveDepartures/GetLatestDepaturesSingleBoard", JSON.stringify(this.stationCode), { headers: this.headers }).subscribe(response => {
+	  }
+	  var url = "/api/LiveDepartures/GetLatestDepaturesSingleBoard";
+	  if (this.platform) {
+		  url = url + "?platform=" + this.platform;
+	  }
+    this.http.post<object[]>(url, JSON.stringify(this.stationCode), { headers: this.headers }).subscribe(response => {
       this.ProcessDepartures(response);
     });
   }
@@ -91,6 +101,9 @@ export class SingleBoard {
     return keys.length > 0 ? keys[0] : null;
   }
 
+	isNumber(value: string | number): boolean {
+		return ((value != null) && !isNaN(Number(value.toString())));
+	}
 }
 
 export enum ServiceStatus {

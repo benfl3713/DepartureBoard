@@ -42,8 +42,8 @@ namespace DepartureBoardWeb.Controllers
 
                 ITrainDatasource trainDatasource = new RealTimeTrainsAPI();
                 List<Departure> departures = trainDatasource.GetLiveDepartures(stationCode);
-                if (departures.Count == 0)
-                    return null;
+                if (departures == null || departures.Count == 0)
+                    return Json(new List<Departure>());
 
 				if(platform != null)
 					departures = departures.Where(d => d.Platform == platform).ToList();

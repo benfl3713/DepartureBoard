@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Xml.Linq;
 
 namespace TrainDataAPI
@@ -15,9 +16,11 @@ namespace TrainDataAPI
 
         private static string _realTimeTrainsToken;
 
-        private static string LoadRealTimeTrainsToken(){
+        private static string LoadRealTimeTrainsToken()
+        {
             string errorMessage = "config.xml need populating with your real time trains api token. You can find this file in the DepartureBoardWeb folder";
             try{
+                CheckFileExists();
                 var rootElement = XElement.Parse(System.IO.File.ReadAllText("config.xml"));
                 if(rootElement == null)
                     return null;
@@ -33,6 +36,21 @@ namespace TrainDataAPI
                 if(e.Message == errorMessage)
                     throw e;
                 return null;
+            }
+        }
+
+        private static void CheckFileExists()
+        {
+            if (!File.Exists("config.xml"))
+            {
+                Console.WriteLine("Creating config.xml with default values");
+                //creates config file
+                new XDocument(
+                        new XElement("Config",
+                            new XElement("RealTimeTrainsToken", "[INSERT_REALTIMETRAINS_TOKEN_HERE]")
+                        )
+                    )
+                    .Save("config.xml");
             }
         }
     }

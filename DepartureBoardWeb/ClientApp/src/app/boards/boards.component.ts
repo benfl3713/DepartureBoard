@@ -13,9 +13,10 @@ import { ServiceStatus } from '../singleboard/singleboard'
 export class BoardsComponent {
   private headers = new HttpHeaders().set('Content-Type', "application/json");
   time = new Date();
+  noBoardsDisplay:boolean = false;
 	public displays: number = 6;
 	public platform: number;
-  public stationCode: string = "COV";
+  public stationCode: string = "EUS";
   @ViewChild('Boards', { read: ViewContainerRef, static: false }) Boards: ViewContainerRef;
   private boardsRefs: Array<ComponentRef<Board>> = new Array<ComponentRef<Board>>();
 
@@ -60,6 +61,8 @@ export class BoardsComponent {
 
   ProcessDepartures(data: object[]) {
     this.Boards.clear();
+    this.noBoardsDisplay = data.length === 0;
+
     for (var i = 0; i < data.length; i += 1) {
       const factory = this.resolver.resolveComponentFactory(Board);
       const componentRef = this.Boards.createComponent(factory);

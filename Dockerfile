@@ -21,7 +21,6 @@ RUN npm install
 WORKDIR /app/DepartureBoardWeb/
 RUN dotnet publish -c Release -o /app/DepartureBoardWeb/deploy
 #Creates config file
-RUN rm /app/DepartureBoardWeb/deploy/config.xml
 RUN echo "<Config><RealTimeTrainsToken>$RTT_Token</RealTimeTrainsToken></Config>" > /app/DepartureBoardWeb/deploy/config.xml
 
 # Generate runtime image

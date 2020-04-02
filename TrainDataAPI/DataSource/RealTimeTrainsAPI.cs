@@ -10,20 +10,34 @@ namespace TrainDataAPI
     {
         public List<Departure> GetLiveDepartures(string stationCode)
         {
-            var client = new RestClient($"https://api.rtt.io/api/v1/json/search/{stationCode.ToUpper()}");
-            var request = new RestRequest(Method.GET);
-            AddCredendials(ref request);
-            IRestResponse response = client.Execute(request);
-            return DeserialiseDeparture(response.Content);
+            try
+            {
+                var client = new RestClient($"https://api.rtt.io/api/v1/json/search/{stationCode.ToUpper()}");
+                var request = new RestRequest(Method.GET);
+                AddCredendials(ref request);
+                IRestResponse response = client.Execute(request);
+                return DeserialiseDeparture(response.Content);
+            }
+            catch
+            {
+                return new List<Departure>();
+            }
         }
 
         public List<StationStop> GetStationStops(string url)
         {
-            var client = new RestClient(url);
-            var request = new RestRequest(Method.GET);
-            AddCredendials(ref request);
-            IRestResponse response = client.Execute(request);
-            return DeserialiseStationStops(response.Content);
+            try
+            {
+                var client = new RestClient(url);
+                var request = new RestRequest(Method.GET);
+                AddCredendials(ref request);
+                IRestResponse response = client.Execute(request);
+                return DeserialiseStationStops(response.Content);
+            }
+            catch
+            {
+                return new List<StationStop>();
+            }
         }
 
         private void AddCredendials(ref RestRequest request)

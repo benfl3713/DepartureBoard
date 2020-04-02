@@ -11,7 +11,7 @@ import { Router, Params, ActivatedRoute } from '@angular/router';
 export class Board{
   private headers = new HttpHeaders().set('Content-Type', "application/json");
 
-	constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute) {
+	constructor(private http: HttpClient, private router: Router) {
     setInterval(() => this.Pager(), 8000);
   }
 

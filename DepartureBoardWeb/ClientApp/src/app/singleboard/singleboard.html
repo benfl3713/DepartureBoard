@@ -1,9 +1,10 @@
 <div class="singleboard">
+  <h1 class="led centre-text" *ngIf="noBoardsDisplay">No Departures Found for {{stationCode}}</h1>
   <div class="singleboard-row">
     <h1 class="led inline-row tab">1st</h1>
     <h1 class="led inline-row tab2">{{firstTime  | date: 'HH:mm'}}</h1>
-    <h1 class="led inline-row tab">{{firstPlatform}}</h1>
-    <h1 class="led inline-row tab">{{firstDestination}}</h1>
+    <h1 class="led inline-row tab clickable" (click)="FilterPlatform(firstPlatform)">{{firstPlatform}}</h1>
+    <h1 class="led inline-row tab clickable" (click)="ChangeStation(firstDestination)">{{firstDestination}}</h1>
     <h1 class="led inline-row status" [ngClass]="{ 'ontime': firstStatus=='ONTIME', 'late': firstStatus.includes('EXP')}">{{firstStatus}}</h1>
   </div>
   <div class="singleboard-row">
@@ -12,9 +13,9 @@
   <div class="singleboard-row">
     <h1 class="led inline-row tab">2nd</h1>
     <h1 class="led inline-row tab2">{{secondTime  | date: 'HH:mm'}}</h1>
-    <h1 class="led inline-row tab">{{secondPlatform}}</h1>
-    <h1 class="led inline-row tab">{{secondDestination}}</h1>
+    <h1 class="led inline-row tab clickable" (click)="FilterPlatform(secondPlatform)">{{secondPlatform}}</h1>
+    <h1 class="led inline-row tab clickable" (click)="ChangeStation(secondDestination)">{{secondDestination}}</h1>
     <h1 class="led inline-row status" [ngClass]="{ 'ontime': secondStatus=='ONTIME', 'late': secondStatus.includes('EXP'), 'arrived': secondStatus=='ARRIVED'}">{{secondStatus}}</h1>
   </div>
-  <h1 class="led time">{{ time | date: 'HH:mm:ss' }}</h1>
+  <h1 class="led time clickable" [routerLink]='["/"]'>{{ time | date: 'HH:mm:ss' }}</h1>
 </div>

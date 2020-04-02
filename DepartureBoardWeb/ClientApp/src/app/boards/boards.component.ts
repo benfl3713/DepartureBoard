@@ -35,8 +35,8 @@ export class BoardsComponent {
 				  this.platform = queryParams['platform'];
 			  }
 			  else { this.platform = null }
-			  document.title = "Departure Board - " + this.stationCode;
-			  this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode).subscribe(name => document.title = "Departure Board - " + name)
+        document.title = this.stationCode + " - Departure Board";
+        this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode).subscribe(name => document.title = name + " - Departure Board");
 			  this.GetDepartures();
 			  setInterval(() => this.GetDepartures(), 16000);
 		  })});

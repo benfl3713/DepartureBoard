@@ -19,10 +19,10 @@ namespace DepartureBoardWeb.Controllers
             stationCode = stationCode.ToUpper();
             ITrainDatasource trainDatasource = new RealTimeTrainsAPI();
             List<Departure> departures = trainDatasource.GetLiveDepartures(stationCode);
-            if (departures.Count == 0)
-                return null;
+            if (departures == null || departures.Count == 0)
+                return Json(new SingleBoardData(new List<Departure>(), string.Empty));
 
-			if (platform != null)
+            if (platform != null)
 				departures = departures.Where(d => d.Platform == platform).ToList();
 
 			string information = StopInformationBuilder(departures[0]);

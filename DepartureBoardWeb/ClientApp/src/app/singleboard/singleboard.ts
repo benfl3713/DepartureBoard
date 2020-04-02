@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, Params } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -11,7 +11,7 @@ import { DatePipe } from '@angular/common';
 export class SingleBoard {
   private headers = new HttpHeaders().set('Content-Type', "application/json");
   
-  constructor(private http: HttpClient, private route: ActivatedRoute, private datePipe: DatePipe) {
+  constructor(private http: HttpClient, private route: ActivatedRoute, private datePipe: DatePipe, private router: Router) {
     setInterval(() => {
       this.time = new Date();
     }, 1000);
@@ -22,7 +22,9 @@ export class SingleBoard {
 			  if (queryParams['platform'] && this.isNumber(queryParams['platform'])) {
 				  this.platform = queryParams['platform'];
 			  }
-			  else { this.platform = null }
+        else { this.platform = null }
+        document.title = this.stationCode + " - Departure Board";
+        this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode).subscribe(name => document.title = name + " - Departure Board");
 			  this.GetDepartures();
 			  setInterval(() => this.GetDepartures(), 10000);
 		  })});
@@ -30,19 +32,20 @@ export class SingleBoard {
 	stationCode: string;
 	platform: number;
   time = new Date();
+  noBoardsDisplay: boolean = false;
 
   //first
   firstTime: Date;
   firstPlatform: number;
   firstDestination: string;
-  firstStatus: string;
+  firstStatus: string = "";
 
   information: string;
   //second
   secondTime: Date;
   secondPlatform: number;
   secondDestination: string;
-  secondStatus: string;
+  secondStatus: string = "";
 
   GetDepartures() {
     if (this.stationCode == null || this.stationCode == "") {
@@ -57,7 +60,8 @@ export class SingleBoard {
     });
   }
 
-  ProcessDepartures(data){
+  ProcessDepartures(data) {
+    this.noBoardsDisplay = Object(data)["departures"].length === 0;
     var tempinfo = <string>Object(data)["information"];
     if (tempinfo != this.information) {
       this.information = tempinfo;
@@ -79,7 +83,7 @@ export class SingleBoard {
       this.secondTime = null;
       this.secondPlatform = null;
       this.secondDestination = null;
-      this.secondStatus = null;
+      this.secondStatus = "";
       return;
     }
     //second
@@ -103,7 +107,27 @@ export class SingleBoard {
 
 	isNumber(value: string | number): boolean {
 		return ((value != null) && !isNaN(Number(value.toString())));
-	}
+  }
+
+  FilterPlatform(platform: number) {
+    if (platform) {
+      const queryParams: Params = { platform };
+      this.router.navigate(
+        [],
+        {
+          queryParams: queryParams,
+          queryParamsHandling: 'merge', // remove to replace all query params by provided
+        });
+    }
+  }
+
+  ChangeStation(stationName: string) {
+    this.http.get("/api/StationLookup/GetStationCodeFromName?name=" + stationName).subscribe(s => {
+      if (s) {
+        this.router.navigate(["singleboard/",s])
+      }
+    });
+  }
 }
 
 export enum ServiceStatus {

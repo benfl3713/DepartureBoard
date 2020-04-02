@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { Board } from './board/board';
 import { ServiceStatus } from '../singleboard/singleboard'
+import { ToggleConfig } from '../ToggleConfig';
 
 @Component({
   selector: 'app-boards',
@@ -37,6 +38,7 @@ export class BoardsComponent {
 			  else { this.platform = null }
         document.title = this.stationCode + " - Departure Board";
         this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode).subscribe(name => document.title = name + " - Departure Board");
+        ToggleConfig.LoadingBar.next(true);
 			  this.GetDepartures();
 			  setInterval(() => this.GetDepartures(), 16000);
 		  })});
@@ -54,9 +56,10 @@ export class BoardsComponent {
 	  if (this.platform) {
 		  url = url + "?platform=" + this.platform;
 	  }
-	  this.http.post<object[]>(url, formData).subscribe(response => {
+    this.http.post<object[]>(url, formData).subscribe(response => {
+      ToggleConfig.LoadingBar.next(false)
       this.ProcessDepartures(response);
-    });
+    }, () => ToggleConfig.LoadingBar.next(false));
   }
 
   ProcessDepartures(data: object[]) {

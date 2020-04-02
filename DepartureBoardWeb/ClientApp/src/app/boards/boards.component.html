@@ -3,6 +3,7 @@
     <template #Boards></template>
   </tr>
 </table>
+<h1 class="led centre-text" *ngIf="noBoardsDisplay">No Departures Found for {{stationCode}}</h1>
 <h1 class="led time clickable" [routerLink]='["/search"]'>{{ time | date: 'HH:mm:ss' }}</h1>
 
 <p class="footer">Data is provided by <a href="https://www.realtimetrains.co.uk/">Realtime Trains</a></p>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -10,9 +11,38 @@ namespace TrainDataAPI
     {
         public List<Departure> GetLiveDepartures(string stationCode)
         {
+            return GetDepartures(stationCode);
+        }
+
+        public List<Departure> GetLiveArrivals(string stationCode)
+        {
+            return GetDepartures(stationCode, true);
+        }
+
+        public List<StationStop> GetStationStops(string url, string stationCode)
+        {
             try
             {
-                var client = new RestClient($"https://api.rtt.io/api/v1/json/search/{stationCode.ToUpper()}");
+                var client = new RestClient(url);
+                var request = new RestRequest(Method.GET);
+                AddCredendials(ref request);
+                IRestResponse response = client.Execute(request);
+                return DeserialiseStationStops(response.Content, stationCode);
+            }
+            catch
+            {
+                return new List<StationStop>();
+            }
+        }
+
+        private List<Departure> GetDepartures(string stationCode, bool getArrivals = false)
+        {
+            try
+            {
+                string url = $"https://api.rtt.io/api/v1/json/search/{stationCode.ToUpper()}";
+                if (getArrivals)
+                    url += "/arrivals";
+                var client = new RestClient(url);
                 var request = new RestRequest(Method.GET);
                 AddCredendials(ref request);
                 IRestResponse response = client.Execute(request);
@@ -21,22 +51,6 @@ namespace TrainDataAPI
             catch
             {
                 return new List<Departure>();
-            }
-        }
-
-        public List<StationStop> GetStationStops(string url)
-        {
-            try
-            {
-                var client = new RestClient(url);
-                var request = new RestRequest(Method.GET);
-                AddCredendials(ref request);
-                IRestResponse response = client.Execute(request);
-                return DeserialiseStationStops(response.Content);
-            }
-            catch
-            {
-                return new List<StationStop>();
             }
         }
 
@@ -71,19 +85,19 @@ namespace TrainDataAPI
                             continue;
 
                         string date = Jdeparture["runDate"].ToString();
-                        int.TryParse((Jdeparture["locationDetail"]["platform"]??"1").ToString(), out int platform);
+                        int.TryParse((Jdeparture["locationDetail"]["platform"])?.ToString()??"1", out int platform);
                         string operatorName = Jdeparture["atocName"].ToString();
-                        DateTime.TryParse(date + " " + Jdeparture["locationDetail"]["gbttBookedDeparture"].ToString().Substring(0, 2) + ":" + Jdeparture["locationDetail"]["gbttBookedDeparture"].ToString().Substring(2, 2), out DateTime aimedDepatureTime);
+                        DateTime.TryParse(date + " " + Jdeparture["locationDetail"]["gbttBookedDeparture"]?.ToString().Substring(0, 2) + ":" + Jdeparture["locationDetail"]["gbttBookedDeparture"]?.ToString().Substring(2, 2), out DateTime aimedDepatureTime);
                         if (aimedDepatureTime == DateTime.MinValue)
-                            DateTime.TryParse(date + " " + Jdeparture["locationDetail"]["gbttBookedArrival"].ToString().Substring(0, 2) + ":" + Jdeparture["locationDetail"]["gbttBookedArrival"].ToString().Substring(2, 2), out aimedDepatureTime);
-                        DateTime.TryParse(date + " " + Jdeparture["locationDetail"]["realtimeDeparture"].ToString().Substring(0, 2) + ":" + Jdeparture["locationDetail"]["realtimeDeparture"].ToString().Substring(2, 2), out DateTime expectedDepatureTime);
+                            DateTime.TryParse(date + " " + Jdeparture["locationDetail"]["gbttBookedArrival"]?.ToString().Substring(0, 2) + ":" + Jdeparture["locationDetail"]["gbttBookedArrival"]?.ToString().Substring(2, 2), out aimedDepatureTime);
+                        DateTime.TryParse(date + " " + Jdeparture["locationDetail"]["realtimeDeparture"]?.ToString().Substring(0, 2) + ":" + Jdeparture["locationDetail"]["realtimeDeparture"]?.ToString().Substring(2, 2), out DateTime expectedDepatureTime);
                         if (expectedDepatureTime == DateTime.MinValue)
-                            DateTime.TryParse(date + " " + Jdeparture["locationDetail"]["realtimeArrival"].ToString().Substring(0, 2) + ":" + Jdeparture["locationDetail"]["realtimeArrival"].ToString().Substring(2, 2), out expectedDepatureTime);
+                            DateTime.TryParse(date + " " + Jdeparture["locationDetail"]["realtimeArrival"]?.ToString().Substring(0, 2) + ":" + Jdeparture["locationDetail"]["realtimeArrival"]?.ToString().Substring(2, 2), out expectedDepatureTime);
 
-                        string destination = Jdeparture["locationDetail"]["destination"][0]["description"].ToString();
+                        string destination = Jdeparture["locationDetail"]["destination"][0]["description"]?.ToString();
                         Departure.ServiceStatus status = (expectedDepatureTime == aimedDepatureTime) ? Departure.ServiceStatus.ONTIME : Departure.ServiceStatus.LATE;
 
-                        if (Jdeparture["locationDetail"]["realtimeArrivalActual"] != null && bool.TryParse(Jdeparture["locationDetail"]["realtimeArrivalActual"].ToString(), out bool hasArrived) && hasArrived)
+                        if (Jdeparture["locationDetail"]["realtimeArrivalActual"] != null && bool.TryParse(Jdeparture["locationDetail"]["realtimeArrivalActual"]?.ToString(), out bool hasArrived) && hasArrived)
                             status = Departure.ServiceStatus.ARRIVED;
 
                         string origin = Jdeparture["locationDetail"]["origin"][0]["description"].ToString();
@@ -105,7 +119,7 @@ namespace TrainDataAPI
             return departures;
         }
 
-        private List<StationStop> DeserialiseStationStops(string json)
+        private List<StationStop> DeserialiseStationStops(string json, string desinationCode)
         {
             List<StationStop> stops = new List<StationStop>();
             try
@@ -129,14 +143,14 @@ namespace TrainDataAPI
                         DateTime expectedDepartureDate;
 
                         if (JStop["gbttBookedDeparture"] != null)
-                            DateTime.TryParse($"{runDate} {JStop["gbttBookedDeparture"].ToString().Substring(0, 2)}:{JStop["gbttBookedDeparture"].ToString().Substring(2, 2)}", out aimedDepartureDate);
+                            DateTime.TryParse($"{runDate} {JStop["gbttBookedDeparture"]?.ToString().Substring(0, 2)}:{JStop["gbttBookedDeparture"]?.ToString().Substring(2, 2)}", out aimedDepartureDate);
                         else
-                            DateTime.TryParse($"{runDate} {JStop["gbttBookedArrival"].ToString().Substring(0, 2)}:{JStop["gbttBookedArrival"].ToString().Substring(2, 2)}", out aimedDepartureDate);
+                            DateTime.TryParse($"{runDate} {JStop["gbttBookedArrival"]?.ToString().Substring(0, 2)}:{JStop["gbttBookedArrival"]?.ToString().Substring(2, 2)}", out aimedDepartureDate);
 
                         if(JStop["realtimeDeparture"] != null)
-                            DateTime.TryParse($"{runDate} {JStop["realtimeDeparture"].ToString().Substring(0, 2)}:{JStop["realtimeDeparture"].ToString().Substring(2, 2)}", out expectedDepartureDate);
+                            DateTime.TryParse($"{runDate} {JStop["realtimeDeparture"]?.ToString().Substring(0, 2)}:{JStop["realtimeDeparture"]?.ToString().Substring(2, 2)}", out expectedDepartureDate);
                         else
-                            DateTime.TryParse($"{runDate} {JStop["realtimeArrival"].ToString().Substring(0, 2)}:{JStop["realtimeArrival"].ToString().Substring(2, 2)}", out expectedDepartureDate);
+                            DateTime.TryParse($"{runDate} {JStop["realtimeArrival"]?.ToString().Substring(0, 2)}:{JStop["realtimeArrival"]?.ToString().Substring(2, 2)}", out expectedDepartureDate);
 
                         StationStop stop = new StationStop(stationCode, stationName, StationStop.StopType.LI, platform, aimedDepartureDate, expectedDepartureDate);
                         stops.Add(stop);
@@ -149,6 +163,13 @@ namespace TrainDataAPI
 
             }
             stops.Sort((s1, s2) => s1.AimedDeparture.CompareTo(s2.AimedDeparture));
+            //List<StationStop> destinationStops = stops.Where(s => s.StationCode == desinationCode).ToList();
+            //if(destinationStops.Count == 1)
+            //{
+            //    //Move destination stop to the end (fixes issue with 0001 time given for final destination)
+            //    stops.Remove(destinationStops[0]);
+            //    stops.Add(destinationStops[0]);
+            //}
             return stops;
         }
     }

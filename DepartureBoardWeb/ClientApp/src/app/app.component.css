@@ -1,0 +1,11 @@
+.menuButton {
+  color: #ff9729;
+}
+
+::ng-deep .mat-progress-bar-fill::after {
+  background-color: #ff9729;
+}
+
+::ng-deep .mat-progress-bar-buffer {
+  background: #5e380f;
+}

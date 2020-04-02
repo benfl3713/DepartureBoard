@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { ToggleConfig } from '../ToggleConfig';
 
 @Component({
   selector: 'app-singleboard',
@@ -24,6 +25,7 @@ export class SingleBoard {
 			  }
         else { this.platform = null }
         document.title = this.stationCode + " - Departure Board";
+        ToggleConfig.LoadingBar.next(true);
         this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode).subscribe(name => document.title = name + " - Departure Board");
 			  this.GetDepartures();
 			  setInterval(() => this.GetDepartures(), 10000);
@@ -54,10 +56,11 @@ export class SingleBoard {
 	  var url = "/api/LiveDepartures/GetLatestDepaturesSingleBoard";
 	  if (this.platform) {
 		  url = url + "?platform=" + this.platform;
-	  }
+    }
     this.http.post<object[]>(url, JSON.stringify(this.stationCode), { headers: this.headers }).subscribe(response => {
+      ToggleConfig.LoadingBar.next(false)
       this.ProcessDepartures(response);
-    });
+    }, () => ToggleConfig.LoadingBar.next(false));
   }
 
   ProcessDepartures(data) {

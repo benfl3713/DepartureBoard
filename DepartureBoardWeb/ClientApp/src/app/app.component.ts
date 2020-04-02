@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Component, OnInit, HostListener } from '@angular/core';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { ToggleConfig } from './ToggleConfig';
 
 @Component({
   selector: 'app-root',
@@ -10,13 +11,38 @@ import { Router, NavigationEnd } from '@angular/router';
 })
 export class AppComponent {
   title = 'app';
+  showHome: boolean = true;
+  LoadingBar: boolean = false;
+  timer;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private route: ActivatedRoute) {
+    ToggleConfig.LoadingBar.subscribe(isvisible => this.LoadingBar = isvisible);
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         (<any>window).ga('set', 'page', event.urlAfterRedirects);
         (<any>window).ga('send', 'pageview');
+        //Show/Hide Menus
+        clearTimeout(this.timer);
+        this.timer = null;
+        this.showHome = true;
+        if (event.urlAfterRedirects != "/" && event.urlAfterRedirects != "/search") {
+          this.SetTimer();
+        }
       }
     });
   }
+
+  SetTimer(): void {
+    this.timer = setTimeout(() => this.showHome = false, 7000);
+  }
+
+  @HostListener('document:mousemove', ['$event']) 
+  ResetTimer(e) {
+    if (this.timer && this.timer != null) {
+      this.showHome = true;
+      clearTimeout(this.timer);
+      this.SetTimer();
+    }
+  }
+
 }

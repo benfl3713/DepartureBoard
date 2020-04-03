@@ -24,6 +24,11 @@ namespace TrainDataAPI
             return DeserialiseDeparture(response.Content);
         }
 
+        public List<Departure> GetLiveArrivals(string stationCode)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<StationStop> GetStationStops(string url)
         {
             var client = new RestClient(url);

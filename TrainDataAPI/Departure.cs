@@ -46,11 +46,10 @@ namespace TrainDataAPI
             FromDataSouce = from;
         }
 
-        public void LoadStops()
+        public void LoadStops(bool isArrival = false)
         {
             if (FromDataSouce != null && !string.IsNullOrEmpty(ServiceTimeTableUrl) && Activator.CreateInstance(FromDataSouce) is ITrainDatasource trainDatasource) {
                 _stops = trainDatasource.GetStationStops(ServiceTimeTableUrl);
-                _stops.Sort((s1, s2) => s1.AimedDeparture.CompareTo(s2.AimedDeparture));
             }
         }
 

@@ -16,18 +16,29 @@ namespace DepartureBoardWeb.Controllers
         [HttpPost("[action]")]
         public JsonResult GetLatestDepaturesSingleBoard([FromBody] string stationCode, int? platform = null)
         {
+            return Json(GetSingleBoardData(false, stationCode, platform));
+        }
+
+        [HttpPost("[action]")]
+        public JsonResult GetLatestArrivalsSingleBoard([FromBody] string stationCode, int? platform = null)
+        {
+            return Json(GetSingleBoardData(true, stationCode, platform));
+        }
+
+        private SingleBoardData GetSingleBoardData(bool arrivals, string stationCode, int? platform = null)
+        {
             stationCode = stationCode.ToUpper();
             ITrainDatasource trainDatasource = new RealTimeTrainsAPI();
-            List<Departure> departures = trainDatasource.GetLiveDepartures(stationCode);
+            List<Departure> departures = arrivals ? trainDatasource.GetLiveArrivals(stationCode) : trainDatasource.GetLiveDepartures(stationCode);
             if (departures == null || departures.Count == 0)
-                return Json(new SingleBoardData(new List<Departure>(), string.Empty));
+                return new SingleBoardData(new List<Departure>(), string.Empty);
 
             if (platform != null)
-				departures = departures.Where(d => d.Platform == platform).ToList();
+                departures = departures.Where(d => d.Platform == platform).ToList();
 
-			string information = StopInformationBuilder(departures[0]);
-            
-            return Json(new SingleBoardData(departures, information));
+            string information = StopInformationBuilder(departures[0]);
+
+            return new SingleBoardData(departures, information);
         }
 
         [HttpPost("[action]")]

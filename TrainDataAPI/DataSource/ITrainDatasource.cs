@@ -7,6 +7,6 @@ namespace TrainDataAPI
     {
         List<Departure> GetLiveDepartures(string stationCode);
         List<Departure> GetLiveArrivals(string stationCode);
-        List<StationStop> GetStationStops(string url, string stationCode);
+        List<StationStop> GetStationStops(string url);
     }
 }

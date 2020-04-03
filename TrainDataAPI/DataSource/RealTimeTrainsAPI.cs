@@ -19,7 +19,7 @@ namespace TrainDataAPI
             return GetDepartures(stationCode, true);
         }
 
-        public List<StationStop> GetStationStops(string url, string stationCode)
+        public List<StationStop> GetStationStops(string url)
         {
             try
             {
@@ -27,7 +27,7 @@ namespace TrainDataAPI
                 var request = new RestRequest(Method.GET);
                 AddCredendials(ref request);
                 IRestResponse response = client.Execute(request);
-                return DeserialiseStationStops(response.Content, stationCode);
+                return DeserialiseStationStops(response.Content);
             }
             catch
             {
@@ -119,7 +119,7 @@ namespace TrainDataAPI
             return departures;
         }
 
-        private List<StationStop> DeserialiseStationStops(string json, string desinationCode)
+        private List<StationStop> DeserialiseStationStops(string json)
         {
             List<StationStop> stops = new List<StationStop>();
             try
@@ -158,18 +158,22 @@ namespace TrainDataAPI
                     catch { }
                 }
             }
-            catch
-            {
+            catch { }
 
+            for (int i = 1; i < stops.Count; i++)
+            {
+                if (stops[i].AimedDeparture.TimeOfDay < stops[i-1].AimedDeparture.TimeOfDay)
+                {
+                    for (int j = i; j < stops.Count; j++)
+                    {
+                        stops[i].AimedDeparture = stops[j].AimedDeparture.AddDays(1);
+                        stops[i].ExpectedDeparture = stops[j].ExpectedDeparture.AddDays(1);
+                    }
+
+                    break;
+                }
             }
             stops.Sort((s1, s2) => s1.AimedDeparture.CompareTo(s2.AimedDeparture));
-            //List<StationStop> destinationStops = stops.Where(s => s.StationCode == desinationCode).ToList();
-            //if(destinationStops.Count == 1)
-            //{
-            //    //Move destination stop to the end (fixes issue with 0001 time given for final destination)
-            //    stops.Remove(destinationStops[0]);
-            //    stops.Add(destinationStops[0]);
-            //}
             return stops;
         }
     }

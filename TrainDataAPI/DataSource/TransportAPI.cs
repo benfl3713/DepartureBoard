@@ -29,7 +29,7 @@ namespace TrainDataAPI
             throw new NotImplementedException();
         }
 
-        public List<StationStop> GetStationStops(string url, string _)
+        public List<StationStop> GetStationStops(string url)
         {
             var client = new RestClient(url);
             var request = new RestRequest(Method.GET);

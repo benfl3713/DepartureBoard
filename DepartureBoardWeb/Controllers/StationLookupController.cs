@@ -26,7 +26,7 @@ namespace DepartureBoardWeb.Controllers
 		private Dictionary<string, string> Search(string query)
 		{
 			Dictionary<string, string> stations = _stationLookup.Stations.ToDictionary(entry => entry.Key, entry => entry.Value);
-			return stations.Where(s => s.Value.Contains(query, StringComparison.OrdinalIgnoreCase)).OrderByDescending(s => s.Value.StartsWith(query, StringComparison.OrdinalIgnoreCase)).ToDictionary(x => x.Key, x => x.Value);
+			return stations.Where(s => s.Value.Contains(query, StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(s => s.Value.StartsWith(query, StringComparison.InvariantCultureIgnoreCase)).ToDictionary(x => x.Key, x => x.Value);
 		}
 
 		[HttpGet("[action]")]
@@ -41,12 +41,12 @@ namespace DepartureBoardWeb.Controllers
 		public JsonResult GetStationCodeFromName(string name)
 		{
 			Dictionary<string, string> stations = _stationLookup.Stations.ToDictionary(entry => entry.Key, entry => entry.Value);
-			stations =  stations.Where(s => s.Value.Equals(name, StringComparison.OrdinalIgnoreCase)).ToDictionary(x => x.Key, x => x.Value);
+			stations =  stations.Where(s => s.Value.Equals(name.Trim(), StringComparison.InvariantCultureIgnoreCase)).ToDictionary(x => x.Key, x => x.Value);
 			if(stations.Count == 1)
 			{
 				return Json(stations.Keys.First());
 			}
-			return null;
+			return Json(string.Empty);
 		}
 	}
 }

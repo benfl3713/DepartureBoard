@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ServiceStatus } from '../../singleboard/singleboard'
-import { Router, Params, ActivatedRoute } from '@angular/router';
+import { Router, Params, ActivatedRoute, UrlSegment, PRIMARY_OUTLET } from '@angular/router';
 
 @Component({
   selector: 'app-board',
@@ -11,7 +11,11 @@ import { Router, Params, ActivatedRoute } from '@angular/router';
 export class Board{
   private headers = new HttpHeaders().set('Content-Type', "application/json");
 
-	constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router) {
+    const s: UrlSegment[] = this.router.parseUrl(this.router.url).root.children[PRIMARY_OUTLET].segments;
+    if (s[0].path && s[0].path.toLowerCase() == "arrivals") {
+      this.useArrivals = true;
+    }
     setInterval(() => this.Pager(), 8000);
   }
 
@@ -22,11 +26,13 @@ export class Board{
   public DisplayedStops: Array<Stop> = new Array<Stop>();
   public Status: string;
   public Operator: string;
+  useArrivals: boolean = false;
 
   CurrentPage: number = 0;
   TotalPages: number = 0;
 
   Pager() {
+    if (this.TotalPages == 0) { return; }
     if (this.CurrentPage != this.TotalPages) {
       this.CurrentPage++;
     }
@@ -57,10 +63,15 @@ export class Board{
 		}
 	}
 
-	ChangeStation(stationName: string) {
+  ChangeStation(stationName: string) {
 		this.http.get("/api/StationLookup/GetStationCodeFromName?name=" + stationName).subscribe(s => {
-			if (s) {
-				this.router.navigate([s])
+      if (s) {
+        if (this.useArrivals) {
+          this.router.navigate(["arrivals", s])
+        }
+        else {
+          this.router.navigate([s])
+        }
 			}
 		});
 	}

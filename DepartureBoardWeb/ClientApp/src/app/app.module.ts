@@ -36,10 +36,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 	  MaterialModule,
     RouterModule.forRoot([
 		{ path: '', component: HomeComponent, pathMatch: 'full' },
-		{ path: 'search', component: SearchComponent, pathMatch: 'full' },
+    { path: 'search', component: SearchComponent, pathMatch: 'full' },
+    { path: 'arrivals/:station/:displays', component: BoardsComponent, pathMatch: 'full' },
+    { path: 'arrivals/:station', component: BoardsComponent, pathMatch: 'full' },
+    { path: 'singleboard/arrivals/:station', component: SingleBoard, pathMatch: 'full' },
     { path: 'singleboard/:station', component: SingleBoard, pathMatch: 'full' },
     { path: ':station', component: BoardsComponent, pathMatch: 'full' },
     { path: ':station/:displays', component: BoardsComponent, pathMatch: 'full' },
+    { path: '**', component: HomeComponent, pathMatch: 'full' },
     ]),
     BrowserAnimationsModule
   ],

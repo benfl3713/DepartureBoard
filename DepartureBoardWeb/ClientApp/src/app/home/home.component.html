@@ -14,9 +14,14 @@
       <li>To change the station just modify the url. E.g <a [routerLink]='["/EUS"]'>www.leddepartureboard.com/EUS</a> will show euston station times</li>
       <li>To change the amount of boards on the screen just add a number to the end. E.g <a [routerLink]='["/EUS/12"]'>www.leddepartureboard.com/EUS/12</a> </li>
       <li>To view a single platform style board just modify the url with a prefix of 'singleboard'. E.g <a [routerLink]='["/singleboard/EUS"]'>www.leddepartureboard.com/singleboard/EUS</a> </li>
-      <li>To specify a specific platform just add the platform parameter. E.g <a [routerLink]='["/EUS?platform=5"]'>www.leddepartureboard.com/EUS?platform=5</a> will show euston station times on platform 5 only<br>(You can also click on the platform number on the display to filter to that platform only)</li>
+      <li>To specify a specific platform just add the platform parameter. E.g <a [routerLink]='["/EUS"]' [queryParams]="{platform: '5'}">www.leddepartureboard.com/EUS?platform=5</a> will show euston station times on platform 5 only<br>(You can also click on the platform number on the display to filter to that platform only)</li>
     </ol>
     <p>If you do not know the station code of your station then just use the helpful search feature or go directly to <a [routerLink]='["/search"]'>www.leddepartureboard.com/search</a></p>
+    <h4 class="led">Arrivals</h4>
+    <ul>
+      <li>To view the arrivals instead of departures prefix the page with 'arrivals'. E.g <a [routerLink]='["arrivals/BHM"]'>www.leddepartureboard.com/arrivals/BHM</a></li>
+      <li>You can do the same for the singleboard view as well. E.g <a [routerLink]='["singleboard/arrivals/BHM"]'>www.leddepartureboard.com/singleboards/arrivals/BHM</a></li>
+    </ul>
     <h4 class="led">Tips</h4>
     <ol>
       <li>When on the departure board page if you click on any of the destinations or stops along the way, it will change the board to that station.</li>
@@ -24,7 +29,7 @@
       <li>If you click the clock it will take you back to the home page</li>
     </ol>
     <h4 class="led">Data Source</h4>
-    <p>Data is provided by the <a href="https://www.realtimetrains.co.uk/">Realtime Trains</a> api. This api then talks to national rail to get the data back. This means we receive the most up to date data from national rail.</p>
+    <p>Data is provided by the <a href="https://www.realtimetrains.co.uk/">Realtime Trains API</a>. This api then talks to national rail to get the data back. This means we receive the most up to date data from national rail.</p>
     <h4 class="led">Project Info</h4>
     <p>
       This is an open source project so is free to used under the GNU General Public License v3.0

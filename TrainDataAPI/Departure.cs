@@ -46,7 +46,7 @@ namespace TrainDataAPI
             FromDataSouce = from;
         }
 
-        public void LoadStops(bool isArrival = false)
+        public void LoadStops()
         {
             if (FromDataSouce != null && !string.IsNullOrEmpty(ServiceTimeTableUrl) && Activator.CreateInstance(FromDataSouce) is ITrainDatasource trainDatasource) {
                 _stops = trainDatasource.GetStationStops(ServiceTimeTableUrl);

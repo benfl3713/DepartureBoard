@@ -71,7 +71,7 @@ namespace DepartureBoardWeb.Controllers
                     departures = departures.Where(d => d.Platform == platform).ToList();
 
                 departures = departures.Take(count).ToList();
-                departures.ForEach(d => d.LoadStops(arrivals));
+                departures.ForEach(d => d.LoadStops());
                 foreach (Departure departure in departures)
                 {
                     departure.StopsAsOfDepartureStation();

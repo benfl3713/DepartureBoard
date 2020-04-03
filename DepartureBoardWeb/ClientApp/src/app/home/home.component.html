@@ -14,7 +14,7 @@
       <li>To change the station just modify the url. E.g <a [routerLink]='["/EUS"]'>www.leddepartureboard.com/EUS</a> will show euston station times</li>
       <li>To change the amount of boards on the screen just add a number to the end. E.g <a [routerLink]='["/EUS/12"]'>www.leddepartureboard.com/EUS/12</a> </li>
       <li>To view a single platform style board just modify the url with a prefix of 'singleboard'. E.g <a [routerLink]='["/singleboard/EUS"]'>www.leddepartureboard.com/singleboard/EUS</a> </li>
-      <li>To specify a specific platform just add the platform parameter. E.g <a [routerLink]='["/EUS?platform=5"]'>www.leddepartureboard.com/EUS?platform=5</a> will show euston station times on platform 5 only<br>(You can also click on the platform number on the display to filter to that platform only)</li>
+      <li>To specify a specific platform just add the platform parameter. E.g <a [routerLink]='["/EUS"]' [queryParams]="{platform: '5'}">www.leddepartureboard.com/EUS?platform=5</a> will show euston station times on platform 5 only<br>(You can also click on the platform number on the display to filter to that platform only)</li>
     </ol>
     <p>If you do not know the station code of your station then just use the helpful search feature or go directly to <a [routerLink]='["/search"]'>www.leddepartureboard.com/search</a></p>
     <h4 class="led">Tips</h4>

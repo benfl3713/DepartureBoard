@@ -33,7 +33,7 @@ export class AppComponent {
   }
 
   SetTimer(): void {
-    this.timer = setTimeout(() => this.showHome = false, 5000);
+    this.timer = setTimeout(() => this.showHome = false, 3500);
   }
 
   @HostListener('document:mousemove', ['$event']) 

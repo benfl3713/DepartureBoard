@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ActivatedRoute, Router, Params } from '@angular/router';
+import { ActivatedRoute, Router, Params, PRIMARY_OUTLET, UrlSegment } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { ToggleConfig } from '../ToggleConfig';
 
@@ -17,6 +17,11 @@ export class SingleBoard {
       this.time = new Date();
     }, 1000);
 
+    const s: UrlSegment[] = this.router.parseUrl(this.router.url).root.children[PRIMARY_OUTLET].segments;
+    if (s[1].path && s[1].path.toLowerCase() == "arrivals") {
+      this.useArrivals = true;
+    }
+
 	  route.params.subscribe(() => {
 		  route.queryParams.subscribe(queryParams => {
 			  this.stationCode = this.route.snapshot.paramMap.get('station');
@@ -24,9 +29,9 @@ export class SingleBoard {
 				  this.platform = queryParams['platform'];
 			  }
         else { this.platform = null }
-        document.title = this.stationCode + " - Departure Board";
         ToggleConfig.LoadingBar.next(true);
-        this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode).subscribe(name => document.title = name + " - Departure Board");
+        document.title = this.stationCode + (this.useArrivals ? " - Arrivals" : "Departures") + " - Departure Board";
+        this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode).subscribe(name => document.title = name + (this.useArrivals ? " - Arrivals" : "Departures") + " - Departure Board");
 			  this.GetDepartures();
 			  setInterval(() => this.GetDepartures(), 10000);
 		  })});
@@ -35,6 +40,7 @@ export class SingleBoard {
 	platform: number;
   time = new Date();
   noBoardsDisplay: boolean = false;
+  useArrivals: boolean = false;
 
   //first
   firstTime: Date;
@@ -52,8 +58,8 @@ export class SingleBoard {
   GetDepartures() {
     if (this.stationCode == null || this.stationCode == "") {
       return;
-	  }
-	  var url = "/api/LiveDepartures/GetLatestDepaturesSingleBoard";
+    }
+    var url = "/api/LiveDepartures/" + (this.useArrivals ? "GetLatestArrivalsSingleBoard" : "GetLatestDepaturesSingleBoard");
 	  if (this.platform) {
 		  url = url + "?platform=" + this.platform;
     }
@@ -126,8 +132,11 @@ export class SingleBoard {
 
   ChangeStation(stationName: string) {
     this.http.get("/api/StationLookup/GetStationCodeFromName?name=" + stationName).subscribe(s => {
-      if (s) {
-        this.router.navigate(["singleboard/",s])
+      if (this.useArrivals) {
+        this.router.navigate(["singleboard/arrivals/", s])
+      }
+      else {
+        this.router.navigate(["singleboard/", s])
       }
     });
   }

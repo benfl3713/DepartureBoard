@@ -17,6 +17,11 @@
       <li>To specify a specific platform just add the platform parameter. E.g <a [routerLink]='["/EUS"]' [queryParams]="{platform: '5'}">www.leddepartureboard.com/EUS?platform=5</a> will show euston station times on platform 5 only<br>(You can also click on the platform number on the display to filter to that platform only)</li>
     </ol>
     <p>If you do not know the station code of your station then just use the helpful search feature or go directly to <a [routerLink]='["/search"]'>www.leddepartureboard.com/search</a></p>
+    <h4 class="led">Arrivals</h4>
+    <ul>
+      <li>To view the arrivals instead of departures prefix the page with 'arrivals'. E.g <a [routerLink]='["arrivals/BHM"]'>www.leddepartureboard.com/arrivals/BHM</a></li>
+      <li>You can do the same for the singleboard view as well. E.g <a [routerLink]='["singleboard/arrivals/BHM"]'>www.leddepartureboard.com/singleboards/arrivals/BHM</a></li>
+    </ul>
     <h4 class="led">Tips</h4>
     <ol>
       <li>When on the departure board page if you click on any of the destinations or stops along the way, it will change the board to that station.</li>

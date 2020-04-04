@@ -12,3 +12,10 @@
     flex-direction: column-reverse;
   }
 }
+
+.orange-border {
+  border: 2px solid #ff9729;
+  border-radius: 8px;
+  color: #ff9729;
+  padding: 10px;
+}

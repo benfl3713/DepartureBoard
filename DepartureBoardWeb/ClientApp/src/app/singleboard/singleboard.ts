@@ -30,7 +30,7 @@ export class SingleBoard {
 			  }
         else { this.platform = null }
         ToggleConfig.LoadingBar.next(true);
-        document.title = this.stationCode + (this.useArrivals ? " - Arrivals" : "Departures") + " - Departure Board";
+        document.title = this.stationCode + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board";
         this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode).subscribe(name => document.title = name + (this.useArrivals ? " - Arrivals" : "Departures") + " - Departure Board");
 			  this.GetDepartures();
 			  setInterval(() => this.GetDepartures(), 10000);

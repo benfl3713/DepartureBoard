@@ -47,7 +47,7 @@ export class BoardsComponent {
       this.platform = queryParams['platform'];
     }
     else { this.platform = null }
-    document.title = this.stationCode + (this.useArrivals ? " - Arrivals" : "Departures") + " - Departure Board";
+    document.title = this.stationCode + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board";
     this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode).subscribe(name => document.title = name + (this.useArrivals ? " - Arrivals" : "Departures") + " - Departure Board");
     ToggleConfig.LoadingBar.next(true);
     this.GetDepartures();

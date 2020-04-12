@@ -1,19 +1,21 @@
-import { Component, ViewChild, ComponentFactoryResolver, ViewContainerRef, ComponentRef } from '@angular/core';
+import { Component, ViewChild, ComponentFactoryResolver, ViewContainerRef, ComponentRef, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, UrlTree, UrlSegmentGroup, PRIMARY_OUTLET, UrlSegment, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { Board } from './board/board';
 import { ServiceStatus } from '../singleboard/singleboard'
 import { ToggleConfig } from '../ToggleConfig';
+import { GoogleAnalyticsEventsService } from '../Services/google.analytics';
 
 @Component({
   selector: 'app-boards',
   templateUrl: './boards.component.html',
   styleUrls: ['./boards.styling.css']
 })
-export class BoardsComponent {
+export class BoardsComponent implements OnDestroy {
   private headers = new HttpHeaders().set('Content-Type', "application/json");
   time = new Date();
+  refresher;
   noBoardsDisplay: boolean = false;
   useArrivals: boolean = false;
 	public displays: number = 6;
@@ -22,7 +24,7 @@ export class BoardsComponent {
   @ViewChild('Boards', { read: ViewContainerRef, static: false }) Boards: ViewContainerRef;
   private boardsRefs: Array<ComponentRef<Board>> = new Array<ComponentRef<Board>>();
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private datePipe: DatePipe, private resolver: ComponentFactoryResolver, private router: Router) {
+  constructor(private http: HttpClient, private route: ActivatedRoute, private datePipe: DatePipe, private resolver: ComponentFactoryResolver, private router: Router, public googleAnalyticsEventsService: GoogleAnalyticsEventsService) {
     setInterval(() => {
       this.time = new Date();
     }, 1000);
@@ -51,7 +53,7 @@ export class BoardsComponent {
     this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode).subscribe(name => document.title = name + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board");
     ToggleConfig.LoadingBar.next(true);
     this.GetDepartures();
-    setInterval(() => this.GetDepartures(), 16000);
+    this.refresher = setInterval(() => this.GetDepartures(), 16000);
   }
 
   GetDepartures() {
@@ -65,7 +67,8 @@ export class BoardsComponent {
 
 	  if (this.platform) {
 		  url = url + "?platform=" + this.platform;
-	  }
+    }
+    this.googleAnalyticsEventsService.emitEvent("GetDepartures", this.stationCode, (this.useArrivals ? "GetLatestArrivals" : "GetLatestDepatures"));
     this.http.post<object[]>(url, formData).subscribe(response => {
       ToggleConfig.LoadingBar.next(false)
       this.ProcessDepartures(response);
@@ -94,6 +97,10 @@ export class BoardsComponent {
 
       componentRef.instance.ProcessStops(Object(data)[i]["stops"]);
     }
+  }
+
+  ngOnDestroy() {
+    clearTimeout(this.refresher);
   }
 
   getEnumKeyByEnumValue(myEnum, enumValue) {

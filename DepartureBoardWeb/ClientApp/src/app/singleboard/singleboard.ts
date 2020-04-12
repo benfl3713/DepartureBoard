@@ -1,18 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router, Params, PRIMARY_OUTLET, UrlSegment } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { ToggleConfig } from '../ToggleConfig';
+import { GoogleAnalyticsEventsService } from '../Services/google.analytics';
 
 @Component({
   selector: 'app-singleboard',
   templateUrl: './singleboard.html',
   styleUrls: ['./singleboard.styling.css']
 })
-export class SingleBoard {
+export class SingleBoard implements OnDestroy {
   private headers = new HttpHeaders().set('Content-Type', "application/json");
   
-  constructor(private http: HttpClient, private route: ActivatedRoute, private datePipe: DatePipe, private router: Router) {
+  constructor(private http: HttpClient, private route: ActivatedRoute, private datePipe: DatePipe, private router: Router, public googleAnalyticsEventsService: GoogleAnalyticsEventsService) {
     setInterval(() => {
       this.time = new Date();
     }, 1000);
@@ -33,12 +34,13 @@ export class SingleBoard {
         document.title = this.stationCode + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board";
         this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode).subscribe(name => document.title = name + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board");
 			  this.GetDepartures();
-			  setInterval(() => this.GetDepartures(), 10000);
+			  this.refresher = setInterval(() => this.GetDepartures(), 10000);
 		  })});
   }
 	stationCode: string;
 	platform: number;
   time = new Date();
+  refresher;
   noBoardsDisplay: boolean = false;
   useArrivals: boolean = false;
 
@@ -63,6 +65,7 @@ export class SingleBoard {
 	  if (this.platform) {
 		  url = url + "?platform=" + this.platform;
     }
+    this.googleAnalyticsEventsService.emitEvent("GetSingleBoardDepartures", this.stationCode, (this.useArrivals ? "GetLatestArrivalsSingleBoard" : "GetLatestDepaturesSingleBoard"));
     this.http.post<object[]>(url, JSON.stringify(this.stationCode), { headers: this.headers }).subscribe(response => {
       ToggleConfig.LoadingBar.next(false)
       this.ProcessDepartures(response);
@@ -107,6 +110,10 @@ export class SingleBoard {
     else {
       this.secondStatus = ServiceStatus[tempsecondstatus];;
     }
+  }
+
+  ngOnDestroy() {
+    clearTimeout(this.refresher);
   }
 
   getEnumKeyByEnumValue(myEnum, enumValue) {

@@ -16,6 +16,7 @@ import { Board } from './boards/board/board';
 import { SearchComponent } from './search/search.component';
 import { NewsWidgetComponent } from './widgets/news/news.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { GoogleAnalyticsEventsService } from './Services/google.analytics'
 
 @NgModule({
   declarations: [
@@ -47,7 +48,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ]),
     BrowserAnimationsModule
   ],
-  providers: [DatePipe],
+  providers: [DatePipe, GoogleAnalyticsEventsService],
   bootstrap: [AppComponent],
 	entryComponents: [Board, SearchComponent, NewsWidgetComponent]
 })

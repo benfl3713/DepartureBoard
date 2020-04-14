@@ -13,6 +13,12 @@
   }
 }
 
+@media only screen and (min-width: 960px) {
+  .mobile-only {
+    display: none;
+  }
+}
+
 .orange-border {
   border: 2px solid #ff9729;
   border-radius: 8px;

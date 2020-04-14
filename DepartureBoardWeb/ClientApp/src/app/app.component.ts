@@ -1,6 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { ToggleConfig } from './ToggleConfig';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,7 @@ export class AppComponent {
   LoadingBar: boolean = false;
   timer;
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(private router: Router, private route: ActivatedRoute, private deviceService: DeviceDetectorService) {
     ToggleConfig.LoadingBar.subscribe(isvisible => this.LoadingBar = isvisible);
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -25,7 +26,7 @@ export class AppComponent {
         clearTimeout(this.timer);
         this.timer = null;
         this.showHome = true;
-        if (event.urlAfterRedirects != "/" && event.urlAfterRedirects != "/search") {
+        if (event.urlAfterRedirects != "/" && event.urlAfterRedirects != "/search" && !this.deviceService.isMobile()) {
           this.SetTimer();
         }
       }
@@ -36,7 +37,8 @@ export class AppComponent {
     this.timer = setTimeout(() => this.showHome = false, 3500);
   }
 
-  @HostListener('document:mousemove', ['$event']) 
+  @HostListener('document:mousemove', ['$event'])
+  @HostListener('document:touchstart', ['$event']) 
   ResetTimer(e) {
     if (this.timer && this.timer != null) {
       this.showHome = true;

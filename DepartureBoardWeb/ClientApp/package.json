@@ -28,6 +28,7 @@
     "bootstrap": "^4.4.1",
     "core-js": "^3.6.4",
     "jquery": "3.4.1",
+    "ngx-device-detector": "^1.4.2",
     "oidc-client": "^1.10.1",
     "popper.js": "^1.16.1",
     "rxjs": "^6.5.4",

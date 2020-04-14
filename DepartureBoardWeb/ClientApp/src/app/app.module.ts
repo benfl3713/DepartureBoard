@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { DatePipe } from '@angular/common'
 import { MaterialModule } from './material.module'
+import { DeviceDetectorModule } from 'ngx-device-detector';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -46,7 +47,8 @@ import { GoogleAnalyticsEventsService } from './Services/google.analytics'
     { path: ':station/:displays', component: BoardsComponent, pathMatch: 'full' },
     { path: '**', component: HomeComponent, pathMatch: 'full' },
     ]),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    DeviceDetectorModule.forRoot()
   ],
   providers: [DatePipe, GoogleAnalyticsEventsService],
   bootstrap: [AppComponent],

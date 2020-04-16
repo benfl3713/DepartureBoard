@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { DatePipe } from '@angular/common'
 import { MaterialModule } from './material.module'
@@ -17,7 +17,8 @@ import { Board } from './boards/board/board';
 import { SearchComponent } from './search/search.component';
 import { NewsWidgetComponent } from './widgets/news/news.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { GoogleAnalyticsEventsService } from './Services/google.analytics'
+import { GoogleAnalyticsEventsService } from './Services/google.analytics';
+import { Config } from './Services/Config';
 
 @NgModule({
   declarations: [
@@ -45,12 +46,16 @@ import { GoogleAnalyticsEventsService } from './Services/google.analytics'
     { path: 'singleboard/:station', component: SingleBoard, pathMatch: 'full' },
     { path: ':station', component: BoardsComponent, pathMatch: 'full' },
     { path: ':station/:displays', component: BoardsComponent, pathMatch: 'full' },
-    { path: '**', component: HomeComponent, pathMatch: 'full' },
+    { path: '**', redirectTo: '' },
     ]),
     BrowserAnimationsModule,
     DeviceDetectorModule.forRoot()
   ],
-  providers: [DatePipe, GoogleAnalyticsEventsService],
+  providers: [
+    DatePipe,
+    GoogleAnalyticsEventsService,
+    { provide: APP_INITIALIZER, useFactory: Config.LoadUseAnalytics, deps: [HttpClient], multi: true }
+  ],
   bootstrap: [AppComponent],
 	entryComponents: [Board, SearchComponent, NewsWidgetComponent]
 })

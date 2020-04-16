@@ -46,5 +46,4 @@ export class AppComponent {
       this.SetTimer();
     }
   }
-
 }

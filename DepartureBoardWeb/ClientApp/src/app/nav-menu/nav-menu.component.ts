@@ -1,7 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-nav-menu',
@@ -10,10 +9,7 @@ import { filter } from 'rxjs/operators';
 })
 export class NavMenuComponent {
   showHome: boolean = true;
-  showMainBoardOptions: boolean = false;
-
   timer;
-  displays;
 
   constructor(private router: Router, private route: ActivatedRoute, private deviceService: DeviceDetectorService) {
     this.router.events.subscribe(event => {
@@ -23,7 +19,6 @@ export class NavMenuComponent {
         this.timer = null;
         this.showHome = true;
         if (event.urlAfterRedirects != "/" && event.urlAfterRedirects != "/search" && event.urlAfterRedirects != "/examples" && !this.deviceService.isMobile()) {
-          //this.showMainBoardOptions = !event.urlAfterRedirects.includes("singleboard")
           this.SetTimer();
         }
       }

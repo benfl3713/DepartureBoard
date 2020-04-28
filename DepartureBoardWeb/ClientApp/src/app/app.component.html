@@ -1,8 +1,7 @@
 <mat-progress-bar *ngIf="LoadingBar" id="loading-bar" mode="indeterminate" color="#ff9729"></mat-progress-bar>
 <body>
   <div>
-    <a *ngIf="showHome" mat-button class="menuButton" [routerLink]='["/"]' aria-label="home"><span class='fas fa-home'></span> Home</a>
-    <a *ngIf="showHome" mat-button class="menuButton" [routerLink]='["/search"]' aria-label="home"><span class='fas fa-search'></span> Search</a>
+    <app-nav-menu></app-nav-menu>
     <router-outlet></router-outlet>
   </div>
 </body>

@@ -12,6 +12,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from "./home/home.component";
 import { BoardsComponent } from './boards/boards.component';
 import { SingleBoard } from './singleboard/singleboard';
+import { ExamplesComponent } from './examples/examples.component';
 
 import { Board } from './boards/board/board';
 import { SearchComponent } from './search/search.component';
@@ -27,6 +28,7 @@ import { Config } from './Services/Config';
     HomeComponent,
     BoardsComponent,
     SingleBoard,
+    ExamplesComponent,
 		Board,
 		SearchComponent,
 		NewsWidgetComponent
@@ -40,6 +42,7 @@ import { Config } from './Services/Config';
     RouterModule.forRoot([
 		{ path: '', component: HomeComponent, pathMatch: 'full' },
     { path: 'search', component: SearchComponent, pathMatch: 'full' },
+    { path: 'examples', component: ExamplesComponent, pathMatch: 'full' },
     { path: 'arrivals/:station/:displays', component: BoardsComponent, pathMatch: 'full' },
     { path: 'arrivals/:station', component: BoardsComponent, pathMatch: 'full' },
     { path: 'singleboard/arrivals/:station', component: SingleBoard, pathMatch: 'full' },

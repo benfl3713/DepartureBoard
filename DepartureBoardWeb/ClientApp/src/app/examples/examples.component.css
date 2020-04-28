@@ -1,0 +1,9 @@
+.container {
+  color: #ff9729;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}

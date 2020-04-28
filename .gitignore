@@ -342,3 +342,4 @@ ASALocalRun/
 healthchecksdb
 /DepartureBoardWeb/station_codes.csv
 /DepartureBoardWeb/config.xml
+/config.xml

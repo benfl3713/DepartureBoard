@@ -10,3 +10,5 @@ services:
     image: departure-board:latest
     ports:
       - "9005:80"
+    volumes:
+      - ./config.xml:/config.xml

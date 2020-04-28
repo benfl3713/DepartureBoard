@@ -18,11 +18,11 @@ export class BoardsComponent implements OnDestroy {
   refresher;
   noBoardsDisplay: boolean = false;
   useArrivals: boolean = false;
+  previousData;
 	public displays: number = 6;
 	public platform: number;
   public stationCode: string = "EUS";
   @ViewChild('Boards', { read: ViewContainerRef, static: false }) Boards: ViewContainerRef;
-  private boardsRefs: Array<ComponentRef<Board>> = new Array<ComponentRef<Board>>();
 
   constructor(private http: HttpClient, private route: ActivatedRoute, private datePipe: DatePipe, private resolver: ComponentFactoryResolver, private router: Router, public googleAnalyticsEventsService: GoogleAnalyticsEventsService) {
     setInterval(() => {
@@ -68,7 +68,7 @@ export class BoardsComponent implements OnDestroy {
 	  if (this.platform) {
 		  url = url + "?platform=" + this.platform;
     }
-    this.googleAnalyticsEventsService.emitEvent("GetDepartures", this.stationCode, (this.useArrivals ? "GetLatestArrivals" : "GetLatestDepatures"));
+    
     this.http.post<object[]>(url, formData).subscribe(response => {
       ToggleConfig.LoadingBar.next(false)
       this.ProcessDepartures(response);
@@ -76,6 +76,12 @@ export class BoardsComponent implements OnDestroy {
   }
 
   ProcessDepartures(data: object[]) {
+    if (this.previousData && this.arraysAreEqual(data, this.previousData)) {
+      this.previousData = data;
+      this.googleAnalyticsEventsService.emitEvent("GetDepartures", this.stationCode, (this.useArrivals ? "GetLatestArrivals" : "GetLatestDepatures"), 0);
+      return;
+    }
+    this.googleAnalyticsEventsService.emitEvent("GetDepartures", this.stationCode, (this.useArrivals ? "GetLatestArrivals" : "GetLatestDepatures"), 1);
     this.Boards.clear();
     this.noBoardsDisplay = data.length === 0;
 
@@ -96,6 +102,43 @@ export class BoardsComponent implements OnDestroy {
       }
 
       componentRef.instance.ProcessStops(Object(data)[i]["stops"]);
+    }
+    this.previousData = data;
+  }
+
+  arraysAreEqual(x, y): boolean {
+    try {
+      var objectsAreSame = true;
+      for (var propertyName in x) {
+        if (!this.areDeparturesEqual(x[propertyName], y[propertyName])) {
+          objectsAreSame = false;
+          break;
+        }
+      }
+      return objectsAreSame;
+    }
+    catch{
+      return false;
+    }
+  }
+
+  areDeparturesEqual(x, y) {
+    try {
+      var objectsAreSame = true;
+      for (var propertyName in x) {
+        if (propertyName == "lastUpdated") { continue; }
+        if (propertyName == "stops") {
+          if (this.arraysAreEqual(x[propertyName], y[propertyName])) { continue;}
+        }
+        if (x[propertyName] !== y[propertyName]) {
+          objectsAreSame = false;
+          break;
+        }
+      }
+      return objectsAreSame;
+    }
+    catch{
+      return false;
     }
   }
 

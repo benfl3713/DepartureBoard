@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
+import * as LogRocket from 'logrocket';
 
 export class Config {
   public static LoadUseAnalytics(http: HttpClient): () => Promise<any> {
@@ -11,5 +12,6 @@ export class Config {
   private static StartTracking() {
     (<any>window).ga('create', 'UA-140494832-4', 'auto');
     (<any>window).ga('send', 'pageview');
+    LogRocket.init('led-departure-board/led-departure-board');
   }
 }

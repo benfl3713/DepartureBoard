@@ -1,8 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace TrainDataAPI.Services
 {
@@ -10,89 +15,75 @@ namespace TrainDataAPI.Services
 	{
 		public StationLookup()
 		{
-			CheckLastUpdated();
+			LoadStationList();
 		}
-
-		private const string Path = "station_codes.csv";
-
 		public Dictionary<string, string> Stations
 		{
 			get {
-				CheckLastUpdated();
 				//Load the stations if the dictionary is not populated
-				if (_stations == null || _stations.Count == 0 || _lastUpdated < DateTime.Now.AddHours(1))
+				if (_stations == null || _stations.Count == 0 || _lastUpdated < DateTime.Now.AddHours(-1))
 				{
-					(File.Exists(Path) ? (Action)LoadStationList : LoadStationListFromWeb)();
+					LoadStationList();
 				}
 				return _stations; 
 			}
 			private set { _stations = value; }
 		}
-		private Dictionary<string, string> _stations;
+		private Dictionary<string, string> _stations = new Dictionary<string, string>();
 		private readonly object _stationsLock = new object();
 		private DateTime _lastUpdated = DateTime.MinValue;
 
 		public void LoadStationList()
 		{
+			if (string.IsNullOrEmpty(ConfigService.NationalRail_Username) || string.IsNullOrEmpty(ConfigService.NationalRail_Password))
+			{
+				Console.WriteLine("***National Rail Credentials Need Populating in the config.xml file***");
+				return;
+			}
 			lock (_stationsLock)
 			{
 				_stations = new Dictionary<string, string>();
 				try
 				{
-					using (StreamReader sr = new StreamReader(Path))
+					string token = GetSecretToken();
+					var client = new RestClient("https://opendata.nationalrail.co.uk/api/staticfeeds/4.0/stations");
+					var request = new RestRequest(Method.GET);
+					request.AddHeader("X-Auth-Token", token);
+					var response = client.Execute(request);
+					if (response.StatusCode != HttpStatusCode.OK)
+						return;
+					XElement xmlResponse = XElement.Parse(response.Content);
+					foreach (XElement element in xmlResponse.Elements())
 					{
-						string currentLine;
-						// currentLine will be null when the StreamReader reaches the end of file
-						while ((currentLine = sr.ReadLine()) != null)
-						{
-							//skip line if header
-							if (currentLine == "Station Name,CRS Code")
-								continue;
-							currentLine.Replace("\"", string.Empty);
-							string[] values = currentLine.Split(',');
-							string stationName = values[0];
-							string stationCode = values[1];
-							_stations.Add(stationCode, stationName);
-						}
+						string code = element.Element("{http://nationalrail.co.uk/xml/station}CrsCode")?.Value;
+						string name = element.Element("{http://nationalrail.co.uk/xml/station}Name")?.Value;
+						if (!string.IsNullOrEmpty(code) && !string.IsNullOrEmpty(name))
+							_stations.Add(code, name);
 					}
-					AddMissingStations();
+
 					_lastUpdated = DateTime.Now;
 				}
 				catch (Exception ex) { Console.WriteLine(ex.Message); }
 			}
 		}
 
-		public void LoadStationListFromWeb()
+		private string GetSecretToken()
 		{
-			try
+			var client = new RestClient("https://opendata.nationalrail.co.uk/authenticate");
+			var request = new RestRequest(Method.POST);
+			var body = new
 			{
-				using (var client = new WebClient())
-				{
-					client.DownloadFile("https://www.nationalrail.co.uk/static/documents/content/station_codes.csv", Path);
-				}
-			}
-			catch(Exception ex) { Console.WriteLine(ex.Message); }
+				username = ConfigService.NationalRail_Username,
+				password = ConfigService.NationalRail_Password
+			};
+			request.AddHeader("Content-Type", "application/json");
+			request.AddJsonBody(body);
+			var response = client.Execute(request);
+			if (response.StatusCode != HttpStatusCode.OK)
+				return null;
 
-			LoadStationList();
-		}
-
-		private void CheckLastUpdated()
-		{
-			try
-			{
-				FileInfo fileInfo = new FileInfo(Path);
-				if (fileInfo.LastWriteTime < DateTime.Now.AddDays(-1))
-					LoadStationListFromWeb();
-			}
-			catch (Exception ex) { Console.WriteLine(ex.Message); }
-		}
-
-		/// <summary>
-		/// Used to add stations that are missing from the national rail data source
-		/// </summary>
-		private void AddMissingStations()
-		{
-			_stations.Add("KNW", "Kenilworth");
+			JObject jsonResponse = JObject.Parse(response.Content);
+			return jsonResponse["token"]?.ToString();
 		}
 	}
 }

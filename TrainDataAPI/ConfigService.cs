@@ -6,7 +6,8 @@ namespace TrainDataAPI
 {
     public static class ConfigService
     {
-        public static string RealTimeTrainsToken{
+		#region Fields
+		public static string RealTimeTrainsToken{
             get{
                 if(string.IsNullOrEmpty(_realTimeTrainsToken))
                     LoadConfig();
@@ -24,8 +25,31 @@ namespace TrainDataAPI
             }
         }
 
-        private static string _realTimeTrainsToken;
+        public static string NationalRail_Username
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_nationalRail_Username))
+                    LoadConfig();
+                return _nationalRail_Username;
+            }
+        }
+
+        public static string NationalRail_Password
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_nationalRail_Password))
+                    LoadConfig();
+                return _nationalRail_Password;
+            }
+        }
+		#endregion
+
+		private static string _realTimeTrainsToken;
         private static bool? _useAnalytics;
+        private static string _nationalRail_Username;
+        private static string _nationalRail_Password;
 
         private static void LoadConfig()
         {
@@ -38,7 +62,9 @@ namespace TrainDataAPI
                 
                 _realTimeTrainsToken = rootElement.Element("RealTimeTrainsToken")?.Value;
                 _useAnalytics = bool.Parse(rootElement.Element("UseAnalytics")?.Value ?? "false");
-                if(_realTimeTrainsToken == "[INSERT_REALTIMETRAINS_TOKEN_HERE]"){
+                _nationalRail_Username = rootElement.Element("NationalRail")?.Element("username")?.Value;
+                _nationalRail_Password = rootElement.Element("NationalRail")?.Element("password")?.Value;
+                if (_realTimeTrainsToken == "[INSERT_REALTIMETRAINS_TOKEN_HERE]"){
                     _realTimeTrainsToken = null;
                     throw new Exception(errorMessage);
                 }

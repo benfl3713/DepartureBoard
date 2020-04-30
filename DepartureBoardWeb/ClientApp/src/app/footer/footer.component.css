@@ -1,0 +1,36 @@
+/*Footer*/
+.footer-basic {
+  padding: 40px 0;
+  color: #ff9729
+}
+
+.footer-basic ul {
+  padding: 0;
+  list-style: none;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 0
+}
+
+.footer-basic li {
+  padding: 0 10px
+}
+
+.footer-basic ul a {
+  color: inherit;
+  text-decoration: none;
+  opacity: .8
+}
+
+.footer-basic ul a:hover {
+  opacity: 1
+}
+
+.footer-basic .copyright {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 13px;
+  color: #aaa;
+  margin-bottom: 0
+}

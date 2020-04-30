@@ -20,6 +20,7 @@ import { NewsWidgetComponent } from './widgets/news/news.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GoogleAnalyticsEventsService } from './Services/google.analytics';
 import { Config } from './Services/Config';
+import { FooterComponent } from "./footer/footer.component";
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { Config } from './Services/Config';
     ExamplesComponent,
 		Board,
 		SearchComponent,
-		NewsWidgetComponent
+		NewsWidgetComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -60,6 +62,6 @@ import { Config } from './Services/Config';
     { provide: APP_INITIALIZER, useFactory: Config.LoadUseAnalytics, deps: [HttpClient], multi: true }
   ],
   bootstrap: [AppComponent],
-	entryComponents: [Board, SearchComponent, NewsWidgetComponent]
+	entryComponents: [Board, SearchComponent, NewsWidgetComponent, FooterComponent]
 })
 export class AppModule { }

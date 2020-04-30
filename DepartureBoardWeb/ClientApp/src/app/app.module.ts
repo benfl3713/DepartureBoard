@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { DatePipe } from '@angular/common'
 import { MaterialModule } from './material.module'
 import { DeviceDetectorModule } from 'ngx-device-detector';
+import { CookieService } from 'ngx-cookie-service'
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -59,7 +60,8 @@ import { FooterComponent } from "./footer/footer.component";
   providers: [
     DatePipe,
     GoogleAnalyticsEventsService,
-    { provide: APP_INITIALIZER, useFactory: Config.LoadUseAnalytics, deps: [HttpClient], multi: true }
+    { provide: APP_INITIALIZER, useFactory: Config.LoadUseAnalytics, deps: [HttpClient, CookieService], multi: true },
+    CookieService
   ],
   bootstrap: [AppComponent],
 	entryComponents: [Board, SearchComponent, NewsWidgetComponent, FooterComponent]

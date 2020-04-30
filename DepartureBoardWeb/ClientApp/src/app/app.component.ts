@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { ToggleConfig } from './ToggleConfig';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { Config } from './Services/Config';
 
 @Component({
   selector: 'app-root',
@@ -22,5 +23,9 @@ export class AppComponent {
         (<any>window).ga('send', 'pageview');
       }
     });
+
+    window.addEventListener('CookieScriptAcceptAll', function () {
+      Config.StartTracking();
+    })
   }
 }

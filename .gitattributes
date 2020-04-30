@@ -63,5 +63,5 @@
 #*.RTF   diff=astextplain
 
 
-DepartureBoardWeb\wwwroot\cookie-policy.html linguist-vendored
-DepartureBoardWeb\wwwroot\privacy-policy.html linguist-vendored
+DepartureBoardWeb\wwwroot\cookie-policy.html -linguist-vendored
+DepartureBoardWeb\wwwroot\privacy-policy.html -linguist-vendored

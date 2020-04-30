@@ -9,8 +9,8 @@ export class Config {
   }
 
   private static StartTracking() {
-    (<any>window).ga('create', 'UA-140494832-4', 'auto');
-    (<any>window).ga('send', 'pageview');
+    //(<any>window).ga('create', 'UA-140494832-4', 'auto');
+    //(<any>window).ga('send', 'pageview');
     //LogRocket.init('led-departure-board/led-departure-board');
   }
 }

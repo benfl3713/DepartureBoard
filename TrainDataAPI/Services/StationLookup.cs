@@ -40,8 +40,15 @@ namespace TrainDataAPI.Services
 				Console.WriteLine("***National Rail Credentials Need Populating in the config.xml file***");
 				return;
 			}
+
 			lock (_stationsLock)
 			{
+                //Does a seconds check whilst in the locked state
+                if (_stations != null && _stations.Count > 0 && _lastUpdated >= DateTime.Now.AddHours(-1))
+                {
+                    return;
+                }
+
 				_stations = new Dictionary<string, string>();
 				try
 				{

@@ -25,6 +25,7 @@ namespace TrainDataAPI
             {
                 var client = new RestClient(url);
                 var request = new RestRequest(Method.GET);
+                request.Timeout = 15000;
                 AddCredendials(ref request);
                 IRestResponse response = client.Execute(request);
                 return DeserialiseStationStops(response.Content);
@@ -44,6 +45,7 @@ namespace TrainDataAPI
                     url += "/arrivals";
                 var client = new RestClient(url);
                 var request = new RestRequest(Method.GET);
+                request.Timeout = 15000;
                 AddCredendials(ref request);
                 IRestResponse response = client.Execute(request);
                 return DeserialiseDeparture(response.Content);

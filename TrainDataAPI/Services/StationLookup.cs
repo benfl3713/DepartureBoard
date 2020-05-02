@@ -55,6 +55,7 @@ namespace TrainDataAPI.Services
 					string token = GetSecretToken();
 					var client = new RestClient("https://opendata.nationalrail.co.uk/api/staticfeeds/4.0/stations");
 					var request = new RestRequest(Method.GET);
+					request.Timeout = 15000;
 					request.AddHeader("X-Auth-Token", token);
 					var response = client.Execute(request);
 					if (response.StatusCode != HttpStatusCode.OK)

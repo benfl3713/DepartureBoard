@@ -117,7 +117,6 @@ namespace TrainDataAPI
 
             }
 
-            departures.Sort((d1, d2) => d1.AimedDeparture.CompareTo(d2.AimedDeparture));
             return departures;
         }
 

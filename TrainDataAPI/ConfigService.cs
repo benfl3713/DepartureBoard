@@ -44,19 +44,41 @@ namespace TrainDataAPI
                 return _nationalRail_Password;
             }
         }
-		#endregion
 
-		private static string _realTimeTrainsToken;
+        public static bool UseCaching
+        {
+            get
+            {
+                if (_useCaching == null)
+                    LoadConfig();
+                return _useCaching ?? false;
+            }
+        }
+
+        public static int CachePeriod
+        {
+            get
+            {
+                if (_cachePeriod == null)
+                    LoadConfig();
+                return _cachePeriod ?? 0;
+            }
+        }
+        #endregion
+
+        private static string _realTimeTrainsToken;
         private static bool? _useAnalytics;
         private static string _nationalRail_Username;
         private static string _nationalRail_Password;
+        private static bool? _useCaching;
+        private static int? _cachePeriod;
 
         private static void LoadConfig()
         {
             string errorMessage = "config.xml need populating with your real time trains api token. You can find this file in the DepartureBoardWeb folder";
             try{
                 CheckFileExists();
-                var rootElement = XElement.Parse(System.IO.File.ReadAllText("config.xml"));
+                var rootElement = XElement.Parse(File.ReadAllText("config.xml"));
                 if(rootElement == null)
                     return;
                 
@@ -64,6 +86,8 @@ namespace TrainDataAPI
                 _useAnalytics = bool.Parse(rootElement.Element("UseAnalytics")?.Value ?? "false");
                 _nationalRail_Username = rootElement.Element("NationalRail")?.Element("username")?.Value;
                 _nationalRail_Password = rootElement.Element("NationalRail")?.Element("password")?.Value;
+                _useCaching = bool.Parse(rootElement.Element("UseCaching")?.Value ?? "false");
+                _cachePeriod = int.Parse(rootElement.Element("CachePeriod")?.Value ?? "0");
                 if (_realTimeTrainsToken == "[INSERT_REALTIMETRAINS_TOKEN_HERE]"){
                     _realTimeTrainsToken = null;
                     throw new Exception(errorMessage);

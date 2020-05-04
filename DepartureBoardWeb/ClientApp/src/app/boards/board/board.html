@@ -17,7 +17,7 @@
     </tr>
   </table>
   <div class="board-row bottom">
-    <h6 [ngClass]="{ 'ontime': Status=='ONTIME', 'late': Status.includes('EXP'), 'arrived': Status=='ARRIVED'}">{{Status}}</h6>
+    <h6 [ngClass]="{ 'ontime': Status=='On Time', 'late': Status.includes('EXP'), 'arrived': Status=='ARRIVED'}">{{Status}}</h6>
     <h6 class="operator">{{Operator}}</h6>
   </div>
 </div>

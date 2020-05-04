@@ -114,6 +114,9 @@ export class SingleBoard implements OnDestroy, OnInit {
     }
     else {
       this.firstStatus = ServiceStatus[tempfirststatus];
+      if (this.firstStatus == "ONTIME") {
+        this.firstStatus = "On Time";
+      }
     }
     if (Object(data)["departures"][1] == null) {
       this.secondTime = null;
@@ -132,7 +135,10 @@ export class SingleBoard implements OnDestroy, OnInit {
       this.secondStatus = "EXP " + this.datePipe.transform(sexpected, 'HH:mm');
     }
     else {
-      this.secondStatus = ServiceStatus[tempsecondstatus];;
+      this.secondStatus = ServiceStatus[tempsecondstatus];
+      if (this.secondStatus == "ONTIME") {
+        this.secondStatus = "On Time";
+      }
     }
   }
 

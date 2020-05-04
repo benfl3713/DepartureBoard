@@ -107,6 +107,7 @@ export class BoardsComponent implements OnDestroy {
       }
       else {
         componentRef.instance.Status = ServiceStatus[tempfirststatus];
+        if (componentRef.instance.Status == "ONTIME") { componentRef.instance.Status = "On Time";}
       }
 
       componentRef.instance.ProcessStops(Object(data)[i]["stops"]);

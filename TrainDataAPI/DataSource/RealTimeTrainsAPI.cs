@@ -9,9 +9,25 @@ namespace TrainDataAPI
 {
     public class RealTimeTrainsAPI : ITrainDatasource
     {
+        private static List<CacheDeparture> cachedDepartures = new List<CacheDeparture>();
         public List<Departure> GetLiveDepartures(string stationCode)
         {
-            return GetDepartures(stationCode);
+            if (ConfigService.UseCaching && ConfigService.CachePeriod > 0)
+            {
+                List<CacheDeparture> result = cachedDepartures.Where(d => d.StationCode == stationCode && d.CachedDateTime > DateTime.Now.AddMilliseconds(-ConfigService.CachePeriod)).ToList();
+                if (result.Count > 0)
+                    return result[0].Departures;
+            }
+            List<Departure> departures = GetDepartures(stationCode);
+
+            if (ConfigService.UseCaching && ConfigService.CachePeriod > 0)
+            {
+                List<CacheDeparture> oldCache = cachedDepartures.Where(d => d.StationCode == stationCode).ToList();
+                if(oldCache.Count > 0)
+                    cachedDepartures.Remove(oldCache[0]);
+                cachedDepartures.Add(new CacheDeparture(stationCode, departures));
+            }
+            return departures;
         }
 
         public List<Departure> GetLiveArrivals(string stationCode)

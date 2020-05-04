@@ -32,7 +32,10 @@ jobs:
     - name: Docker Publish
       if: github.ref == 'refs/heads/master'
       run: | 
+        timestamp=$(date +%Y%m%d%H%M%S)
+        docker tag docker.pkg.github.com/benfl3713/departureboard/departure-board:latest docker.pkg.github.com/benfl3713/departureboard/departure-board:$timestamp
         docker push docker.pkg.github.com/benfl3713/departureboard/departure-board:latest
+        docker push docker.pkg.github.com/benfl3713/departureboard/departure-board:$timestamp
         docker tag docker.pkg.github.com/benfl3713/departureboard/departure-board:latest benfl3713/departure-board:latest
         docker push benfl3713/departure-board:latest
       

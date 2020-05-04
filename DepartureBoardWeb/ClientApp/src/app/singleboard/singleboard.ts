@@ -1,16 +1,17 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router, Params, PRIMARY_OUTLET, UrlSegment } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { ToggleConfig } from '../ToggleConfig';
 import { GoogleAnalyticsEventsService } from '../Services/google.analytics';
+import { Marquee, loop } from 'dynamic-marquee';
 
 @Component({
   selector: 'app-singleboard',
   templateUrl: './singleboard.html',
   styleUrls: ['./singleboard.styling.css']
 })
-export class SingleBoard implements OnDestroy {
+export class SingleBoard implements OnDestroy, OnInit {
   private headers = new HttpHeaders().set('Content-Type', "application/json");
   
   constructor(private http: HttpClient, private route: ActivatedRoute, private datePipe: DatePipe, private router: Router, public googleAnalyticsEventsService: GoogleAnalyticsEventsService) {
@@ -37,6 +38,17 @@ export class SingleBoard implements OnDestroy {
 			  this.refresher = setInterval(() => this.GetDepartures(), 10000);
 		  })});
   }
+    ngOnInit(): void {
+      this.marquee = new Marquee(document.getElementById('singleboard-information'), {
+        rate: -300
+      });
+
+      this.marquee.onAllItemsRemoved(() => {
+        const $item = document.createElement('div');
+        $item.textContent = this.information;
+        this.marquee.appendItem($item)
+      });
+    }
 	stationCode: string;
 	platform: number;
   time = new Date();
@@ -51,6 +63,7 @@ export class SingleBoard implements OnDestroy {
   firstStatus: string = "";
 
   information: string;
+  marquee;
   //second
   secondTime: Date;
   secondPlatform: number;
@@ -77,6 +90,10 @@ export class SingleBoard implements OnDestroy {
     var tempinfo = <string>Object(data)["information"];
     if (tempinfo != this.information) {
       this.information = tempinfo;
+      this.marquee.clear();
+      const $item = document.createElement('div');
+      $item.textContent = this.information;
+      this.marquee.appendItem($item)
     }
 
     //first

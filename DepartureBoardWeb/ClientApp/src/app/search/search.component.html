@@ -11,7 +11,7 @@
              (keyup)="filter()">
       <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
         <mat-option *ngFor="let station of filteredOptions | keyvalue: asIsOrder" [value]="station.value">
-          {{station.value}}
+          {{station.value}} - ({{station.key}})
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>

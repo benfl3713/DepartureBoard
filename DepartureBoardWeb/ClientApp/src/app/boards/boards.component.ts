@@ -1,6 +1,6 @@
 import { Component, ViewChild, ComponentFactoryResolver, ViewContainerRef, ComponentRef, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ActivatedRoute, UrlTree, UrlSegmentGroup, PRIMARY_OUTLET, UrlSegment, Router } from '@angular/router';
+import { ActivatedRoute, UrlTree, UrlSegmentGroup, PRIMARY_OUTLET, UrlSegment, Router, NavigationStart } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { Board } from './board/board';
 import { ServiceStatus } from '../singleboard/singleboard'
@@ -32,7 +32,15 @@ export class BoardsComponent implements OnDestroy {
     route.params.subscribe(() => {
       route.queryParams.subscribe(queryParams => {
         this.SetupBoard(queryParams);
-		  })});
+      })
+    });
+
+    //Stops refresher if there is a page change
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        clearTimeout(this.refresher);
+      }
+    });
   }
 
   SetupBoard(queryParams) {

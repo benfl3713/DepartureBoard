@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ActivatedRoute, Router, Params, PRIMARY_OUTLET, UrlSegment } from '@angular/router';
+import { ActivatedRoute, Router, Params, PRIMARY_OUTLET, UrlSegment, NavigationStart } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { ToggleConfig } from '../ToggleConfig';
 import { GoogleAnalyticsEventsService } from '../Services/google.analytics';
-import { Marquee, loop } from 'dynamic-marquee';
+import { Marquee } from 'dynamic-marquee';
 
 @Component({
   selector: 'app-singleboard',
@@ -36,7 +36,14 @@ export class SingleBoard implements OnDestroy, OnInit {
         this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode).subscribe(name => document.title = name + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board");
 			  this.GetDepartures();
 			  this.refresher = setInterval(() => this.GetDepartures(), 10000);
-		  })});
+      })
+    });
+
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        clearTimeout(this.refresher);
+      }
+    });
   }
     ngOnInit(): void {
       this.marquee = new Marquee(document.getElementById('singleboard-information'), {

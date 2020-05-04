@@ -65,7 +65,7 @@ namespace TrainDataAPI.Services
 					{
 						string code = element.Element("{http://nationalrail.co.uk/xml/station}CrsCode")?.Value;
 						string name = element.Element("{http://nationalrail.co.uk/xml/station}Name")?.Value;
-						if (!string.IsNullOrEmpty(code) && !string.IsNullOrEmpty(name))
+						if (!string.IsNullOrEmpty(code) && !string.IsNullOrEmpty(name) && IsValidEntry(name, code))
 							_stations.Add(code, name);
 					}
 
@@ -73,6 +73,23 @@ namespace TrainDataAPI.Services
 				}
 				catch (Exception ex) { Console.WriteLine(ex.Message); }
 			}
+		}
+
+		private bool IsValidEntry(string name, string code)
+		{
+			switch (name)
+			{
+				case "London St Pancras (Intl)":
+					return false;
+			}
+
+			switch (code)
+			{
+				case "SPX":
+					return false;
+			}
+
+			return true;
 		}
 
 		private string GetSecretToken()

@@ -103,7 +103,7 @@ namespace TrainDataAPI
                             continue;
 
                         string date = Jdeparture["runDate"].ToString();
-                        int.TryParse((Jdeparture["locationDetail"]["platform"])?.ToString()??"1", out int platform);
+                        int.TryParse((Jdeparture["locationDetail"]["platform"])?.ToString()??"0", out int platform);
                         string operatorName = Jdeparture["atocName"].ToString();
                         DateTime.TryParse(date + " " + Jdeparture["locationDetail"]["gbttBookedDeparture"]?.ToString().Substring(0, 2) + ":" + Jdeparture["locationDetail"]["gbttBookedDeparture"]?.ToString().Substring(2, 2), out DateTime aimedDepatureTime);
                         if (aimedDepatureTime == DateTime.MinValue)

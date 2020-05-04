@@ -27,6 +27,7 @@
     "aspnet-prerendering": "^3.0.1",
     "bootstrap": "^4.4.1",
     "core-js": "^3.6.4",
+    "dynamic-marquee": "^1.2.2",
     "jquery": "3.5.0",
     "logrocket": "^1.0.7",
     "ngx-cookie-service": "^3.0.4",

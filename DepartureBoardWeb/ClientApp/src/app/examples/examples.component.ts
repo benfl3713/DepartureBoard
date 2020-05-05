@@ -11,5 +11,5 @@ import { Router } from '@angular/router';
   styleUrls: ['./examples.component.css']
 })
 export class ExamplesComponent {
-  constructor(private http: HttpClient, private router: Router) { document.title = "Departure Board"; }
+  constructor(private http: HttpClient, private router: Router) { document.title = "Examples - Departure Board"; }
 }

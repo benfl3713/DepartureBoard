@@ -11,7 +11,7 @@ import { GoogleAnalyticsEventsService } from '../Services/google.analytics';
 export class SettingsComponent implements OnInit {
   settingsType: string = "general";
 
-  constructor(public googleAnalyticsEventsService: GoogleAnalyticsEventsService) {}
+  constructor(public googleAnalyticsEventsService: GoogleAnalyticsEventsService) { document.title = "Settings - Departure Board";}
   ngOnInit(): void {
     this.Load();
   }

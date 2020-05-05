@@ -1,0 +1,47 @@
+#setting-types {
+  padding: 5px;
+  border: 1px solid var(--mainColour);
+  border-radius: 8px;
+}
+#setting-types mat-action-list button{
+    margin-bottom: 5px;
+}
+.orange {
+  color: var(--mainColour) !important;
+  border: 1px solid var(--mainColour);;
+  border-radius: 8px;
+}
+.row {
+  color: var(--mainColour);
+}
+
+/* input color class */
+::ng-deep input.mat-input-element {
+  color: var(--mainColour);
+}
+
+/* Change label color on focused */
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: var(--mainColour) !important;
+}
+
+/* underline border color on focused */
+::ng-deep .mat-focused .mat-form-field-underline .mat-form-field-ripple {
+  background-color: var(--mainColour) !important;
+}
+
+.btnOrange {
+  background-color: var(--mainColour);
+  color: black;
+}
+.btnGreen {
+  color: black;
+  background-color: #00ab39;
+}
+.btnRed {
+  background-color: #cf0000;
+  color: black;
+}
+label{
+    padding-right: 20px;
+}

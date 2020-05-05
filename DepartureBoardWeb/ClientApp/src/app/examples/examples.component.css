@@ -1,5 +1,5 @@
 .container {
-  color: #ff9729;
+  color: var(--mainColour);;
 }
 
 .center {

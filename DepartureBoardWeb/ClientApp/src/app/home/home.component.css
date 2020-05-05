@@ -3,7 +3,7 @@
   margin-bottom:20px;
 }
 .container {
-  color: #ff9729;
+  color: var(--mainColour);;
 }
 
 @media only screen and (max-width: 960px) {
@@ -20,8 +20,8 @@
 }
 
 .orange-border {
-  border: 2px solid #ff9729;
+  border: 2px solid var(--mainColour);;
   border-radius: 8px;
-  color: #ff9729;
+  color: var(--mainColour);;
   padding: 10px;
 }

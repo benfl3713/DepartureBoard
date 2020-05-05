@@ -1,5 +1,13 @@
 <div class="container">
   <h2 id="news-title" class="led centre-text" style="padding-left:10px;">News</h2>
+  <div class="news-item news-highlight">
+    <h5 class="centre-text"><strong>Settings Page</strong></h5>
+    <p class="centre-text">There is now a <a [routerLink]='["/settings"]'>Settings</a> page that allows you to set certain config. Please email me with more Setting suggestions</p>
+  </div>
+  <div class="news-item">
+    <h5 class="centre-text"><strong>Search by Station Code</strong></h5>
+    <p class="centre-text">You can now also type station codes into the search to retrieve the station. E.g "RDG" will return Reading</p>
+  </div>
   <div class="news-item">
     <h5 class="centre-text"><strong>Hide Menu</strong></h5>
     <p class="centre-text">You can now hide the menu by adding the query param <strong>?hideMenu=true</strong> e.g <a [routerLink]='["/EUS/5"]' [queryParams]="{hideMenu: 'true'}">/EUS/5?hideMenu=true</a></p>
@@ -7,9 +15,5 @@
   <div class="news-item">
     <h5 class="centre-text"><strong>Hide Clock</strong></h5>
     <p class="centre-text">You can now hide the clock by adding the query param <strong>?hideClock=true</strong> e.g <a [routerLink]='["/EUS/5"]' [queryParams]="{hideClock: 'true'}">/EUS/5?hideClock=true</a></p>
-  </div>
-  <div class="news-item">
-    <h5 class="centre-text"><strong>Search by Station Code</strong></h5>
-    <p class="centre-text">You can now also type station codes into the search to retrieve the station. E.g "RDG" will return Reading</p>
   </div>
 </div>

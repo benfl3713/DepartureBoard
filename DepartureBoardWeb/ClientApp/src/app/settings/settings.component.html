@@ -1,0 +1,49 @@
+<h1 id="title" class="led centre-text">Settings</h1>
+<div class="row">
+  <div class="col-md-2 col-sm-12">
+    <mat-list id="setting-types" class="orange">
+      <mat-action-list>
+        <button mat-list-item (click)="settingsType = 'general'" class="orange"> General </button>
+        <button mat-list-item (click)="settingsType = 'mainboard'" class="orange"> Main Board </button>
+        <button mat-list-item (click)="settingsType = 'singleboard'" class="orange"> Single Board </button>
+      </mat-action-list>
+    </mat-list>
+  </div>
+
+  <form class="col" [formGroup]="settingsForm" (ngSubmit)="Save()">
+    <div id="settings-general container" *ngIf="settingsType == 'general'">
+      <h1>General</h1>
+      <div class="row">
+        <div class="col">
+          <label>Main Colour:</label>
+          <input formControlName="general_mainColour" type="color">
+        </div>
+        <button mat-button (click)="SetFormValue('general_mainColour', '#ff9729')" style="margin-left:20px" class="btnOrange col-1">Reset</button>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label>Background Colour:</label>
+          <input formControlName="general_backgroundColour" type="color">
+        </div>
+        <button mat-button (click)="SetFormValue('general_backgroundColour', 'black')" style="margin-left:20px" class="btnOrange col-1">Reset</button>
+      </div>
+    </div>
+    <div id="settings-mainboard" *ngIf="settingsType == 'mainboard'">
+      <h1>Main Board</h1>
+      <mat-form-field>
+        <mat-label>Default Board Count</mat-label>
+        <input type="number"
+                aria-label="default board count"
+                matInput
+                formControlName="mainboard_count">
+      </mat-form-field>
+      <button mat-button (click)="SetFormValue('mainboard_count', 6)" style="margin-left:20px" class="btnOrange">Reset</button>
+    </div>
+    <div id="settings-singleboard" *ngIf="settingsType == 'singleboard'">
+      <h1>Singleboard</h1>
+    </div>
+    <button mat-raised-button id="btnSave" class="btnGreen" (click)="Save()" style="margin-right:5px">Save</button>
+    <button mat-raised-button id="btnReset" class="btnRed" (click)="ResetAll()">Reset All</button>
+</form>
+</div>

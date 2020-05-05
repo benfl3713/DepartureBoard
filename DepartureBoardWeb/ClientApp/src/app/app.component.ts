@@ -3,6 +3,7 @@ import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { ToggleConfig } from './ToggleConfig';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Config } from './Services/Config';
+import { ThemeService } from './Services/ThemeService';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ export class AppComponent {
 
   constructor(private router: Router, private route: ActivatedRoute, private deviceService: DeviceDetectorService) {
     ToggleConfig.LoadingBar.subscribe(isvisible => this.LoadingBar = isvisible);
+    ThemeService.LoadTheme();
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         (<any>window).ga('set', 'page', event.urlAfterRedirects);

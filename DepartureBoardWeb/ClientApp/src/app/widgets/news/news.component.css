@@ -3,16 +3,21 @@
 }
 
 .container {
-  border: 2px solid #ff9729;
+  border: 2px solid var(--mainColour);;
   border-radius: 8px;
-  color: #ff9729;
+  color: var(--mainColour);;
   padding: 10px;
 }
 
 .news-item {
   padding: 5px;
-  border: 1px solid #ff9729;
+  border: 1px solid var(--mainColour);;
   border-radius: 8px;
-  color: #ff9729;
+  color: var(--mainColour);
   margin-bottom: 10px;
+}
+
+.news-highlight {
+  background-color: var(--mainColour);
+  color: black;
 }

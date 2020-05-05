@@ -51,9 +51,11 @@ export class BoardsComponent implements OnDestroy {
     }
 
     this.stationCode = this.route.snapshot.paramMap.get('station').toUpperCase();
+
     if (this.isNumber(this.route.snapshot.paramMap.get('displays'))) {
       this.displays = Number(this.route.snapshot.paramMap.get('displays'));
-    }
+    } else { this.displays = Number(localStorage.getItem("settings_mainboard_count") || 6); }
+
     if (queryParams['platform'] && this.isNumber(queryParams['platform'])) {
       this.platform = queryParams['platform'];
     }

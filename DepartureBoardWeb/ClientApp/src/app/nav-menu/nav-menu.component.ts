@@ -18,6 +18,11 @@ export class NavMenuComponent {
         clearTimeout(this.timer);
         this.timer = null;
         this.showHome = true;
+        //hides menu if parameter is supplied
+        if (event.urlAfterRedirects.split("?").length > 1 && event.urlAfterRedirects.split("?")[1].includes("hideMenu=true")) {
+          this.showHome = false;
+          return;
+        }
         if (event.urlAfterRedirects != "/" && event.urlAfterRedirects != "/search" && event.urlAfterRedirects != "/examples" && !this.deviceService.isMobile()) {
           this.SetTimer();
         }

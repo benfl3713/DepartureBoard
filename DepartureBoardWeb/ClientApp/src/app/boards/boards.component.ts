@@ -18,6 +18,7 @@ export class BoardsComponent implements OnDestroy {
   refresher;
   noBoardsDisplay: boolean = false;
   useArrivals: boolean = false;
+  showClock:boolean = true;
   previousData;
 	public displays: number = 6;
 	public platform: number;
@@ -57,6 +58,10 @@ export class BoardsComponent implements OnDestroy {
       this.platform = queryParams['platform'];
     }
     else { this.platform = null }
+
+    if (queryParams['hideClock'] && (<string>queryParams['hideClock']).toLowerCase() === 'true') {
+      this.showClock = false;
+    }
     document.title = this.stationCode + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board";
     this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode).subscribe(name => document.title = name + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board");
     ToggleConfig.LoadingBar.next(true);

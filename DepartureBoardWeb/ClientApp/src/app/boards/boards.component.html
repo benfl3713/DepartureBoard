@@ -4,4 +4,4 @@
   </tr>
 </table>
 <h1 class="led centre-text" *ngIf="noBoardsDisplay">No Departures Found for {{stationCode}}</h1>
-<h1 class="led time clickable" [routerLink]='["/"]'>{{ time | date: 'HH:mm:ss' }}</h1>
+<h1 class="led time clickable" [routerLink]='["/"]' *ngIf="showClock">{{ time | date: 'HH:mm:ss' }}</h1>

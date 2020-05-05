@@ -31,6 +31,11 @@ export class SingleBoard implements OnDestroy, OnInit {
 				  this.platform = queryParams['platform'];
 			  }
         else { this.platform = null }
+
+        if (queryParams['hideClock'] && (<string>queryParams['hideClock']).toLowerCase() === 'true') {
+          this.showClock = false;
+        }
+
         ToggleConfig.LoadingBar.next(true);
         document.title = this.stationCode + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board";
         this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode).subscribe(name => document.title = name + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board");
@@ -61,6 +66,7 @@ export class SingleBoard implements OnDestroy, OnInit {
   time = new Date();
   refresher;
   noBoardsDisplay: boolean = false;
+  showClock:boolean = true;
   useArrivals: boolean = false;
 
   //first

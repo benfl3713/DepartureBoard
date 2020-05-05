@@ -21,6 +21,8 @@ This project uses a c# backend system with an angular front end
 To build the program you will need node.js installed as well asp.net core sdk  
 To host the site once published you will need the .net core hosting bundle installed
 
+If you get a startup error saying "missing package ..." or similar then try running **npm install** in the **DepartureBoardWeb\ClientApp** directory
+
 # Docker
 This project is also build into a docker image every time we merge to master. This means you can run this website very easiy simply by runnning the command "docker run -p 8080:80 benfl3713/departure-board"  
 This will run the website on port 8080 of the host  

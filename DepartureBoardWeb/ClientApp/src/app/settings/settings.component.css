@@ -1,22 +1,18 @@
-#search-title{
-  padding-bottom: 10px;
-}
-
-.container {
-  border: 2px solid #ff9729;
+#setting-types {
+  padding: 5px;
+  border: 1px solid #ff9729;
   border-radius: 8px;
+}
+#setting-types mat-action-list button{
+    margin-bottom: 5px;
+}
+.orange {
+  color: #ff9729 !important;
+  border: 1px solid #ff9729;
+  border-radius: 8px;
+}
+.row {
   color: #ff9729;
-  padding: 10px;
-}
-#btnSearch {
-  background-color: #ff9729;
-  color: black;
-  margin-top: 5px;
-}
-
-
-form, mat-form-field, button {
-  width: 100%;
 }
 
 /* input color class */
@@ -32,4 +28,14 @@ form, mat-form-field, button {
 /* underline border color on focused */
 ::ng-deep .mat-focused .mat-form-field-underline .mat-form-field-ripple {
   background-color: #ff9729 !important;
+}
+
+#btnSave {
+  background-color: #ff9729;
+  color: black;
+  margin-top: 5px;
+}
+
+label{
+    padding-right: 20px;
 }

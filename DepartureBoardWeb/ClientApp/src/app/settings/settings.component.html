@@ -1,0 +1,34 @@
+<h1 id="title" class="led centre-text">Settings</h1>
+<div class="row">
+  <div class="col-md-2 col-sm-12">
+    <mat-list id="setting-types" class="orange">
+      <mat-action-list>
+        <button mat-list-item (click)="settingsType = 'general'" class="orange"> General </button>
+        <button mat-list-item (click)="settingsType = 'mainboard'" class="orange"> Main Board </button>
+        <button mat-list-item (click)="settingsType = 'singleboard'" class="orange"> Single Board </button>
+      </mat-action-list>
+    </mat-list>
+  </div>
+
+  <form class="col" [formGroup]="settingsForm" (ngSubmit)="Save()">
+    <div id="settings-general" *ngIf="settingsType == 'general'">
+      <h1>General</h1>
+      <label>Font Colour:</label>
+      <input formControlName="general_fontColour" type="color">
+    </div>
+    <div id="settings-mainboard" *ngIf="settingsType == 'mainboard'">
+      <h1>Main Board</h1>
+      <mat-form-field>
+        <mat-label>Default Board Count</mat-label>
+        <input type="number"
+               aria-label="default board count"
+               matInput
+               formControlName="mainboard_count">
+      </mat-form-field>
+    </div>
+    <div id="settings-singleboard" *ngIf="settingsType == 'singleboard'">
+      <h1>Singleboard</h1>
+    </div>
+    <button mat-button id="btnSave" (click)="Save()">Save</button>
+  </form>
+</div>

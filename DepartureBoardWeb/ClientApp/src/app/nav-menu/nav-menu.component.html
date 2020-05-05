@@ -13,6 +13,9 @@
         </li>
       </ul>
       <ul class="navbar-nav order-3 ml-auto">
+        <li class="nav-item" [routerLinkActive]='["page-selected"]'>
+          <a class="nav-link text-light" [routerLink]='["/settings"]'><span class='fas fa-cogs'></span> Settings</a>
+        </li>
       </ul>
     </div>
   </nav>

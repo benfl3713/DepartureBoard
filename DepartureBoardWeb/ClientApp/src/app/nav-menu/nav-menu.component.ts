@@ -10,6 +10,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 export class NavMenuComponent {
   showHome: boolean = true;
   timer;
+  fixedMenuPages: Array<string> = ["/", "/search", "/examples", "/settings"];
 
   constructor(private router: Router, private route: ActivatedRoute, private deviceService: DeviceDetectorService) {
     this.router.events.subscribe(event => {
@@ -23,7 +24,7 @@ export class NavMenuComponent {
           this.showHome = false;
           return;
         }
-        if (event.urlAfterRedirects != "/" && event.urlAfterRedirects != "/search" && event.urlAfterRedirects != "/examples" && !this.deviceService.isMobile()) {
+        if (!this.fixedMenuPages.includes(event.urlAfterRedirects) && !this.deviceService.isMobile()) {
           this.SetTimer();
         }
       }

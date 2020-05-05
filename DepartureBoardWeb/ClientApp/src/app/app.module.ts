@@ -22,6 +22,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GoogleAnalyticsEventsService } from './Services/google.analytics';
 import { Config } from './Services/Config';
 import { FooterComponent } from "./footer/footer.component";
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -34,18 +35,21 @@ import { FooterComponent } from "./footer/footer.component";
 		Board,
 		SearchComponent,
 		NewsWidgetComponent,
-    FooterComponent
+    FooterComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
 	  FormsModule,
 	  ReactiveFormsModule,
-	  MaterialModule,
+    MaterialModule,
     RouterModule.forRoot([
 		{ path: '', component: HomeComponent, pathMatch: 'full' },
     { path: 'search', component: SearchComponent, pathMatch: 'full' },
     { path: 'examples', component: ExamplesComponent, pathMatch: 'full' },
+    { path: 'settings', component: SettingsComponent, pathMatch: 'full' },
+    //Boards
     { path: 'arrivals/:station/:displays', component: BoardsComponent, pathMatch: 'full' },
     { path: 'arrivals/:station', component: BoardsComponent, pathMatch: 'full' },
     { path: 'singleboard/arrivals/:station', component: SingleBoard, pathMatch: 'full' },

@@ -1,11 +1,15 @@
 <div class="container">
   <h2 id="news-title" class="led centre-text" style="padding-left:10px;">News</h2>
   <div class="news-item">
-    <h5 class="centre-text"><strong>Experimental Reload</strong></h5>
-    <p class="centre-text">The page will now only redraw everything if there is an actual change in the departures. Please let me know if you get any issues around the departures not updating.</p>
+    <h5 class="centre-text"><strong>Hide Menu</strong></h5>
+    <p class="centre-text">You can now hide the menu by adding the query param <strong>?hideMenu=true</strong> e.g <a [routerLink]='["/EUS/5"]' [queryParams]="{hideMenu: 'true'}">/EUS/5?hideMenu=true</a></p>
   </div>
   <div class="news-item">
-    <h5 class="centre-text"><strong>Arrival Boards !!!</strong></h5>
-    <p class="centre-text">We now support arrivals as well as departures for all UK stations. Use the instructions on the home page on how to view arrivals</p>
+    <h5 class="centre-text"><strong>Hide Clock</strong></h5>
+    <p class="centre-text">You can now hide the clock by adding the query param <strong>?hideClock=true</strong> e.g <a [routerLink]='["/EUS/5"]' [queryParams]="{hideClock: 'true'}">/EUS/5?hideClock=true</a></p>
+  </div>
+  <div class="news-item">
+    <h5 class="centre-text"><strong>Search by Station Code</strong></h5>
+    <p class="centre-text">You can now also type station codes into the search to retrieve the station. E.g "RDG" will return Reading</p>
   </div>
 </div>

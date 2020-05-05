@@ -11,24 +11,39 @@
   </div>
 
   <form class="col" [formGroup]="settingsForm" (ngSubmit)="Save()">
-    <div id="settings-general" *ngIf="settingsType == 'general'">
+    <div id="settings-general container" *ngIf="settingsType == 'general'">
       <h1>General</h1>
-      <label>Font Colour:</label>
-      <input formControlName="general_fontColour" type="color">
+      <div class="row">
+        <div class="col">
+          <label>Main Colour:</label>
+          <input formControlName="general_mainColour" type="color">
+        </div>
+        <button mat-button (click)="SetFormValue('general_mainColour', '#ff9729')" style="margin-left:20px" class="btnOrange col-1">Reset</button>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label>Background Colour:</label>
+          <input formControlName="general_backgroundColour" type="color">
+        </div>
+        <button mat-button (click)="SetFormValue('general_backgroundColour', 'black')" style="margin-left:20px" class="btnOrange col-1">Reset</button>
+      </div>
     </div>
     <div id="settings-mainboard" *ngIf="settingsType == 'mainboard'">
       <h1>Main Board</h1>
       <mat-form-field>
         <mat-label>Default Board Count</mat-label>
         <input type="number"
-               aria-label="default board count"
-               matInput
-               formControlName="mainboard_count">
+                aria-label="default board count"
+                matInput
+                formControlName="mainboard_count">
       </mat-form-field>
+      <button mat-button (click)="SetFormValue('mainboard_count', 6)" style="margin-left:20px" class="btnOrange">Reset</button>
     </div>
     <div id="settings-singleboard" *ngIf="settingsType == 'singleboard'">
       <h1>Singleboard</h1>
     </div>
-    <button mat-button id="btnSave" (click)="Save()">Save</button>
-  </form>
+    <button mat-raised-button id="btnSave" class="btnGreen" (click)="Save()" style="margin-right:5px">Save</button>
+    <button mat-raised-button id="btnReset" class="btnRed" (click)="ResetAll()">Reset All</button>
+</form>
 </div>

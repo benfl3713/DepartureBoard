@@ -8,7 +8,7 @@ html {
 }
 
 .nav-link {
-  color: #ff9729 !important;
+  color: var(--mainColour) !important;
 }
 
 .navbar{
@@ -21,6 +21,6 @@ html {
 
 .dropdown-toggle {
   background-color: black;
-  color: #ff9729;
+  color: var(--mainColour);
   border: 0;
 }

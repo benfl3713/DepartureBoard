@@ -1,7 +1,7 @@
 /*Footer*/
 .footer-basic {
   padding: 40px 0;
-  color: #ff9729
+  color: var(--mainColour);
 }
 
 .footer-basic ul {

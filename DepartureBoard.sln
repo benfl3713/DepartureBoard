@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrainDataAPI", "TrainDataAPI\TrainDataAPI.csproj", "{3BB35FB1-A352-4CCF-9764-8FFA440EE84C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DepartureBoardWeb", "DepartureBoardWeb\DepartureBoardWeb.csproj", "{E74D7AD0-86D9-4F06-A8AB-91BF49814672}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DepartureBoardWeb", "DepartureBoardWeb\DepartureBoardWeb.csproj", "{E74D7AD0-86D9-4F06-A8AB-91BF49814672}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainDataAPITests", "TrainDataAPITests\TrainDataAPITests.csproj", "{D865CE17-D91F-4806-8826-DCD54F1B9EA3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{E74D7AD0-86D9-4F06-A8AB-91BF49814672}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E74D7AD0-86D9-4F06-A8AB-91BF49814672}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E74D7AD0-86D9-4F06-A8AB-91BF49814672}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D865CE17-D91F-4806-8826-DCD54F1B9EA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D865CE17-D91F-4806-8826-DCD54F1B9EA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D865CE17-D91F-4806-8826-DCD54F1B9EA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D865CE17-D91F-4806-8826-DCD54F1B9EA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

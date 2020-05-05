@@ -28,7 +28,7 @@ namespace TrainDataAPI
             }
         }
 
-        private List<StationStop> _stops { get; set; }
+        private List<StationStop> _stops { get; set; } = new List<StationStop>();
 
         public Departure(string stationName, string stationCode, int platform, string operatorName, DateTime aimedDeparture, DateTime expectedDeparture, string destination, ServiceStatus status, string origin = "", DateTime? lastUpdated = null, string serviceTimeTable = null, Type from = null)
         {

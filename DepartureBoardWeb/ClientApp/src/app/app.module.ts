@@ -7,6 +7,10 @@ import { DatePipe } from '@angular/common'
 import { MaterialModule } from './material.module'
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { CookieService } from 'ngx-cookie-service'
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -23,6 +27,16 @@ import { GoogleAnalyticsEventsService } from './Services/google.analytics';
 import { Config } from './Services/Config';
 import { FooterComponent } from "./footer/footer.component";
 import { SettingsComponent } from './settings/settings.component';
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo',
+  authDomain: 'leddepartureboard.firebaseapp.com',
+  databaseURL: 'https://leddepartureboard.firebaseio.com',
+  projectId: 'leddepartureboard',
+  storageBucket: 'leddepartureboard.appspot.com',
+  messagingSenderId: '964139760723',
+  appId: "1:964139760723:web:9550635875faecf26edaa6"
+};
 
 @NgModule({
   declarations: [
@@ -44,6 +58,10 @@ import { SettingsComponent } from './settings/settings.component';
 	  FormsModule,
 	  ReactiveFormsModule,
     MaterialModule,
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFirestoreModule,
+    AngularFireAuthModule,
+    AngularFireStorageModule, 
     RouterModule.forRoot([
 		{ path: '', component: HomeComponent, pathMatch: 'full' },
     { path: 'search', component: SearchComponent, pathMatch: 'full' },

@@ -1,6 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { AuthService } from '../Services/auth.service';
 
 @Component({
   selector: 'app-nav-menu',
@@ -12,7 +13,7 @@ export class NavMenuComponent {
   timer;
   fixedMenuPages: Array<string> = ["/", "/search", "/examples", "/settings"];
 
-  constructor(private router: Router, private route: ActivatedRoute, private deviceService: DeviceDetectorService) {
+  constructor(private router: Router, private route: ActivatedRoute, private deviceService: DeviceDetectorService, public auth: AuthService) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         //Show/Hide Menus

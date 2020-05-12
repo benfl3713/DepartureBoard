@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> 
 <url>
-    <loc>/</loc>
+    <loc>https://www.leddepartureboard.com/</loc>
     <lastmod>2020-04-02</lastmod>
   </url>
   <url>
-    <loc>/search</loc>
-    <lastmod>2020-04-02</lastmod>
+    <loc>https://www.leddepartureboard.com/search</loc>
+    <lastmod>2020-05-06</lastmod>
   </url>
   <url>
-    <loc>/EUS</loc>
-    <lastmod>2020-04-02</lastmod>
+    <loc>https://www.leddepartureboard.com/EUS</loc>
+    <lastmod>2020-05-06</lastmod>
+  </url>
+  <url>
+    <loc>https://www.leddepartureboard.com/settings</loc>
+    <lastmod>2020-05-06</lastmod>
   </url>
 </urlset>

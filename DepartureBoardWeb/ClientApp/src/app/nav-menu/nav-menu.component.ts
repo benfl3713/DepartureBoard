@@ -11,7 +11,7 @@ import { AuthService } from '../Services/auth.service';
 export class NavMenuComponent {
   showHome: boolean = true;
   timer;
-  fixedMenuPages: Array<string> = ["/", "/search", "/examples", "/settings"];
+  fixedMenuPages: Array<string> = ["/", "/search", "/examples", "/settings", "/custom-departures", "/custom-departures/add"];
 
   constructor(private router: Router, private route: ActivatedRoute, private deviceService: DeviceDetectorService, public auth: AuthService) {
     this.router.events.subscribe(event => {

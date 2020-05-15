@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router, Params, PRIMARY_OUTLET, UrlSegment, NavigationStart } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { ToggleConfig } from '../ToggleConfig';
-import { GoogleAnalyticsEventsService } from '../Services/google.analytics';
+import { ToggleConfig } from '../../ToggleConfig';
+import { GoogleAnalyticsEventsService } from '../../Services/google.analytics';
 import { Marquee } from 'dynamic-marquee';
 
 @Component({

@@ -14,12 +14,12 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { HomeComponent } from "./home/home.component";
-import { BoardsComponent } from './boards/boards.component';
-import { SingleBoard } from './singleboard/singleboard';
-import { ExamplesComponent } from './examples/examples.component';
+import { HomeComponent } from "./Pages/home/home.component";
+import { BoardsComponent } from './Pages/boards/boards.component';
+import { SingleBoard } from './Pages/singleboard/singleboard';
+import { ExamplesComponent } from './Pages/examples/examples.component';
 
-import { Board } from './boards/board/board';
+import { Board } from './Pages/boards/board/board';
 import { SearchComponent } from './search/search.component';
 import { NewsWidgetComponent } from './widgets/news/news.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -27,6 +27,8 @@ import { GoogleAnalyticsEventsService } from './Services/google.analytics';
 import { Config } from './Services/Config';
 import { FooterComponent } from "./footer/footer.component";
 import { SettingsComponent } from './settings/settings.component';
+import { CustomDepartureBoardComponent } from './Pages/custom-departure-board/custom-departure-board.component';
+import { AddCustomDepartureComponent } from './Pages/custom-departure-board/add-custom-departure/add-custom-departure.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo',
@@ -50,7 +52,9 @@ const firebaseConfig = {
 		SearchComponent,
 		NewsWidgetComponent,
     FooterComponent,
-    SettingsComponent
+    SettingsComponent,
+    CustomDepartureBoardComponent,
+    AddCustomDepartureComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -67,11 +71,15 @@ const firebaseConfig = {
     { path: 'search', component: SearchComponent, pathMatch: 'full' },
     { path: 'examples', component: ExamplesComponent, pathMatch: 'full' },
     { path: 'settings', component: SettingsComponent, pathMatch: 'full' },
+    { path: 'custom-departures', component: CustomDepartureBoardComponent, pathMatch: 'full' },
+    { path: 'custom-departures/add', component: AddCustomDepartureComponent, pathMatch: 'full' },
     //Boards
     { path: 'arrivals/:station/:displays', component: BoardsComponent, pathMatch: 'full' },
     { path: 'arrivals/:station', component: BoardsComponent, pathMatch: 'full' },
     { path: 'singleboard/arrivals/:station', component: SingleBoard, pathMatch: 'full' },
     { path: 'singleboard/:station', component: SingleBoard, pathMatch: 'full' },
+    { path: 'custom-departures/:station', component: BoardsComponent, pathMatch: 'full' },
+    { path: 'custom-departures/:station/:displays', component: BoardsComponent, pathMatch: 'full' },
     { path: ':station', component: BoardsComponent, pathMatch: 'full' },
     { path: ':station/:displays', component: BoardsComponent, pathMatch: 'full' },
     { path: '**', redirectTo: '' },

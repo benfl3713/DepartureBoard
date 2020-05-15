@@ -4,8 +4,10 @@ import { ActivatedRoute, UrlTree, UrlSegmentGroup, PRIMARY_OUTLET, UrlSegment, R
 import { DatePipe } from '@angular/common';
 import { Board } from './board/board';
 import { ServiceStatus } from '../singleboard/singleboard'
-import { ToggleConfig } from '../ToggleConfig';
-import { GoogleAnalyticsEventsService } from '../Services/google.analytics';
+import { ToggleConfig } from '../../ToggleConfig';
+import { GoogleAnalyticsEventsService } from '../../Services/google.analytics';
+import { AuthService } from 'src/app/Services/auth.service';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-boards',
@@ -18,6 +20,7 @@ export class BoardsComponent implements OnDestroy {
   refresher;
   noBoardsDisplay: boolean = false;
   useArrivals: boolean = false;
+  isCustomData: boolean = false;
   showClock:boolean = true;
   previousData;
 	public displays: number = 6;
@@ -25,7 +28,7 @@ export class BoardsComponent implements OnDestroy {
   public stationCode: string = "EUS";
   @ViewChild('Boards', { read: ViewContainerRef, static: false }) Boards: ViewContainerRef;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private datePipe: DatePipe, private resolver: ComponentFactoryResolver, private router: Router, public googleAnalyticsEventsService: GoogleAnalyticsEventsService) {
+  constructor(private http: HttpClient, private route: ActivatedRoute, private datePipe: DatePipe, private resolver: ComponentFactoryResolver, private router: Router, public googleAnalyticsEventsService: GoogleAnalyticsEventsService, private auth: AuthService, private afs: AngularFirestore) {
     setInterval(() => {
       this.time = new Date();
     }, 1000);
@@ -46,11 +49,15 @@ export class BoardsComponent implements OnDestroy {
 
   SetupBoard(queryParams) {
     const s: UrlSegment[] = this.router.parseUrl(this.router.url).root.children[PRIMARY_OUTLET].segments;
-    if (s[0].path && s[0].path.toLowerCase() == "arrivals") {
+    if (s[0].path && s[0].path.toLowerCase() == "custom-departures") {
       this.useArrivals = true;
     }
 
-    this.stationCode = this.route.snapshot.paramMap.get('station').toUpperCase();
+    if (s[0].path && s[0].path.toLowerCase() == "custom-departures") {
+      this.isCustomData = true;
+    }
+
+    this.stationCode = this.route.snapshot.paramMap.get('station');
 
     if (this.isNumber(this.route.snapshot.paramMap.get('displays'))) {
       this.displays = Number(this.route.snapshot.paramMap.get('displays'));
@@ -64,8 +71,10 @@ export class BoardsComponent implements OnDestroy {
     if (queryParams['hideClock'] && (<string>queryParams['hideClock']).toLowerCase() === 'true') {
       this.showClock = false;
     }
-    document.title = this.stationCode + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board";
-    this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode).subscribe(name => document.title = name + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board");
+    document.title = this.stationCode.toUpperCase() + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board";
+    if (this.isCustomData == true) {
+      this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode.toUpperCase()).subscribe(name => document.title = name + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board");
+    }
     ToggleConfig.LoadingBar.next(true);
     this.GetDepartures();
     this.refresher = setInterval(() => this.GetDepartures(), 16000);
@@ -75,8 +84,13 @@ export class BoardsComponent implements OnDestroy {
     if (this.stationCode == null || this.stationCode == "") {
       return;
     }
+
+    if(this.isCustomData === true){
+      return this.GetCustomData();
+    }
+
     const formData = new FormData();
-    formData.append("stationCode", this.stationCode);
+    formData.append("stationCode", this.stationCode.toUpperCase());
     formData.append("amount", this.displays.toString());
     var url = "/api/LiveDepartures/" + (this.useArrivals ? "GetLatestArrivals" : "GetLatestDepatures");
 
@@ -90,36 +104,64 @@ export class BoardsComponent implements OnDestroy {
     }, () => ToggleConfig.LoadingBar.next(false));
   }
 
-  ProcessDepartures(data: object[]) {
+  ProcessDepartures(data) {
     if (this.previousData && this.arraysAreEqual(data, this.previousData)) {
       this.previousData = data;
-      this.googleAnalyticsEventsService.emitEvent("GetDepartures", this.stationCode, (this.useArrivals ? "GetLatestArrivals" : "GetLatestDepatures"), 0);
+      this.googleAnalyticsEventsService.emitEvent("GetDepartures", this.stationCode.toUpperCase(), (this.useArrivals ? "GetLatestArrivals" : "GetLatestDepatures"), 0);
       return;
     }
-    this.googleAnalyticsEventsService.emitEvent("GetDepartures", this.stationCode, (this.useArrivals ? "GetLatestArrivals" : "GetLatestDepatures"), 1);
+    this.googleAnalyticsEventsService.emitEvent("GetDepartures", this.stationCode.toUpperCase(), (this.useArrivals ? "GetLatestArrivals" : "GetLatestDepatures"), 1);
     this.Boards.clear();
     this.noBoardsDisplay = data.length === 0;
 
     for (var i = 0; i < data.length; i += 1) {
-      const factory = this.resolver.resolveComponentFactory(Board);
-      const componentRef = this.Boards.createComponent(factory);
-      componentRef.instance.DepartureTime = <Date>Object(data)[i]["aimedDeparture"];
-      componentRef.instance.Platform = <number>Object(data)[i]["platform"];
-      componentRef.instance.Destination = <string>Object(data)[i]["destination"];
-      componentRef.instance.Operator = <string>Object(data)[i]["operatorName"];
-      var tempfirststatus = ServiceStatus[this.getEnumKeyByEnumValue(ServiceStatus, Object(data)[i]["status"])]
-      if (tempfirststatus == ServiceStatus.LATE) {
-        var fexpected = new Date(Date.parse(Object(data)[i]["expectedDeparture"]));
-        componentRef.instance.Status = "EXP " + this.datePipe.transform(fexpected, 'HH:mm');
-      }
-      else {
-        componentRef.instance.Status = ServiceStatus[tempfirststatus];
-        if (componentRef.instance.Status == "ONTIME") { componentRef.instance.Status = "On Time";}
-      }
+      try {
+        if (this.isCustomData) {
+          if (Object(data)[i]["expectedDeparture"] && new Date(Object(data)[i]["expectedDeparture"]) < new Date()) {
+            console.log(`Departure has already gone past date ${Object(data)[i]["expectedDeparture"]} - ${<string>Object(data)[i]["destination"]}`)
+            continue;
+          }
+          if (Object(data)[i]["aimedDeparture"] && new Date(Object(data)[i]["aimedDeparture"]) < new Date()) {
+            console.log(`Departure has already gone past date ${Object(data)[i]["aimedDeparture"]} - ${<string>Object(data)[i]["destination"]}`)
+            continue
+          }
+        }
+        const factory = this.resolver.resolveComponentFactory(Board);
+        const componentRef = this.Boards.createComponent(factory);
+        componentRef.instance.DepartureTime = Object(data)[i]["aimedDeparture"];
+        componentRef.instance.Platform = <number>Object(data)[i]["platform"];
+        componentRef.instance.Destination = <string>Object(data)[i]["destination"];
+        componentRef.instance.Operator = <string>Object(data)[i]["operatorName"];
+        var tempfirststatus = ServiceStatus[this.getEnumKeyByEnumValue(ServiceStatus, Object(data)[i]["status"])]
+        if (tempfirststatus == ServiceStatus.LATE && Object(data)[i]["expectedDeparture"]) {
+          var fexpected = new Date(Date.parse(Object(data)[i]["expectedDeparture"]));
+          componentRef.instance.Status = "EXP " + this.datePipe.transform(fexpected, 'HH:mm');
+        }
+        else {
+          componentRef.instance.Status = ServiceStatus[tempfirststatus];
+          if (componentRef.instance.Status == "ONTIME") { componentRef.instance.Status = "On Time";}
+        }
 
-      componentRef.instance.ProcessStops(Object(data)[i]["stops"]);
+        componentRef.instance.ProcessStops(Object(data)[i]["stops"]);
+      }
+      catch(e){console.log(e)}
     }
     this.previousData = data;
+  }
+
+  GetCustomData(){
+    this.auth.user$.subscribe(user => {
+      this.afs.collection(`customDepartures/${user.uid}/departures`).doc(this.stationCode).get().subscribe(departureData => {
+        ToggleConfig.LoadingBar.next(false);
+        var data = departureData.get("jsonData")
+        this.noBoardsDisplay = !data;
+        document.title = (data.stationName || this.stationCode) + " - Departures - Departure Board";
+        this.ProcessDepartures(data.departures.slice(0, this.displays));
+      }, error => {
+          ToggleConfig.LoadingBar.next(false);
+          console.log(error);
+      })
+    });
   }
 
   arraysAreEqual(x, y): boolean {

@@ -1,0 +1,26 @@
+<h1 id="title" class="led centre-text">Custom Departures</h1>
+<div class="container">
+    <table class="table table-dark">
+        <thead>
+            <th scope="col">Name</th>
+            <th scope="col">Created Date</th>
+            <th scope="col">Departures Count</th>
+            <th scope="col"></th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let file of departureFiles">
+                <td>{{file.id}}</td>
+                <td>{{file.data().createdDate.seconds * 1000 | date:'dd/MM/yyyy'}}</td>
+                <td>{{file.data().departuresCount}}</td>
+                <td>
+                    <button class="orangeBtn" [routerLink]='["/custom-departures/", file.id]' mat-button>View</button>
+                    <button [routerLink]='["/custom-departures/edit/", file.id]' mat-button>Edit</button>
+                    <button (click)="deleteDeparture(file.id)" mat-button>Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button class="orangeBtn" [routerLink]='["/custom-departures/add"]' mat-button>Add</button>
+    <button class="orangeReverseBtn" [routerLink]='["/about/custom-departures"]' mat-button>Learn More</button>
+</div>

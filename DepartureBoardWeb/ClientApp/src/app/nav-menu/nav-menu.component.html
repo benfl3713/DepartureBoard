@@ -11,10 +11,18 @@
         <li class="nav-item" [routerLinkActive]='["page-selected"]'>
           <a class="nav-link text-light" [routerLink]='["/examples"]'><span class='far fa-lightbulb'></span> Examples</a>
         </li>
+        <li class="nav-item" [routerLinkActive]='["page-selected"]'>
+          <a class="nav-link text-light" [routerLink]='["/custom-departures"]'><span class='fas fa-chalkboard'></span> Custom Departures</a>
+        </li>
       </ul>
       <ul class="navbar-nav order-3 ml-auto">
         <li class="nav-item" [routerLinkActive]='["page-selected"]'>
           <a class="nav-link text-light" [routerLink]='["/settings"]'><span class='fas fa-cogs'></span> Settings</a>
+        </li>
+        <li class="nav-item" [routerLinkActive]='["page-selected"]'>
+          <div *ngIf="auth.user$ | async; then authenticated else guest"></div>
+          <ng-template #guest><a class="nav-link text-light clickable" (click)="auth.googleSignin()"><span class='far fa-user'></span> Login</a></ng-template>
+          <ng-template #authenticated><a *ngIf="auth.user$ | async as user" class="nav-link text-light clickable" (click)="auth.signOut()"><img  [src]="user.photoURL" height="20"> Log Out</a></ng-template>
         </li>
       </ul>
     </div>

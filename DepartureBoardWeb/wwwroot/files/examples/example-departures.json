@@ -1,0 +1,45 @@
+{
+  "stationName": "Coventry Station",
+  "departures": [
+      {
+        "platform": "1",
+        "destination": "London Euston",
+        "operatorName": "Avanti West Coast",
+        "aimedDeparture": "2025-05-15T21:23:00",
+		"expectedDeparture": "2025-05-15T21:23:00",
+        "status": "0",
+        "stops": [
+			{
+			  "stationName": "Rugby",
+			  "aimedDeparture": "2025-05-15T21:32:00"
+			},
+			{
+			  "stationName": "Watford Junction",
+			  "aimedDeparture": "2025-05-15T21:16:00"
+			},
+			{
+			  "stationName": "London Euston",
+			  "aimedDeparture": "2025-05-15T21:25:00"
+			}
+        ]
+      },
+      {
+        "platform": "2",
+        "destination": "Leamington Spa",
+        "operatorName": "West Midlands Railway",
+        "aimedDeparture": "2025-05-15T23:37:00",
+		"expectedDeparture": "2025-05-15T23:38:00",
+        "status": "1",
+        "stops": [
+			{
+			  "stationName": "Kenilworth",
+			  "aimedDeparture": "2025-05-15T23:45:00"
+			},
+			{
+			  "stationName": "Leamington Spa",
+			  "aimedDeparture": "2025-05-15T23:56:00"
+			}
+        ]
+      }
+  ]
+}

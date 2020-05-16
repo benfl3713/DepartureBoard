@@ -1,0 +1,52 @@
+<h1 id="title" class="led centre-text">About Custom Departures</h1>
+<div class="container">
+    <h4 class="led">About</h4>
+    <p>Custom Departures allows you to create a json file containing your own departure data. You can then upload this and view it in the same formats as the real time data on this website. To get started you will need to login with your google account.</p>
+    <h4 class="led">How to Use</h4>
+    <ol>
+      <li>First you will need to login with your google account. To do this just click login at the top right of the page.</li>
+      <li>You should now be able to navigate to <a [routerLink]='["/custom-departures"]' target="_blank">www.leddepartureboard.com/custom-departures</a> without receiving an error. </li>
+      <li>You can now click the add button to add a new set of departures.</li>
+      <li>You will now need to create a json file with your departure data. Please see the <strong>How to Create the Json file section</strong></li>
+      <li>Once you have your json file you can upload it and fill in the name field with a unique name for your departures. Then click save.</li>
+      <li>If your file was valid it will say file in schema valid, and will save the file. Otherwise it will tell you that your file in invalid.</li>
+      <li>If you now go to <a [routerLink]='["/custom-departures"]'>www.leddepartureboard.com/custom-departures</a> you should now be able to see your new departure set. Click view the see the result!</li>
+    </ol>
+    <p>To modify the departures on a board running then you can edit the custom departure in a separate browser or device and upload a newer file. Then the board will update in up to 16 seconds</p>
+    <h4 class="led">How to Create the Json file</h4>
+    <ul>
+        <li>To start with I have created an example file that you can use as a template. <strong>You can download it at <a href="/files/examples/example-departures.json" download="example-departures.json">Here</a></strong></li>
+        <li>If you need help creating the file then i recommend using <a href="https://www.jsonschemavalidator.net/" target="_blank">https://www.jsonschemavalidator.net</a> and Paste <a href="/Schemas/departure.schema.json" target="_blank">this</a> into the schema section
+        <br>And then copy the example file above into the Input JSON section. You can then modify the file and it will tell you where the errors are.</li>
+        <li>For the system to read the dates they must be provided in this exact format. <strong>'yyyy-MM-ddThh:mm:ss'</strong>. E.g 2020-05-15T21:23:00 <br>Once the date has passed then the departure will no longer be shown on the board. You will need to update the date in order to show it again.</li>
+        <li>
+            To set the departure status there are 4 different codes.<br>
+            <table class="table table-dark table-sm">
+                <thead>
+                    <th scope="col">Code</th>
+                    <th scope="col">Meaning</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>0</td>
+                        <td>On Time</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Late</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Cancelled</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Arrived</td>
+                    </tr>
+                </tbody>
+            </table>
+        </li>
+    </ul>
+    <h4 class="led">Need Help</h4>
+    <p>If you have any problems or questions please email me at <strong><a href="mailto:info@leddepartureboard.com?subject=Led Departure Board - Custom Departures" target="_blank">info@leddepartureboard.com</a></strong></p>
+</div>

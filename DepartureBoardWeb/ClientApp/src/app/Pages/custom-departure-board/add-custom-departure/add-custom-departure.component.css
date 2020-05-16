@@ -1,0 +1,40 @@
+/* input color class */
+::ng-deep input.mat-input-element {
+    color: var(--mainColour);
+  }
+  
+/* Change label color on focused */
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+color: var(--mainColour) !important;
+}
+
+/* underline border color on focused */
+::ng-deep .mat-focused .mat-form-field-underline .mat-form-field-ripple {
+background-color: var(--mainColour) !important;
+}
+
+.container {
+    border: 2px solid var(--mainColour);
+    border-radius: 8px;
+    color: var(--mainColour);;
+    padding: 10px;
+  }
+
+label{
+    margin-right: 20px;
+}
+
+#title{
+    margin-bottom: 40px;
+}
+
+#btnSave {
+    background-color: var(--mainColour);
+    color: black;
+    margin-top: 5px;
+  }
+
+#btnSave:disabled{
+    background-color: gainsboro;
+    cursor: not-allowed;
+}

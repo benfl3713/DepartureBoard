@@ -1,0 +1,21 @@
+<div class="container">
+    <h1 id="title" class="led centre-text">{{title}}</h1>
+    <form [formGroup]="addForm" (ngSubmit)="Save()">
+        <label class="led">Name: </label>
+        <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input type="text" required
+                    aria-label="name"
+                    matInput
+                    formControlName="name">
+          </mat-form-field>
+          <br>
+          <label class="led">File: </label>
+          <input type="file" required
+                    aria-label="file"
+                    (change)="fileChanged($event)">
+          <button class="orangeBtn" [routerLink]='["/custom-departures/add"]' mat-button>Learn More</button>
+          <br>
+          <button id="btnSave" type="submit" mat-button [disabled]="!addForm.valid || !file">Save</button>
+    </form>
+</div>

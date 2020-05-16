@@ -11,7 +11,6 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-const FirebaseConfig = require('./firebaseConfig.json');
 import { NotifierModule } from "angular-notifier";
 
 import { AppComponent } from './app.component';
@@ -32,6 +31,16 @@ import { SettingsComponent } from './settings/settings.component';
 import { CustomDepartureBoardComponent } from './Pages/custom-departure-board/custom-departure-board.component';
 import { AddCustomDepartureComponent } from './Pages/custom-departure-board/add-custom-departure/add-custom-departure.component';
 import { AboutCustomDepartureComponent } from './Pages/custom-departure-board/about-custom-departure/about-custom-departure.component';
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo',
+  authDomain: 'leddepartureboard.firebaseapp.com',
+  databaseURL: 'https://leddepartureboard.firebaseio.com',
+  projectId: 'leddepartureboard',
+  storageBucket: 'leddepartureboard.appspot.com',
+  messagingSenderId: '964139760723',
+  appId: "1:964139760723:web:9550635875faecf26edaa6"
+};
 
 @NgModule({
   declarations: [
@@ -56,7 +65,7 @@ import { AboutCustomDepartureComponent } from './Pages/custom-departure-board/ab
 	  FormsModule,
 	  ReactiveFormsModule,
     MaterialModule,
-    AngularFireModule.initializeApp(FirebaseConfig),
+    AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule, 

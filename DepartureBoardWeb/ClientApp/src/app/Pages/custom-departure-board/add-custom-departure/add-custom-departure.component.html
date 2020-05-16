@@ -14,7 +14,7 @@
           <input type="file" required
                     aria-label="file"
                     (change)="fileChanged($event)">
-          <button class="orangeBtn" [routerLink]='["/custom-departures/add"]' mat-button>Learn More</button>
+          <button class="orangeBtn" [routerLink]='["/about/custom-departures"]' mat-button>Learn More</button>
           <br>
           <button id="btnSave" type="submit" mat-button [disabled]="!addForm.valid || !file">Save</button>
     </form>

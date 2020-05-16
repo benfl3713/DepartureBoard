@@ -72,7 +72,7 @@ export class BoardsComponent implements OnDestroy {
       this.showClock = false;
     }
     document.title = this.stationCode.toUpperCase() + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board";
-    if (this.isCustomData == true) {
+    if (this.isCustomData == false) {
       this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode.toUpperCase()).subscribe(name => document.title = name + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board");
     }
     ToggleConfig.LoadingBar.next(true);
@@ -105,7 +105,7 @@ export class BoardsComponent implements OnDestroy {
   }
 
   ProcessDepartures(data) {
-    if (this.previousData && this.arraysAreEqual(data, this.previousData)) {
+    if (!this.isCustomData && this.previousData && this.arraysAreEqual(data, this.previousData)) {
       this.previousData = data;
       this.googleAnalyticsEventsService.emitEvent("GetDepartures", this.stationCode.toUpperCase(), (this.useArrivals ? "GetLatestArrivals" : "GetLatestDepatures"), 0);
       return;

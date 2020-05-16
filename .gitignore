@@ -343,3 +343,4 @@ healthchecksdb
 /DepartureBoardWeb/station_codes.csv
 /DepartureBoardWeb/config.xml
 /config.xml
+DepartureBoardWeb/ClientApp/src/app/firebaseConfig.json

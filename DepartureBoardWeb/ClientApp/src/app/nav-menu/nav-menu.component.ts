@@ -1,7 +1,8 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute, NavigationStart } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { AuthService } from '../Services/auth.service';
+import { ToggleConfig } from '../ToggleConfig';
 
 @Component({
   selector: 'app-nav-menu',
@@ -11,7 +12,7 @@ import { AuthService } from '../Services/auth.service';
 export class NavMenuComponent {
   showHome: boolean = true;
   timer;
-  fixedMenuPages: Array<string> = ["/", "/search", "/examples", "/settings", "/custom-departures", "/custom-departures/add"];
+  fixedMenuPages: Array<string> = ["/", "/search", "/examples", "/settings", "/custom-departures", "/custom-departures/add", "/custom-departures/edit", "/about/custom-departures"];
 
   constructor(private router: Router, private route: ActivatedRoute, private deviceService: DeviceDetectorService, public auth: AuthService) {
     this.router.events.subscribe(event => {
@@ -28,6 +29,9 @@ export class NavMenuComponent {
         if (!this.fixedMenuPages.includes(event.urlAfterRedirects) && !this.deviceService.isMobile()) {
           this.SetTimer();
         }
+      }
+      if(event instanceof NavigationStart){
+        ToggleConfig.LoadingBar.next(false)
       }
     });
   }

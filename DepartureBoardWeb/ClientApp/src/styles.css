@@ -70,3 +70,14 @@ html {
 .clickable{
   cursor: pointer;
 }
+
+.orangeBtn {
+  background-color: var(--mainColour);
+  color: black;
+}
+
+.orangeReverseBtn {
+  border: 2px solid var(--mainColour);
+  border-color: var(--mainColour);
+  color: var(--mainColour);
+}

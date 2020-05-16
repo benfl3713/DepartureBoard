@@ -1,5 +1,5 @@
 <div class="container">
-    <h1 id="title" class="led centre-text">Add Custom Departures</h1>
+    <h1 id="title" class="led centre-text">{{title}}</h1>
     <form [formGroup]="addForm" (ngSubmit)="Save()">
         <label class="led">Name: </label>
         <mat-form-field>
@@ -14,6 +14,7 @@
           <input type="file" required
                     aria-label="file"
                     (change)="fileChanged($event)">
+          <button class="orangeBtn" [routerLink]='["/custom-departures/add"]' mat-button>Learn More</button>
           <br>
           <button id="btnSave" type="submit" mat-button [disabled]="!addForm.valid || !file">Save</button>
     </form>

@@ -11,7 +11,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-import * as FirebaseConfig from './firebaseConfig.json';
+const FirebaseConfig = require('./firebaseConfig.json');
 import { NotifierModule } from "angular-notifier";
 
 import { AppComponent } from './app.component';
@@ -56,7 +56,7 @@ import { AboutCustomDepartureComponent } from './Pages/custom-departure-board/ab
 	  FormsModule,
 	  ReactiveFormsModule,
     MaterialModule,
-    AngularFireModule.initializeApp(FirebaseConfig.default),
+    AngularFireModule.initializeApp(FirebaseConfig),
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule, 

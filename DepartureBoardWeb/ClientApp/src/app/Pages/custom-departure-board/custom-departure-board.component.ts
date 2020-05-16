@@ -15,15 +15,12 @@ export class CustomDepartureBoardComponent implements OnInit {
   constructor(private afs: AngularFirestore, public auth: AuthService, private notifierService: NotifierService) { document.title = "Custom Departures - Departure Board";}
 
   ngOnInit() {
-    ToggleConfig.LoadingBar.next(true);
     this.auth.user$.subscribe(user => {
       if(!user){
         this.notifierService.notify("error", "You must be logged in to use this");
-        ToggleConfig.LoadingBar.next(false);
         return;
       }
       this.afs.collection(`customDepartures/${user.uid}/departures`).get().subscribe(departures => this.departureFiles = departures.docs);
-      ToggleConfig.LoadingBar.next(false);
     });
   }
 

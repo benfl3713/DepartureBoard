@@ -2,14 +2,30 @@
   width: 300px;
   padding: 10px;
   height: 450px;
-  margin-right: 20px;
 }
-.board-row{
-  margin-bottom:10px;
+
+.stop {
+  height: 25px;
+  font-size: 20px;
 }
+
 div .bottom {
   position: absolute;
   bottom: 0px;
+  font-size: 18px;
+}
+
+.destination {
+  font-size: 20px;
+  display: block;
+  margin: 0;
+  width: 300px;
+}
+
+.no-wrap {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .stopname {
@@ -18,6 +34,7 @@ div .bottom {
   display: inline-block;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: 20px;
 }
 .operator {
   overflow: hidden;
@@ -25,4 +42,22 @@ div .bottom {
   display: inline-block;
   width: 250px;
   text-overflow: ellipsis;
+}
+
+@media only screen and (max-width: 960px) {
+  .board {
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .board {
+    margin-right: 18px;
+  }
+}
+
+@media only screen and (min-width: 1080px) {
+  .board {
+    margin-right: 20px;
+  }
 }

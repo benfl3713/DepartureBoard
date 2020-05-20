@@ -138,7 +138,7 @@ export class SingleBoard implements OnDestroy, OnInit {
     var tempsecondstatus = ServiceStatus[this.getEnumKeyByEnumValue(ServiceStatus, Object(data)["departures"][1]["status"])]
     if (tempsecondstatus == ServiceStatus.LATE) {
       var sexpected = new Date(Date.parse(Object(data)["departures"][1]["expectedDeparture"]));
-      this.secondStatus = "EXP " + this.datePipe.transform(sexpected, 'HH:mm');
+      this.secondStatus = "Exp " + this.datePipe.transform(sexpected, 'HH:mm');
     }
     else {
       this.secondStatus = ServiceStatus[tempsecondstatus];

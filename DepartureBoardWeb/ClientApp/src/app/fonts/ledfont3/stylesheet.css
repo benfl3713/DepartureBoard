@@ -1,0 +1,13 @@
+@font-face {
+  font-family: 'LEDBOARD3';
+  src: url('DotMatrix.woff') format('woff');
+  font-weight: bolder;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'LEDBOARD3-BOLD';
+  src: url('DotMatrixBold.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}

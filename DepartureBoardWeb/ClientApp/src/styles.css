@@ -12,7 +12,12 @@ html {
 }
 
 .led {
-  font-family: 'ledfont', Arial, sans-serif;
+  font-family: 'LEDBOARD3', Arial, sans-serif;
+  color: var(--mainColour);
+}
+
+.led-bold {
+  font-family: 'LEDBOARD3-BOLD', Arial, sans-serif;
   color: var(--mainColour);
 }
 

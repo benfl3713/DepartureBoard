@@ -4,7 +4,7 @@
     <h5 class="inline-row status clickable" (click)="FilterPlatform(Platform)" *ngIf="Platform != 0">Platform {{Platform}}</h5>
   </div>
   <div class="board-row">
-    <h6 class="inline-row clickable" (click)="ChangeStation(Destination)">{{Destination}}</h6>
+    <div class="inline-row clickable no-wrap destination" (click)="ChangeStation(Destination)">{{Destination}}</div>
   </div>
   <table class="stops">
     <tr class="board-row">
@@ -12,12 +12,12 @@
       <td class="inline-row status">{{CurrentPage}}/{{TotalPages}}</td>
     </tr>
     <tr class="board-row" *ngFor="let stop of DisplayedStops">
-      <td class="inline-row"><div class="stopname clickable" (click)="ChangeStation(stop.StationName)">{{stop.StationName}}</div></td>
-      <td class="inline-row status">{{stop.Time | date: 'HH:mm'}}</td>
+      <td class="inline-row"><div class="stopname clickable stop" (click)="ChangeStation(stop.StationName)">{{stop.StationName}}</div></td>
+      <td class="inline-row status stop">{{stop.Time | date: 'HH:mm'}}</td>
     </tr>
   </table>
   <div class="board-row bottom">
-    <h6 [ngClass]="{ 'ontime': Status=='On Time', 'late': Status.includes('EXP'), 'arrived': Status=='ARRIVED'}">{{Status}}</h6>
-    <h6 class="operator">{{Operator}}</h6>
+    <div [ngClass]="{ 'ontime': Status=='On Time', 'late': Status.includes('EXP'), 'arrived': Status=='ARRIVED'}">{{Status}}</div>
+    <div class="operator">{{Operator}}</div>
   </div>
 </div>

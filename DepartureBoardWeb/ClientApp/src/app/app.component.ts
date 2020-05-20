@@ -10,7 +10,8 @@ import { ThemeService } from './Services/ThemeService';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css',
     './fonts/ledfont/stylesheet.css',
-    './fonts/ledfont2/stylesheet.css',]
+    './fonts/ledfont2/stylesheet.css',
+    './fonts/ledfont3/stylesheet.css']
 })
 export class AppComponent {
   title = 'app';

@@ -119,8 +119,8 @@ export class SingleBoard implements OnDestroy, OnInit {
       this.firstStatus = "Exp " + this.datePipe.transform(fexpected, 'HH:mm');
     }
     else {
-      this.firstStatus = ServiceStatus[tempfirststatus];
-      if (this.firstStatus == "ONTIME") {
+      this.firstStatus = this.toTitleCase(ServiceStatus[tempfirststatus]);
+      if (this.firstStatus == "Ontime") {
         this.firstStatus = "On Time";
       }
     }
@@ -141,8 +141,8 @@ export class SingleBoard implements OnDestroy, OnInit {
       this.secondStatus = "Exp " + this.datePipe.transform(sexpected, 'HH:mm');
     }
     else {
-      this.secondStatus = ServiceStatus[tempsecondstatus];
-      if (this.secondStatus == "ONTIME") {
+      this.secondStatus = this.toTitleCase(ServiceStatus[tempsecondstatus]);
+      if (this.secondStatus == "Ontime") {
         this.secondStatus = "On Time";
       }
     }
@@ -183,6 +183,10 @@ export class SingleBoard implements OnDestroy, OnInit {
       }
     });
   }
+
+  toTitleCase(input:string):string{
+    return input.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
+  };
 }
 
 export enum ServiceStatus {
@@ -191,3 +195,4 @@ export enum ServiceStatus {
   CANCELLED,
   ARRIVED
 }
+

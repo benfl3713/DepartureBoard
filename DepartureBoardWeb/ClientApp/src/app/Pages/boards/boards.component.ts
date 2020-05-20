@@ -138,8 +138,8 @@ export class BoardsComponent implements OnDestroy {
           componentRef.instance.Status = "Exp " + this.datePipe.transform(fexpected, 'HH:mm');
         }
         else {
-          componentRef.instance.Status = ServiceStatus[tempfirststatus];
-          if (componentRef.instance.Status == "ONTIME") { componentRef.instance.Status = "On Time";}
+          componentRef.instance.Status = this.toTitleCase(ServiceStatus[tempfirststatus]);
+          if (componentRef.instance.Status == "Ontime") { componentRef.instance.Status = "On Time";}
         }
 
         componentRef.instance.ProcessStops(Object(data)[i]["stops"]);
@@ -212,4 +212,8 @@ export class BoardsComponent implements OnDestroy {
   isNumber(value: string | number): boolean {
     return ((value != null) && !isNaN(Number(value.toString())));
   }
+
+  toTitleCase(input: string): string {
+    return input.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
+  };
 }

@@ -24,6 +24,10 @@ export class SingleBoard implements OnDestroy, OnInit {
       this.useArrivals = true;
     }
 
+    if(localStorage.getItem("settings_singleboard_showStationName")){
+      this.showStationName = localStorage.getItem("settings_singleboard_showStationName").toLowerCase() == 'true';
+    }
+
 	  route.params.subscribe(() => {
 		  route.queryParams.subscribe(queryParams => {
 			  this.stationCode = this.route.snapshot.paramMap.get('station');
@@ -38,7 +42,13 @@ export class SingleBoard implements OnDestroy, OnInit {
 
         ToggleConfig.LoadingBar.next(true);
         document.title = this.stationCode + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board";
-        this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode).subscribe(name => document.title = name + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board");
+        this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode).subscribe(name => {
+          document.title = name + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board";
+          this.stationName = name;
+          if(this.platform){
+            this.stationName = `${name} (Platform ${this.platform})`;
+          }
+        });
 			  this.GetDepartures();
 			  this.refresher = setInterval(() => this.GetDepartures(), 10000);
       })
@@ -68,6 +78,8 @@ export class SingleBoard implements OnDestroy, OnInit {
   noBoardsDisplay: boolean = false;
   showClock:boolean = true;
   useArrivals: boolean = false;
+  showStationName = false;
+  stationName;
 
   //first
   firstTime: Date;

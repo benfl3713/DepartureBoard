@@ -32,6 +32,7 @@
     "core-js": "^3.6.5",
     "dynamic-marquee": "^1.2.2",
     "firebase": "^7.14.3",
+    "hammerjs": "^2.0.8",
     "jquery": "3.5.0",
     "logrocket": "^1.0.7",
     "ngx-cookie-service": "^3.0.4",

@@ -22,6 +22,8 @@ export class BoardsComponent implements OnDestroy {
   useArrivals: boolean = false;
   isCustomData: boolean = false;
   showClock:boolean = true;
+  showStationName:boolean = false;
+  stationName;
   previousData;
 	public displays: number = 6;
 	public platform: number;
@@ -59,6 +61,11 @@ export class BoardsComponent implements OnDestroy {
 
     this.stationCode = this.route.snapshot.paramMap.get('station');
 
+    if(localStorage.getItem("settings_mainboard_showStationName")){
+      this.showStationName = localStorage.getItem("settings_mainboard_showStationName").toLowerCase() == 'true';
+      console.log(this.showStationName);
+    }
+
     if (this.isNumber(this.route.snapshot.paramMap.get('displays'))) {
       this.displays = Number(this.route.snapshot.paramMap.get('displays'));
     } else { this.displays = Number(localStorage.getItem("settings_mainboard_count") || 6); }
@@ -73,7 +80,13 @@ export class BoardsComponent implements OnDestroy {
     }
     document.title = this.stationCode.toUpperCase() + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board";
     if (this.isCustomData == false) {
-      this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode.toUpperCase()).subscribe(name => document.title = name + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board");
+      this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode.toUpperCase()).subscribe(name => {
+        document.title = name + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board";
+        this.stationName = name;
+          if(this.platform){
+            this.stationName = `${name} (Platform ${this.platform})`;
+          }
+      });
     }
     ToggleConfig.LoadingBar.next(true);
     this.GetDepartures();
@@ -155,6 +168,7 @@ export class BoardsComponent implements OnDestroy {
         ToggleConfig.LoadingBar.next(false);
         var data = departureData.get("jsonData")
         this.noBoardsDisplay = !data;
+        this.stationName = data.stationName;
         document.title = (data.stationName || this.stationCode) + " - Departures - Departure Board";
         this.ProcessDepartures(data.departures.slice(0, this.displays));
       }, error => {

@@ -10,7 +10,7 @@
     </mat-list>
   </div>
 
-  <form class="col" [formGroup]="settingsForm" (ngSubmit)="Save()">
+  <form class="col" [formGroup]="settingsForm" (ngSubmit)="Save()" ngNativeValidate>
     <div id="settings-general container" *ngIf="settingsType == 'general'">
       <h1>General</h1>
       <div class="row">
@@ -39,11 +39,15 @@
                 formControlName="mainboard_count">
       </mat-form-field>
       <button mat-button (click)="SetFormValue('mainboard_count', 6)" style="margin-left:20px" class="btnOrange">Reset</button>
+      <br>
+      <mat-slide-toggle [checked]='settingsForm.controls.mainboard_showStationName.value' (change)="settingsForm.controls.mainboard_showStationName.value = $event.checked">Show Station Name</mat-slide-toggle>
+      <br>
     </div>
     <div id="settings-singleboard" *ngIf="settingsType == 'singleboard'">
       <h1>Singleboard</h1>
+      <mat-slide-toggle [checked]='settingsForm.controls.singleboard_showStationName.value' (change)="settingsForm.controls.singleboard_showStationName.value = $event.checked">Show Station Name</mat-slide-toggle>
     </div>
-    <button mat-raised-button id="btnSave" class="btnGreen" (click)="Save()" style="margin-right:5px">Save</button>
+    <button mat-raised-button id="btnSave" class="btnGreen" type="submit" style="margin-right:5px">Save</button>
     <button mat-raised-button id="btnReset" class="btnRed" (click)="ResetAll()">Reset All</button>
 </form>
 </div>

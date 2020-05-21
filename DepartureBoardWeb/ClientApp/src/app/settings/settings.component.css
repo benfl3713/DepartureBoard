@@ -25,6 +25,10 @@
   color: var(--mainColour) !important;
 }
 
+::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+  background-color: var(--mainColour);  /*replace with your color*/
+}
+
 /* underline border color on focused */
 ::ng-deep .mat-focused .mat-form-field-underline .mat-form-field-ripple {
   background-color: var(--mainColour) !important;

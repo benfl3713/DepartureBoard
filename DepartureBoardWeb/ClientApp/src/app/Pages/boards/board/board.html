@@ -8,8 +8,8 @@
   </div>
   <table class="stops">
     <tr class="board-row">
-      <td class="inline-row">Calling at:</td>
-      <td class="inline-row status">{{CurrentPage}}/{{TotalPages}}</td>
+      <td class="inline-row stop">Calling at:</td>
+      <td class="inline-row status stop">{{CurrentPage}}/{{TotalPages}}</td>
     </tr>
     <tr class="board-row" *ngFor="let stop of DisplayedStops">
       <td class="inline-row"><div class="stopname clickable stop" (click)="ChangeStation(stop.StationName)">{{stop.StationName}}</div></td>

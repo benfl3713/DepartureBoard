@@ -30,6 +30,7 @@ jobs:
         DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
     - name: Docker Publish
+      if: github.ref == 'refs/heads/master'
       run: | 
         timestamp=$(date +%Y%m%d%H%M%S)
         docker tag docker.pkg.github.com/benfl3713/departureboard/departure-board:latest docker.pkg.github.com/benfl3713/departureboard/departure-board:$timestamp
@@ -41,6 +42,7 @@ jobs:
   Deploy:
     name: Deploy to ECS
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
     needs: [Build_Docker_Image]
     steps:
       - name: Checkout

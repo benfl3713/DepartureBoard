@@ -1,151 +1,108 @@
 {
-  "ipcMode": null,
-  "executionRoleArn": "arn:aws:iam::778499062515:role/ecsTaskExecutionRole",
-  "containerDefinitions": [
-    {
-      "dnsSearchDomains": null,
-      "environmentFiles": null,
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "secretOptions": null,
-        "options": {
-          "awslogs-group": "/ecs/LedDepartureBoard",
-          "awslogs-region": "eu-west-2",
-          "awslogs-stream-prefix": "ecs"
-        }
-      },
-      "entryPoint": [],
-      "portMappings": [
-        {
-          "hostPort": 80,
-          "protocol": "tcp",
-          "containerPort": 80
-        }
-      ],
-      "command": [],
-      "linuxParameters": null,
-      "cpu": 0,
-      "environment": [
-			{
-				"name": "UseAnalytics",
-				"value": "false"
-			}
-       ],
-      "resourceRequirements": null,
-      "ulimits": null,
-      "dnsServers": null,
-      "mountPoints": [],
-      "workingDirectory": null,
-      "secrets": [
-        {
-          "name": "RealTimeTrainsToken",
-          "valueFrom": "arn:aws:secretsmanager:eu-west-2:778499062515:secret:RealTimeTrainsToken-mCPfh3"
-        },
-		{
-          "name": "NationalRail_Username",
-          "valueFrom": "arn:aws:secretsmanager:eu-west-2:778499062515:secret:NationalRail_Username-ZNnBxv"
-        },
-		{
-          "name": "NationalRail_Password",
-          "valueFrom": "arn:aws:secretsmanager:eu-west-2:778499062515:secret:NationalRail_Password-qInbOW"
-        }
-      ],
-      "dockerSecurityOptions": null,
-      "memory": null,
-      "memoryReservation": null,
-      "volumesFrom": [],
-      "stopTimeout": null,
-      "image": "778499062515.dkr.ecr.eu-west-2.amazonaws.com/leddepartureboard:latest",
-      "startTimeout": null,
-      "firelensConfiguration": null,
-      "dependsOn": null,
-      "disableNetworking": null,
-      "interactive": null,
-      "healthCheck": {
-			"interval": "30",
-			"command": [
-				"CMD-SHELL",
-				"curl -f http://localhost/ || exit 1"
-			],
-			"timeout": "10",
-			"startPeriod": "10",
-			"retries": "2"
-      },
-      "essential": true,
-      "links": [],
-      "hostname": null,
-      "extraHosts": null,
-      "pseudoTerminal": null,
-      "user": null,
-      "readonlyRootFilesystem": null,
-      "dockerLabels": null,
-      "systemControls": null,
-      "privileged": null,
-      "name": "LedDepartureBoard"
+    "taskDefinition": {
+        "taskDefinitionArn": "arn:aws:ecs:eu-west-2:778499062515:task-definition/LedDepartureBoard:6",
+        "containerDefinitions": [
+            {
+                "name": "LedDepartureBoard",
+                "image": "778499062515.dkr.ecr.eu-west-2.amazonaws.com/leddepartureboard:latest",
+                "cpu": 0,
+                "portMappings": [
+                    {
+                        "containerPort": 80,
+                        "hostPort": 80,
+                        "protocol": "tcp"
+                    }
+                ],
+                "essential": true,
+                "environment": [
+                    {
+                        "name": "UseAnalytics",
+                        "value": "false"
+                    }
+                ],
+                "mountPoints": [],
+                "volumesFrom": [],
+                "secrets": [
+                    {
+                        "name": "RealTimeTrainsToken",
+                        "valueFrom": "arn:aws:secretsmanager:eu-west-2:778499062515:secret:RealTimeTrainsToken-mCPfh3"
+                    },
+                    {
+                        "name": "NationalRail_Username",
+                        "valueFrom": "arn:aws:secretsmanager:eu-west-2:778499062515:secret:NationalRail_Username-ZNnBxv"
+                    },
+                    {
+                        "name": "NationalRail_Password",
+                        "valueFrom": "arn:aws:secretsmanager:eu-west-2:778499062515:secret:NationalRail_Password-qInbOW"
+                    }
+                ],
+                "logConfiguration": {
+                    "logDriver": "awslogs",
+                    "options": {
+                        "awslogs-group": "/ecs/LedDepartureBoard",
+                        "awslogs-region": "eu-west-2",
+                        "awslogs-stream-prefix": "ecs"
+                    }
+                },
+                "healthCheck": {
+                    "command": [
+                        "CMD-SHELL",
+                        "curl -f http://localhost/ || exit 1"
+                    ],
+                    "interval": 30,
+                    "timeout": 10,
+                    "retries": 2,
+                    "startPeriod": 10
+                }
+            }
+        ],
+        "family": "LedDepartureBoard",
+        "executionRoleArn": "arn:aws:iam::778499062515:role/ecsTaskExecutionRole",
+        "networkMode": "awsvpc",
+        "revision": 6,
+        "volumes": [],
+        "status": "ACTIVE",
+        "requiresAttributes": [
+            {
+                "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+            },
+            {
+                "name": "ecs.capability.execution-role-awslogs"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.ecr-auth"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+            },
+            {
+                "name": "ecs.capability.secrets.asm.environment-variables"
+            },
+            {
+                "name": "ecs.capability.container-health-check"
+            },
+            {
+                "name": "ecs.capability.execution-role-ecr-pull"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+            },
+            {
+                "name": "ecs.capability.task-eni"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+            }
+        ],
+        "placementConstraints": [],
+        "compatibilities": [
+            "EC2",
+            "FARGATE"
+        ],
+        "requiresCompatibilities": [
+            "FARGATE"
+        ],
+        "cpu": "256",
+        "memory": "512"
     }
-  ],
-  "placementConstraints": [],
-  "memory": "512",
-  "taskRoleArn": null,
-  "compatibilities": [
-    "EC2",
-    "FARGATE"
-  ],
-  "taskDefinitionArn": "arn:aws:ecs:eu-west-2:778499062515:task-definition/LedDepartureBoard:2",
-  "family": "LedDepartureBoard",
-  "requiresAttributes": [
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "ecs.capability.execution-role-awslogs"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.ecr-auth"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "ecs.capability.execution-role-ecr-pull"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "ecs.capability.task-eni"
-    }
-  ],
-  "pidMode": null,
-  "requiresCompatibilities": [
-    "FARGATE"
-  ],
-  "networkMode": "awsvpc",
-  "cpu": "256",
-  "revision": 2,
-  "status": "ACTIVE",
-  "inferenceAccelerators": null,
-  "proxyConfiguration": null,
-  "volumes": []
 }

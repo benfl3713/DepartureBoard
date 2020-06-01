@@ -92,13 +92,36 @@ namespace TrainDataAPI
                     _realTimeTrainsToken = null;
                     throw new Exception(errorMessage);
                 }
+
+                CheckEnviornmentVariableConfig();
                 return;
             }
             catch(Exception e){
                 if(e.Message == errorMessage)
                     throw e;
+                CheckEnviornmentVariableConfig();
                 return;
             }
+
+        }
+
+        private static void CheckEnviornmentVariableConfig()
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("RealTimeTrainsToken")))
+                    _realTimeTrainsToken = Environment.GetEnvironmentVariable("RealTimeTrainsToken");
+
+                if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("UseAnalytics")))
+                    _useAnalytics = bool.Parse(Environment.GetEnvironmentVariable("UseAnalytics") ?? "false");
+
+                if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("NationalRail_Username")))
+                    _nationalRail_Username = Environment.GetEnvironmentVariable("NationalRail_Username");
+
+                if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("NationalRail_Password")))
+                    _nationalRail_Password = Environment.GetEnvironmentVariable("NationalRail_Password");
+            }
+            catch(Exception e) { Console.WriteLine(e.Message); }
         }
 
         private static void CheckFileExists()

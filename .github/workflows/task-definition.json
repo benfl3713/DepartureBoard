@@ -31,7 +31,24 @@
       "dnsServers": null,
       "mountPoints": [],
       "workingDirectory": null,
-      "secrets": null,
+      "secrets": [
+        {
+          "name": "RealTimeTrainsToken",
+          "valueFrom": "arn:aws:secretsmanager:eu-west-2:778499062515:secret:RealTimeTrainsToken-mCPfh3"
+        },
+		{
+          "name": "UseAnalytics",
+          "valueFrom": "false"
+        },
+		{
+          "name": "NationalRail_Username",
+          "valueFrom": "arn:aws:secretsmanager:eu-west-2:778499062515:secret:NationalRail_Username-ZNnBxv"
+        },
+		{
+          "name": "NationalRail_Password",
+          "valueFrom": "arn:aws:secretsmanager:eu-west-2:778499062515:secret:NationalRail_Password-qInbOW"
+        }
+      ],
       "dockerSecurityOptions": null,
       "memory": null,
       "memoryReservation": null,

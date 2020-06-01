@@ -31,7 +31,6 @@ jobs:
         RTT_Token: ${{ secrets.RTT_Token }}
 
     - name: Docker Publish
-      if: github.ref == 'refs/heads/master'
       run: | 
         timestamp=$(date +%Y%m%d%H%M%S)
         docker tag docker.pkg.github.com/benfl3713/departureboard/departure-board:latest docker.pkg.github.com/benfl3713/departureboard/departure-board:$timestamp
@@ -59,9 +58,14 @@ jobs:
       - name: Push Image to ECR
         id: push-image
         run: |
+          docker login docker.pkg.github.com -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+          docker pull docker.pkg.github.com/benfl3713/departureboard/departure-board:latest
           docker tag docker.pkg.github.com/benfl3713/departureboard/departure-board:latest 778499062515.dkr.ecr.eu-west-2.amazonaws.com/leddepartureboard:latest
           docker push 778499062515.dkr.ecr.eu-west-2.amazonaws.com/leddepartureboard:latest
           echo "::set-output name=image::778499062515.dkr.ecr.eu-west-2.amazonaws.com/leddepartureboard:latest"
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
         #Fill in the new image ID in the Amazon ECS task definition
       - name: Update ECS Task Definition

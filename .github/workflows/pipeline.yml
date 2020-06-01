@@ -75,6 +75,7 @@ jobs:
           task-definition: task-definition.json
           container-name: LedDepartureBoard
           image: ${{ steps.push-image.outputs.image }}
+          ACTIONS_STEP_DEBUG : true
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1

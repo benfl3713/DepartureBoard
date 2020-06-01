@@ -38,7 +38,7 @@
         },
 		{
           "name": "UseAnalytics",
-          "valueFrom": "false"
+          "value": "false"
         },
 		{
           "name": "NationalRail_Username",

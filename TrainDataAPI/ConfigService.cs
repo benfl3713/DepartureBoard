@@ -97,9 +97,9 @@ namespace TrainDataAPI
                 return;
             }
             catch(Exception e){
-                if(e.Message == errorMessage)
-                    throw e;
                 CheckEnviornmentVariableConfig();
+                if (_realTimeTrainsToken == "[INSERT_REALTIMETRAINS_TOKEN_HERE]" && e.Message == errorMessage)
+                    throw e;
                 return;
             }
 

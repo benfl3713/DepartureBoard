@@ -28,9 +28,6 @@
       "environment": [],
       "resourceRequirements": null,
       "ulimits": null,
-      "repositoryCredentials": {
-        "credentialsParameter": "arn:aws:secretsmanager:eu-west-2:778499062515:secret:Github_Token-gSsViD"
-      },
       "dnsServers": null,
       "mountPoints": [],
       "workingDirectory": null,
@@ -40,7 +37,7 @@
       "memoryReservation": null,
       "volumesFrom": [],
       "stopTimeout": null,
-      "image": "docker.pkg.github.com/benfl3713/departureboard/departure-board",
+      "image": "778499062515.dkr.ecr.eu-west-2.amazonaws.com/leddepartureboard:latest",
       "startTimeout": null,
       "firelensConfiguration": null,
       "dependsOn": null,
@@ -67,7 +64,7 @@
     "EC2",
     "FARGATE"
   ],
-  "taskDefinitionArn": "arn:aws:ecs:eu-west-2:778499062515:task-definition/LedDepartureBoard:1",
+  "taskDefinitionArn": "arn:aws:ecs:eu-west-2:778499062515:task-definition/LedDepartureBoard:2",
   "family": "LedDepartureBoard",
   "requiresAttributes": [
     {
@@ -86,13 +83,19 @@
       "targetId": null,
       "targetType": null,
       "value": null,
+      "name": "com.amazonaws.ecs.capability.ecr-auth"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
       "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
     },
     {
       "targetId": null,
       "targetType": null,
       "value": null,
-      "name": "ecs.capability.private-registry-authentication.secretsmanager"
+      "name": "ecs.capability.execution-role-ecr-pull"
     },
     {
       "targetId": null,
@@ -113,7 +116,7 @@
   ],
   "networkMode": "awsvpc",
   "cpu": "256",
-  "revision": 1,
+  "revision": 2,
   "status": "ACTIVE",
   "inferenceAccelerators": null,
   "proxyConfiguration": null,

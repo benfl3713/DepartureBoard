@@ -25,7 +25,12 @@
       "command": [],
       "linuxParameters": null,
       "cpu": 0,
-      "environment": [],
+      "environment": [
+			{
+				"name": "UseAnalytics",
+				"value": "false"
+			}
+       ],
       "resourceRequirements": null,
       "ulimits": null,
       "dnsServers": null,
@@ -35,10 +40,6 @@
         {
           "name": "RealTimeTrainsToken",
           "valueFrom": "arn:aws:secretsmanager:eu-west-2:778499062515:secret:RealTimeTrainsToken-mCPfh3"
-        },
-		{
-          "name": "UseAnalytics",
-          "value": "false"
         },
 		{
           "name": "NationalRail_Username",
@@ -60,7 +61,16 @@
       "dependsOn": null,
       "disableNetworking": null,
       "interactive": null,
-      "healthCheck": null,
+      "healthCheck": {
+			"interval": "30",
+			"command": [
+				"CMD-SHELL",
+				"curl -f http://localhost/ || exit 1"
+			],
+			"timeout": "10",
+			"startPeriod": "10",
+			"retries": "2"
+      },
       "essential": true,
       "links": [],
       "hostname": null,

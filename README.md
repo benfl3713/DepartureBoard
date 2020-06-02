@@ -1,8 +1,9 @@
 # DepartureBoard
-![](https://github.com/benfl3713/DepartureBoard/workflows/Docker/badge.svg?branch=master)
+![](https://github.com/benfl3713/DepartureBoard/workflows/Pipeline/badge.svg?branch=master)
 ![](https://github.com/benfl3713/DepartureBoard/workflows/.NET%20Core/badge.svg?branch=master)
 
-This image creates a web server showing live train times in the UK and is designed to look like the led departure boards you see in the station
+# Welcome
+This project is an angular website designed to present the UK train departures in a way similar to the led boards you find in stations accross the UK. For more info please see https://leddepartureboard.com
 
 # How to Use
 1. To change the station just modify the url. E.g  *http://your-site.com/EUS* will show euston station times
@@ -12,6 +13,13 @@ This image creates a web server showing live train times in the UK and is design
 # Working Example 
 To view a running example head over to
 https://leddepartureboard.com/EUS/12
+
+# Technology
+- Angular frontend using typescript as the scriping language.
+- C# asp.net core backend to retrieve the departure data.
+- Runs using dotnet core so it cross compatible accross operating systems.
+- Uses google firebase as the document storage and user authentication.
+
 
 # Run locally
 To run the project simply clone the repo and open the solution file and click run.  

@@ -28,7 +28,7 @@
       "environment": [
         {
           "name": "UseAnalytics",
-          "value": "false"
+          "value": "true"
         }
       ],
       "resourceRequirements": null,

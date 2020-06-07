@@ -5,7 +5,7 @@ import { CookieService } from 'ngx-cookie-service';
 export class Config {
   public static LoadUseAnalytics(http: HttpClient, cookieService: CookieService): () => Promise<any> {
     return () => http.get<boolean>("/api/Config/UseAnalytics").toPromise().then(useAnalytics => {
-      if (useAnalytics === false) {
+      if (useAnalytics === true) {
         var cookie = cookieService.get("CookieScriptConsent");
         if (cookie == "") { return;}
         var cookieEnabled = JSON.parse(cookie)["action"];

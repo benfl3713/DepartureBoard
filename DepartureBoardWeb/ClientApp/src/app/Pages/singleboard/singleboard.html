@@ -2,7 +2,7 @@
   <h1 id="title" class="led centre-text" *ngIf="showStationName">{{stationName}}</h1>
   <h1 class="led centre-text" *ngIf="noBoardsDisplay">No Departures Found for {{stationCode}}</h1>
   <div class="singleboard-row">
-    <h1 class="led inline-row tab">1st </h1>
+    <h1 class="led inline-row tab">1st</h1>
     <h1 class="led inline-row tab2">{{firstTime  | date: 'HH:mm'}}</h1>
     <h1 class="led inline-row tab clickable" (click)="FilterPlatform(firstPlatform)">{{firstPlatform}}</h1>
     <h1 class="led inline-row tab clickable" (click)="ChangeStation(firstDestination)">{{firstDestination}}</h1>

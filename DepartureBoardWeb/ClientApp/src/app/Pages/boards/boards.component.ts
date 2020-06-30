@@ -8,6 +8,8 @@ import { ToggleConfig } from '../../ToggleConfig';
 import { GoogleAnalyticsEventsService } from '../../Services/google.analytics';
 import { AuthService } from 'src/app/Services/auth.service';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { DepartureService } from 'src/app/Services/departure.service';
+import { StationLookupService } from 'src/app/Services/station-lookup.service';
 
 @Component({
   selector: 'app-boards',
@@ -15,7 +17,6 @@ import { AngularFirestore } from '@angular/fire/firestore';
   styleUrls: ['./boards.styling.css']
 })
 export class BoardsComponent implements OnDestroy {
-  private headers = new HttpHeaders().set('Content-Type', "application/json");
   time = new Date();
   refresher;
   noBoardsDisplay: boolean = false;
@@ -30,7 +31,7 @@ export class BoardsComponent implements OnDestroy {
   public stationCode: string = "EUS";
   @ViewChild('Boards', { read: ViewContainerRef, static: false }) Boards: ViewContainerRef;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private datePipe: DatePipe, private resolver: ComponentFactoryResolver, private router: Router, public googleAnalyticsEventsService: GoogleAnalyticsEventsService, private auth: AuthService, private afs: AngularFirestore) {
+  constructor(private http: HttpClient, private route: ActivatedRoute, private datePipe: DatePipe, private resolver: ComponentFactoryResolver, private router: Router, public googleAnalyticsEventsService: GoogleAnalyticsEventsService, private auth: AuthService, private afs: AngularFirestore, private departureService:DepartureService, private stationLookupService:StationLookupService) {
     setInterval(() => {
       this.time = new Date();
     }, 1000);
@@ -51,7 +52,7 @@ export class BoardsComponent implements OnDestroy {
 
   SetupBoard(queryParams) {
     const s: UrlSegment[] = this.router.parseUrl(this.router.url).root.children[PRIMARY_OUTLET].segments;
-    if (s[0].path && s[0].path.toLowerCase() == "custom-departures") {
+    if (s[0].path && s[0].path.toLowerCase() == "arrivals") {
       this.useArrivals = true;
     }
 
@@ -80,7 +81,7 @@ export class BoardsComponent implements OnDestroy {
     }
     document.title = this.stationCode.toUpperCase() + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board";
     if (this.isCustomData == false) {
-      this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode.toUpperCase()).subscribe(name => {
+      this.stationLookupService.GetStationNameFromCode(this.stationCode).subscribe(name => {
         document.title = name + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board";
         this.stationName = name;
           if(this.platform){
@@ -102,16 +103,7 @@ export class BoardsComponent implements OnDestroy {
       return this.GetCustomData();
     }
 
-    const formData = new FormData();
-    formData.append("stationCode", this.stationCode.toUpperCase());
-    formData.append("amount", this.displays.toString());
-    var url = "/api/LiveDepartures/" + (this.useArrivals ? "GetLatestArrivals" : "GetLatestDepatures");
-
-	  if (this.platform) {
-		  url = url + "?platform=" + this.platform;
-    }
-    
-    this.http.post<object[]>(url, formData).subscribe(response => {
+    this.departureService.GetDepartures(this.stationCode, this.displays, this.useArrivals, this.platform).subscribe(response => {
       ToggleConfig.LoadingBar.next(false)
       this.ProcessDepartures(response);
     }, () => ToggleConfig.LoadingBar.next(false));

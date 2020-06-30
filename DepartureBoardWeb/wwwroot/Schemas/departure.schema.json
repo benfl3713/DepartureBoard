@@ -15,7 +15,7 @@
 			"type": "string",
 			"default": "",
 			"examples": [
-				"Woof Station"
+				"Example Station"
 			],
 			"pattern": "^.*$"
 		},

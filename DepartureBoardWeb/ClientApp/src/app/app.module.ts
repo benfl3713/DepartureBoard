@@ -31,6 +31,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { CustomDepartureBoardComponent } from './Pages/custom-departure-board/custom-departure-board.component';
 import { AddCustomDepartureComponent } from './Pages/custom-departure-board/add-custom-departure/add-custom-departure.component';
 import { AboutCustomDepartureComponent } from './Pages/custom-departure-board/about-custom-departure/about-custom-departure.component';
+import { DepartureService } from './Services/departure.service';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo',
@@ -112,7 +113,8 @@ const firebaseConfig = {
     GoogleAnalyticsEventsService,
     { provide: APP_INITIALIZER, useFactory: Config.LoadUseAnalytics, deps: [HttpClient, CookieService], multi: true },
     // { provide: APP_INITIALIZER, useFactory: AppModule.LoadFirebaseConfig, deps: [HttpClient], multi: true },
-    CookieService
+    CookieService,
+    DepartureService
   ],
   bootstrap: [AppComponent],
 	entryComponents: [Board, SearchComponent, NewsWidgetComponent, FooterComponent]

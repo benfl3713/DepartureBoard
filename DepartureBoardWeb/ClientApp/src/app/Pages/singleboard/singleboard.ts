@@ -5,16 +5,15 @@ import { DatePipe } from '@angular/common';
 import { ToggleConfig } from '../../ToggleConfig';
 import { GoogleAnalyticsEventsService } from '../../Services/google.analytics';
 import { Marquee } from 'dynamic-marquee';
+import { DepartureService } from 'src/app/Services/departure.service';
 
 @Component({
   selector: 'app-singleboard',
   templateUrl: './singleboard.html',
   styleUrls: ['./singleboard.styling.css']
 })
-export class SingleBoard implements OnDestroy, OnInit {
-  private headers = new HttpHeaders().set('Content-Type', "application/json");
-  
-  constructor(private http: HttpClient, private route: ActivatedRoute, private datePipe: DatePipe, private router: Router, public googleAnalyticsEventsService: GoogleAnalyticsEventsService) {
+export class SingleBoard implements OnDestroy, OnInit { 
+  constructor(private http: HttpClient, private route: ActivatedRoute, private datePipe: DatePipe, private router: Router, public googleAnalyticsEventsService: GoogleAnalyticsEventsService, private departureService:DepartureService) {
     setInterval(() => {
       this.time = new Date();
     }, 1000);
@@ -60,17 +59,17 @@ export class SingleBoard implements OnDestroy, OnInit {
       }
     });
   }
-    ngOnInit(): void {
-      this.marquee = new Marquee(document.getElementById('singleboard-information'), {
-        rate: -300
-      });
+  ngOnInit(): void {
+    this.marquee = new Marquee(document.getElementById('singleboard-information'), {
+      rate: -300
+    });
 
-      this.marquee.onAllItemsRemoved(() => {
-        const $item = document.createElement('div');
-        $item.textContent = this.information;
-        this.marquee.appendItem($item)
-      });
-    }
+    this.marquee.onAllItemsRemoved(() => {
+      const $item = document.createElement('div');
+      $item.textContent = this.information;
+      this.marquee.appendItem($item)
+    });
+  }
 	stationCode: string;
 	platform: number;
   time = new Date();
@@ -99,12 +98,8 @@ export class SingleBoard implements OnDestroy, OnInit {
     if (this.stationCode == null || this.stationCode == "") {
       return;
     }
-    var url = "/api/LiveDepartures/" + (this.useArrivals ? "GetLatestArrivalsSingleBoard" : "GetLatestDepaturesSingleBoard");
-	  if (this.platform) {
-		  url = url + "?platform=" + this.platform;
-    }
     this.googleAnalyticsEventsService.emitEvent("GetSingleBoardDepartures", this.stationCode, (this.useArrivals ? "GetLatestArrivalsSingleBoard" : "GetLatestDepaturesSingleBoard"));
-    this.http.post<object[]>(url, JSON.stringify(this.stationCode), { headers: this.headers }).subscribe(response => {
+    this.departureService.GetSingleboardDepartures(this.stationCode, this.useArrivals, this.platform).subscribe(response => {
       ToggleConfig.LoadingBar.next(false)
       this.ProcessDepartures(response);
     }, () => ToggleConfig.LoadingBar.next(false));

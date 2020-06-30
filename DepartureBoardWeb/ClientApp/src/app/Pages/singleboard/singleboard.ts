@@ -6,6 +6,7 @@ import { ToggleConfig } from '../../ToggleConfig';
 import { GoogleAnalyticsEventsService } from '../../Services/google.analytics';
 import { Marquee } from 'dynamic-marquee';
 import { DepartureService } from 'src/app/Services/departure.service';
+import { StationLookupService } from 'src/app/Services/station-lookup.service';
 
 @Component({
   selector: 'app-singleboard',
@@ -13,7 +14,7 @@ import { DepartureService } from 'src/app/Services/departure.service';
   styleUrls: ['./singleboard.styling.css']
 })
 export class SingleBoard implements OnDestroy, OnInit { 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private datePipe: DatePipe, private router: Router, public googleAnalyticsEventsService: GoogleAnalyticsEventsService, private departureService:DepartureService) {
+  constructor(private http: HttpClient, private route: ActivatedRoute, private datePipe: DatePipe, private router: Router, public googleAnalyticsEventsService: GoogleAnalyticsEventsService, private departureService:DepartureService, private stationLookupService:StationLookupService) {
     setInterval(() => {
       this.time = new Date();
     }, 1000);
@@ -41,7 +42,7 @@ export class SingleBoard implements OnDestroy, OnInit {
 
         ToggleConfig.LoadingBar.next(true);
         document.title = this.stationCode + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board";
-        this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode).subscribe(name => {
+        this.stationLookupService.GetStationNameFromCode(this.stationCode).subscribe(name => {
           document.title = name + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board";
           this.stationName = name;
           if(this.platform){

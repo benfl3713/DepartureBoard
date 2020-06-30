@@ -9,6 +9,7 @@ import { GoogleAnalyticsEventsService } from '../../Services/google.analytics';
 import { AuthService } from 'src/app/Services/auth.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { DepartureService } from 'src/app/Services/departure.service';
+import { StationLookupService } from 'src/app/Services/station-lookup.service';
 
 @Component({
   selector: 'app-boards',
@@ -30,7 +31,7 @@ export class BoardsComponent implements OnDestroy {
   public stationCode: string = "EUS";
   @ViewChild('Boards', { read: ViewContainerRef, static: false }) Boards: ViewContainerRef;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private datePipe: DatePipe, private resolver: ComponentFactoryResolver, private router: Router, public googleAnalyticsEventsService: GoogleAnalyticsEventsService, private auth: AuthService, private afs: AngularFirestore, private departureService:DepartureService) {
+  constructor(private http: HttpClient, private route: ActivatedRoute, private datePipe: DatePipe, private resolver: ComponentFactoryResolver, private router: Router, public googleAnalyticsEventsService: GoogleAnalyticsEventsService, private auth: AuthService, private afs: AngularFirestore, private departureService:DepartureService, private stationLookupService:StationLookupService) {
     setInterval(() => {
       this.time = new Date();
     }, 1000);
@@ -80,7 +81,7 @@ export class BoardsComponent implements OnDestroy {
     }
     document.title = this.stationCode.toUpperCase() + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board";
     if (this.isCustomData == false) {
-      this.http.get("/api/StationLookup/GetStationNameFromCode?code=" + this.stationCode.toUpperCase()).subscribe(name => {
+      this.stationLookupService.GetStationNameFromCode(this.stationCode).subscribe(name => {
         document.title = name + (this.useArrivals ? " - Arrivals" : " - Departures") + " - Departure Board";
         this.stationName = name;
           if(this.platform){

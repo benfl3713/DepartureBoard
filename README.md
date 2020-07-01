@@ -5,10 +5,12 @@
 # Welcome
 This project is an angular website designed to present the UK train departures in a way similar to the led boards you find in stations accross the UK. For more info please see https://leddepartureboard.com
 
+![](https://github.com/benfl3713/DepartureBoard/blob/master/DepartureBoardWeb/wwwroot/preview.png?raw=true)
+
 # How to Use
-1. To change the station just modify the url. E.g  *http://your-site.com/EUS* will show euston station times
+1. To change the station just modify the url. E.g  http://your-site.com/EUS will show euston station times
 2. To change the amount of boards on the screen just add a number to the end. E.g http://your-site.com/EUS/12
-3. To view a platform style board just modify the url with a prefix of 'singleboard'. E.g *http://your-site.com/singleboard/EUS*
+3. To view a platform style board just modify the url with a prefix of 'singleboard'. E.g http://your-site.com/singleboard/EUS
 
 # Working Example 
 To view a running example head over to
@@ -20,6 +22,13 @@ https://leddepartureboard.com/EUS/12
 - Runs using dotnet core so it cross compatible accross operating systems.
 - Uses google firebase as the document storage and user authentication.
 
+# Docker
+This project is also build into a docker image every time we merge to master. This means you can run this website very easiy simply by runnning the command  
+**"docker run -p 8080:80 -e "RealTimeTrainsToken=[INSERT_REALTIMETRAINS_TOKEN_HERE]" benfl3713/departure-board"**  
+This will run the website on port 8080 of the host  
+
+There is also a docker-compose file in this repository that will make it easier to spin up the website with the command  
+"docker-compose up"
 
 # Run locally
 To run the project simply clone the repo and open the solution file and click run.  
@@ -32,10 +41,3 @@ To build the program you will need node.js installed as well asp.net core sdk
 To host the site once published you will need the .net core hosting bundle installed
 
 If you get a startup error saying "missing package ..." or similar then try running **npm install** in the **DepartureBoardWeb\ClientApp** directory
-
-# Docker
-This project is also build into a docker image every time we merge to master. This means you can run this website very easiy simply by runnning the command "docker run -p 8080:80 benfl3713/departure-board"  
-This will run the website on port 8080 of the host  
-
-There is also a docker-compose file in this repository that will make it easier to spin up the website with the command  
-"docker-compose up"

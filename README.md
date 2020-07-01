@@ -5,6 +5,8 @@
 # Welcome
 This project is an angular website designed to present the UK train departures in a way similar to the led boards you find in stations accross the UK. For more info please see https://leddepartureboard.com
 
+![](https://github.com/benfl3713/DepartureBoard/blob/master/DepartureBoardWeb/wwwroot/preview.png?raw=true)
+
 # How to Use
 1. To change the station just modify the url. E.g  http://your-site.com/EUS will show euston station times
 2. To change the amount of boards on the screen just add a number to the end. E.g http://your-site.com/EUS/12

@@ -27,7 +27,7 @@ export class BoardsComponent implements OnDestroy {
   stationName;
   previousData;
 	public displays: number = 6;
-	public platform: number;
+	public platform: string;
   public stationCode: string = "EUS";
   @ViewChild('Boards', { read: ViewContainerRef, static: false }) Boards: ViewContainerRef;
 
@@ -71,7 +71,7 @@ export class BoardsComponent implements OnDestroy {
       this.displays = Number(this.route.snapshot.paramMap.get('displays'));
     } else { this.displays = Number(localStorage.getItem("settings_mainboard_count") || 6); }
 
-    if (queryParams['platform'] && this.isNumber(queryParams['platform'])) {
+    if (queryParams['platform']) {
       this.platform = queryParams['platform'];
     }
     else { this.platform = null }
@@ -134,9 +134,10 @@ export class BoardsComponent implements OnDestroy {
         const factory = this.resolver.resolveComponentFactory(Board);
         const componentRef = this.Boards.createComponent(factory);
         componentRef.instance.DepartureTime = Object(data)[i]["aimedDeparture"];
-        componentRef.instance.Platform = <number>Object(data)[i]["platform"];
+        componentRef.instance.Platform = <string>Object(data)[i]["platform"];
         componentRef.instance.Destination = <string>Object(data)[i]["destination"];
         componentRef.instance.Operator = <string>Object(data)[i]["operatorName"];
+        componentRef.instance.Length = <number>Object(data)[i]["length"];
         var tempfirststatus = ServiceStatus[this.getEnumKeyByEnumValue(ServiceStatus, Object(data)[i]["status"])]
         if (tempfirststatus == ServiceStatus.LATE && Object(data)[i]["expectedDeparture"]) {
           var fexpected = new Date(Date.parse(Object(data)[i]["expectedDeparture"]));

@@ -31,7 +31,7 @@ export class SingleBoard implements OnDestroy, OnInit {
 	  route.params.subscribe(() => {
 		  route.queryParams.subscribe(queryParams => {
 			  this.stationCode = this.route.snapshot.paramMap.get('station');
-			  if (queryParams['platform'] && this.isNumber(queryParams['platform'])) {
+			  if (queryParams['platform']) {
 				  this.platform = queryParams['platform'];
 			  }
         else { this.platform = null }
@@ -72,7 +72,7 @@ export class SingleBoard implements OnDestroy, OnInit {
     });
   }
 	stationCode: string;
-	platform: number;
+	platform: string;
   time = new Date();
   refresher;
   noBoardsDisplay: boolean = false;
@@ -83,7 +83,7 @@ export class SingleBoard implements OnDestroy, OnInit {
 
   //first
   firstTime: Date;
-  firstPlatform: number;
+  firstPlatform: string;
   firstDestination: string;
   firstStatus: string = "";
 
@@ -91,7 +91,7 @@ export class SingleBoard implements OnDestroy, OnInit {
   marquee;
   //second
   secondTime: Date;
-  secondPlatform: number;
+  secondPlatform: string;
   secondDestination: string;
   secondStatus: string = "";
 
@@ -119,7 +119,7 @@ export class SingleBoard implements OnDestroy, OnInit {
 
     //first
     this.firstTime = <Date>Object(data)["departures"][0]["aimedDeparture"];
-    this.firstPlatform = <number>Object(data)["departures"][0]["platform"];
+    this.firstPlatform = <string>Object(data)["departures"][0]["platform"];
     this.firstDestination = <string>Object(data)["departures"][0]["destination"];
     var tempfirststatus = ServiceStatus[this.getEnumKeyByEnumValue(ServiceStatus, Object(data)["departures"][0]["status"])]
     if (tempfirststatus == ServiceStatus.LATE) {
@@ -141,7 +141,7 @@ export class SingleBoard implements OnDestroy, OnInit {
     }
     //second
     this.secondTime = <Date>Object(data)["departures"][1]["aimedDeparture"];
-    this.secondPlatform = <number>Object(data)["departures"][1]["platform"];
+    this.secondPlatform = <string>Object(data)["departures"][1]["platform"];
     this.secondDestination = <string>Object(data)["departures"][1]["destination"];
     var tempsecondstatus = ServiceStatus[this.getEnumKeyByEnumValue(ServiceStatus, Object(data)["departures"][1]["status"])]
     if (tempsecondstatus == ServiceStatus.LATE) {

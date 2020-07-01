@@ -23,7 +23,7 @@ namespace DepartureBoardWeb
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllersWithViews();
-			services.AddSingleton(typeof(StationLookup));
+			services.AddSingleton(new StationLookup());
 			// In production, the Angular files will be served from this directory
 			services.AddSpaStaticFiles(configuration =>
 			{

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ServiceStatus } from '../../singleboard/singleboard'
+import { HttpClient } from '@angular/common/http';
 import { Router, Params, ActivatedRoute, UrlSegment, PRIMARY_OUTLET } from '@angular/router';
 
 @Component({
@@ -8,9 +7,7 @@ import { Router, Params, ActivatedRoute, UrlSegment, PRIMARY_OUTLET } from '@ang
   templateUrl: './board.html',
   styleUrls: ['./board.css']
 })
-export class Board{
-  private headers = new HttpHeaders().set('Content-Type', "application/json");
-
+export class Board {
   constructor(private http: HttpClient, private router: Router) {
     const s: UrlSegment[] = this.router.parseUrl(this.router.url).root.children[PRIMARY_OUTLET].segments;
     if (s[0].path && s[0].path.toLowerCase() == "arrivals") {
@@ -20,12 +17,13 @@ export class Board{
   }
 
   public DepartureTime: Date;
-  public Platform: number;
+  public Platform: string;
   public Destination: string;
   public Stops: Array<Stop> = new Array<Stop>();
   public DisplayedStops: Array<Stop> = new Array<Stop>();
   public Status: string;
   public Operator: string;
+  public Length: number;
   useArrivals: boolean = false;
 
   CurrentPage: number = 0;

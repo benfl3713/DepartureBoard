@@ -45,6 +45,16 @@ namespace TrainDataAPI
             }
         }
 
+        public static string NationalRail_AccessToken
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_nationalRail_AccessToken))
+                    LoadConfig();
+                return _nationalRail_AccessToken;
+            }
+        }
+
         public static bool UseCaching
         {
             get
@@ -70,6 +80,7 @@ namespace TrainDataAPI
         private static bool? _useAnalytics;
         private static string _nationalRail_Username;
         private static string _nationalRail_Password;
+        private static string _nationalRail_AccessToken;
         private static bool? _useCaching;
         private static int? _cachePeriod;
 
@@ -86,6 +97,7 @@ namespace TrainDataAPI
                 _useAnalytics = bool.Parse(rootElement.Element("UseAnalytics")?.Value ?? "false");
                 _nationalRail_Username = rootElement.Element("NationalRail")?.Element("username")?.Value;
                 _nationalRail_Password = rootElement.Element("NationalRail")?.Element("password")?.Value;
+                _nationalRail_AccessToken = rootElement.Element("NationalRail")?.Element("accessToken")?.Value;
                 _useCaching = bool.Parse(rootElement.Element("UseCaching")?.Value ?? "false");
                 _cachePeriod = int.Parse(rootElement.Element("CachePeriod")?.Value ?? "0");
                 if (_realTimeTrainsToken == "[INSERT_REALTIMETRAINS_TOKEN_HERE]"){
@@ -120,6 +132,8 @@ namespace TrainDataAPI
 
                 if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("NationalRail_Password")))
                     _nationalRail_Password = Environment.GetEnvironmentVariable("NationalRail_Password");
+                if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("NationalRail_AccessToken")))
+                    _nationalRail_AccessToken = Environment.GetEnvironmentVariable("NationalRail_AccessToken");
             }
             catch(Exception e) { Console.WriteLine(e.Message); }
         }

@@ -34,7 +34,7 @@
     <h4 class="led-bold">Arrivals</h4>
     <ul>
       <li>To view the arrivals instead of departures prefix the page with 'arrivals'. E.g <a [routerLink]='["arrivals/BHM"]'>www.leddepartureboard.com/arrivals/BHM</a></li>
-      <li>You can do the same for the singleboard view as well. E.g <a [routerLink]='["singleboard/arrivals/BHM"]'>www.leddepartureboard.com/singleboards/arrivals/BHM</a></li>
+      <li>You can do the same for the singleboard view as well. E.g <a [routerLink]='["singleboard/arrivals/BHM"]'>www.leddepartureboard.com/singleboard/arrivals/BHM</a></li>
     </ul>
     <h4 class="led-bold">Tips</h4>
     <ol>
@@ -50,6 +50,9 @@
       </li>
       <li>
         The search functionality is powered by the national rail data feed (NRE). For more information visit, <a href="https://www.nationalrail.co.uk/100296.aspx" target="_blank">https://www.nationalrail.co.uk/100296.aspx</a>
+      </li>
+      <li>
+        Departure Data can also be fetched from national rail (Including train car length for certain services) by changing the data source in settings. This is fetched using the darwin api
       </li>
     </ul>
     <h4 class="led-bold">Project Info</h4>

@@ -15,7 +15,7 @@ namespace TrainDataAPI
         {
         }
 
-        public List<Departure> GetLiveDepartures(string stationCode)
+        public List<Departure> GetLiveDepartures(string stationCode, int count)
         {
             var client = new RestClient($"http://transportapi.com/v3/uk/train/station/{stationCode}/live.json");
             var request = new RestRequest(Method.GET);
@@ -24,7 +24,7 @@ namespace TrainDataAPI
             return DeserialiseDeparture(response.Content);
         }
 
-        public List<Departure> GetLiveArrivals(string stationCode)
+        public List<Departure> GetLiveArrivals(string stationCode, int count)
         {
             throw new NotImplementedException();
         }
@@ -67,7 +67,7 @@ namespace TrainDataAPI
                 {
                     try
                     {
-                        int.TryParse((Jdeparture["platform"]??"1").ToString(), out int platform);
+                        string platform = (Jdeparture["platform"] ?? "1").ToString();
                         string operatorName = Jdeparture["operator_name"].ToString();
                         DateTime.TryParse(date + " " + Jdeparture["aimed_departure_time"].ToString(), out DateTime aimedDepatureTime);
                         if (aimedDepatureTime == DateTime.MinValue)

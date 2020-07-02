@@ -1,7 +1,7 @@
 <div class="board led col">
   <div class="board-row">
     <h5 class="inline-row">{{DepartureTime | date: 'HH:mm'}}</h5>
-    <h5 class="inline-row status clickable" (click)="FilterPlatform(Platform)" *ngIf="Platform != 0">Platform {{Platform}}</h5>
+    <h5 class="inline-row status clickable" (click)="FilterPlatform(Platform)" *ngIf="Platform && Platform != '0'">Platform {{Platform}}</h5>
   </div>
   <div class="board-row">
     <div class="inline-row clickable no-wrap destination" (click)="ChangeStation(Destination)">{{Destination}}</div>

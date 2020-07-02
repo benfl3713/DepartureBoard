@@ -9,7 +9,7 @@ namespace TrainDataAPI
         public DateTime LastUpdated { get; set; }
         public string StationName { get; set; }
         public string StationCode { get; set; }
-        public int Platform { get; set; }
+        public string Platform { get; set; }
         public string OperatorName { get; set; }
         public DateTime AimedDeparture { get; set; }
         public DateTime ExpectedDeparture { get; set; }
@@ -18,6 +18,7 @@ namespace TrainDataAPI
         public ServiceStatus Status { get; set; }
         public string ServiceTimeTableUrl { get; set; }
         public Type FromDataSouce { get; set; }
+        public int Length { get; set; }
         public List<StationStop> Stops
         {
             get
@@ -30,7 +31,7 @@ namespace TrainDataAPI
 
         private List<StationStop> _stops { get; set; } = new List<StationStop>();
 
-        public Departure(string stationName, string stationCode, int platform, string operatorName, DateTime aimedDeparture, DateTime expectedDeparture, string destination, ServiceStatus status, string origin = "", DateTime? lastUpdated = null, string serviceTimeTable = null, Type from = null)
+        public Departure(string stationName, string stationCode, string platform, string operatorName, DateTime aimedDeparture, DateTime expectedDeparture, string destination, ServiceStatus status, string origin = "", DateTime? lastUpdated = null, string serviceTimeTable = null, Type from = null, int length = 0)
         {
             StationName = stationName;
             StationCode = stationCode;
@@ -44,6 +45,7 @@ namespace TrainDataAPI
             LastUpdated = lastUpdated ?? DateTime.Now;
             ServiceTimeTableUrl = serviceTimeTable;
             FromDataSouce = from;
+            Length = length;
         }
 
         public void LoadStops()

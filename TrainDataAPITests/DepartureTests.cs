@@ -7,7 +7,7 @@ namespace TrainDataAPITests
 	public class DepartureTests
 	{
 		private readonly DateTime testTime = new DateTime(2020, 5, 4);
-		private Departure GetTestDeparture() =>  new Departure("Euston", "EUS", 1, "Test", testTime, testTime, "Birmingham", Departure.ServiceStatus.ONTIME);
+		private Departure GetTestDeparture() =>  new Departure("Euston", "EUS", "1", "Test", testTime, testTime, "Birmingham", Departure.ServiceStatus.ONTIME);
 
 		[Test]
 		public void ClearStops()

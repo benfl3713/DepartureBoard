@@ -10,7 +10,7 @@ namespace TrainDataAPI
     public class RealTimeTrainsAPI : ITrainDatasource
     {
         private static List<CacheDeparture> cachedDepartures = new List<CacheDeparture>();
-        public List<Departure> GetLiveDepartures(string stationCode)
+        public List<Departure> GetLiveDepartures(string stationCode, int count)
         {
             if (ConfigService.UseCaching && ConfigService.CachePeriod > 0)
             {
@@ -30,7 +30,7 @@ namespace TrainDataAPI
             return departures;
         }
 
-        public List<Departure> GetLiveArrivals(string stationCode)
+        public List<Departure> GetLiveArrivals(string stationCode, int count)
         {
             return GetDepartures(stationCode, true);
         }
@@ -103,7 +103,7 @@ namespace TrainDataAPI
                             continue;
 
                         string date = Jdeparture["runDate"].ToString();
-                        int.TryParse((Jdeparture["locationDetail"]["platform"])?.ToString()??"0", out int platform);
+                        string platform = (Jdeparture["locationDetail"]["platform"])?.ToString() ?? "0";
                         string operatorName = Jdeparture["atocName"].ToString();
                         DateTime.TryParse(date + " " + Jdeparture["locationDetail"]["gbttBookedDeparture"]?.ToString().Substring(0, 2) + ":" + Jdeparture["locationDetail"]["gbttBookedDeparture"]?.ToString().Substring(2, 2), out DateTime aimedDepatureTime);
                         if (aimedDepatureTime == DateTime.MinValue)

@@ -169,7 +169,7 @@ export class SingleBoard implements OnDestroy, OnInit {
 		return ((value != null) && !isNaN(Number(value.toString())));
   }
 
-  FilterPlatform(platform: number) {
+  FilterPlatform(platform: string) {
     if (platform) {
       const queryParams: Params = { platform };
       this.router.navigate(

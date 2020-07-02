@@ -48,6 +48,10 @@
         {
           "valueFrom": "arn:aws:secretsmanager:eu-west-2:778499062515:secret:NationalRail_Password-qInbOW",
           "name": "NationalRail_Password"
+        },
+        {
+          "valueFrom": "arn:aws:secretsmanager:eu-west-2:778499062515:secret:NationalRail_AccessToken-wRvpJu",
+          "name": "NationalRail_AccessToken"
         }
       ],
       "dockerSecurityOptions": null,

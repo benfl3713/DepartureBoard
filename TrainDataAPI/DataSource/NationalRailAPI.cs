@@ -19,16 +19,17 @@ namespace TrainDataAPI
         public List<Departure> GetLiveDepartures(string stationCode, int count)
         {
             GetDepartureBoardResponse departuresResponse = client.GetDepartureBoardAsync(AccessToken, ushort.Parse(count.ToString()), stationCode, null, FilterType.to, 0, 1440).Result;
-            var test = JsonConvert.SerializeObject(departuresResponse.GetStationBoardResult);
+            DateTime generated = departuresResponse.GetStationBoardResult.generatedAt;
             List<Departure> departures = new List<Departure>();
             foreach (ServiceItem2 departure in departuresResponse.GetStationBoardResult.trainServices)
             {
                 Departure.ServiceStatus status = Departure.ServiceStatus.ONTIME;
-                DateTime scheduledDeparture = departuresResponse.GetStationBoardResult.generatedAt.Date.Add(TimeSpan.Parse(departure.std));
+                DateTime std = DateTime.Parse(departure.std);
+                DateTime scheduledDeparture = new DateTime(generated.Year, generated.Month, generated.Day, std.Hour, std.Minute, std.Second);
                 DateTime expectedDeparture = scheduledDeparture;
-                if (TimeSpan.TryParse(departure.etd, out TimeSpan etd))
+                if (DateTime.TryParse(departure.etd, out DateTime etd))
                 {
-                    expectedDeparture = departuresResponse.GetStationBoardResult.generatedAt.Date.Add(etd);
+                    expectedDeparture = new DateTime(generated.Year, generated.Month, generated.Day, etd.Hour, etd.Minute, etd.Second);
                     status = Departure.ServiceStatus.LATE;
                 }
 
@@ -60,13 +61,14 @@ namespace TrainDataAPI
             try
             {
                 GetServiceDetailsResponse stopsResponse = client.GetServiceDetailsAsync(AccessToken, url).Result;
-                var test = JsonConvert.SerializeObject(stopsResponse.GetServiceDetailsResult);
+                DateTime generated = stopsResponse.GetServiceDetailsResult.generatedAt;
                 foreach(CallingPoint1 stop in stopsResponse.GetServiceDetailsResult.subsequentCallingPoints[0].callingPoint)
                 {
-                    DateTime scheduledDeparture = stopsResponse.GetServiceDetailsResult.generatedAt.Date.Add(TimeSpan.Parse(stop.st));
+                    DateTime st = DateTime.Parse(stop.st);
+                    DateTime scheduledDeparture = new DateTime(generated.Year, generated.Month, generated.Day, st.Hour, st.Minute, st.Second);
                     DateTime expectedDeparture = scheduledDeparture;
-                    if (TimeSpan.TryParse(stop.et, out TimeSpan etd))
-                        expectedDeparture = stopsResponse.GetServiceDetailsResult.generatedAt.Date.Add(etd);
+                    if (DateTime.TryParse(stop.et, out DateTime etd))
+                        expectedDeparture = new DateTime(generated.Year, generated.Month, generated.Day, etd.Hour, etd.Minute, etd.Second);
                     stops.Add(new StationStop(stop.crs, stop.locationName, StationStop.StopType.LI, 0, scheduledDeparture, expectedDeparture));
                 }
                 return stops;

@@ -18,6 +18,6 @@
   </table>
   <div class="board-row bottom">
     <div [ngClass]="{ 'ontime': Status=='On Time', 'late': Status.includes('Exp'), 'arrived': Status=='Arrived'}">{{Status}}</div>
-    <div class="operator">{{Operator}}</div>
+    <div class="operator" [innerHtml]="information"></div>
   </div>
 </div>

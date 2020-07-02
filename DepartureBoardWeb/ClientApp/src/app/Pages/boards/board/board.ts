@@ -13,7 +13,7 @@ export class Board {
     if (s[0].path && s[0].path.toLowerCase() == "arrivals") {
       this.useArrivals = true;
     }
-    setInterval(() => this.Pager(), 8000);
+    setInterval(() => {this.Pager(); this.InformationPager()}, 8000);
   }
 
   public DepartureTime: Date;
@@ -24,6 +24,7 @@ export class Board {
   public Status: string;
   public Operator: string;
   public Length: number;
+  public information: string;
   useArrivals: boolean = false;
 
   CurrentPage: number = 0;
@@ -39,6 +40,18 @@ export class Board {
     }
     const start = (this.CurrentPage - 1) * 9;
     this.DisplayedStops = this.Stops.slice(start, start+9);
+  }
+
+  InformationPager(){
+    if(!this.Length || this.Length == 0){return;}
+
+    const lengthHtml = `<i class="fas fa-subway"></i> Length: ${this.Length}`;
+    if(this.information == this.Operator){
+      this.information = lengthHtml;
+    }
+    else if(this.information == lengthHtml){
+      this.information = this.Operator;
+    }
   }
 
   public ProcessStops(data) {

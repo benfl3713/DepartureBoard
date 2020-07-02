@@ -138,6 +138,7 @@ export class BoardsComponent implements OnDestroy {
         componentRef.instance.Destination = <string>Object(data)[i]["destination"];
         componentRef.instance.Operator = <string>Object(data)[i]["operatorName"];
         componentRef.instance.Length = <number>Object(data)[i]["length"];
+        componentRef.instance.information = componentRef.instance.Operator;
         var tempfirststatus = ServiceStatus[this.getEnumKeyByEnumValue(ServiceStatus, Object(data)[i]["status"])]
         if (tempfirststatus == ServiceStatus.LATE && Object(data)[i]["expectedDeparture"]) {
           var fexpected = new Date(Date.parse(Object(data)[i]["expectedDeparture"]));

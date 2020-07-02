@@ -14,21 +14,21 @@ namespace DepartureBoardWeb.Controllers
     public class LiveDeparturesController : Controller
     {
         [HttpPost("[action]")]
-        public JsonResult GetLatestDepaturesSingleBoard([FromBody] string stationCode, string platform = null)
+        public JsonResult GetLatestDepaturesSingleBoard([FromBody] string stationCode, string platform = null, string dataSource = null)
         {
-            return Json(GetSingleBoardData(false, stationCode, platform));
+            return Json(GetSingleBoardData(false, stationCode, platform, dataSource));
         }
 
         [HttpPost("[action]")]
-        public JsonResult GetLatestArrivalsSingleBoard([FromBody] string stationCode, string platform = null)
+        public JsonResult GetLatestArrivalsSingleBoard([FromBody] string stationCode, string platform = null, string dataSource = null)
         {
-            return Json(GetSingleBoardData(true, stationCode, platform));
+            return Json(GetSingleBoardData(true, stationCode, platform, dataSource));
         }
 
-        private SingleBoardData GetSingleBoardData(bool arrivals, string stationCode, string platform = null)
+        private SingleBoardData GetSingleBoardData(bool arrivals, string stationCode, string platform = null, string dataSource = null)
         {
             stationCode = stationCode.ToUpper();
-            ITrainDatasource trainDatasource = new RealTimeTrainsAPI();
+            ITrainDatasource trainDatasource = GetDatasource(dataSource);
             List<Departure> departures = arrivals ? trainDatasource.GetLiveArrivals(stationCode, 2) : trainDatasource.GetLiveDepartures(stationCode, 2);
             if (departures == null || departures.Count == 0)
                 return new SingleBoardData(new List<Departure>(), string.Empty);
@@ -53,6 +53,17 @@ namespace DepartureBoardWeb.Controllers
             return Json(GetLiveDepartureData(true, platform, dataSource));
         }
 
+        private ITrainDatasource GetDatasource(string dataSource)
+        {
+            switch (dataSource?.ToUpper())
+            {
+                case ("NATIONALRAIL"):
+                    return new NationalRailAPI();
+                default:
+                    return new RealTimeTrainsAPI();
+            }
+        }
+
         private List<Departure> GetLiveDepartureData(bool arrivals, string platform = null, string dataSource = null)
         {
             if (Request.Form.TryGetValue("stationCode", out StringValues stationCodeValues) && stationCodeValues.Count > 0
@@ -62,16 +73,7 @@ namespace DepartureBoardWeb.Controllers
                 if (!int.TryParse(amountValues[0], out int count))
                     count = 6;
 
-                ITrainDatasource trainDatasource;
-                switch (dataSource?.ToUpper())
-                {
-                    case ("NATIONALRAIL"):
-                        trainDatasource = new NationalRailAPI();
-                        break;
-                    default:
-                        trainDatasource = new RealTimeTrainsAPI();
-                        break;
-                }
+                ITrainDatasource trainDatasource = GetDatasource(dataSource);
                 List<Departure> departures = arrivals ? trainDatasource.GetLiveArrivals(stationCode, count) : trainDatasource.GetLiveDepartures(stationCode, count);
                 if (departures == null || departures.Count == 0)
                     return new List<Departure>();
@@ -80,7 +82,6 @@ namespace DepartureBoardWeb.Controllers
                     departures = departures.Where(d => d.Platform == platform).ToList();
 
                 departures = departures.Take(count).ToList();
-                //departures.ForEach(d => d.LoadStops());
                 departures.AsParallel().ForAll(d => d.LoadStops());
                 foreach (Departure departure in departures)
                 {
@@ -119,7 +120,12 @@ namespace DepartureBoardWeb.Controllers
                 return string.Empty;
             foreach(StationStop stop in departure.Stops)
             {
-                if (stop.StationCode.ToUpper() == departure.StationCode.ToUpper())
+                if(departure.FromDataSouce == typeof(NationalRailAPI) && !foundFirst)
+                {
+                    information = "Calling at ";
+                    foundFirst = true;
+                }
+                else if (stop.StationCode.ToUpper() == departure.StationCode.ToUpper() && !foundFirst)
                 {
                     foundFirst = true;
                     information = "Calling at ";

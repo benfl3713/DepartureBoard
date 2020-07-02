@@ -11,23 +11,27 @@ namespace TrainDataAPI
         private LDBServiceSoapClient client = new LDBServiceSoapClient(LDBServiceSoapClient.EndpointConfiguration.LDBServiceSoap);
         public List<Departure> GetLiveArrivals(string stationCode, int count)
         {
-            GetArrivalBoardResponse arrivalsResponse = client.GetArrivalBoardAsync(AccessToken, 120, "COV", null, FilterType.to, 0, 1440).Result;
+            GetArrivalBoardResponse arrivalsResponse = client.GetArrivalBoardAsync(AccessToken, ushort.Parse(count.ToString()), stationCode, null, FilterType.to, 0, 1440).Result;
             var test = JsonConvert.SerializeObject(arrivalsResponse.GetStationBoardResult);
-            return new List<Departure>();
+            return DeserialiseDepartures(arrivalsResponse.GetStationBoardResult);
         }
 
         public List<Departure> GetLiveDepartures(string stationCode, int count)
         {
             GetDepartureBoardResponse departuresResponse = client.GetDepartureBoardAsync(AccessToken, ushort.Parse(count.ToString()), stationCode, null, FilterType.to, 0, 1440).Result;
-            DateTime generated = departuresResponse.GetStationBoardResult.generatedAt;
+            return DeserialiseDepartures(departuresResponse.GetStationBoardResult);
+        }
+
+        private List<Departure> DeserialiseDepartures(StationBoard departuresResponse){
             List<Departure> departures = new List<Departure>();
-            foreach (ServiceItem2 departure in departuresResponse.GetStationBoardResult.trainServices)
+            DateTime generated = departuresResponse.generatedAt;
+            foreach (ServiceItem2 departure in departuresResponse.trainServices)
             {
                 Departure.ServiceStatus status = Departure.ServiceStatus.ONTIME;
-                DateTime std = DateTime.Parse(departure.std);
+                DateTime.TryParse(departure.std ?? departure.sta, out DateTime std);
                 DateTime scheduledDeparture = new DateTime(generated.Year, generated.Month, generated.Day, std.Hour, std.Minute, std.Second);
                 DateTime expectedDeparture = scheduledDeparture;
-                if (DateTime.TryParse(departure.etd, out DateTime etd))
+                if (DateTime.TryParse(departure.etd ?? departure.eta, out DateTime etd))
                 {
                     expectedDeparture = new DateTime(generated.Year, generated.Month, generated.Day, etd.Hour, etd.Minute, etd.Second);
                     status = Departure.ServiceStatus.LATE;
@@ -38,8 +42,8 @@ namespace TrainDataAPI
                 if (departure.isCancelled)
                     status = Departure.ServiceStatus.CANCELLED;
 
-                departures.Add(new Departure(departuresResponse.GetStationBoardResult.locationName,
-                    departuresResponse.GetStationBoardResult.crs,
+                departures.Add(new Departure(departuresResponse.locationName,
+                    departuresResponse.crs,
                     departure.platform,
                     departure.@operator,
                     scheduledDeparture,
@@ -47,7 +51,7 @@ namespace TrainDataAPI
                     departure.destination[0].locationName,
                     status,
                     departure.origin[0].locationName,
-                    departuresResponse.GetStationBoardResult.generatedAt,
+                    departuresResponse.generatedAt,
                     departure.serviceID,
                     GetType(),
                     Convert.ToInt32(departure.length)));

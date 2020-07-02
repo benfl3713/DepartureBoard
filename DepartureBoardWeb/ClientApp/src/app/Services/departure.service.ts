@@ -34,7 +34,13 @@ export class DepartureService {
 	  if (platform) {
 		  url = url + "?platform=" + platform;
     }
+
+    var dataSource = localStorage.getItem("settings_general_dataSource");
+    var params;
+    if (dataSource) {
+      params = new HttpParams().set('dataSource', dataSource);
+    }
     
-    return this.http.post<object[]>(url, JSON.stringify(stationCode), {headers: this.jsonHeaders})
+    return this.http.post<object[]>(url, JSON.stringify(stationCode), {headers: this.jsonHeaders, params: params})
   }
 }

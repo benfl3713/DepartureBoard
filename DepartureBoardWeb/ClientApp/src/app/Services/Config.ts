@@ -13,7 +13,7 @@ export class Config {
           Config.StartTracking();
         }
       }
-    });
+    }).catch(error => console.log(error));
   }
 
   public static StartTracking() {

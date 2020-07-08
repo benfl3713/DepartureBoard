@@ -33,6 +33,8 @@ import { AddCustomDepartureComponent } from './Pages/custom-departure-board/add-
 import { AboutCustomDepartureComponent } from './Pages/custom-departure-board/about-custom-departure/about-custom-departure.component';
 import { DepartureService } from './Services/departure.service';
 import { StationLookupService } from './Services/station-lookup.service';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo',
@@ -107,7 +109,8 @@ const firebaseConfig = {
     { path: '**', redirectTo: '' },
     ]),
     BrowserAnimationsModule,
-    DeviceDetectorModule.forRoot()
+    DeviceDetectorModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     DatePipe,

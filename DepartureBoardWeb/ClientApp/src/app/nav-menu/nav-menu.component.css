@@ -7,6 +7,20 @@ html {
   }
 }
 
+@media (max-width: 680px) {
+  #top-navbar{
+    padding-top: 20px;
+  }
+  .nav-link{
+    text-align: center;
+  }
+}
+@media (max-width: 450px) {
+  #top-navbar{
+    padding-top: 40px;
+  }
+}
+
 .nav-link {
   color: var(--mainColour) !important;
 }

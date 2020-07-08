@@ -12,16 +12,17 @@ import { ToggleConfig } from 'src/app/ToggleConfig';
 export class CustomDepartureBoardComponent implements OnInit {
 
   departureFiles;
-  constructor(private afs: AngularFirestore, public auth: AuthService, private notifierService: NotifierService) { document.title = "Custom Departures - Departure Board";}
+  constructor(private afs: AngularFirestore, public auth: AuthService, private notifierService: NotifierService) { document.title = "Custom Departures - Departure Board"; ToggleConfig.LoadingBar.next(true);}
 
   ngOnInit() {
     this.auth.user$.subscribe(user => {
       if(!user){
         this.notifierService.notify("error", "You must be logged in to use this");
+        ToggleConfig.LoadingBar.next(false)
         return;
       }
-      this.afs.collection(`customDepartures/${user.uid}/departures`).get().subscribe(departures => this.departureFiles = departures.docs);
-    });
+      this.afs.collection(`customDepartures/${user.uid}/departures`).get().subscribe(departures => this.departureFiles = departures.docs, error => console.log(error), () => ToggleConfig.LoadingBar.next(false));
+    }, error => {console.log(error); ToggleConfig.LoadingBar.next(false);});
   }
 
   deleteDeparture(id:string){

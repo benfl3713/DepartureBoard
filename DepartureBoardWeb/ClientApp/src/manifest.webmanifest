@@ -3,7 +3,7 @@
   "short_name": "Departure Board",
   "theme_color": "#000000",
   "background_color": "#fafafa",
-  "display": "minimal-ui",
+  "display": "fullscreen",
   "scope": "./",
   "start_url": "./",
   "icons": [

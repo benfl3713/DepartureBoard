@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NotifierService } from "angular-notifier";
 import { ToggleConfig } from 'src/app/ToggleConfig';
 import { GoogleAnalyticsEventsService } from 'src/app/Services/google.analytics';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-add-custom-departure',
@@ -18,8 +19,9 @@ export class AddCustomDepartureComponent implements OnInit {
   isEdit:boolean = false;
   oldId: string;
   title: string = "";
+  oldFileHref
 
-  constructor(private afs: AngularFirestore, public auth: AuthService, private router: Router, private notifierService: NotifierService, private route: ActivatedRoute, public googleAnalyticsEventsService: GoogleAnalyticsEventsService) {
+  constructor(private afs: AngularFirestore, public auth: AuthService, private router: Router, private notifierService: NotifierService, private route: ActivatedRoute, public googleAnalyticsEventsService: GoogleAnalyticsEventsService, private sanitizer: DomSanitizer) {
     route.params.subscribe(() => {
       var id = this.route.snapshot.paramMap.get('id');
       if(id){
@@ -34,6 +36,10 @@ export class AddCustomDepartureComponent implements OnInit {
             this.isEdit = true;
             this.oldId = id;
             this.addForm.controls["name"].setValue(id);
+            this.addForm.controls["hideExpired"].setValue(result.data().hideExpired);
+            var theJSON = JSON.stringify(result.data().jsonData);
+            var uri = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(theJSON));
+            this.oldFileHref = uri;
             document.title = "Edit Custom Departure - Departure Board"; 
             this.title = "Edit Custom Departures"
             ToggleConfig.LoadingBar.next(false);
@@ -54,7 +60,8 @@ export class AddCustomDepartureComponent implements OnInit {
   ngOnInit() {
   }
   addForm = new FormGroup({
-    name: new FormControl(null, [Validators.required])
+    name: new FormControl(null, [Validators.required]),
+    hideExpired: new FormControl(true, [Validators.required]),
   });
   file:any;
 
@@ -99,6 +106,7 @@ export class AddCustomDepartureComponent implements OnInit {
       var data = {
         createdDate: new Date(),
         departuresCount: jsonModel["departures"].length,
+        hideExpired: this.addForm.controls["hideExpired"].value,
         jsonData: jsonModel
       };
       this.auth.user$.subscribe(user => {

@@ -14,7 +14,11 @@
           <input type="file" required
                     aria-label="file"
                     (change)="fileChanged($event)">
+          <a *ngIf="oldFileHref" class="orangeReverseBtn" mat-button title="Download Old File" [href]="oldFileHref" download="old_departures.json">Download Old File</a>
           <a class="orangeBtn" [routerLink]='["/about/custom-departures"]' target="_blank" mat-button>Learn More</a>
+          <br>
+          <label class="led">Options: </label>
+          <mat-checkbox formControlName="hideExpired">Hide Expired Departures</mat-checkbox>
           <br>
           <button id="btnSave" type="submit" mat-button [disabled]="!addForm.valid || !file">Save</button>
     </form>

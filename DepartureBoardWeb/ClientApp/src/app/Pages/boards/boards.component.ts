@@ -64,7 +64,6 @@ export class BoardsComponent implements OnDestroy {
 
     if(localStorage.getItem("settings_mainboard_showStationName")){
       this.showStationName = localStorage.getItem("settings_mainboard_showStationName").toLowerCase() == 'true';
-      console.log(this.showStationName);
     }
 
     if (this.isNumber(this.route.snapshot.paramMap.get('displays'))) {
@@ -121,16 +120,6 @@ export class BoardsComponent implements OnDestroy {
 
     for (var i = 0; i < data.length; i += 1) {
       try {
-        if (this.isCustomData) {
-          if (Object(data)[i]["expectedDeparture"] && new Date(Object(data)[i]["expectedDeparture"]) < new Date()) {
-            console.log(`Departure has already gone past date ${Object(data)[i]["expectedDeparture"]} - ${<string>Object(data)[i]["destination"]}`)
-            continue;
-          }
-          if (Object(data)[i]["aimedDeparture"] && new Date(Object(data)[i]["aimedDeparture"]) < new Date()) {
-            console.log(`Departure has already gone past date ${Object(data)[i]["aimedDeparture"]} - ${<string>Object(data)[i]["destination"]}`)
-            continue
-          }
-        }
         const factory = this.resolver.resolveComponentFactory(Board);
         const componentRef = this.Boards.createComponent(factory);
         componentRef.instance.DepartureTime = Object(data)[i]["aimedDeparture"];
@@ -164,7 +153,28 @@ export class BoardsComponent implements OnDestroy {
         this.noBoardsDisplay = !data;
         this.stationName = data.stationName;
         document.title = (data.stationName || this.stationCode) + " - Departures - Departure Board";
-        this.ProcessDepartures(data.departures.slice(0, this.displays));
+
+        var departures:any[] = data.departures;
+        var validDepartures:any[] = new Array();
+        //Removes expired departures
+        if(departureData.get("hideExpired") == true || false){
+          for (let i = 0; i < departures.length; i++) {
+            if (Object(departures)[i]["expectedDeparture"] && new Date(Object(departures)[i]["expectedDeparture"]) < new Date()) {
+              console.log(`Departure has already gone past date ${Object(departures)[i]["expectedDeparture"]} - ${<string>Object(departures)[i]["destination"]}`)
+            }
+            else if (Object(departures)[i]["aimedDeparture"] && new Date(Object(departures)[i]["aimedDeparture"]) < new Date()) {
+              console.log(`Departure has already gone past date ${Object(departures)[i]["aimedDeparture"]} - ${<string>Object(departures)[i]["destination"]}`)
+            }
+            else{
+              validDepartures.push(departures[i]);
+            }          
+          }
+        }
+        else{
+          validDepartures = departures;
+        }
+
+        this.ProcessDepartures(validDepartures.slice(0, this.displays));
       }, error => {
           ToggleConfig.LoadingBar.next(false);
           console.log(error);

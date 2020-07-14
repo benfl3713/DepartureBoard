@@ -7,22 +7,29 @@ html {
   }
 }
 
-@media (max-width: 680px) {
-  #top-navbar{
-    padding-top: 20px;
-  }
-  .nav-link{
-    text-align: center;
-  }
-}
-@media (max-width: 450px) {
-  #top-navbar{
-    padding-top: 40px;
-  }
-}
+
 
 .nav-link {
   color: var(--mainColour) !important;
+}
+
+.sidenav-container{
+  margin-top: 5px;
+}
+
+.sidenav {
+  width: 300px;
+  border: 0;
+}
+
+/*Pads Icons*/
+.sidenav .fa, .sidenav .fas, .sidenav .far {
+  padding-right: 10px;
+}
+
+.logo{
+  height: 20px;
+  margin-right: 10px;
 }
 
 .navbar{
@@ -37,4 +44,16 @@ html {
   background-color: black;
   color: var(--mainColour);
   border: 0;
+}
+
+.bottom-nav-items{
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+}
+
+.container-fluid{
+  padding-right: 0;
+  padding-left: 10px;
+  overflow-x: hidden;
 }

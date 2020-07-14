@@ -52,6 +52,7 @@ export class SettingsComponent implements OnInit {
     ThemeService.LoadTheme();
     if(showMessage){
       this.googleAnalyticsEventsService.emitEvent("Settings", "Saved");
+      this.googleAnalyticsEventsService.emitEvent("DataSource", localStorage.getItem("settings_general_dataSource"));
       this.notifierService.notify("success", "Settings - Saved Successfully");
     }
   }

@@ -1,30 +1,64 @@
 <header>
-  <nav id="top-navbar" class='navbar navbar-expand navbar-dark' *ngIf="showHome">
-    <div class="container-fluid">
-      <ul class="navbar-nav">
-        <li class="nav-item" [routerLinkActive]='["page-selected"]' [routerLinkActiveOptions]='{ exact: true }'>
-          <a class="nav-link text-light" [routerLink]='["/"]'><span class='fas fa-home'></span> Home</a>
-        </li>
-        <li class="nav-item" [routerLinkActive]='["page-selected"]'>
-          <a class="nav-link text-light" [routerLink]='["/search"]'><span class='fas fa-search'></span> Search</a>
-        </li>
-        <li class="nav-item" [routerLinkActive]='["page-selected"]'>
-          <a class="nav-link text-light" [routerLink]='["/examples"]'><span class='far fa-lightbulb'></span> Examples</a>
-        </li>
-        <li class="nav-item" [routerLinkActive]='["page-selected"]'>
-          <a class="nav-link text-light" [routerLink]='["/custom-departures"]'><span class='fas fa-chalkboard'></span> Custom Departures</a>
-        </li>
-      </ul>
-      <ul class="navbar-nav order-3 ml-auto">
-        <li class="nav-item" [routerLinkActive]='["page-selected"]'>
-          <a class="nav-link text-light" [routerLink]='["/settings"]'><span class='fas fa-cogs'></span> Settings</a>
-        </li>
-        <li class="nav-item" [routerLinkActive]='["page-selected"]'>
+  <mat-sidenav-container class="sidenav-container" fullscreen style="overflow: hidden;">
+    <nav id="top-navbar" class='navbar navbar-expand navbar-dark' *ngIf="showHome">
+      <div class="container-fluid">
+        <button type="button"
+              aria-label="Toggle sidenav"
+              mat-icon-button
+              (click)="sidenav.toggle()"
+              *ngIf="(isHandset$ | async)">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+        <ul class="navbar-nav" *ngIf="!(isHandset$ | async)">
+          <li class="nav-item" [routerLinkActive]='["page-selected"]' [routerLinkActiveOptions]='{ exact: true }'>
+            <a class="nav-link text-light" [routerLink]='["/"]'><span class='fas fa-home'></span> Home</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]='["page-selected"]'>
+            <a class="nav-link text-light" [routerLink]='["/search"]'><span class='fas fa-search'></span> Search</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]='["page-selected"]'>
+            <a class="nav-link text-light" [routerLink]='["/examples"]'><span class='far fa-lightbulb'></span> Examples</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]='["page-selected"]'>
+            <a class="nav-link text-light" [routerLink]='["/custom-departures"]'><span class='fas fa-chalkboard'></span> Custom Departures</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav order-3 ml-auto" *ngIf="!(isHandset$ | async)">
+          <li class="nav-item" [routerLinkActive]='["page-selected"]'>
+            <a class="nav-link text-light" [routerLink]='["/settings"]'><span class='fas fa-cogs'></span> Settings</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]='["page-selected"]'>
+            <div *ngIf="auth.user$ | async; then authenticated else guest"></div>
+            <ng-template #guest><a class="nav-link text-light clickable" (click)="auth.googleSignin()"><span class='far fa-user'></span> Login</a></ng-template>
+            <ng-template #authenticated><a *ngIf="auth.user$ | async as user" class="nav-link text-light clickable" (click)="auth.signOut()"><img  [src]="user.photoURL" height="20"> Log Out</a></ng-template>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <mat-sidenav #drawer id="sidenav" class="sidenav" fixedInViewport
+                 mode="over"
+                 opened="false">
+      <mat-toolbar class="clickable" color="primary" [routerLink]='["/"]' (click)="PageChanged()"><img class="logo" src="favicon.png"/><span>Led Departure Board</span></mat-toolbar>
+      <mat-nav-list>
+        <a mat-list-item class="menu-item" [routerLink]='["/"]' [routerLinkActive]='["link-active"]' (click)="PageChanged()"><span class='fas fa-home'></span> Home</a>
+        <a mat-list-item class="menu-item" [routerLink]='["/search"]' [routerLinkActive]='["link-active"]' (click)="PageChanged()"><span class='fas fa-search'></span> Search</a>
+        <a mat-list-item class="menu-item" [routerLink]='["/examples"]' [routerLinkActive]='["link-active"]' (click)="PageChanged()"><span class='far fa-lightbulb'></span> Examples</a>
+        <a mat-list-item class="menu-item" [routerLink]='["/custom-departures"]' [routerLinkActive]='["link-active"]' (click)="PageChanged()"><span class='fas fa-chalkboard'></span> Custom Departures</a>
+      </mat-nav-list>
+      <mat-nav-list class="bottom-nav-items">
+        <!--To put items at the bottom of the navigation bar-->
+        <a mat-list-item class="menu-item" [routerLink]='["/settings"]' [routerLinkActive]='["link-active"]' (click)="PageChanged()"><span class='fas fa-cogs'></span> Settings</a>
+        <a [routerLinkActive]='["page-selected"]'>
           <div *ngIf="auth.user$ | async; then authenticated else guest"></div>
-          <ng-template #guest><a class="nav-link text-light clickable" (click)="auth.googleSignin()"><span class='far fa-user'></span> Login</a></ng-template>
-          <ng-template #authenticated><a *ngIf="auth.user$ | async as user" class="nav-link text-light clickable" (click)="auth.signOut()"><img  [src]="user.photoURL" height="20"> Log Out</a></ng-template>
-        </li>
-      </ul>
+          <ng-template #guest><a class="clickable" mat-list-item (click)="auth.googleSignin()"><span class='far fa-user'></span> Login</a></ng-template>
+          <ng-template #authenticated><a *ngIf="auth.user$ | async as user" class="clickable" mat-list-item (click)="auth.signOut()"><img  [src]="user.photoURL" height="20" style="margin-right: 10px;"> Log Out</a></ng-template>
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
     </div>
-  </nav>
+  </mat-sidenav-container>
 </header>

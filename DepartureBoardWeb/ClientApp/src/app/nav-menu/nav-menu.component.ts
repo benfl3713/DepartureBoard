@@ -1,8 +1,12 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute, NavigationStart } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { AuthService } from '../Services/auth.service';
 import { ToggleConfig } from '../ToggleConfig';
+import { MatSidenav } from '@angular/material/sidenav';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { map, shareReplay } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-nav-menu',
@@ -13,8 +17,9 @@ export class NavMenuComponent {
   showHome: boolean = true;
   timer;
   fixedMenuPages: Array<string> = ["/", "/search", "/examples", "/settings", "/custom-departures", "/custom-departures/add", "/custom-departures/edit", "/about/custom-departures"];
+  @ViewChild(MatSidenav, {static: true}) public sidenav: MatSidenav;
 
-  constructor(private router: Router, private route: ActivatedRoute, private deviceService: DeviceDetectorService, public auth: AuthService) {
+  constructor(private router: Router, private route: ActivatedRoute, private deviceService: DeviceDetectorService, public auth: AuthService, private breakpointObserver: BreakpointObserver) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         //Show/Hide Menus
@@ -40,6 +45,10 @@ export class NavMenuComponent {
     this.timer = setTimeout(() => this.showHome = false, 3000);
   }
 
+  PageChanged() {
+		this.sidenav.close();
+	}
+
   @HostListener('document:mousemove', ['$event'])
   @HostListener('document:touchstart', ['$event'])
   ResetTimer(e) {
@@ -49,4 +58,10 @@ export class NavMenuComponent {
       this.SetTimer();
     }
   }
+
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+    .pipe(
+		map(result => result.matches),
+		shareReplay()
+	)
 }

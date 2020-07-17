@@ -17,7 +17,7 @@
     </tr>
   </table>
   <div class="board-row bottom">
-    <div [ngClass]="{ 'ontime': Status=='On Time', 'late': Status.includes('Exp'), 'arrived': Status=='Arrived'}">{{Status}}</div>
+    <div [ngClass]="{ 'ontime': Status=='On Time', 'late': Status.includes('Exp'), 'arrived': Status=='Arrived', 'cancelled': Status=='Cancelled'}">{{Status}}</div>
     <div class="operator" [innerHtml]="information"></div>
   </div>
 </div>

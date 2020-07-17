@@ -50,6 +50,10 @@ html {
   color: #c842f5;
 }
 
+.cancelled {
+  color: #00d2f2
+}
+
 .info {
   font-size: 2em;
   white-space: nowrap;

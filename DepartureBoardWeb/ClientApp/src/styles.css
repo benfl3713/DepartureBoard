@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 html, body {
   background-color: var(--backgroundColour);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 body {
@@ -89,4 +91,8 @@ html {
   border: 2px solid var(--mainColour);
   border-color: var(--mainColour);
   color: var(--mainColour);
+}
+
+::-webkit-scrollbar { 
+  display: none; /* Chrome Safari */
 }

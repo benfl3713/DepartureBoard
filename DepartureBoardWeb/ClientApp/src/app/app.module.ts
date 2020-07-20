@@ -33,7 +33,7 @@ import { AddCustomDepartureComponent } from './Pages/custom-departure-board/add-
 import { AboutCustomDepartureComponent } from './Pages/custom-departure-board/about-custom-departure/about-custom-departure.component';
 import { DepartureService } from './Services/departure.service';
 import { StationLookupService } from './Services/station-lookup.service';
-import { ServiceWorkerModule } from '@angular/service-worker';
+import { ServiceWorkerModule, SwUpdate } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
 const firebaseConfig = {
@@ -116,7 +116,6 @@ const firebaseConfig = {
     DatePipe,
     GoogleAnalyticsEventsService,
     { provide: APP_INITIALIZER, useFactory: Config.LoadUseAnalytics, deps: [HttpClient, CookieService], multi: true },
-    // { provide: APP_INITIALIZER, useFactory: AppModule.LoadFirebaseConfig, deps: [HttpClient], multi: true },
     CookieService,
     DepartureService,
     StationLookupService

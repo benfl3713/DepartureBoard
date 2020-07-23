@@ -49,3 +49,7 @@
 label{
     padding-right: 20px;
 }
+
+.reset-button{
+  max-height: 35px;
+}

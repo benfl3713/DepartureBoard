@@ -12,6 +12,7 @@ import { GlobalEvents } from "../GlobalEvents";
 })
 export class SettingsComponent implements OnInit {
   settingsType: string = "general";
+  betaProgram: boolean = localStorage.getItem("beta_program") === "true";
 
   constructor(
     public googleAnalyticsEventsService: GoogleAnalyticsEventsService,

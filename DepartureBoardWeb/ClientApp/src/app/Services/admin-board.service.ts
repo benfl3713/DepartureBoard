@@ -68,11 +68,13 @@ export class AdminBoardService {
   }
 
   calculateUrl(config): string {
+    const arrivals = config.isArrivals === true ? "/arrivals/" : "";
+    const boardCount = config.boardCount ? `/${config.boardCount}/` : "";
     if (config.boardType == "main") {
-      return config.stationCode;
+      return `${arrivals}${config.stationCode}${boardCount}`;
     }
     if (config.boardType == "singleboard") {
-      return `singleboard/${config.stationCode}`;
+      return `singleboard/${arrivals}${config.stationCode}`;
     }
 
     return null;

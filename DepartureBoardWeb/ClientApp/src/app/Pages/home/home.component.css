@@ -1,9 +1,9 @@
-#title{
+#title {
   margin-top: 10px;
-  margin-bottom:20px;
+  margin-bottom: 20px;
 }
 .container {
-  color: var(--mainColour);;
+  color: var(--mainColour);
 }
 
 @media only screen and (max-width: 960px) {
@@ -19,9 +19,15 @@
   }
 }
 
+@media only screen and (max-width: 960px) {
+  .mobile-hide {
+    display: none;
+  }
+}
+
 .orange-border {
-  border: 2px solid var(--mainColour);;
+  border: 2px solid var(--mainColour);
   border-radius: 8px;
-  color: var(--mainColour);;
+  color: var(--mainColour);
   padding: 10px;
 }

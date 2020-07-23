@@ -57,11 +57,10 @@ export class SingleBoard implements OnDestroy, OnInit {
           this.platform = null;
         }
 
-        if (
-          queryParams["hideClock"] &&
-          (<string>queryParams["hideClock"]).toLowerCase() === "true"
-        ) {
-          this.showClock = false;
+        if (queryParams["hideClock"]) {
+          this.showClock = !(
+            (<string>queryParams["hideClock"]).toLowerCase() === "true"
+          );
         }
 
         if (queryParams["showStationName"]) {

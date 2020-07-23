@@ -1,16 +1,30 @@
 <div class="footer-basic">
   <footer>
     <ul class="list-inline">
-      <li class="list-inline-item"><a [routerLink]='["/"]'>Home</a></li>
-      <li class="list-inline-item"><a [routerLink]='["/search"]'>Search</a></li>
-      <li class="list-inline-item"><a [routerLink]='["/examples"]'>Examples</a></li>
-      <li class="list-inline-item"><a href="https://leddepartureboard.statuspage.io/" target="_blank">Status</a></li>
-      <li class="list-inline-item"><a href="/privacy-policy.html">Privacy Policy</a></li>
-      <li class="list-inline-item"><a href="/cookie-policy.html">Cookie Policy</a></li>
+      <li class="list-inline-item"><a [routerLink]="['/']">Home</a></li>
+      <li class="list-inline-item"><a [routerLink]="['/search']">Search</a></li>
+      <li class="list-inline-item">
+        <a [routerLink]="['/examples']">Examples</a>
+      </li>
+      <li class="list-inline-item">
+        <a href="https://leddepartureboard.statuspage.io/" target="_blank"
+          >Status</a
+        >
+      </li>
+      <li class="list-inline-item">
+        <a href="/privacy-policy.html">Privacy Policy</a>
+      </li>
+      <li class="list-inline-item">
+        <a href="/cookie-policy.html">Cookie Policy</a>
+      </li>
     </ul>
-    <p class="copyright">Led Departure Board</p>
+    <p class="copyright">Led Departure Board © 2020</p>
   </footer>
   <footer class="centre-text" style="margin-top: 20px;">
-    <img src="/NRE_Powered_logo.png" alt="Powered by National Rail" height="50">
+    <img
+      src="/NRE_Powered_logo.png"
+      alt="Powered by National Rail"
+      height="50"
+    />
   </footer>
 </div>

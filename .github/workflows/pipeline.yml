@@ -31,8 +31,6 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run: |
           docker push docker.pkg.github.com/benfl3713/departureboard/departure-board:latest
-          docker tag docker.pkg.github.com/benfl3713/departureboard/departure-board:latest benfl3713/departure-board:latest
-          docker push benfl3713/departure-board:latest
 
   Deploy:
     name: Deploy to ECS

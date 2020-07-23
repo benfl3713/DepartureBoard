@@ -1,0 +1,23 @@
+.title {
+  padding-bottom: 10px;
+}
+
+.container {
+  border: 2px solid var(--mainColour);
+  border-radius: 8px;
+  color: var(--mainColour);
+  padding: 10px;
+}
+
+.item {
+  padding: 5px;
+  border: 1px solid var(--mainColour);
+  border-radius: 8px;
+  color: var(--mainColour);
+  margin-bottom: 10px;
+}
+
+.highlight {
+  background-color: var(--mainColour);
+  color: black;
+}

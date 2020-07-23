@@ -36,6 +36,7 @@ import { StationLookupService } from "./Services/station-lookup.service";
 import { ServiceWorkerModule, SwUpdate } from "@angular/service-worker";
 import { environment } from "../environments/environment";
 import { AdminBoardService } from "./Services/admin-board.service";
+import { ComingSoonWidgetComponent } from "./widgets/coming-soon/coming-soon.component";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo",
@@ -63,6 +64,7 @@ const firebaseConfig = {
     CustomDepartureBoardComponent,
     AddCustomDepartureComponent,
     AboutCustomDepartureComponent,
+    ComingSoonWidgetComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),

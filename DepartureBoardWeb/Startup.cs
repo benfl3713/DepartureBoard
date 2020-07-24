@@ -79,7 +79,7 @@ namespace DepartureBoardWeb
 				}
 			});
 
-			SetupConfigFiles();
+			//SetupConfigFiles();
 		}
 
 		public void SetupConfigFiles(){

@@ -4,6 +4,7 @@ import { ThemeService } from "../Services/ThemeService";
 import { GoogleAnalyticsEventsService } from "../Services/google.analytics";
 import { NotifierService } from "angular-notifier";
 import { GlobalEvents } from "../GlobalEvents";
+import { CookieService } from "ngx-cookie-service";
 
 @Component({
   selector: "app-component-settings",
@@ -16,7 +17,8 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     public googleAnalyticsEventsService: GoogleAnalyticsEventsService,
-    private notifierService: NotifierService
+    private notifierService: NotifierService,
+    private cookieService: CookieService
   ) {
     document.title = "Settings - Departure Board";
   }
@@ -127,5 +129,10 @@ export class SettingsComponent implements OnInit {
 
   SetFormValue(key: string, value) {
     this.settingsForm.controls[key].setValue(value);
+  }
+
+  changeCookies() {
+    this.cookieService.delete("CookieScriptConsent");
+    window.location.reload();
   }
 }

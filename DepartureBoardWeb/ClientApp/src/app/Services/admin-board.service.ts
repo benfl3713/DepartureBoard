@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { AuthService } from "./auth.service";
 import { Router, Params } from "@angular/router";
-import { Subscription } from "rxjs";
+import { Subscription, Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -12,6 +12,7 @@ export class AdminBoardService {
   constructor(private afs: AngularFirestore, public auth: AuthService) {}
 
   listener: Subscription;
+  groupListener: Subscription;
 
   startListening(router: Router) {
     if (localStorage.getItem("beta_program") !== "true") {
@@ -38,7 +39,9 @@ export class AdminBoardService {
           .collection(`departureadmin/${user.uid}/boards`)
           .doc(uid)
           .valueChanges()
-          .subscribe((document) => this.activateBoardConfig(document, router));
+          .subscribe((document) =>
+            this.processBoardDelta(document, router, user.uid)
+          );
       },
       (error) => {
         console.log(error);
@@ -46,8 +49,15 @@ export class AdminBoardService {
     );
   }
 
-  activateBoardConfig(document, router: Router) {
-    const config = document.config;
+  processBoardDelta(document, router: Router, uid: string) {
+    if (document.GroupId != null) {
+      return this.attachGroupListener(document.GroupId, router, uid);
+    }
+
+    return this.activateBoardConfig(document, router);
+  }
+
+  activateBoardConfig(config, router: Router) {
     console.groupCollapsed("Departure Admin Config Changed");
     console.log("DateTime:", new Date().toLocaleString());
     console.log("Config", config);
@@ -78,5 +88,19 @@ export class AdminBoardService {
     }
 
     return null;
+  }
+
+  attachGroupListener(groupId: string, router: Router, uid: string) {
+    if (this.groupListener) {
+      this.groupListener.unsubscribe();
+    }
+
+    this.groupListener = this.afs
+      .collection(`departureadmin/${uid}/groups`)
+      .doc(groupId)
+      .valueChanges()
+      .subscribe((document: any) =>
+        this.activateBoardConfig(document.config, router)
+      );
   }
 }

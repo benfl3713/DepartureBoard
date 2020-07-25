@@ -50,11 +50,15 @@ export class AdminBoardService {
   }
 
   processBoardDelta(document, router: Router, uid: string) {
+    if (this.groupListener) {
+      this.groupListener.unsubscribe();
+    }
+
     if (document.GroupId != null) {
       return this.attachGroupListener(document.GroupId, router, uid);
     }
 
-    return this.activateBoardConfig(document, router);
+    return this.activateBoardConfig(document.config, router);
   }
 
   activateBoardConfig(config, router: Router) {
@@ -71,6 +75,7 @@ export class AdminBoardService {
       platform: config.platform,
       showStationName: config.showStationName,
     };
+
     router.navigate([this.calculateUrl(config)], {
       queryParams: queryParams,
     });
@@ -91,10 +96,6 @@ export class AdminBoardService {
   }
 
   attachGroupListener(groupId: string, router: Router, uid: string) {
-    if (this.groupListener) {
-      this.groupListener.unsubscribe();
-    }
-
     this.groupListener = this.afs
       .collection(`departureadmin/${uid}/groups`)
       .doc(groupId)

@@ -24,9 +24,13 @@
           mat-list-item
           (click)="settingsType = 'departureadmin'"
           class="orange"
-          *ngIf="betaProgram"
         >
           Departure Admin
+          <span
+            style="margin-left: 15px;"
+            class="badge badge-pill badge-primary"
+            >Beta</span
+          >
         </button>
       </mat-action-list>
     </mat-list>
@@ -136,6 +140,13 @@
     </div>
     <div id="settings-departureadmin" *ngIf="settingsType == 'departureadmin'">
       <h1 class="led">Departure Admin</h1>
+
+      <h6>
+        To get your Unique id add a new board in
+        <a href="https://admin.leddepartureboard.com" target="_blank"
+          >departure board admin</a
+        >
+      </h6>
       <mat-form-field style="width: 300px;">
         <mat-label>Unique Id</mat-label>
         <input

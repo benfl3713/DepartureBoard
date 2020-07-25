@@ -15,10 +15,6 @@ export class AdminBoardService {
   groupListener: Subscription;
 
   startListening(router: Router) {
-    if (localStorage.getItem("beta_program") !== "true") {
-      return;
-    }
-
     if (!(localStorage.getItem("settings_departureadmin_enabled") == "true")) {
       return;
     }

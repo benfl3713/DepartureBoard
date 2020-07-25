@@ -25,7 +25,6 @@ export class AppComponent {
   constructor(
     private router: Router,
     private updates: SwUpdate,
-    private snackbar: MatSnackBar,
     adminBoardService: AdminBoardService
   ) {
     ToggleConfig.LoadingBar.subscribe(
@@ -54,12 +53,7 @@ export class AppComponent {
 
   CheckForUpdate() {
     this.updates.available.subscribe(() => {
-      const snack = this.snackbar.open("Update Available", "Reload", {
-        duration: 10000,
-      });
-      snack.onAction().subscribe(() => {
-        this.updates.activateUpdate().then(() => document.location.reload());
-      });
+      this.updates.activateUpdate().then(() => document.location.reload());
     });
   }
 }

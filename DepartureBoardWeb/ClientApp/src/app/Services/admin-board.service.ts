@@ -82,10 +82,10 @@ export class AdminBoardService {
     const arrivals = config.isArrivals === true ? "/arrivals/" : "";
     const boardCount = config.boardCount ? `/${config.boardCount}/` : "";
     if (config.boardType == "main") {
-      return `${arrivals}${config.stationCode}${boardCount}`;
+      return `${arrivals}${config.stationCode.key}${boardCount}`;
     }
     if (config.boardType == "singleboard") {
-      return `singleboard/${arrivals}${config.stationCode}`;
+      return `singleboard/${arrivals}${config.stationCode.key}`;
     }
 
     return null;

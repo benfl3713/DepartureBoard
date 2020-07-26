@@ -30,6 +30,16 @@ namespace DepartureBoardWeb
 			{
 				configuration.RootPath = "ClientApp/dist";
 			});
+
+			services.AddCors(options =>
+			{
+				options.AddDefaultPolicy(builder =>
+				{
+					builder.WithOrigins(new string[]{"https://admin.leddepartureboard.com", "http://localhost:5000"});
+					builder.AllowAnyMethod();
+					builder.AllowAnyHeader();
+				});
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +68,8 @@ namespace DepartureBoardWeb
 			}
 
 			app.UseRouting();
+
+			app.UseCors();
 
 			app.UseEndpoints(endpoints =>
 			{

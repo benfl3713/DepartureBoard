@@ -37,6 +37,8 @@ import { ServiceWorkerModule, SwUpdate } from "@angular/service-worker";
 import { environment } from "../environments/environment";
 import { AdminBoardService } from "./Services/admin-board.service";
 import { ComingSoonWidgetComponent } from "./widgets/coming-soon/coming-soon.component";
+import { AboutDepartureboardAdminComponent } from "./Pages/about/about-departureboard-admin/about-departureboard-admin.component";
+import { AboutComponent } from "./Pages/about/about.component";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo",
@@ -65,6 +67,8 @@ const firebaseConfig = {
     AddCustomDepartureComponent,
     AboutCustomDepartureComponent,
     ComingSoonWidgetComponent,
+    AboutDepartureboardAdminComponent,
+    AboutComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
@@ -112,8 +116,18 @@ const firebaseConfig = {
       },
       //About
       {
+        path: "about",
+        component: AboutComponent,
+        pathMatch: "full",
+      },
+      {
         path: "about/custom-departures",
         component: AboutCustomDepartureComponent,
+        pathMatch: "full",
+      },
+      {
+        path: "about/departureboard-admin",
+        component: AboutDepartureboardAdminComponent,
         pathMatch: "full",
       },
       //Boards

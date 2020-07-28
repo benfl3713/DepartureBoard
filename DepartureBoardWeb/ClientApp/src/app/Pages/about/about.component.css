@@ -1,0 +1,23 @@
+#about-types {
+  padding: 5px;
+  border: 1px solid var(--mainColour);
+  border-radius: 8px;
+}
+#about-types mat-action-list a {
+  margin-bottom: 5px;
+}
+.orange {
+  color: var(--mainColour) !important;
+  border: 1px solid var(--mainColour);
+  border-radius: 8px;
+}
+
+strong {
+  margin-right: 5px;
+}
+
+@media (max-width: 600px) {
+  #about-types mat-action-list a {
+    height: auto;
+  }
+}

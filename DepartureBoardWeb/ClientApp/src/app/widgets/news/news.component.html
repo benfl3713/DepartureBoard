@@ -1,15 +1,30 @@
 <div class="container">
-  <h2 id="news-title" class="led-bold centre-text" style="padding-left:10px;">News</h2>
-  <div class="news-item news-highlight">
+  <h2 id="news-title" class="led-bold centre-text" style="padding-left: 10px;">
+    News
+  </h2>
+  <div class="news-item">
     <h5 class="centre-text"><strong>Multiple Datasources</strong></h5>
-    <p class="centre-text">There is now a choice of 2 datasources, <strong>Real time Trains</strong> or <strong>National Rail</strong>. To change the data source go into the general tab in <a [routerLink]='["/settings"]'>setting</a></p>
+    <p class="centre-text">
+      There is now a choice of 2 datasources,
+      <strong>Real time Trains</strong> or <strong>National Rail</strong>. To
+      change the data source go into the general tab in
+      <a [routerLink]="['/settings']">setting</a>
+    </p>
   </div>
   <div class="news-item">
     <h5 class="centre-text"><strong>Local Web App</strong></h5>
-    <p class="centre-text">We now support the ability to install this app locally using the install button in the url bar.(Or the add to home option if on mobile)</p>
+    <p class="centre-text">
+      We now support the ability to install this app locally using the install
+      button in the url bar.(Or the add to home option if on mobile)
+    </p>
   </div>
   <div class="news-item">
     <h5 class="centre-text"><strong>Custom Departures !!!</strong></h5>
-    <p class="centre-text">You can now upload custom data and view it on the boards. <a [routerLink]='["/about/custom-departures"]'>Click here To get started</a></p>
+    <p class="centre-text">
+      You can now upload custom data and view it on the boards.
+      <a [routerLink]="['/about/custom-departures']"
+        >Click here To get started</a
+      >
+    </p>
   </div>
 </div>

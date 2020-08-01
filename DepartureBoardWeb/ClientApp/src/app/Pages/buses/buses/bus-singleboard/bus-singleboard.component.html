@@ -2,6 +2,9 @@
   No Departures Found for {{ atco }}
 </h1>
 <div class="singleboard">
+  <h1 id="title" class="led centre-text" *ngIf="showStopName">
+    {{ stopName }}
+  </h1>
   <div class="row" *ngFor="let departure of departures; index as i">
     <h1 class="led col-md-1 col-sm-12">{{ i + 1 }}</h1>
     <h1 class="led col-md-1 col-sm-12">{{ departure.line }}</h1>

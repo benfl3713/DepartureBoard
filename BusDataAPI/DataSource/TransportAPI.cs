@@ -29,6 +29,8 @@ namespace BusDataAPI.DataSource
 				if (results == null || !results.HasValues)
 					return busDepartures;
 
+				string stopName = results["stop_name"]?.ToString();
+
 				var jsonDepartures = results["departures"];
 				foreach (var jsonLine in jsonDepartures)
 				{
@@ -47,7 +49,7 @@ namespace BusDataAPI.DataSource
 							DateTime.TryParse($"{departure["expected_departure_date"]} {departure["expected_departure_time"]}", out expectedDeparture);
 						}
 
-						busDepartures.Add(new BusDeparture(line, destination, operatorCode, operatorName, aimedDeparture, expectedDeparture));
+						busDepartures.Add(new BusDeparture(line, destination, stopName, operatorCode, operatorName, aimedDeparture, expectedDeparture));
 					}
 				}
 			}

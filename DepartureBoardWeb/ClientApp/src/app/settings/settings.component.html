@@ -32,6 +32,14 @@
             >Beta</span
           >
         </button>
+        <button mat-list-item (click)="settingsType = 'buses'" class="orange">
+          Buses
+          <span
+            style="margin-left: 15px;"
+            class="badge badge-pill badge-primary"
+            >Beta</span
+          >
+        </button>
       </mat-action-list>
     </mat-list>
   </div>
@@ -175,6 +183,17 @@
       >
       <br /><br />
     </div>
+    <div id="settings-buses" *ngIf="settingsType == 'buses'">
+      <h1 class="led">Buses</h1>
+      <mat-slide-toggle
+        [checked]="settingsForm.controls.buses_showStopName.value"
+        (change)="
+          settingsForm.controls.buses_showStopName.value = $event.checked
+        "
+        >Show Stop Name</mat-slide-toggle
+      >
+    </div>
+
     <button
       mat-raised-button
       id="btnSave"

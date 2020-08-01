@@ -26,6 +26,9 @@ export class BusSingleboardComponent implements OnInit {
 
   atco: string;
   noBoardsDisplay: boolean = false;
+  stopName: string = "";
+  showStopName: boolean =
+    localStorage.getItem("settings_buses_showStopName") == "true" || false;
 
   ngOnInit() {}
 
@@ -40,7 +43,14 @@ export class BusSingleboardComponent implements OnInit {
     this.busDepartureService
       .GetDepartures(this.atco)
       .pipe(tap(() => ToggleConfig.LoadingBar.next(false)))
-      .pipe(tap((data) => (this.noBoardsDisplay = data.length === 0)))
+      .pipe(
+        tap((data) => {
+          this.noBoardsDisplay = data.length === 0;
+          if (data.length > 0) {
+            this.stopName = (<any>data[0]).stopName;
+          }
+        })
+      )
       .subscribe((response) => (this.departures = response));
   }
 

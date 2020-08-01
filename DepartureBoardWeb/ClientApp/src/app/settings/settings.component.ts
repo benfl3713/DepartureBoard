@@ -35,6 +35,7 @@ export class SettingsComponent implements OnInit {
     singleboard_showStationName: new FormControl(),
     departureadmin_uid: new FormControl(),
     departureadmin_enabled: new FormControl(),
+    buses_showStopName: new FormControl(false),
   });
 
   Load() {
@@ -48,6 +49,7 @@ export class SettingsComponent implements OnInit {
     this.settingsForm.controls["general_dataSource"].setValue(
       localStorage.getItem("settings_general_dataSource") || "REALTIMETRAINS"
     );
+
     //MainBoard Settings
     this.settingsForm.controls["mainboard_count"].setValue(
       localStorage.getItem("settings_mainboard_count") || "6"
@@ -55,16 +57,23 @@ export class SettingsComponent implements OnInit {
     this.settingsForm.controls["mainboard_showStationName"].setValue(
       localStorage.getItem("settings_mainboard_showStationName") || "false"
     );
+
     //SingleBoard Settings
     this.settingsForm.controls["singleboard_showStationName"].setValue(
       localStorage.getItem("settings_singleboard_showStationName") || "false"
     );
+
     //Departureadmin Settings
     this.settingsForm.controls["departureadmin_uid"].setValue(
       localStorage.getItem("settings_departureadmin_uid") || ""
     );
     this.settingsForm.controls["departureadmin_enabled"].setValue(
       localStorage.getItem("settings_departureadmin_enabled") || false
+    );
+
+    //Buses
+    this.settingsForm.controls["buses_showStopName"].setValue(
+      localStorage.getItem("settings_buses_showStopName") || "false"
     );
   }
 
@@ -82,6 +91,7 @@ export class SettingsComponent implements OnInit {
       "settings_general_dataSource",
       this.settingsForm.controls["general_dataSource"].value || "REALTIMETRAINS"
     );
+
     //MainBoard Settings
     localStorage.setItem(
       "settings_mainboard_count",
@@ -91,11 +101,13 @@ export class SettingsComponent implements OnInit {
       "settings_mainboard_showStationName",
       this.settingsForm.controls["mainboard_showStationName"].value || "false"
     );
+
     //SingleBoard Settings
     localStorage.setItem(
       "settings_singleboard_showStationName",
       this.settingsForm.controls["singleboard_showStationName"].value || "false"
     );
+
     //Departureadmin Settings
     localStorage.setItem(
       "settings_departureadmin_uid",
@@ -104,6 +116,12 @@ export class SettingsComponent implements OnInit {
     localStorage.setItem(
       "settings_departureadmin_enabled",
       this.settingsForm.controls["departureadmin_enabled"].value || "false"
+    );
+
+    //Buses
+    localStorage.setItem(
+      "settings_buses_showStopName",
+      this.settingsForm.controls["buses_showStopName"].value || "false"
     );
 
     ThemeService.LoadTheme();

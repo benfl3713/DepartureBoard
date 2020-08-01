@@ -24,7 +24,7 @@ namespace DepartureBoardWeb.Controllers
         {
             var cacheEntry = _cache.GetOrCreate($"{atco}_{count}", entry =>
             {
-                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(600);
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(90);
                 return GetBusDepartures(atco, count);
             });
             return cacheEntry;

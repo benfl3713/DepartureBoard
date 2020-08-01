@@ -25,7 +25,6 @@
     "@angular/platform-server": "9.1.12",
     "@angular/router": "9.1.12",
     "@angular/service-worker": "^9.1.12",
-    "@nguniversal/module-map-ngfactory-loader": "8.1.1",
     "ajv": "^6.12.2",
     "angular-notifier": "^6.0.1",
     "aspnet-prerendering": "^3.0.1",

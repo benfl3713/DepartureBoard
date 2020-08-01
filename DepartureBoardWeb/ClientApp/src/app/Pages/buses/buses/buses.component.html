@@ -1,0 +1,54 @@
+<h1 id="title" class="led centre-text">
+  Buses
+</h1>
+
+<div class="container">
+  <h4 class="led">About</h4>
+  <p>
+    You can view bus departure boards as found at bus stops in the uk. This is
+    currently in beta phase and not complete.
+    <span class="badge badge-pill badge-primary">Beta</span>
+  </p>
+  <h4 class="led">How to Use</h4>
+  <ol>
+    <li>
+      You will need to get the ATCO code of the bus stop. To do so head over to
+      <a
+        href="https://www.openstreetmap.org/node/469789602#map=19/51.49864/-0.13078&layers=TD"
+        >https://www.openstreetmap.org/</a
+      >. Click on a bus stop and it will show the code like so: <br />
+      <img src="images/openstreetmaps.png" /><br /><br />
+    </li>
+    <li>
+      One you have the ATCO code just copy it into the url
+      <a [routerLink]="['/buses/singleboard/InsertYourAtcoCodeHere']"
+        >https://leddepartureboard.com/buses/singleboard/InsertYourAtcoCodeHere</a
+      >
+    </li>
+  </ol>
+
+  <h4 class="led">Example</h4>
+  <p>
+    <a
+      href="https://www.openstreetmap.org/node/469789602#map=20/51.49896/-0.13081&layers=TD"
+      target="_blank"
+      >Westminster Abbey</a
+    >
+    bus stop
+    <a [routerLink]="['/buses/singleboard/490014495R']"
+      >https://leddepartureboard.com/buses/singleboard/490014495R</a
+    >
+  </p>
+
+  <h4 class="led">Need Help</h4>
+  <p>
+    If you have any problems or questions please email me at
+    <strong
+      ><a
+        href="mailto:info@leddepartureboard.com?subject=Led Departure Board - Buses"
+        target="_blank"
+        >info@leddepartureboard.com</a
+      ></strong
+    >
+  </p>
+</div>

@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
-html, body {
+html,
+body {
   background-color: var(--backgroundColour);
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -14,17 +15,17 @@ html {
 }
 
 .led {
-  font-family: 'LEDBOARD3', Arial, sans-serif;
+  font-family: "LEDBOARD3", Arial, sans-serif;
   color: var(--mainColour);
 }
 
 .led-bold {
-  font-family: 'LEDBOARD3-BOLD', Arial, sans-serif;
+  font-family: "LEDBOARD3-BOLD", Arial, sans-serif;
   color: var(--mainColour);
 }
 
 .footer {
-  color: var(--mainColour);;
+  color: var(--mainColour);
   text-align: right;
   font-size: 0.3em;
 }
@@ -53,7 +54,7 @@ html {
 }
 
 .cancelled {
-  color: #00d2f2
+  color: #00d2f2;
 }
 
 .info {
@@ -78,7 +79,12 @@ html {
 .centre-text {
   text-align: center;
 }
-.clickable{
+
+.right-text {
+  text-align: right;
+}
+
+.clickable {
   cursor: pointer;
 }
 
@@ -93,6 +99,6 @@ html {
   color: var(--mainColour);
 }
 
-::-webkit-scrollbar { 
+::-webkit-scrollbar {
   display: none; /* Chrome Safari */
 }

@@ -1,5 +1,10 @@
 import { Component, OnInit, HostListener } from "@angular/core";
-import { Router, NavigationEnd, ActivatedRoute } from "@angular/router";
+import {
+  Router,
+  NavigationEnd,
+  ActivatedRoute,
+  NavigationStart,
+} from "@angular/router";
 import { ToggleConfig } from "./ToggleConfig";
 import { Config } from "./Services/Config";
 import { ThemeService } from "./Services/ThemeService";
@@ -33,8 +38,12 @@ export class AppComponent {
     ThemeService.LoadTheme();
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
+        ToggleConfig.LoadingBar.next(false);
         (<any>window).ga("set", "page", event.urlAfterRedirects);
         (<any>window).ga("send", "pageview");
+      }
+      if (event instanceof NavigationStart) {
+        ToggleConfig.LoadingBar.next(true);
       }
     });
 

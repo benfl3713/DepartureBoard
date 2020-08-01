@@ -52,6 +52,14 @@
         {
           "valueFrom": "arn:aws:secretsmanager:eu-west-2:778499062515:secret:NationalRail_AccessToken-wRvpJu",
           "name": "NationalRail_AccessToken"
+        },
+        {
+          "valueFrom": "arn:aws:secretsmanager:eu-west-2:778499062515:secret:TransportAPI_AppId-wKuIjM",
+          "name": "TransportAPI_AppId"
+        },
+        {
+          "valueFrom": "arn:aws:secretsmanager:eu-west-2:778499062515:secret:TransportAPI_AppKey-Qmd3D3",
+          "name": "TransportAPI_AppKey"
         }
       ],
       "dockerSecurityOptions": null,
@@ -67,10 +75,7 @@
       "interactive": null,
       "healthCheck": {
         "retries": 2,
-        "command": [
-          "CMD-SHELL",
-          "curl -f http://localhost/ || exit 1"
-        ],
+        "command": ["CMD-SHELL", "curl -f http://localhost/ || exit 1"],
         "timeout": 10,
         "interval": 30,
         "startPeriod": 10
@@ -91,10 +96,7 @@
   "placementConstraints": [],
   "memory": "512",
   "taskRoleArn": null,
-  "compatibilities": [
-    "EC2",
-    "FARGATE"
-  ],
+  "compatibilities": ["EC2", "FARGATE"],
   "taskDefinitionArn": "arn:aws:ecs:eu-west-2:778499062515:task-definition/LedDepartureBoard:6",
   "family": "LedDepartureBoard",
   "requiresAttributes": [
@@ -160,9 +162,7 @@
     }
   ],
   "pidMode": null,
-  "requiresCompatibilities": [
-    "FARGATE"
-  ],
+  "requiresCompatibilities": ["FARGATE"],
   "networkMode": "awsvpc",
   "cpu": "256",
   "revision": 6,

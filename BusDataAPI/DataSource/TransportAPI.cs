@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BusDataAPI.DataSource
@@ -29,11 +30,24 @@ namespace BusDataAPI.DataSource
 					return busDepartures;
 
 				var jsonDepartures = results["departures"];
-				foreach (JArray jsonLine in jsonDepartures)
+				foreach (var jsonLine in jsonDepartures)
 				{
-					foreach (JToken departure in jsonLine)
+					foreach (JToken departure in jsonLine.First())
 					{
-						Console.WriteLine("TEst");
+						string line = departure["line"].ToString();
+						string destination = departure["direction"]?.ToString();
+						string operatorCode = departure["operator"]?.ToString();
+						string operatorName = departure["operator_name"]?.ToString();
+						var date = departure["date"] ?? DateTime.Today.ToString("yyyy-MM-dd");
+						DateTime.TryParse($"{date} {departure["aimed_departure_time"]}", out DateTime aimedDeparture);
+
+						DateTime expectedDeparture = aimedDeparture;						
+						if(departure["expected_departure_date"].HasValues && departure["expected_departure_time"].HasValues)
+						{
+							DateTime.TryParse($"{departure["expected_departure_date"]} {departure["expected_departure_time"]}", out expectedDeparture);
+						}
+
+						busDepartures.Add(new BusDeparture(line, destination, operatorCode, operatorName, aimedDeparture, expectedDeparture));
 					}
 				}
 			}
@@ -42,13 +56,13 @@ namespace BusDataAPI.DataSource
 				Console.WriteLine(ex);
 			}
 
-			return busDepartures;
+			return busDepartures.OrderBy(d => d.ExpectedDeparture ?? d.AimedDeparture).ToList();
 		}
 
 		private void AddCredentials(ref RestRequest request)
 		{
-			request.AddParameter("app_id", "");
-			request.AddParameter("app_key", "");
+			request.AddParameter("app_id", ConfigService.TransportAPI_AppId);
+			request.AddParameter("app_key", ConfigService.TransportAPI_AppKey);
 		}
 	}
 }

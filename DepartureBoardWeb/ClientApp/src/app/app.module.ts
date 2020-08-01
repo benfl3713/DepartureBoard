@@ -39,6 +39,7 @@ import { AdminBoardService } from "./Services/admin-board.service";
 import { ComingSoonWidgetComponent } from "./widgets/coming-soon/coming-soon.component";
 import { AboutDepartureboardAdminComponent } from "./Pages/about/about-departureboard-admin/about-departureboard-admin.component";
 import { AboutComponent } from "./Pages/about/about.component";
+import { BusDepartureService } from "./Services/bus-departure.service";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo",
@@ -161,6 +162,12 @@ const firebaseConfig = {
         component: BoardsComponent,
         pathMatch: "full",
       },
+      {
+        path: "buses",
+        loadChildren: () =>
+          import("./Pages/buses/buses/buses.module").then((m) => m.BusesModule),
+      },
+
       { path: ":station", component: BoardsComponent, pathMatch: "full" },
       {
         path: ":station/:displays",
@@ -189,6 +196,7 @@ const firebaseConfig = {
     DepartureService,
     StationLookupService,
     AdminBoardService,
+    BusDepartureService,
   ],
   bootstrap: [AppComponent],
   entryComponents: [

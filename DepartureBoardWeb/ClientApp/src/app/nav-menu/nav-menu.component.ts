@@ -32,6 +32,7 @@ export class NavMenuComponent {
     "/about",
     "/about/custom-departures",
     "/about/departureboard-admin",
+    "/buses",
   ];
   @ViewChild(MatSidenav, { static: true }) public sidenav: MatSidenav;
 

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using TrainDataAPI.Services;
 using System.IO;
 using System;
+using Microsoft.AspNetCore.Http;
 
 namespace DepartureBoardWeb
 {
@@ -40,6 +41,9 @@ namespace DepartureBoardWeb
 					builder.AllowAnyHeader();
 				});
 			});
+
+			services.AddMemoryCache();
+			services.AddResponseCaching();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,6 +74,8 @@ namespace DepartureBoardWeb
 			app.UseRouting();
 
 			app.UseCors();
+
+			app.UseResponseCaching();
 
 			app.UseEndpoints(endpoints =>
 			{

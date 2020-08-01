@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Xml.Linq;
 
-namespace TrainDataAPI
+namespace DepartureBoardCore
 {
     public static class ConfigService
     {
@@ -74,6 +74,26 @@ namespace TrainDataAPI
                 return _cachePeriod ?? 0;
             }
         }
+
+        public static string TransportAPI_AppId
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_transportApi_app_id))
+                    LoadConfig();
+                return _transportApi_app_id;
+            }
+        }
+
+        public static string TransportAPI_AppKey
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_transportApi_app_key))
+                    LoadConfig();
+                return _transportApi_app_key;
+            }
+        }
         #endregion
 
         private static string _realTimeTrainsToken;
@@ -83,6 +103,8 @@ namespace TrainDataAPI
         private static string _nationalRail_AccessToken;
         private static bool? _useCaching;
         private static int? _cachePeriod;
+        private static string _transportApi_app_id;
+        private static string _transportApi_app_key;
 
         private static void LoadConfig()
         {
@@ -100,6 +122,8 @@ namespace TrainDataAPI
                 _nationalRail_AccessToken = rootElement.Element("NationalRail")?.Element("accessToken")?.Value;
                 _useCaching = bool.Parse(rootElement.Element("UseCaching")?.Value ?? "false");
                 _cachePeriod = int.Parse(rootElement.Element("CachePeriod")?.Value ?? "0");
+                _transportApi_app_id = rootElement.Element("TransportAPI")?.Element("app_id")?.Value;
+                _transportApi_app_key = rootElement.Element("TransportAPI")?.Element("app_key")?.Value;
                 if (_realTimeTrainsToken == "[INSERT_REALTIMETRAINS_TOKEN_HERE]"){
                     _realTimeTrainsToken = null;
                     throw new Exception(errorMessage);
@@ -134,6 +158,11 @@ namespace TrainDataAPI
                     _nationalRail_Password = Environment.GetEnvironmentVariable("NationalRail_Password");
                 if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("NationalRail_AccessToken")))
                     _nationalRail_AccessToken = Environment.GetEnvironmentVariable("NationalRail_AccessToken");
+
+                if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TransportAPI_AppId")))
+                    _transportApi_app_id = Environment.GetEnvironmentVariable("TransportAPI_AppId");
+                if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TransportAPI_AppKey")))
+                    _transportApi_app_key = Environment.GetEnvironmentVariable("TransportAPI_AppKey");
             }
             catch(Exception e) { Console.WriteLine(e.Message); }
         }

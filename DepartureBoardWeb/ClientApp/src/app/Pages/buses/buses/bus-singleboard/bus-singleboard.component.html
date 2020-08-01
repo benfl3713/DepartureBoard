@@ -1,0 +1,15 @@
+<h1 class="led centre-text" *ngIf="noBoardsDisplay">
+  No Departures Found for {{ atco }}
+</h1>
+<div class="singleboard">
+  <div class="row" *ngFor="let departure of departures; index as i">
+    <h1 class="led col-md-1 col-sm-12">{{ i + 1 }}</h1>
+    <h1 class="led col-md-1 col-sm-12">{{ departure.line }}</h1>
+    <h1 class="led col-md-8 col-sm-12">
+      {{ departure.destination }}
+    </h1>
+    <h1 class="led col-md-2 col-sm-12 status">
+      {{ CalculateStatus(departure) }}
+    </h1>
+  </div>
+</div>

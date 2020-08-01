@@ -7,7 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrainDataAPI", "TrainDataAP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DepartureBoardWeb", "DepartureBoardWeb\DepartureBoardWeb.csproj", "{E74D7AD0-86D9-4F06-A8AB-91BF49814672}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainDataAPITests", "TrainDataAPITests\TrainDataAPITests.csproj", "{D865CE17-D91F-4806-8826-DCD54F1B9EA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrainDataAPITests", "TrainDataAPITests\TrainDataAPITests.csproj", "{D865CE17-D91F-4806-8826-DCD54F1B9EA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusDataAPI", "BusDataAPI\BusDataAPI.csproj", "{4B79253B-8CB1-48B9-8209-68AB63674029}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DepartureBoardCore", "DepartureBoardCore\DepartureBoardCore.csproj", "{2275D79D-1689-49AB-81C6-1DF3645FB7F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{D865CE17-D91F-4806-8826-DCD54F1B9EA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D865CE17-D91F-4806-8826-DCD54F1B9EA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D865CE17-D91F-4806-8826-DCD54F1B9EA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B79253B-8CB1-48B9-8209-68AB63674029}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B79253B-8CB1-48B9-8209-68AB63674029}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B79253B-8CB1-48B9-8209-68AB63674029}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B79253B-8CB1-48B9-8209-68AB63674029}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2275D79D-1689-49AB-81C6-1DF3645FB7F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2275D79D-1689-49AB-81C6-1DF3645FB7F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2275D79D-1689-49AB-81C6-1DF3645FB7F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2275D79D-1689-49AB-81C6-1DF3645FB7F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

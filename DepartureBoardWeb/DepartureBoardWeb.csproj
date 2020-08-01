@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BusDataAPI\BusDataAPI.csproj" />
     <ProjectReference Include="..\TrainDataAPI\TrainDataAPI.csproj" />
   </ItemGroup>
 

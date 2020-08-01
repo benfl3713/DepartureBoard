@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DepartureBoardCore;
 using NationalRailService;
 using Newtonsoft.Json;
 

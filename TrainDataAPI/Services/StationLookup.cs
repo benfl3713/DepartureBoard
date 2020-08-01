@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using DepartureBoardCore;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.Collections.Generic;

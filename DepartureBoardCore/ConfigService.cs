@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Xml.Linq;
 
-namespace TrainDataAPI
+namespace DepartureBoardCore
 {
     public static class ConfigService
     {

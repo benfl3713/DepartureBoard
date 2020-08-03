@@ -52,6 +52,8 @@ export class AppComponent {
     });
 
     this.CheckForUpdate();
+    //Checks for update 30 minutes
+    setInterval(() => this.CheckForUpdate(), 1800000);
 
     //Setup Admin Board Service
     adminBoardService.startListening(this.router);

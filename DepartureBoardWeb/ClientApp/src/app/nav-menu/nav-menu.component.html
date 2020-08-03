@@ -49,11 +49,11 @@
               ><span class="fas fa-info"></span> About</a
             >
           </li>
-          <!-- <li class="nav-item" [routerLinkActive]="['page-selected']">
+          <li class="nav-item" [routerLinkActive]="['page-selected']">
             <a class="nav-link text-light" [routerLink]="['/buses']"
               ><span class="fas fa-bus"></span> Buses
             </a>
-          </li> -->
+          </li>
         </ul>
         <ul class="navbar-nav order-3 ml-auto" *ngIf="!(isHandset$ | async)">
           <li class="nav-item" [routerLinkActive]="['page-selected']">
@@ -143,14 +143,14 @@
           (click)="PageChanged()"
           ><span class="fas fa-info"></span> About</a
         >
-        <!-- <a
+        <a
           mat-list-item
           class="menu-item"
           [routerLink]="['/buses']"
           [routerLinkActive]="['link-active']"
           (click)="PageChanged()"
           ><span class="fas fa-bus"></span> Buses</a
-        > -->
+        >
       </mat-nav-list>
       <mat-nav-list class="bottom-nav-items">
         <!--To put items at the bottom of the navigation bar-->

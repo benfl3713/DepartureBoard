@@ -24,7 +24,7 @@ namespace DepartureBoardWeb.Controllers
         {
             var cacheEntry = _cache.GetOrCreate($"{atco}_{count}", entry =>
             {
-                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(90);
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30);
                 return GetBusDepartures(atco, count);
             });
             return cacheEntry;
@@ -32,7 +32,7 @@ namespace DepartureBoardWeb.Controllers
 
         private List<BusDeparture> GetBusDepartures(string atco, int? count)
         {
-            IBusDatasource busDatasource = new TransportAPI();
+            IBusDatasource busDatasource = new NextBusesSearchAPI();
             var departures = busDatasource.GetLiveDepartures(atco);
             if (count.HasValue)
                 return departures.Take(count.Value).ToList();

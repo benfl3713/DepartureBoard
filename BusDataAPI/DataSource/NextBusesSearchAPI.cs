@@ -44,6 +44,8 @@ namespace BusDataAPI.DataSource
 						if (tableNode != null)
 						{
 							var rows = tableNode.SelectNodes("tr");
+							if (rows == null)
+								return busDepartures;
 							foreach (var row in rows)
 							{
 								var columns = row.SelectNodes("td");

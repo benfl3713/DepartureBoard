@@ -94,7 +94,7 @@
     }
   ],
   "placementConstraints": [],
-  "memory": "512",
+  "memory": "700",
   "taskRoleArn": null,
   "compatibilities": ["EC2", "FARGATE"],
   "taskDefinitionArn": "arn:aws:ecs:eu-west-2:778499062515:task-definition/LedDepartureBoard:6",

@@ -162,11 +162,11 @@ const firebaseConfig = {
         component: BoardsComponent,
         pathMatch: "full",
       },
-      // {
-      //   path: "buses",
-      //   loadChildren: () =>
-      //     import("./Pages/buses/buses/buses.module").then((m) => m.BusesModule),
-      // },
+      {
+        path: "buses",
+        loadChildren: () =>
+          import("./Pages/buses/buses/buses.module").then((m) => m.BusesModule),
+      },
 
       { path: ":station", component: BoardsComponent, pathMatch: "full" },
       {

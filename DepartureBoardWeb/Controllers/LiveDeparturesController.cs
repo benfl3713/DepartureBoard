@@ -29,7 +29,7 @@ namespace DepartureBoardWeb.Controllers
         {
             stationCode = stationCode.ToUpper();
             ITrainDatasource trainDatasource = GetDatasource(dataSource);
-            List<Departure> departures = arrivals ? trainDatasource.GetLiveArrivals(stationCode, 2) : trainDatasource.GetLiveDepartures(stationCode, 2);
+            List<Departure> departures = arrivals ? trainDatasource.GetLiveArrivals(stationCode, 3) : trainDatasource.GetLiveDepartures(stationCode, 3);
             if (departures == null || departures.Count == 0)
                 return new SingleBoardData(new List<Departure>(), string.Empty);
 
@@ -100,7 +100,7 @@ namespace DepartureBoardWeb.Controllers
             public string Information { get; set; }
             public SingleBoardData(List<Departure> departures, string information)
             {
-                Departures = departures.Take(2).ToList();
+                Departures = departures.Take(3).ToList();
                 Information = information;
 
                 foreach(Departure departure in Departures)

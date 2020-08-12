@@ -14,6 +14,7 @@ import { GoogleAnalyticsEventsService } from "../../Services/google.analytics";
 import { Marquee } from "dynamic-marquee";
 import { DepartureService } from "src/app/Services/departure.service";
 import { StationLookupService } from "src/app/Services/station-lookup.service";
+import { Departure } from "src/app/models/departure.model";
 
 @Component({
   selector: "app-singleboard",
@@ -21,6 +22,31 @@ import { StationLookupService } from "src/app/Services/station-lookup.service";
   styleUrls: ["./singleboard.styling.css"],
 })
 export class SingleBoard implements OnDestroy, OnInit {
+  stationCode: string;
+  platform: string;
+  time = new Date();
+  refresher;
+  noBoardsDisplay: boolean = false;
+  showClock: boolean = true;
+  useArrivals: boolean = false;
+  showStationName = false;
+  stationName;
+  nextDepartures: Departure[] = [];
+
+  //first
+  firstTime: Date;
+  firstPlatform: string;
+  firstDestination: string;
+  firstStatus: string = "";
+
+  information: string;
+  marquee;
+  //second
+  secondTime: Date;
+  secondPlatform: string;
+  secondDestination: string;
+  secondStatus: string = "";
+
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
@@ -109,29 +135,6 @@ export class SingleBoard implements OnDestroy, OnInit {
       this.marquee.appendItem($item);
     });
   }
-  stationCode: string;
-  platform: string;
-  time = new Date();
-  refresher;
-  noBoardsDisplay: boolean = false;
-  showClock: boolean = true;
-  useArrivals: boolean = false;
-  showStationName = false;
-  stationName;
-
-  //first
-  firstTime: Date;
-  firstPlatform: string;
-  firstDestination: string;
-  firstStatus: string = "";
-
-  information: string;
-  marquee;
-  //second
-  secondTime: Date;
-  secondPlatform: string;
-  secondDestination: string;
-  secondStatus: string = "";
 
   GetDepartures() {
     if (this.stationCode == null || this.stationCode == "") {
@@ -160,6 +163,7 @@ export class SingleBoard implements OnDestroy, OnInit {
   }
 
   ProcessDepartures(data) {
+    this.nextDepartures = [];
     this.noBoardsDisplay = Object(data)["departures"].length === 0;
     var tempinfo = <string>Object(data)["information"];
     if (tempinfo != this.information) {
@@ -224,6 +228,26 @@ export class SingleBoard implements OnDestroy, OnInit {
       if (this.secondStatus == "Ontime") {
         this.secondStatus = "On Time";
       }
+    }
+
+    for (let index = 1; index < data["departures"].length; index++) {
+      const departure = data["departures"][index] as Departure;
+      var tempstatus =
+        ServiceStatus[
+          this.getEnumKeyByEnumValue(ServiceStatus, departure.status)
+        ];
+      if (tempstatus === ServiceStatus.LATE) {
+        var expected = new Date(
+          Date.parse(Object(data)["departures"][0]["expectedDeparture"])
+        );
+        departure.status = "Exp " + this.datePipe.transform(expected, "HH:mm");
+      } else {
+        departure.status = this.toTitleCase(ServiceStatus[tempstatus]);
+        if (departure.status === "Ontime") {
+          departure.status = "On Time";
+        }
+      }
+      this.nextDepartures.push(departure);
     }
   }
 

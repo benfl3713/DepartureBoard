@@ -40,6 +40,7 @@ import { ComingSoonWidgetComponent } from "./widgets/coming-soon/coming-soon.com
 import { AboutDepartureboardAdminComponent } from "./Pages/about/about-departureboard-admin/about-departureboard-admin.component";
 import { AboutComponent } from "./Pages/about/about.component";
 import { BusDepartureService } from "./Services/bus-departure.service";
+import { DepartureScrollerComponent } from './Components/departure-scroller/departure-scroller.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo",
@@ -70,6 +71,7 @@ const firebaseConfig = {
     ComingSoonWidgetComponent,
     AboutDepartureboardAdminComponent,
     AboutComponent,
+    DepartureScrollerComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),

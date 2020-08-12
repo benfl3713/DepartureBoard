@@ -1,21 +1,62 @@
 <div class="singleboard">
-  <h1 id="title" class="led centre-text" *ngIf="showStationName">{{stationName}}</h1>
+  <h1 id="title" class="led centre-text" *ngIf="showStationName">
+    {{stationName}}
+  </h1>
   <div class="row">
     <h1 class="led col-md-1 col-sm-12">1st</h1>
-    <h1 class="led col-md-1 col-sm-12">{{firstTime  | date: 'HH:mm'}}</h1>
-    <h1 class="led col-md-1 col-sm-12 clickable" (click)="FilterPlatform(firstPlatform)">{{firstPlatform}}</h1>
-    <h1 class="led col-md-7 col-sm-12 clickable" (click)="ChangeStation(firstDestination)">{{firstDestination}}</h1>
-    <h1 class="led col-md-2 status" [ngClass]="{ 'ontime': firstStatus=='On Time', 'late': firstStatus.includes('Exp'), 'arrived': firstStatus=='Arrived', 'cancelled': firstStatus=='Cancelled'}">{{firstStatus}}</h1>
+    <h1 class="led col-md-1 col-sm-12">{{firstTime | date: 'HH:mm'}}</h1>
+    <h1
+      class="led col-md-1 col-sm-12 clickable"
+      (click)="FilterPlatform(firstPlatform)"
+    >
+      {{firstPlatform}}
+    </h1>
+    <h1
+      class="led col-md-7 col-sm-12 clickable"
+      (click)="ChangeStation(firstDestination)"
+    >
+      {{firstDestination}}
+    </h1>
+    <h1
+      class="led col-md-2 status"
+      [ngClass]="{ 'ontime': firstStatus=='On Time', 'late': firstStatus.includes('Exp'), 'arrived': firstStatus=='Arrived', 'cancelled': firstStatus=='Cancelled'}"
+    >
+      {{firstStatus}}
+    </h1>
   </div>
   <div class="row">
-    <div id="singleboard-information" class="led info col-12" style="height:48px;"></div>
+    <div
+      id="singleboard-information"
+      class="led info col-12"
+      style="height: 48px;"
+    ></div>
   </div>
-  <div class="row">
+  <!-- <div class="row">
     <h1 class="led col-md-1 col-sm-12">2nd</h1>
-    <h1 class="led col-md-1 col-sm-12">{{secondTime  | date: 'HH:mm'}}</h1>
-    <h1 class="led col-md-1 col-sm-12 clickable" (click)="FilterPlatform(secondPlatform)">{{secondPlatform}}</h1>
-    <h1 class="led col-md-7 col-sm-12 clickable" (click)="ChangeStation(secondDestination)">{{secondDestination}}</h1>
-    <h1 class="led col-md-2 status" [ngClass]="{ 'ontime': secondStatus=='On Time', 'late': secondStatus.includes('Exp'), 'arrived': secondStatus=='Arrived', 'cancelled': secondStatus=='Cancelled'}">{{secondStatus}}</h1>
-  </div>
-  <h1 class="led time clickable" [routerLink]='["/"]' *ngIf="showClock">{{ time | date: 'HH:mm:ss' }}</h1>
+    <h1 class="led col-md-1 col-sm-12">{{secondTime | date: 'HH:mm'}}</h1>
+    <h1
+      class="led col-md-1 col-sm-12 clickable"
+      (click)="FilterPlatform(secondPlatform)"
+    >
+      {{secondPlatform}}
+    </h1>
+    <h1
+      class="led col-md-7 col-sm-12 clickable"
+      (click)="ChangeStation(secondDestination)"
+    >
+      {{secondDestination}}
+    </h1>
+    <h1
+      class="led col-md-2 status"
+      [ngClass]="{ 'ontime': secondStatus=='On Time', 'late': secondStatus.includes('Exp'), 'arrived': secondStatus=='Arrived', 'cancelled': secondStatus=='Cancelled'}"
+    >
+      {{secondStatus}}
+    </h1>
+  </div> -->
+  <app-departure-scroller
+    [departures]="nextDepartures"
+  ></app-departure-scroller>
+  <h1 class="led time clickable" [routerLink]='["/"]' *ngIf="showClock">
+    {{ time | date: 'HH:mm:ss' }}
+  </h1>
 </div>

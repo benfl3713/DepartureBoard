@@ -4,6 +4,8 @@ import {
   NavigationEnd,
   ActivatedRoute,
   NavigationStart,
+  RouteConfigLoadStart,
+  RouteConfigLoadEnd,
 } from "@angular/router";
 import { DeviceDetectorService } from "ngx-device-detector";
 import { AuthService } from "../Services/auth.service";
@@ -65,6 +67,11 @@ export class NavMenuComponent {
         }
       }
       if (event instanceof NavigationStart) {
+        ToggleConfig.LoadingBar.next(false);
+      }
+      if (event instanceof RouteConfigLoadStart) {
+        ToggleConfig.LoadingBar.next(true);
+      } else if (event instanceof RouteConfigLoadEnd) {
         ToggleConfig.LoadingBar.next(false);
       }
     });

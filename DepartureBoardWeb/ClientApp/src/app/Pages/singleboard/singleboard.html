@@ -55,6 +55,8 @@
   </div> -->
   <app-departure-scroller
     [departures]="nextDepartures"
+    [enableScoll]="alternateSecondRow"
+    [useArrivals]="useArrivals"
   ></app-departure-scroller>
   <h1 class="led time clickable" [routerLink]='["/"]' *ngIf="showClock">
     {{ time | date: 'HH:mm:ss' }}

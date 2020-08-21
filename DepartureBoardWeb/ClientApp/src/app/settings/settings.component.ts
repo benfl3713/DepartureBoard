@@ -27,102 +27,36 @@ export class SettingsComponent implements OnInit {
   }
 
   settingsForm = new FormGroup({
-    mainboard_count: new FormControl(),
+    mainboard_count: new FormControl("6"),
     mainboard_showStationName: new FormControl(false),
-    general_mainColour: new FormControl(),
-    general_backgroundColour: new FormControl(),
-    general_dataSource: new FormControl(),
-    singleboard_showStationName: new FormControl(),
-    departureadmin_uid: new FormControl(),
-    departureadmin_enabled: new FormControl(),
+
+    general_mainColour: new FormControl("#ff9729"),
+    general_backgroundColour: new FormControl("black"),
+    general_dataSource: new FormControl("REALTIMETRAINS"),
+
+    singleboard_showStationName: new FormControl(false),
+    singleboard_alternateSecondRow: new FormControl(true),
+
+    departureadmin_uid: new FormControl(""),
+    departureadmin_enabled: new FormControl(false),
+
     buses_showStopName: new FormControl(false),
   });
 
   Load() {
-    //General Settings
-    this.settingsForm.controls["general_mainColour"].setValue(
-      localStorage.getItem("settings_general_mainColour") || "#ff9729"
-    );
-    this.settingsForm.controls["general_backgroundColour"].setValue(
-      localStorage.getItem("settings_general_backgroundColour") || "black"
-    );
-    this.settingsForm.controls["general_dataSource"].setValue(
-      localStorage.getItem("settings_general_dataSource") || "REALTIMETRAINS"
-    );
-
-    //MainBoard Settings
-    this.settingsForm.controls["mainboard_count"].setValue(
-      localStorage.getItem("settings_mainboard_count") || "6"
-    );
-    this.settingsForm.controls["mainboard_showStationName"].setValue(
-      localStorage.getItem("settings_mainboard_showStationName") || "false"
-    );
-
-    //SingleBoard Settings
-    this.settingsForm.controls["singleboard_showStationName"].setValue(
-      localStorage.getItem("settings_singleboard_showStationName") || "false"
-    );
-
-    //Departureadmin Settings
-    this.settingsForm.controls["departureadmin_uid"].setValue(
-      localStorage.getItem("settings_departureadmin_uid") || ""
-    );
-    this.settingsForm.controls["departureadmin_enabled"].setValue(
-      localStorage.getItem("settings_departureadmin_enabled") || false
-    );
-
-    //Buses
-    this.settingsForm.controls["buses_showStopName"].setValue(
-      localStorage.getItem("settings_buses_showStopName") || "false"
-    );
+    Object.keys(this.settingsForm.controls).forEach((key) => {
+      if (localStorage.getItem(`settings_${key}`)) {
+        this.settingsForm
+          .get(key)
+          .setValue(localStorage.getItem(`settings_${key}`));
+      }
+    });
   }
 
   Save(showMessage: boolean = true) {
-    //General Settings
-    localStorage.setItem(
-      "settings_general_mainColour",
-      this.settingsForm.controls["general_mainColour"].value || "#ff9729"
-    );
-    localStorage.setItem(
-      "settings_general_backgroundColour",
-      this.settingsForm.controls["general_backgroundColour"].value || "black"
-    );
-    localStorage.setItem(
-      "settings_general_dataSource",
-      this.settingsForm.controls["general_dataSource"].value || "REALTIMETRAINS"
-    );
-
-    //MainBoard Settings
-    localStorage.setItem(
-      "settings_mainboard_count",
-      this.settingsForm.controls["mainboard_count"].value || "6"
-    );
-    localStorage.setItem(
-      "settings_mainboard_showStationName",
-      this.settingsForm.controls["mainboard_showStationName"].value || "false"
-    );
-
-    //SingleBoard Settings
-    localStorage.setItem(
-      "settings_singleboard_showStationName",
-      this.settingsForm.controls["singleboard_showStationName"].value || "false"
-    );
-
-    //Departureadmin Settings
-    localStorage.setItem(
-      "settings_departureadmin_uid",
-      this.settingsForm.controls["departureadmin_uid"].value || ""
-    );
-    localStorage.setItem(
-      "settings_departureadmin_enabled",
-      this.settingsForm.controls["departureadmin_enabled"].value || "false"
-    );
-
-    //Buses
-    localStorage.setItem(
-      "settings_buses_showStopName",
-      this.settingsForm.controls["buses_showStopName"].value || "false"
-    );
+    Object.keys(this.settingsForm.controls).forEach((key) => {
+      localStorage.setItem(`settings_${key}`, this.settingsForm.get(key).value);
+    });
 
     ThemeService.LoadTheme();
     if (showMessage) {
@@ -137,8 +71,17 @@ export class SettingsComponent implements OnInit {
   }
 
   ResetAll() {
-    Object.keys(this.settingsForm.controls).forEach((key) => {
-      this.settingsForm.get(key).setValue(null);
+    this.settingsForm.reset({
+      mainboard_count: "6",
+      mainboard_showStationName: false,
+      general_mainColour: "#ff9729",
+      general_backgroundColour: "black",
+      general_dataSource: "REALTIMETRAINS",
+      singleboard_showStationName: false,
+      singleboard_alternateSecondRow: true,
+      departureadmin_uid: "",
+      departureadmin_enabled: false,
+      buses_showStopName: false,
     });
     this.Save(false);
     this.Load();

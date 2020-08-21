@@ -41,11 +41,7 @@ export class SingleBoard implements OnDestroy, OnInit {
 
   information: string;
   marquee;
-  //second
-  secondTime: Date;
-  secondPlatform: string;
-  secondDestination: string;
-  secondStatus: string = "";
+  alternateSecondRow: boolean = true;
 
   constructor(
     private http: HttpClient,
@@ -71,6 +67,13 @@ export class SingleBoard implements OnDestroy, OnInit {
       this.showStationName =
         localStorage
           .getItem("settings_singleboard_showStationName")
+          .toLowerCase() == "true";
+    }
+
+    if (localStorage.getItem("settings_singleboard_alternateSecondRow")) {
+      this.alternateSecondRow =
+        localStorage
+          .getItem("settings_singleboard_alternateSecondRow")
           .toLowerCase() == "true";
     }
 
@@ -196,37 +199,6 @@ export class SingleBoard implements OnDestroy, OnInit {
       this.firstStatus = this.toTitleCase(ServiceStatus[tempfirststatus]);
       if (this.firstStatus == "Ontime") {
         this.firstStatus = "On Time";
-      }
-    }
-    if (Object(data)["departures"][1] == null) {
-      this.secondTime = null;
-      this.secondPlatform = null;
-      this.secondDestination = null;
-      this.secondStatus = "";
-      return;
-    }
-    //second
-    this.secondTime = <Date>Object(data)["departures"][1]["aimedDeparture"];
-    this.secondPlatform = <string>Object(data)["departures"][1]["platform"];
-    this.secondDestination = <string>(
-      Object(data)["departures"][1]["destination"]
-    );
-    var tempsecondstatus =
-      ServiceStatus[
-        this.getEnumKeyByEnumValue(
-          ServiceStatus,
-          Object(data)["departures"][1]["status"]
-        )
-      ];
-    if (tempsecondstatus == ServiceStatus.LATE) {
-      var sexpected = new Date(
-        Date.parse(Object(data)["departures"][1]["expectedDeparture"])
-      );
-      this.secondStatus = "Exp " + this.datePipe.transform(sexpected, "HH:mm");
-    } else {
-      this.secondStatus = this.toTitleCase(ServiceStatus[tempsecondstatus]);
-      if (this.secondStatus == "Ontime") {
-        this.secondStatus = "On Time";
       }
     }
 

@@ -1,12 +1,18 @@
 <div class="row" id="departure-scroller">
-  <h1 class="led col-md-1 col-sm-12">
+  <h1 class="led col-md-1 col-sm-12 clickable" (click)="changeDeparture()">
     {{ getNumberWithOrdinal(currentCount) }}
   </h1>
   <h1 class="led col-md-1 col-sm-12">{{ currentTime | date: "HH:mm" }}</h1>
-  <h1 class="led col-md-1 col-sm-12 clickable">
+  <h1
+    class="led col-md-1 col-sm-12 clickable"
+    (click)="FilterPlatform(currentPlatform)"
+  >
     {{ currentPlatform }}
   </h1>
-  <h1 class="led col-md-7 col-sm-12 clickable">
+  <h1
+    class="led col-md-7 col-sm-12 clickable"
+    (click)="ChangeStation(currentDestination)"
+  >
     {{ currentDestination }}
   </h1>
   <h1

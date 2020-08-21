@@ -2,29 +2,35 @@
   <h2 id="news-title" class="led-bold centre-text" style="padding-left: 10px;">
     News
   </h2>
-  <div class="news-item">
-    <h5 class="centre-text"><strong>Multiple Datasources</strong></h5>
+  <div class="news-item news-highlight">
+    <h5 class="centre-text">
+      <strong>Departure Board Admin</strong>
+    </h5>
     <p class="centre-text">
-      There is now a choice of 2 datasources,
-      <strong>Real time Trains</strong> or <strong>National Rail</strong>. To
-      change the data source go into the general tab in
-      <a [routerLink]="['/settings']">setting</a>
+      A new
+      <a href="https://admin.leddepartureboard.com" target="_blank">webapp</a>
+      to manage your boards remotely with instant live updates. To get started
+      check out the
+      <a [routerLink]="['/about/departureboard-admin']">About Page</a>
     </p>
   </div>
   <div class="news-item">
-    <h5 class="centre-text"><strong>Local Web App</strong></h5>
+    <h5 class="centre-text">
+      <strong>Bus Data</strong>
+    </h5>
     <p class="centre-text">
-      We now support the ability to install this app locally using the install
-      button in the url bar.(Or the add to home option if on mobile)
+      A new datasource of all uk bus data displayed on a new type of board. To
+      get started visit <a [routerLink]="['/buses']">/buses</a>
     </p>
   </div>
   <div class="news-item">
-    <h5 class="centre-text"><strong>Custom Departures !!!</strong></h5>
-    <p class="centre-text">
-      You can now upload custom data and view it on the boards.
-      <a [routerLink]="['/about/custom-departures']"
-        >Click here To get started</a
-      >
-    </p>
+    <h5 class="centre-text">
+      <strong>Alternating Singleboard Second Row</strong>
+    </h5>
+    <a class="centre-text">
+      The singleboard now alternates the second row between 2nd and 3rd
+      departure. You can turn this off in the singleboard section of
+      <a [routerLink]="['/settings']">settings</a>
+    </a>
   </div>
 </div>

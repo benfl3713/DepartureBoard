@@ -6,6 +6,8 @@ import {
   SimpleChanges,
 } from "@angular/core";
 import { Departure } from "src/app/models/departure.model";
+import { Router, Params } from "@angular/router";
+import { HttpClient } from "@angular/common/http";
 
 @Component({
   selector: "app-departure-scroller",
@@ -14,23 +16,31 @@ import { Departure } from "src/app/models/departure.model";
 })
 export class DepartureScrollerComponent implements OnInit, OnChanges {
   @Input() departures: Departure[] = [];
+  @Input() enableScoll: boolean = true;
+  @Input() useArrivals: boolean = false;
   index = 0;
+  timer;
   currentCount;
   currentTime;
   currentPlatform;
   currentDestination;
   currentStatus;
-  constructor() {
-    setInterval(() => this.changeDeparture(), 15000);
+  constructor(private router: Router, private http: HttpClient) {
+    if (this.enableScoll == true) {
+      this.timer = setInterval(() => this.changeDeparture(), 15000);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(
-      this.arraysAreEqual(
-        changes.departures.currentValue,
-        changes.departures.previousValue
-      )
-    );
+    if (localStorage.getItem("debug") === "true") {
+      console.log(
+        !this.arraysAreEqual(
+          changes.departures.currentValue,
+          changes.departures.previousValue
+        )
+      );
+    }
+    this.setDeparture(this.departures[0]);
     if (
       this.departures.length > 0 &&
       !this.arraysAreEqual(
@@ -41,6 +51,12 @@ export class DepartureScrollerComponent implements OnInit, OnChanges {
       this.index = 0;
       this.currentCount = 2;
       this.setDeparture(this.departures[0]);
+    }
+
+    if (this.enableScoll == true && !this.timer) {
+      this.timer = setInterval(() => this.changeDeparture(), 15000);
+    } else if (this.enableScoll == false && this.timer) {
+      clearInterval(this.timer);
     }
   }
 
@@ -62,10 +78,12 @@ export class DepartureScrollerComponent implements OnInit, OnChanges {
   }
 
   setDeparture(departure: Departure) {
-    this.currentTime = departure.aimedDeparture;
-    this.currentPlatform = departure.platform;
-    this.currentDestination = departure.destination;
-    this.currentStatus = departure.status;
+    if (departure) {
+      this.currentTime = departure.aimedDeparture;
+      this.currentPlatform = departure.platform;
+      this.currentDestination = departure.destination;
+      this.currentStatus = departure.status;
+    }
   }
 
   getNumberWithOrdinal(n) {
@@ -78,6 +96,31 @@ export class DepartureScrollerComponent implements OnInit, OnChanges {
   }
 
   arraysAreEqual(ary1, ary2) {
+    if (!ary1 || !ary2) {
+      return false;
+    }
     return ary1.join("") === ary2.join("");
+  }
+
+  FilterPlatform(platform: string) {
+    if (platform) {
+      const queryParams: Params = { platform };
+      this.router.navigate([], {
+        queryParams: queryParams,
+        queryParamsHandling: "merge", // remove to replace all query params by provided
+      });
+    }
+  }
+
+  ChangeStation(stationName: string) {
+    this.http
+      .get("/api/StationLookup/GetStationCodeFromName?name=" + stationName)
+      .subscribe((s) => {
+        if (this.useArrivals) {
+          this.router.navigate(["singleboard/arrivals/", s]);
+        } else {
+          this.router.navigate(["singleboard/", s]);
+        }
+      });
   }
 }

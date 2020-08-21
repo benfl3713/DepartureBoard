@@ -44,7 +44,7 @@ export class BoardsComponent implements OnDestroy {
   public displays: number = 6;
   public platform: string;
   public stationCode: string = "EUS";
-  @ViewChild("Boards", { read: ViewContainerRef })
+  @ViewChild("Boards", { read: ViewContainerRef, static: true })
   Boards: ViewContainerRef;
 
   constructor(

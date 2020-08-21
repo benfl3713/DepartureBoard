@@ -144,7 +144,15 @@
             $event.checked
         "
         >Show Station Name</mat-slide-toggle
-      >
+      ><br />
+      <mat-slide-toggle
+        [checked]="settingsForm.controls.singleboard_alternateSecondRow.value"
+        (change)="
+          settingsForm.controls.singleboard_alternateSecondRow.value =
+            $event.checked
+        "
+        >Alternate Second Row</mat-slide-toggle
+      ><br />
     </div>
     <div id="settings-departureadmin" *ngIf="settingsType == 'departureadmin'">
       <h1 class="led">Departure Admin</h1>

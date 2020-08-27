@@ -7,13 +7,11 @@ html {
   }
 }
 
-
-
 .nav-link {
   color: var(--mainColour) !important;
 }
 
-.sidenav-container{
+.sidenav-container {
   margin-top: 5px;
 }
 
@@ -23,21 +21,23 @@ html {
 }
 
 /*Pads Icons*/
-.sidenav .fa, .sidenav .fas, .sidenav .far {
+.sidenav .fa,
+.sidenav .fas,
+.sidenav .far {
   padding-right: 10px;
 }
 
-.logo{
+.logo {
   height: 20px;
   margin-right: 10px;
 }
 
-.navbar{
-    height: 35px;
+.navbar {
+  height: 35px;
 }
 
-.page-selected{
-    font-weight: bold;
+.page-selected {
+  font-weight: bold;
 }
 
 .dropdown-toggle {
@@ -46,13 +46,18 @@ html {
   border: 0;
 }
 
-.bottom-nav-items{
+.bottom-nav-items {
   position: absolute;
   bottom: 0px;
   width: 100%;
 }
 
-.container-fluid{
+.container-fluid {
   padding-right: 0;
   padding-left: 10px;
+  background-color: var(--backgroundColour);
+}
+
+.mat-drawer-container {
+  background-color: var(--backgroundColour);
 }

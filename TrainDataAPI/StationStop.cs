@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace TrainDataAPI
 {
@@ -8,6 +9,7 @@ namespace TrainDataAPI
     {
         public string StationCode { get; set; }
         public string StationName { get; set; }
+        [JsonIgnore]
         public StopType StationStopType { get; set; }
         public int Platform { get; set; }
         public DateTime AimedDeparture { get; set; }

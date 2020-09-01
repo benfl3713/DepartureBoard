@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace TrainDataAPI
 {
@@ -16,7 +17,9 @@ namespace TrainDataAPI
         public string Origin { get; set; }
         public string Destination { get; set; }
         public ServiceStatus Status { get; set; }
+        [JsonIgnore]
         public string ServiceTimeTableUrl { get; set; }
+        [JsonIgnore]
         public Type FromDataSouce { get; set; }
         public int Length { get; set; }
         public List<StationStop> Stops

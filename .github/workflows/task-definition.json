@@ -52,14 +52,6 @@
         {
           "valueFrom": "arn:aws:secretsmanager:eu-west-2:778499062515:secret:NationalRail_AccessToken-wRvpJu",
           "name": "NationalRail_AccessToken"
-        },
-        {
-          "valueFrom": "arn:aws:secretsmanager:eu-west-2:778499062515:secret:TransportAPI_AppId-wKuIjM",
-          "name": "TransportAPI_AppId"
-        },
-        {
-          "valueFrom": "arn:aws:secretsmanager:eu-west-2:778499062515:secret:TransportAPI_AppKey-Qmd3D3",
-          "name": "TransportAPI_AppKey"
         }
       ],
       "dockerSecurityOptions": null,

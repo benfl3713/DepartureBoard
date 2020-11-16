@@ -59,7 +59,7 @@ export class SingleBoard implements OnDestroy, OnInit {
     const s: UrlSegment[] = this.router.parseUrl(this.router.url).root.children[
       PRIMARY_OUTLET
     ].segments;
-    if (s[1].path && s[1].path.toLowerCase() == "arrivals") {
+    if (s[1].path && s[1].path.toLowerCase() === "arrivals") {
       this.useArrivals = true;
     }
 
@@ -168,8 +168,8 @@ export class SingleBoard implements OnDestroy, OnInit {
   ProcessDepartures(data) {
     this.nextDepartures = [];
     this.noBoardsDisplay = Object(data)["departures"].length === 0;
-    var tempinfo = <string>Object(data)["information"];
-    if (tempinfo != this.information) {
+    const tempinfo = <string>Object(data)["information"];
+    if (tempinfo !== this.information) {
       this.information = tempinfo;
       this.marquee.clear();
       const $item = document.createElement("div");
@@ -204,12 +204,12 @@ export class SingleBoard implements OnDestroy, OnInit {
 
     for (let index = 1; index < data["departures"].length; index++) {
       const departure = data["departures"][index] as Departure;
-      var tempstatus =
+      const tempstatus =
         ServiceStatus[
           this.getEnumKeyByEnumValue(ServiceStatus, departure.status)
         ];
       if (tempstatus === ServiceStatus.LATE) {
-        var expected = new Date(
+        const expected = new Date(
           Date.parse(Object(data)["departures"][0]["expectedDeparture"])
         );
         departure.status = "Exp " + this.datePipe.transform(expected, "HH:mm");

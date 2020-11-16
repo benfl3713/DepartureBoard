@@ -20,6 +20,7 @@ export class DepartureScrollerComponent implements OnInit, OnChanges {
   @Input() useArrivals: boolean = false;
   index = 0;
   timer;
+  previousDepartures: Departure[] = [];
   currentCount;
   currentTime;
   currentPlatform;
@@ -40,7 +41,7 @@ export class DepartureScrollerComponent implements OnInit, OnChanges {
         )
       );
     }
-    this.setDeparture(this.departures[0]);
+
     if (
       this.departures.length > 0 &&
       !this.arraysAreEqual(
@@ -48,14 +49,18 @@ export class DepartureScrollerComponent implements OnInit, OnChanges {
         changes.departures.previousValue
       )
     ) {
+      if (localStorage.getItem("debug") === "true") {
+        console.log("Reset Scroller");
+      }
       this.index = 0;
-      this.currentCount = 2;
-      this.setDeparture(this.departures[0]);
+      this.setDeparture(this.departures[0], 2);
     }
 
-    if (this.enableScoll == true && !this.timer) {
+    this.previousDepartures = this.departures;
+
+    if (this.enableScoll === true && !this.timer) {
       this.timer = setInterval(() => this.changeDeparture(), 15000);
-    } else if (this.enableScoll == false && this.timer) {
+    } else if (this.enableScoll === false && this.timer) {
       clearInterval(this.timer);
     }
   }
@@ -73,17 +78,18 @@ export class DepartureScrollerComponent implements OnInit, OnChanges {
       this.index++;
     }
 
-    this.currentCount = this.index + 2;
-    return this.setDeparture(this.departures[this.index]);
+    return this.setDeparture(this.departures[this.index], this.index + 2);
   }
 
-  setDeparture(departure: Departure) {
+  setDeparture(departure: Departure, count: number) {
     if (departure) {
       this.currentTime = departure.aimedDeparture;
       this.currentPlatform = departure.platform;
       this.currentDestination = departure.destination;
       this.currentStatus = departure.status;
     }
+
+    this.currentCount = count;
   }
 
   getNumberWithOrdinal(n) {
@@ -95,11 +101,18 @@ export class DepartureScrollerComponent implements OnInit, OnChanges {
     return n + (s[(v - 20) % 10] || s[v] || s[0]);
   }
 
-  arraysAreEqual(ary1, ary2) {
+  arraysAreEqual(ary1: Departure[], ary2: Departure[]) {
     if (!ary1 || !ary2) {
       return false;
     }
-    return ary1.join("") === ary2.join("");
+
+    // Remove lastUpdated value as this will change every time
+    ary1.map((d) => delete d.lastUpdated);
+    ary2.map((d) => delete d.lastUpdated);
+
+    //return ary1.join("") === ary2.join("");
+
+    return JSON.stringify(ary1) === JSON.stringify(ary2);
   }
 
   FilterPlatform(platform: string) {

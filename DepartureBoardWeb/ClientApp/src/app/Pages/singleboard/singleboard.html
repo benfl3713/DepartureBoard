@@ -28,31 +28,9 @@
     <div
       id="singleboard-information"
       class="led info col-12"
-      style="height: 48px;"
+      style="height: 48px"
     ></div>
   </div>
-  <!-- <div class="row">
-    <h1 class="led col-md-1 col-sm-12">2nd</h1>
-    <h1 class="led col-md-1 col-sm-12">{{secondTime | date: 'HH:mm'}}</h1>
-    <h1
-      class="led col-md-1 col-sm-12 clickable"
-      (click)="FilterPlatform(secondPlatform)"
-    >
-      {{secondPlatform}}
-    </h1>
-    <h1
-      class="led col-md-7 col-sm-12 clickable"
-      (click)="ChangeStation(secondDestination)"
-    >
-      {{secondDestination}}
-    </h1>
-    <h1
-      class="led col-md-2 status"
-      [ngClass]="{ 'ontime': secondStatus=='On Time', 'late': secondStatus.includes('Exp'), 'arrived': secondStatus=='Arrived', 'cancelled': secondStatus=='Cancelled'}"
-    >
-      {{secondStatus}}
-    </h1>
-  </div> -->
   <app-departure-scroller
     [departures]="nextDepartures"
     [enableScoll]="alternateSecondRow"

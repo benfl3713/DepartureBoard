@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using DepartureBoardCore;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -16,8 +15,11 @@ namespace TrainDataAPI
             if (ConfigService.UseCaching && ConfigService.CachePeriod > 0)
             {
                 List<CacheDeparture> result = cachedDepartures.Where(d => d.StationCode == stationCode && d.CachedDateTime > DateTime.Now.AddMilliseconds(-ConfigService.CachePeriod)).ToList();
-                if (result.Count > 0)
-                    return result[0].Departures;
+                if (result.Count > 0){
+                    var cache = result[0].Departures;
+                    cache.ForEach(d => d.FromDataSouce = typeof(RealTimeTrainsAPI));
+                    return cache;
+                }
             }
             List<Departure> departures = GetDepartures(stationCode);
 

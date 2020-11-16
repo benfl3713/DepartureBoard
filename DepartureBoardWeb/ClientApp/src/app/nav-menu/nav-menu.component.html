@@ -56,6 +56,11 @@
           </li>
         </ul>
         <ul class="navbar-nav order-3 ml-auto" *ngIf="!(isHandset$ | async)">
+          <li class="nav-item">
+            <a class="nav-link text-light" href="https://admin.leddepartureboard.com" target="_blank"
+              ><span class="fas fa-external-link-alt"></span> Admin</a
+            >
+          </li>
           <li class="nav-item" [routerLinkActive]="['page-selected']">
             <a class="nav-link text-light" [routerLink]="['/settings']"
               ><span class="fas fa-cogs"></span> Settings</a
@@ -154,6 +159,13 @@
       </mat-nav-list>
       <mat-nav-list class="bottom-nav-items">
         <!--To put items at the bottom of the navigation bar-->
+        <a
+          mat-list-item
+          class="menu-item"
+          href="https://admin.leddepartureboard.com" target="_blank"
+          (click)="PageChanged()"
+          ><span class="fas fa-external-link-alt"></span> Admin</a
+        >
         <a
           mat-list-item
           class="menu-item"

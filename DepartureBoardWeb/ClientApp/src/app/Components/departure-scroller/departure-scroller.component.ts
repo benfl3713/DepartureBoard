@@ -20,7 +20,6 @@ export class DepartureScrollerComponent implements OnInit, OnChanges {
   @Input() useArrivals: boolean = false;
   index = 0;
   timer;
-  previousDepartures: Departure[] = [];
   currentCount;
   currentTime;
   currentPlatform;
@@ -55,8 +54,6 @@ export class DepartureScrollerComponent implements OnInit, OnChanges {
       this.index = 0;
       this.setDeparture(this.departures[0], 2);
     }
-
-    this.previousDepartures = this.departures;
 
     if (this.enableScoll === true && !this.timer) {
       this.timer = setInterval(() => this.changeDeparture(), 15000);

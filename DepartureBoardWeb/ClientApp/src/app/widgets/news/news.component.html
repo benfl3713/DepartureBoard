@@ -1,4 +1,21 @@
 <div class="container">
+  <h2 id="news-title" class="led-bold centre-text" style="padding-left: 10px">
+    News
+  </h2>
+  <div *ngFor="let news of newsItems">
+    <div
+      class="news-item"
+      [ngClass]="{ 'news-highlight': news.isHighlighted === true }"
+    >
+      <h5 class="centre-text">
+        <strong>{{ news.title }}</strong>
+      </h5>
+      <p class="centre-text" [innerHtml]="news.content" routeTransformer></p>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="container">
   <h2 id="news-title" class="led-bold centre-text" style="padding-left: 10px;">
     News
   </h2>
@@ -33,4 +50,4 @@
       <a [routerLink]="['/settings']">settings</a>
     </a>
   </div>
-</div>
+</div> -->

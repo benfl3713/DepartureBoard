@@ -40,7 +40,8 @@ import { ComingSoonWidgetComponent } from "./widgets/coming-soon/coming-soon.com
 import { AboutDepartureboardAdminComponent } from "./Pages/about/about-departureboard-admin/about-departureboard-admin.component";
 import { AboutComponent } from "./Pages/about/about.component";
 import { BusDepartureService } from "./Services/bus-departure.service";
-import { DepartureScrollerComponent } from './Components/departure-scroller/departure-scroller.component';
+import { DepartureScrollerComponent } from "./Components/departure-scroller/departure-scroller.component";
+import { RouteTransformerDirective } from "./Utils/routetransformer.directive";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo",
@@ -72,6 +73,7 @@ const firebaseConfig = {
     AboutDepartureboardAdminComponent,
     AboutComponent,
     DepartureScrollerComponent,
+    RouteTransformerDirective,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
@@ -199,6 +201,7 @@ const firebaseConfig = {
     StationLookupService,
     AdminBoardService,
     BusDepartureService,
+    RouteTransformerDirective,
   ],
   bootstrap: [AppComponent],
   entryComponents: [

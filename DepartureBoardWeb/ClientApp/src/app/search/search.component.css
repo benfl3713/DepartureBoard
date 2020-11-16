@@ -1,11 +1,11 @@
-#search-title{
+#search-title {
   padding-bottom: 10px;
 }
 
 .container {
   border: 2px solid var(--mainColour);
   border-radius: 8px;
-  color: var(--mainColour);;
+  color: var(--mainColour);
   padding: 10px;
 }
 #btnSearch {
@@ -14,8 +14,9 @@
   margin-top: 5px;
 }
 
-
-form, mat-form-field, button {
+form,
+mat-form-field,
+button {
   width: 100%;
 }
 
@@ -32,4 +33,8 @@ form, mat-form-field, button {
 /* underline border color on focused */
 ::ng-deep .mat-focused .mat-form-field-underline .mat-form-field-ripple {
   background-color: var(--mainColour) !important;
+}
+
+.options mat-checkbox {
+  padding-right: 10px;
 }

@@ -13,13 +13,14 @@ export class AdminBoardService {
 
   listener: Subscription;
   groupListener: Subscription;
+  userListener: Subscription;
 
   startListening(router: Router) {
     if (!(localStorage.getItem("settings_departureadmin_enabled") == "true")) {
       return;
     }
 
-    this.auth.user$.subscribe(
+    this.userListener = this.auth.user$.subscribe(
       (user) => {
         //Disable previous listener if user changes
         if (this.listener) {
@@ -43,6 +44,20 @@ export class AdminBoardService {
         console.log(error);
       }
     );
+  }
+
+  stopListening() {
+    if (this.groupListener) {
+      this.groupListener.unsubscribe();
+    }
+
+    if (this.listener) {
+      this.listener.unsubscribe();
+    }
+
+    if (this.userListener) {
+      this.userListener.unsubscribe();
+    }
   }
 
   processBoardDelta(document, router: Router, uid: string) {

@@ -12,6 +12,7 @@ import { SwUpdate } from "@angular/service-worker";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { AdminBoardService } from "./Services/admin-board.service";
 import { GlobalEvents } from "./GlobalEvents";
+import { CookieService } from "ngx-cookie-service";
 
 @Component({
   selector: "app-root",
@@ -30,7 +31,9 @@ export class AppComponent {
   constructor(
     private router: Router,
     private updates: SwUpdate,
-    adminBoardService: AdminBoardService
+    adminBoardService: AdminBoardService,
+    route: ActivatedRoute,
+    cookieService: CookieService
   ) {
     ToggleConfig.LoadingBar.subscribe(
       (isvisible) => (this.LoadingBar = isvisible)
@@ -47,6 +50,27 @@ export class AppComponent {
       }
     });
 
+    route.queryParams.subscribe((params) => {
+      if (
+        params.acceptCookies == "true" &&
+        !cookieService.check("CookieScriptConsent")
+      ) {
+        console.log("Auto Accepted Cookie Policy");
+        this.setCookie(
+          "CookieScriptConsent",
+          `{"action":"accept","categories":"[\\"targeting\\",\\"unclassified\\"]"}`,
+          90
+        );
+        window.location.reload();
+      }
+
+      if (params.token) {
+        localStorage.setItem("settings_departureadmin_uid", params.token);
+        localStorage.setItem("settings_departureadmin_enabled", "true");
+        GlobalEvents.SettingsChanged.emit();
+      }
+    });
+
     window.addEventListener("CookieScriptAcceptAll", function () {
       Config.StartTracking();
     });
@@ -57,14 +81,28 @@ export class AppComponent {
 
     //Setup Admin Board Service
     adminBoardService.startListening(this.router);
-    GlobalEvents.SettingsChanged.subscribe(() =>
-      adminBoardService.startListening(this.router)
-    );
+    GlobalEvents.SettingsChanged.subscribe(() => {
+      adminBoardService.stopListening();
+      adminBoardService.startListening(this.router);
+    });
   }
 
   CheckForUpdate() {
     this.updates.available.subscribe(() => {
       this.updates.activateUpdate().then(() => document.location.reload());
     });
+  }
+
+  private setCookie(
+    name: string,
+    value: string,
+    expireDays: number,
+    path: string = ""
+  ) {
+    let d: Date = new Date();
+    d.setTime(d.getTime() + expireDays * 24 * 60 * 60 * 1000);
+    let expires: string = `expires=${d.toUTCString()}`;
+    let cpath: string = path ? `; path=${path}` : "";
+    document.cookie = `${name}=${value}; ${expires}${cpath}`;
   }
 }

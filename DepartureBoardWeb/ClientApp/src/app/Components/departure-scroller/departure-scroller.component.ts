@@ -81,7 +81,8 @@ export class DepartureScrollerComponent implements OnInit, OnChanges {
   setDeparture(departure: Departure, count: number) {
     if (departure) {
       this.currentTime = departure.aimedDeparture;
-      this.currentPlatform = departure.platform;
+      this.currentPlatform =
+        departure.platform === "0" ? " " : departure.platform;
       this.currentDestination = departure.destination;
       this.currentStatus = departure.status;
     }

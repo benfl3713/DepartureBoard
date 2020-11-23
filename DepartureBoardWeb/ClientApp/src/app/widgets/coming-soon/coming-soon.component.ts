@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { ComingSoonItems } from "./coming-soon.items";
 
 @Component({
   selector: "app-widget-coming-soon",
@@ -7,6 +8,8 @@ import { Component, OnInit } from "@angular/core";
 })
 export class ComingSoonWidgetComponent implements OnInit {
   constructor() {}
+
+  comingSoonItems = ComingSoonItems;
 
   ngOnInit() {}
 }

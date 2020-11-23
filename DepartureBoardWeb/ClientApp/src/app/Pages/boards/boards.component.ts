@@ -3,28 +3,24 @@ import {
   ViewChild,
   ComponentFactoryResolver,
   ViewContainerRef,
-  ComponentRef,
   OnDestroy,
 } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import {
   ActivatedRoute,
-  UrlTree,
-  UrlSegmentGroup,
   PRIMARY_OUTLET,
   UrlSegment,
   Router,
   NavigationStart,
 } from "@angular/router";
-import { DatePipe } from "@angular/common";
 import { Board } from "./board/board";
-import { ServiceStatus } from "../singleboard/singleboard";
 import { ToggleConfig } from "../../ToggleConfig";
 import { GoogleAnalyticsEventsService } from "../../Services/google.analytics";
 import { AuthService } from "src/app/Services/auth.service";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { DepartureService } from "src/app/Services/departure.service";
 import { StationLookupService } from "src/app/Services/station-lookup.service";
+import { Departure } from "src/app/models/departure.model";
 
 @Component({
   selector: "app-boards",
@@ -50,7 +46,6 @@ export class BoardsComponent implements OnDestroy {
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private datePipe: DatePipe,
     private resolver: ComponentFactoryResolver,
     private router: Router,
     public googleAnalyticsEventsService: GoogleAnalyticsEventsService,
@@ -63,13 +58,13 @@ export class BoardsComponent implements OnDestroy {
       this.time = new Date();
     }, 1000);
 
-    route.params.subscribe(() => {
-      route.queryParams.subscribe((queryParams) => {
-        this.SetupBoard(queryParams);
+    this.route.params.subscribe(() => {
+      this.route.queryParams.subscribe((queryParams) => {
+        this.SetupDisplay(queryParams);
       });
     });
 
-    //Stops refresher if there is a page change
+    // Stops refresher if there is a page change
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         clearTimeout(this.refresher);
@@ -77,7 +72,7 @@ export class BoardsComponent implements OnDestroy {
     });
   }
 
-  SetupBoard(queryParams) {
+  SetupDisplay(queryParams) {
     const s: UrlSegment[] = this.router.parseUrl(this.router.url).root.children[
       PRIMARY_OUTLET
     ].segments;
@@ -125,6 +120,7 @@ export class BoardsComponent implements OnDestroy {
       this.stationCode.toUpperCase() +
       (this.useArrivals ? " - Arrivals" : " - Departures") +
       " - Departure Board";
+
     if (this.isCustomData == false) {
       this.stationLookupService
         .GetStationNameFromCode(this.stationCode)
@@ -169,7 +165,7 @@ export class BoardsComponent implements OnDestroy {
       );
   }
 
-  ProcessDepartures(data) {
+  ProcessDepartures(data: Departure[]) {
     if (
       !this.isCustomData &&
       this.previousData &&
@@ -193,43 +189,11 @@ export class BoardsComponent implements OnDestroy {
     this.Boards.clear();
     this.noBoardsDisplay = data.length === 0;
 
-    for (var i = 0; i < data.length; i += 1) {
+    for (let i = 0; i < data.length; i += 1) {
       try {
         const factory = this.resolver.resolveComponentFactory(Board);
         const componentRef = this.Boards.createComponent(factory);
-        componentRef.instance.DepartureTime = Object(data)[i]["aimedDeparture"];
-        componentRef.instance.Platform = <string>Object(data)[i]["platform"];
-        componentRef.instance.Destination = <string>(
-          Object(data)[i]["destination"]
-        );
-        componentRef.instance.Operator = <string>(
-          Object(data)[i]["operatorName"]
-        );
-        componentRef.instance.Length = <number>Object(data)[i]["length"];
-        componentRef.instance.information = componentRef.instance.Operator;
-        var tempfirststatus =
-          ServiceStatus[
-            this.getEnumKeyByEnumValue(ServiceStatus, Object(data)[i]["status"])
-          ];
-        if (
-          tempfirststatus == ServiceStatus.LATE &&
-          Object(data)[i]["expectedDeparture"]
-        ) {
-          var fexpected = new Date(
-            Date.parse(Object(data)[i]["expectedDeparture"])
-          );
-          componentRef.instance.Status =
-            "Exp " + this.datePipe.transform(fexpected, "HH:mm");
-        } else {
-          componentRef.instance.Status = this.toTitleCase(
-            ServiceStatus[tempfirststatus]
-          );
-          if (componentRef.instance.Status == "Ontime") {
-            componentRef.instance.Status = "On Time";
-          }
-        }
-
-        componentRef.instance.ProcessStops(Object(data)[i]["stops"]);
+        componentRef.instance.Initilize(data[i]);
       } catch (e) {
         console.log(e);
       }
@@ -246,16 +210,16 @@ export class BoardsComponent implements OnDestroy {
         .subscribe(
           (departureData) => {
             ToggleConfig.LoadingBar.next(false);
-            var data = departureData.get("jsonData");
+            const data = departureData.get("jsonData");
             this.noBoardsDisplay = !data;
             this.stationName = data.stationName;
             document.title =
               (data.stationName || this.stationCode) +
               " - Departures - Departure Board";
 
-            var departures: any[] = data.departures;
-            var validDepartures: any[] = new Array();
-            //Removes expired departures
+            const departures: any[] = data.departures;
+            let validDepartures: any[] = new Array();
+            // Removes expired departures
             if (departureData.get("hideExpired") == true || false) {
               for (let i = 0; i < departures.length; i++) {
                 if (
@@ -297,8 +261,8 @@ export class BoardsComponent implements OnDestroy {
 
   arraysAreEqual(x, y): boolean {
     try {
-      var objectsAreSame = true;
-      for (var propertyName in x) {
+      let objectsAreSame = true;
+      for (const propertyName in x) {
         if (!this.areDeparturesEqual(x[propertyName], y[propertyName])) {
           objectsAreSame = false;
           break;
@@ -312,8 +276,8 @@ export class BoardsComponent implements OnDestroy {
 
   areDeparturesEqual(x, y) {
     try {
-      var objectsAreSame = true;
-      for (var propertyName in x) {
+      let objectsAreSame = true;
+      for (const propertyName in x) {
         if (propertyName == "lastUpdated") {
           continue;
         }
@@ -337,18 +301,8 @@ export class BoardsComponent implements OnDestroy {
     clearTimeout(this.refresher);
   }
 
-  getEnumKeyByEnumValue(myEnum, enumValue) {
-    let keys = Object.keys(myEnum).filter((x) => myEnum[x] == enumValue);
-    return keys.length > 0 ? keys[0] : null;
-  }
 
   isNumber(value: string | number): boolean {
     return value != null && !isNaN(Number(value.toString()));
-  }
-
-  toTitleCase(input: string): string {
-    return input.replace(/\w\S*/g, function (txt) {
-      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    });
   }
 }

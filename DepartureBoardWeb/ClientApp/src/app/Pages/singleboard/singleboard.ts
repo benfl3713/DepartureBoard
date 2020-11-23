@@ -15,6 +15,7 @@ import { Marquee } from "dynamic-marquee";
 import { DepartureService } from "src/app/Services/departure.service";
 import { StationLookupService } from "src/app/Services/station-lookup.service";
 import { Departure } from "src/app/models/departure.model";
+import { SingleBoardResponse } from "src/app/models/singleboard-response.model";
 
 @Component({
   selector: "app-singleboard",
@@ -165,60 +166,44 @@ export class SingleBoard implements OnDestroy, OnInit {
       );
   }
 
-  ProcessDepartures(data) {
+  ProcessDepartures(data: SingleBoardResponse) {
     this.nextDepartures = [];
-    this.noBoardsDisplay = Object(data)["departures"].length === 0;
-    const tempinfo = <string>Object(data)["information"];
-    if (tempinfo !== this.information) {
-      this.information = tempinfo;
+    this.noBoardsDisplay = data.departures.length === 0;
+    if (data.information !== this.information) {
+      this.information = data.information;
       this.marquee.clear();
       const $item = document.createElement("div");
       $item.textContent = this.information;
       this.marquee.appendItem($item);
     }
 
-    //first
-    this.firstTime = <Date>Object(data)["departures"][0]["aimedDeparture"];
-    this.firstPlatform = <string>Object(data)["departures"][0]["platform"];
-    if (this.firstPlatform == "0") {
+    // First
+    this.firstTime = data.departures[0].aimedDeparture;
+    this.firstPlatform = data.departures[0].platform;
+    if (this.firstPlatform === "0") {
       this.firstPlatform = " ";
     }
 
-    this.firstDestination = <string>(
-      Object(data)["departures"][0]["destination"]
-    );
-    var tempfirststatus =
-      ServiceStatus[
-        this.getEnumKeyByEnumValue(
-          ServiceStatus,
-          Object(data)["departures"][0]["status"]
-        )
-      ];
-    if (tempfirststatus == ServiceStatus.LATE) {
-      var fexpected = new Date(
-        Date.parse(Object(data)["departures"][0]["expectedDeparture"])
-      );
+    this.firstDestination = data.departures[0].destination;
+
+    const tempfirststatus = data.departures[0].status;
+    if (tempfirststatus === ServiceStatus.LATE) {
+      const fexpected = data.departures[0].expectedDeparture;
       this.firstStatus = "Exp " + this.datePipe.transform(fexpected, "HH:mm");
     } else {
       this.firstStatus = this.toTitleCase(ServiceStatus[tempfirststatus]);
-      if (this.firstStatus == "Ontime") {
+      if (this.firstStatus === "Ontime") {
         this.firstStatus = "On Time";
       }
     }
 
-    for (let index = 1; index < data["departures"].length; index++) {
-      const departure = data["departures"][index] as Departure;
-      const tempstatus =
-        ServiceStatus[
-          this.getEnumKeyByEnumValue(ServiceStatus, departure.status)
-        ];
-      if (tempstatus === ServiceStatus.LATE) {
-        const expected = new Date(
-          Date.parse(Object(data)["departures"][0]["expectedDeparture"])
-        );
+    for (let index = 1; index < data.departures.length; index++) {
+      const departure = data.departures[index] as Departure;
+      if (departure.status === ServiceStatus.LATE) {
+        const expected = departure.expectedDeparture;
         departure.status = "Exp " + this.datePipe.transform(expected, "HH:mm");
       } else {
-        departure.status = this.toTitleCase(ServiceStatus[tempstatus]);
+        departure.status = this.toTitleCase(ServiceStatus[departure.status]);
         if (departure.status === "Ontime") {
           departure.status = "On Time";
         }
@@ -229,11 +214,6 @@ export class SingleBoard implements OnDestroy, OnInit {
 
   ngOnDestroy() {
     clearTimeout(this.refresher);
-  }
-
-  getEnumKeyByEnumValue(myEnum, enumValue) {
-    let keys = Object.keys(myEnum).filter((x) => myEnum[x] == enumValue);
-    return keys.length > 0 ? keys[0] : null;
   }
 
   isNumber(value: string | number): boolean {

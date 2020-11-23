@@ -4,8 +4,8 @@ export interface Departure {
   stationCode: string;
   platform: string;
   operatorName: string;
-  aimedDeparture: string;
-  expectedDeparture: string;
+  aimedDeparture: Date;
+  expectedDeparture: Date;
   origin: string;
   destination: string;
   status: any;

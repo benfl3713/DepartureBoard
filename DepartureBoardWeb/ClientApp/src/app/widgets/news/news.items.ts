@@ -16,17 +16,5 @@ export const NewsItems = [
       to manage your boards remotely with instant live updates. To get started
       check out the
       <a href="/about/departureboard-admin">About Page</a>`,
-    isHighlighted: true,
-  },
-  {
-    title: "Bus Data",
-    content: `A new datasource of all uk bus data displayed on a new type of board. To
-      get started visit <a href="/buses">/buses</a>`,
-  },
-  {
-    title: "Alternating Singleboard Second Row",
-    content: `The singleboard now alternates the second row between 2nd and 3rd
-    departure. You can turn this off in the singleboard section of
-    <a href="/settings">settings</a>`,
   },
 ];

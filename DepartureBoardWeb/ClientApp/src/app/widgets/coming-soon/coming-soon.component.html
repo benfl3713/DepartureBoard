@@ -1,14 +1,11 @@
-<!-- <div class="container">
+<div class="container">
   <h2 class="led-bold centre-text title" style="padding-left: 10px">
     Coming Soon
   </h2>
-  <div class="item">
+  <div class="item" *ngFor="let item of comingSoonItems" [ngClass]="{ 'highlight': item.isHighlight === true }">
     <h5 class="centre-text">
-      <strong>Drag & Drop Board Builder</strong>
+      <strong>{{item.title}}</strong>
     </h5>
-    <p class="centre-text">
-      A new drag and drop board builder to combine different board types
-      together to create custom displays
-    </p>
+    <p class="centre-text" [innerHTML]="item.content" routeTransformer></p>
   </div>
-</div> -->
+</div>

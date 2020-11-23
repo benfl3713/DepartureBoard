@@ -180,6 +180,10 @@ export class SingleBoard implements OnDestroy, OnInit {
     //first
     this.firstTime = <Date>Object(data)["departures"][0]["aimedDeparture"];
     this.firstPlatform = <string>Object(data)["departures"][0]["platform"];
+    if (this.firstPlatform == "0") {
+      this.firstPlatform = " ";
+    }
+
     this.firstDestination = <string>(
       Object(data)["departures"][0]["destination"]
     );

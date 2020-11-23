@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router, Params, UrlSegment, PRIMARY_OUTLET } from '@angular/router';
 import { ServiceStatus } from '../../singleboard/singleboard';
 import { DatePipe } from '@angular/common';
-import { Departure } from 'src/app/models/departure.model';
+import { Departure, StationStop } from 'src/app/models/departure.model';
 
 @Component({
   selector: "app-board",
@@ -64,12 +64,12 @@ export class Board {
     }
   }
 
-  public ProcessStops(data) {
+  public ProcessStops(data: StationStop[]) {
     for (let i = 0; i < data.length; i += 1) {
       this.Stops.push(
         new Stop(
-          <string>data[i]["stationName"],
-          <Date>data[i]["aimedDeparture"]
+          data[i].stationName,
+          data[i].aimedDeparture
         )
       );
     }

@@ -4,13 +4,11 @@ export interface Departure {
   stationCode: string;
   platform: string;
   operatorName: string;
-  aimedDeparture: string;
-  expectedDeparture: string;
+  aimedDeparture?: Date;
+  expectedDeparture?: Date;
   origin: string;
   destination: string;
   status: any;
-  serviceTimeTableUrl: string;
-  fromDataSouce: any;
   length: number;
   stops: StationStop[];
 }
@@ -20,8 +18,8 @@ export interface StationStop {
   stationName: string;
   stationStopType: StopType;
   platform: number;
-  aimedDeparture: string;
-  expectedDeparture: string;
+  aimedDeparture?: Date;
+  expectedDeparture?: Date;
 }
 
 export enum StopType {

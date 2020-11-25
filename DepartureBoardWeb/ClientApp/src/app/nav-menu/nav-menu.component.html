@@ -2,7 +2,7 @@
   <mat-sidenav-container
     class="sidenav-container"
     fullscreen
-    style="overflow: hidden;"
+    style="overflow: hidden"
   >
     <nav
       id="top-navbar"
@@ -11,6 +11,7 @@
     >
       <div class="container-fluid">
         <button
+          id="nav-hamburger-button"
           type="button"
           aria-label="Toggle sidenav"
           mat-icon-button
@@ -57,7 +58,10 @@
         </ul>
         <ul class="navbar-nav order-3 ml-auto" *ngIf="!(isHandset$ | async)">
           <li class="nav-item">
-            <a class="nav-link text-light" href="https://admin.leddepartureboard.com" target="_blank"
+            <a
+              class="nav-link text-light"
+              href="https://admin.leddepartureboard.com"
+              target="_blank"
               ><span class="fas fa-external-link-alt"></span> Admin</a
             >
           </li>
@@ -162,7 +166,8 @@
         <a
           mat-list-item
           class="menu-item"
-          href="https://admin.leddepartureboard.com" target="_blank"
+          href="https://admin.leddepartureboard.com"
+          target="_blank"
           (click)="PageChanged()"
           ><span class="fas fa-external-link-alt"></span> Admin</a
         >
@@ -190,7 +195,7 @@
               ><img
                 [src]="user.photoURL"
                 height="20"
-                style="margin-right: 10px;"
+                style="margin-right: 10px"
               />
               Log Out</a
             ></ng-template

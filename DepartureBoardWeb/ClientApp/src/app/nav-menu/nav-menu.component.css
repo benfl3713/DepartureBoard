@@ -61,3 +61,7 @@ html {
 .mat-drawer-container {
   background-color: var(--backgroundColour);
 }
+
+#nav-hamburger-button {
+  z-index: 20;
+}

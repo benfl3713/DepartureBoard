@@ -157,7 +157,7 @@ namespace TrainDataAPI
                     {
                         string stationCode = (JStop["crs"] ?? "").ToString();
                         string stationName = (JStop["description"] ?? "").ToString();
-                        int.TryParse((JStop["platform"] ?? "").ToString(), out int platform);
+                        string platform = (JStop["platform"] ?? "").ToString();
 
                         DateTime aimedDepartureDate;
                         DateTime expectedDepartureDate;
@@ -172,7 +172,7 @@ namespace TrainDataAPI
                         else
                             DateTime.TryParse($"{runDate} {JStop["realtimeArrival"]?.ToString().Substring(0, 2)}:{JStop["realtimeArrival"]?.ToString().Substring(2, 2)}", out expectedDepartureDate);
 
-                        StationStop stop = new StationStop(stationCode, stationName, StationStop.StopType.LI, platform, aimedDepartureDate, expectedDepartureDate);
+                        StationStop stop = new StationStop(stationCode, stationName, platform, aimedDepartureDate, expectedDepartureDate);
                         stops.Add(stop);
                     }
                     catch { }

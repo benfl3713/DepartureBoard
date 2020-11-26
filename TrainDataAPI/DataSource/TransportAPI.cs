@@ -111,8 +111,7 @@ namespace TrainDataAPI
                     {
                         string stationCode = JStop["station_code"].ToString();
                         string stationName = JStop["station_name"].ToString();
-                        int.TryParse((JStop["platform"] ?? "1").ToString(), out int platform);
-                        Enum.TryParse(JStop["stop_type"].ToString(), out StationStop.StopType stopType);
+                        string platform = (JStop["platform"] ?? "1").ToString();
                         DateTime.TryParse($"{JStop["aimed_departure_date"].ToString()} {JStop["aimed_departure_time"].ToString()}", out DateTime aimedDepartureDate);
                         if (aimedDepartureDate == DateTime.MinValue)
                             DateTime.TryParse($"{JStop["aimed_arrival_date"].ToString()} {JStop["aimed_arrival_time"].ToString()}", out aimedDepartureDate);
@@ -121,7 +120,7 @@ namespace TrainDataAPI
                         if (expectedDepartureDate == DateTime.MinValue)
                             DateTime.TryParse($"{JStop["expected_arrival_date"].ToString()} {JStop["expected_arrival_time"].ToString()}", out expectedDepartureDate);
 
-                        StationStop stop = new StationStop(stationCode, stationName, stopType, platform, aimedDepartureDate, expectedDepartureDate);
+                        StationStop stop = new StationStop(stationCode, stationName, platform, aimedDepartureDate, expectedDepartureDate);
                         stops.Add(stop);
                     }
                     catch { }

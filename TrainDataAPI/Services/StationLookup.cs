@@ -18,7 +18,7 @@ namespace TrainDataAPI.Services
 		{
 			LoadStationList();
 		}
-		public Dictionary<string, string> Stations
+		public Dictionary<string, Station> Stations
 		{
 			get {
 				//Load the stations if the dictionary is not populated
@@ -28,9 +28,8 @@ namespace TrainDataAPI.Services
 				}
 				return _stations; 
 			}
-			private set { _stations = value; }
 		}
-		private Dictionary<string, string> _stations = new Dictionary<string, string>();
+		private Dictionary<string, Station> _stations = new Dictionary<string, Station>();
 		private readonly object _stationsLock = new object();
 		private DateTime _lastUpdated = DateTime.MinValue;
 
@@ -50,7 +49,7 @@ namespace TrainDataAPI.Services
                     return;
                 }
 
-				_stations = new Dictionary<string, string>();
+				_stations = new Dictionary<string, Station>();
 				try
 				{
 					string token = GetSecretToken();
@@ -67,7 +66,7 @@ namespace TrainDataAPI.Services
 						string code = element.Element("{http://nationalrail.co.uk/xml/station}CrsCode")?.Value;
 						string name = element.Element("{http://nationalrail.co.uk/xml/station}Name")?.Value;
 						if (!string.IsNullOrEmpty(code) && !string.IsNullOrEmpty(name) && IsValidEntry(name, code))
-							_stations.Add(code, name);
+							_stations.Add(code, new Station(code, name, "GB"));
 					}
 
 					_lastUpdated = DateTime.Now;
@@ -110,6 +109,20 @@ namespace TrainDataAPI.Services
 
 			JObject jsonResponse = JObject.Parse(response.Content);
 			return jsonResponse["token"]?.ToString();
+		}
+
+		public class Station
+		{
+			public string Code { get; set; }
+			public string Name { get; set; }
+			public string Country { get; set; }
+
+			public Station(string code, string name, string country)
+			{
+				Code = code;
+				Name = name;
+				Country = country;
+			}
 		}
 	}
 }

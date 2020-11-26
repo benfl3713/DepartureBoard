@@ -20,27 +20,27 @@ namespace DepartureBoardWeb.Controllers
 		{
 			if (!string.IsNullOrEmpty(query))
 				return Search(query);
-			return _stationLookup.Stations;
+			return _stationLookup.Stations.ToDictionary(x => x.Key, x => x.Value.Name);
 		}
 
 		private Dictionary<string, string> Search(string query)
 		{
-			Dictionary<string, string> stations = _stationLookup.Stations?.ToDictionary(entry => entry.Key, entry => entry.Value);
-			return stations?.Where(s => s.Value.Contains(query, StringComparison.InvariantCultureIgnoreCase) || s.Key.Contains(query, StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(s => s.Value.StartsWith(query, StringComparison.InvariantCultureIgnoreCase)).Take(15).ToDictionary(x => x.Key, x => x.Value);
+			Dictionary<string, StationLookup.Station> stations = _stationLookup.Stations?.ToDictionary(entry => entry.Key, entry => entry.Value);
+			return stations?.Where(s => s.Value.Name.Contains(query, StringComparison.InvariantCultureIgnoreCase) || s.Key.Contains(query, StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(s => s.Value.Name.StartsWith(query, StringComparison.InvariantCultureIgnoreCase)).Take(15).ToDictionary(x => x.Key, x => x.Value.Name);
 		}
 
 		[HttpGet("[action]")]
 		public JsonResult GetStationNameFromCode(string code = "")
 		{
 			code = code.ToUpper();
-			_stationLookup.Stations.TryGetValue(code, out string stationName);
-			return Json(stationName ?? code);
+			_stationLookup.Stations.TryGetValue(code, out StationLookup.Station station);
+			return Json(station?.Name ?? code);
 		}
 
 		[HttpGet("[action]")]
 		public JsonResult GetStationCodeFromName(string name)
 		{
-			Dictionary<string, string> stations = _stationLookup.Stations.ToDictionary(entry => entry.Key, entry => entry.Value);
+			Dictionary<string, string> stations = _stationLookup.Stations.ToDictionary(entry => entry.Key, entry => entry.Value.Name);
 			stations =  stations.Where(s => s.Value.Equals(name.Trim(), StringComparison.InvariantCultureIgnoreCase)).ToDictionary(x => x.Key, x => x.Value);
 			if(stations.Count == 1)
 			{

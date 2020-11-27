@@ -87,13 +87,32 @@ export class AdminBoardService {
       showStationName: config.showStationName,
     };
 
-    router.navigate([this.calculateUrl(config)], {
-      queryParams: queryParams,
-    });
+    if (config.stationCode.key) {
+      router.navigate([this.calculateUrlOld(config)], {
+        queryParams: queryParams,
+      });
+    } else {
+      router.navigate([this.calculateUrl(config)], {
+        queryParams: queryParams,
+      });
+    }
     console.groupEnd();
   }
 
   calculateUrl(config): string {
+    const arrivals = config.isArrivals === true ? "/arrivals/" : "";
+    const boardCount = config.boardCount ? `/${config.boardCount}/` : "";
+    if (config.boardType == "main") {
+      return `${arrivals}${config.stationCode.code}${boardCount}`;
+    }
+    if (config.boardType == "singleboard") {
+      return `singleboard/${arrivals}${config.stationCode.code}`;
+    }
+
+    return null;
+  }
+
+  calculateUrlOld(config): string {
     const arrivals = config.isArrivals === true ? "/arrivals/" : "";
     const boardCount = config.boardCount ? `/${config.boardCount}/` : "";
     if (config.boardType == "main") {

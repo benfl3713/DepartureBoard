@@ -74,7 +74,7 @@ namespace TrainDataAPI
                     DateTime expectedDeparture = scheduledDeparture;
                     if (DateTime.TryParse(stop.et, out DateTime etd))
                         expectedDeparture = new DateTime(generated.Year, generated.Month, generated.Day, etd.Hour, etd.Minute, etd.Second);
-                    stops.Add(new StationStop(stop.crs, stop.locationName, StationStop.StopType.LI, 0, scheduledDeparture, expectedDeparture));
+                    stops.Add(new StationStop(stop.crs, stop.locationName, null, scheduledDeparture, expectedDeparture));
                 }
                 return stops;
             }

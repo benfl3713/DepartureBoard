@@ -16,35 +16,35 @@ namespace DepartureBoardWeb.Controllers
 		public StationLookupController(StationLookup stationLookup) { _stationLookup = stationLookup; }
 
 		[HttpGet]
-		public Dictionary<string, string> Get(string query)
+		public List<StationLookup.Station> Get(string query)
 		{
 			if (!string.IsNullOrEmpty(query))
 				return Search(query);
 			return _stationLookup.Stations;
 		}
 
-		private Dictionary<string, string> Search(string query)
+		private List<StationLookup.Station> Search(string query)
 		{
-			Dictionary<string, string> stations = _stationLookup.Stations?.ToDictionary(entry => entry.Key, entry => entry.Value);
-			return stations?.Where(s => s.Value.Contains(query, StringComparison.InvariantCultureIgnoreCase) || s.Key.Contains(query, StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(s => s.Value.StartsWith(query, StringComparison.InvariantCultureIgnoreCase)).Take(15).ToDictionary(x => x.Key, x => x.Value);
+			List<StationLookup.Station> stations = _stationLookup.Stations;
+			return stations?.Where(s => s.Name.Contains(query, StringComparison.InvariantCultureIgnoreCase) || s.Code.Contains(query, StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(s => s.Name.StartsWith(query, StringComparison.InvariantCultureIgnoreCase)).Take(15).ToList();
 		}
 
 		[HttpGet("[action]")]
 		public JsonResult GetStationNameFromCode(string code = "")
 		{
 			code = code.ToUpper();
-			_stationLookup.Stations.TryGetValue(code, out string stationName);
-			return Json(stationName ?? code);
+			var station = _stationLookup.Stations?.FirstOrDefault(s => s.Code == code);
+			return Json(station?.Name ?? code);
 		}
 
 		[HttpGet("[action]")]
 		public JsonResult GetStationCodeFromName(string name)
 		{
-			Dictionary<string, string> stations = _stationLookup.Stations.ToDictionary(entry => entry.Key, entry => entry.Value);
-			stations =  stations.Where(s => s.Value.Equals(name.Trim(), StringComparison.InvariantCultureIgnoreCase)).ToDictionary(x => x.Key, x => x.Value);
+			List<StationLookup.Station> stations = _stationLookup.Stations;
+			stations = stations.Where(s => s.Name.Equals(name.Trim(), StringComparison.InvariantCultureIgnoreCase)).ToList();
 			if(stations.Count == 1)
 			{
-				return Json(stations.Keys.First());
+				return Json(stations.First().Code);
 			}
 			return Json(string.Empty);
 		}

@@ -94,6 +94,16 @@ namespace DepartureBoardCore
                 return _transportApi_app_key;
             }
         }
+
+        public static string DeutscheBahnToken
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_deutscheBahnToken))
+                    LoadConfig();
+                return _deutscheBahnToken;
+            }
+        }
         #endregion
 
         private static string _realTimeTrainsToken;
@@ -105,6 +115,7 @@ namespace DepartureBoardCore
         private static int? _cachePeriod;
         private static string _transportApi_app_id;
         private static string _transportApi_app_key;
+        private static string _deutscheBahnToken;
 
         private static void LoadConfig()
         {
@@ -124,6 +135,7 @@ namespace DepartureBoardCore
                 _cachePeriod = int.Parse(rootElement.Element("CachePeriod")?.Value ?? "0");
                 _transportApi_app_id = rootElement.Element("TransportAPI")?.Element("app_id")?.Value;
                 _transportApi_app_key = rootElement.Element("TransportAPI")?.Element("app_key")?.Value;
+                _deutscheBahnToken = rootElement.Element("DeutscheBahnToken")?.Value;
                 if (_realTimeTrainsToken == "[INSERT_REALTIMETRAINS_TOKEN_HERE]"){
                     _realTimeTrainsToken = null;
                     throw new Exception(errorMessage);
@@ -163,6 +175,9 @@ namespace DepartureBoardCore
                     _transportApi_app_id = Environment.GetEnvironmentVariable("TransportAPI_AppId");
                 if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TransportAPI_AppKey")))
                     _transportApi_app_key = Environment.GetEnvironmentVariable("TransportAPI_AppKey");
+
+                if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DeutscheBahnToken")))
+                    _deutscheBahnToken = Environment.GetEnvironmentVariable("DeutscheBahnToken");
             }
             catch(Exception e) { Console.WriteLine(e.Message); }
         }

@@ -59,6 +59,8 @@ namespace DepartureBoardWeb.Controllers
             {
                 case ("NATIONALRAIL"):
                     return new NationalRailAPI();
+                case ("DEUTSCHEBAHN"):
+                    return new DeutscheBahnAPI();
                 default:
                     return new RealTimeTrainsAPI();
             }

@@ -76,7 +76,7 @@
       </div>
       <div class="row">
         <div class="col">
-          <label>DataSource:</label>
+          <label>UK DataSource:</label>
           <mat-form-field>
             <mat-label>DataSource</mat-label>
             <mat-select formControlName="general_dataSource">
@@ -94,6 +94,10 @@
           Reset
         </button>
       </div>
+      <mat-checkbox formControlName="general_betaFeatures"
+        >Beta Features</mat-checkbox
+      >
+      <br />
       <button mat-flat-button color="primary" (click)="changeCookies()">
         Change Cookie Settings
       </button>

@@ -18,12 +18,13 @@
         [matAutocomplete]="auto"
         (keyup)="filter()"
       />
-      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-        <mat-option
-          *ngFor="let station of filteredOptions | keyvalue: asIsOrder"
-          [value]="station.value"
-        >
-          {{ station.value }} - ({{ station.key }})
+      <mat-autocomplete
+        autoActiveFirstOption
+        #auto="matAutocomplete"
+        [displayWith]="stationDisplay"
+      >
+        <mat-option *ngFor="let station of filteredOptions" [value]="station">
+          {{ station.name }} - ({{ station.code }}) - [{{ station.country }}]
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>

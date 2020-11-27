@@ -22,6 +22,7 @@ namespace TrainDataAPI
         [JsonIgnore]
         public Type FromDataSouce { get; set; }
         public int Length { get; set; }
+        public Dictionary<string, object> ExtraDetails { get; set; } = null;
         public List<StationStop> Stops
         {
             get
@@ -79,6 +80,12 @@ namespace TrainDataAPI
                 }
             }
             toRemove.ForEach(s => _stops.Remove(s));
+        }
+
+        public bool AddExtraDetail(string key, object value)
+        {
+            ExtraDetails ??= new Dictionary<string, object>();
+            return ExtraDetails.TryAdd(key, value);
         }
         
 

@@ -1,0 +1,30 @@
+.german-container {
+  background-color: blue !important;
+  height: 100%;
+  width: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: lighter;
+}
+
+.singleboard {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 60%;
+  background-color: blue;
+}
+
+.singleboard-row {
+  padding: 10px;
+  min-height: 100px;
+}
+
+.hr {
+  height: 2px;
+  border: 2px solid black;
+  margin: 1em 0;
+  padding: 0;
+  width: 100%;
+  margin: 0;
+}

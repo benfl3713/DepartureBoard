@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { FormControl } from "@angular/forms";
 import { Router } from "@angular/router";
+import { StationLookupService } from "../Services/station-lookup.service";
+import { Station } from "../models/station.model";
 
 @Component({
   selector: "app-components-search",
@@ -13,9 +15,13 @@ export class SearchComponent implements OnInit {
   searchBox = new FormControl();
   isSingleboard = new FormControl(false);
   isArrivals = new FormControl(false);
-  filteredOptions: any;
+  filteredOptions: Station[];
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private stationLookup: StationLookupService
+  ) {
     document.title = "Departure Board";
   }
 
@@ -28,16 +34,16 @@ export class SearchComponent implements OnInit {
   filter() {
     const query = this.searchBox.value;
     if (query) {
-      this.http.get("/api/StationLookup?query=" + query).subscribe((s) => {
+      this.stationLookup.Search(query).subscribe((s) => {
         this.filteredOptions = s;
       });
     } else {
-      this.filteredOptions = Array<string>();
+      this.filteredOptions = Array<Station>();
     }
   }
 
   Search() {
-    const stationCode = this.getKeyByValue(this.stations, this.searchBox.value);
+    const stationCode = this.searchBox.value.code;
     if (!stationCode) {
       alert("Invalid Station");
       return;
@@ -45,6 +51,9 @@ export class SearchComponent implements OnInit {
 
     let prefixUrl = "";
 
+    if (this.searchBox.value.country == "DE") {
+      prefixUrl = "germany/";
+    }
     if (this.isSingleboard.value == true) {
       prefixUrl = prefixUrl + "singleboard/";
     }
@@ -55,8 +64,14 @@ export class SearchComponent implements OnInit {
     this.router.navigate([prefixUrl, stationCode]);
   }
 
-  private getKeyByValue(object, value) {
-    return Object.keys(object).find((key) => object[key] === value);
+  stationDisplay(station: Station) {
+    {
+      if (!station) {
+        return null;
+      }
+
+      return `${station.name} - (${station.code}) - [${station.country}]`;
+    }
   }
 
   asIsOrder(a, b) {

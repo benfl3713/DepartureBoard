@@ -9,6 +9,7 @@ using System.Net;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using Newtonsoft.Json;
 
 namespace TrainDataAPI.Services
 {
@@ -18,7 +19,7 @@ namespace TrainDataAPI.Services
 		{
 			LoadStationList();
 		}
-		public Dictionary<string, string> Stations
+		public List<Station> Stations
 		{
 			get {
 				//Load the stations if the dictionary is not populated
@@ -28,9 +29,8 @@ namespace TrainDataAPI.Services
 				}
 				return _stations; 
 			}
-			private set { _stations = value; }
 		}
-		private Dictionary<string, string> _stations = new Dictionary<string, string>();
+		private List<Station> _stations = new List<Station>();
 		private readonly object _stationsLock = new object();
 		private DateTime _lastUpdated = DateTime.MinValue;
 
@@ -50,29 +50,54 @@ namespace TrainDataAPI.Services
                     return;
                 }
 
-				_stations = new Dictionary<string, string>();
+				_stations = new List<Station>();
 				try
 				{
-					string token = GetSecretToken();
-					var client = new RestClient("https://opendata.nationalrail.co.uk/api/staticfeeds/4.0/stations");
-					var request = new RestRequest(Method.GET);
-					request.Timeout = 15000;
-					request.AddHeader("X-Auth-Token", token);
-					var response = client.Execute(request);
-					if (response.StatusCode != HttpStatusCode.OK)
-						return;
-					XElement xmlResponse = XElement.Parse(response.Content);
-					foreach (XElement element in xmlResponse.Elements())
-					{
-						string code = element.Element("{http://nationalrail.co.uk/xml/station}CrsCode")?.Value;
-						string name = element.Element("{http://nationalrail.co.uk/xml/station}Name")?.Value;
-						if (!string.IsNullOrEmpty(code) && !string.IsNullOrEmpty(name) && IsValidEntry(name, code))
-							_stations.Add(code, name);
-					}
-
-					_lastUpdated = DateTime.Now;
+					LoadUKStations();
+					LoadDEStations();
 				}
 				catch (Exception ex) { Console.WriteLine(ex.Message); }
+			}
+		}
+
+		private void LoadUKStations()
+		{
+			string token = GetSecretToken();
+			var client = new RestClient("https://opendata.nationalrail.co.uk/api/staticfeeds/4.0/stations");
+			var request = new RestRequest(Method.GET);
+			request.Timeout = 15000;
+			request.AddHeader("X-Auth-Token", token);
+			var response = client.Execute(request);
+			if (response.StatusCode != HttpStatusCode.OK)
+				return;
+			XElement xmlResponse = XElement.Parse(response.Content);
+			foreach (XElement element in xmlResponse.Elements())
+			{
+				string code = element.Element("{http://nationalrail.co.uk/xml/station}CrsCode")?.Value;
+				string name = element.Element("{http://nationalrail.co.uk/xml/station}Name")?.Value;
+				if (!string.IsNullOrEmpty(code) && !string.IsNullOrEmpty(name) && IsValidEntry(name, code))
+					_stations.Add(new Station(code, name, "GB"));
+			}
+
+			_lastUpdated = DateTime.Now;
+		}
+
+		private void LoadDEStations()
+		{
+			if(string.IsNullOrEmpty(ConfigService.DeutscheBahnToken))
+				return;
+
+			var client = new RestClient("https://api.deutschebahn.com/stada/v2/stations");
+			var request = new RestRequest(Method.GET);
+			request.AddHeader("Authorization", $"Bearer {ConfigService.DeutscheBahnToken}");
+			IRestResponse response = client.Execute(request);
+			DBStationsResponse dbStationsResponse = JsonConvert.DeserializeObject<DBStationsResponse>(response.Content);
+			foreach (DBStationsResponse.DBStation dbStation in dbStationsResponse.result)
+			{
+				if(!dbStation.evaNumbers.Any())
+					continue;
+				
+				_stations.Add(new Station(dbStation.evaNumbers.First().number, dbStation.name, "DE"));
 			}
 		}
 
@@ -110,6 +135,35 @@ namespace TrainDataAPI.Services
 
 			JObject jsonResponse = JObject.Parse(response.Content);
 			return jsonResponse["token"]?.ToString();
+		}
+
+		public class Station
+		{
+			public string Code { get; set; }
+			public string Name { get; set; }
+			public string Country { get; set; }
+
+			public Station(string code, string name, string country)
+			{
+				Code = code;
+				Name = name;
+				Country = country;
+			}
+		}
+
+		private class DBStationsResponse
+		{
+			public List<DBStation> result { get; set; }
+			public class DBStation
+			{
+				public string name { get; set; }
+				public List<EvaNumber> evaNumbers { get; set; }
+
+				public class EvaNumber
+				{
+					public string number { get; set; }
+				}
+			}
 		}
 	}
 }

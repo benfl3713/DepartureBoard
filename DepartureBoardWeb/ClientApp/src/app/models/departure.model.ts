@@ -11,6 +11,7 @@ export interface Departure {
   status: any;
   length: number;
   stops: StationStop[];
+  extraDetails: Dictionary<object>;
 }
 
 export interface StationStop {
@@ -26,4 +27,8 @@ export enum StopType {
   LI,
   LO,
   LT,
+}
+
+export interface Dictionary<T> {
+  [Key: string]: T;
 }

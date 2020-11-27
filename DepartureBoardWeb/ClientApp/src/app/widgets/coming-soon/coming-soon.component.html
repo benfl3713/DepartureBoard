@@ -2,9 +2,19 @@
   <h2 class="led-bold centre-text title" style="padding-left: 10px">
     Coming Soon
   </h2>
-  <div class="item" *ngFor="let item of comingSoonItems" [ngClass]="{ 'highlight': item.isHighlight === true }">
+  <div
+    class="item"
+    *ngFor="let item of comingSoonItems"
+    [ngClass]="{ highlight: item.isHighlight === true }"
+  >
     <h5 class="centre-text">
-      <strong>{{item.title}}</strong>
+      <strong>{{ item.title }}</strong>
+      <span
+        *ngIf="item.isBeta"
+        class="badge badge-pill badge-primary"
+        style="margin-left: 10px"
+        >Beta</span
+      >
     </h5>
     <p class="centre-text" [innerHTML]="item.content" routeTransformer></p>
   </div>

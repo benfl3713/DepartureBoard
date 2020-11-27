@@ -33,6 +33,7 @@ export class SettingsComponent implements OnInit {
     general_mainColour: new FormControl("#ff9729"),
     general_backgroundColour: new FormControl("black"),
     general_dataSource: new FormControl("REALTIMETRAINS"),
+    general_betaFeatures: new FormControl(false),
 
     singleboard_showStationName: new FormControl(false),
     singleboard_alternateSecondRow: new FormControl(true),
@@ -46,9 +47,12 @@ export class SettingsComponent implements OnInit {
   Load() {
     Object.keys(this.settingsForm.controls).forEach((key) => {
       if (localStorage.getItem(`settings_${key}`)) {
-        this.settingsForm
-          .get(key)
-          .setValue(localStorage.getItem(`settings_${key}`));
+        const value = localStorage.getItem(`settings_${key}`);
+        if (value == "true" || value == "false") {
+          this.settingsForm.get(key).setValue(value == "true");
+        } else {
+          this.settingsForm.get(key).setValue(value);
+        }
       }
     });
   }
@@ -77,6 +81,7 @@ export class SettingsComponent implements OnInit {
       general_mainColour: "#ff9729",
       general_backgroundColour: "black",
       general_dataSource: "REALTIMETRAINS",
+      general_betaFeatures: false,
       singleboard_showStationName: false,
       singleboard_alternateSecondRow: true,
       departureadmin_uid: "",

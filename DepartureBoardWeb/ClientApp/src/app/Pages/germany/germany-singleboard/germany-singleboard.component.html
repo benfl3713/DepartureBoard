@@ -1,0 +1,37 @@
+<div class="german-container">
+  <div class="singleboard" fxLayout="row wrap">
+    <div fxFlex="100%" fxLayout.xs="column" class="singleboard-row">
+      <div fxFlex="20%" fxLayoutAlign="center" fxLayout="column">
+        <span style="font-size: 48px">{{
+          departure?.aimedDeparture | date: "HH:mm"
+        }}</span>
+        <span style="font-size: 16px; padding-left: 5px">{{
+          departure?.extraDetails["name"]
+        }}</span>
+      </div>
+      <div fxFlex="60%" fxLayoutAlign="left" fxLayout="row wrap">
+        <span style="font-size: 26px">{{ GetStopsText() }}</span>
+      </div>
+      <div fxFlex="20%" fxLayoutAlign="end">
+        <span
+          style="font-size: 64px; padding-right: 10px"
+          class="clickable"
+          (click)="FilterPlatform(departure?.platform)"
+          >{{ departure?.platform }}</span
+        >
+      </div>
+    </div>
+    <span class="hr"></span>
+    <div fxFlex="100%" fxLayout.xs="column" class="singleboard-row">
+      <div fxFlex="20%" fxLayoutAlign="center"></div>
+      <div fxFlex="80%" fxLayoutAlign="left" fxLayout="row wrap">
+        <span
+          style="font-size: 36px; margin-top: auto; margin-bottom: auto"
+          (click)="ChangeStation(departure?.destination)"
+        >
+          {{ departure?.destination }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

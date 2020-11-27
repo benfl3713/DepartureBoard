@@ -41,12 +41,11 @@ export class AppComponent {
     ThemeService.LoadTheme();
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        ToggleConfig.LoadingBar.next(false);
         (<any>window).ga("set", "page", event.urlAfterRedirects);
         (<any>window).ga("send", "pageview");
       }
       if (event instanceof NavigationStart) {
-        ToggleConfig.LoadingBar.next(true);
+        ToggleConfig.LoadingBar.next(false);
       }
     });
 

@@ -42,6 +42,7 @@ import { AboutComponent } from "./Pages/about/about.component";
 import { BusDepartureService } from "./Services/bus-departure.service";
 import { DepartureScrollerComponent } from "./Components/departure-scroller/departure-scroller.component";
 import { RouteTransformerDirective } from "./Utils/routetransformer.directive";
+import { BetaFeaturesGuard } from "./Guards/beta-features.guard";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo",
@@ -171,12 +172,22 @@ const firebaseConfig = {
         loadChildren: () =>
           import("./Pages/buses/buses/buses.module").then((m) => m.BusesModule),
       },
+      {
+        path: "germany",
+        loadChildren: () =>
+          import("./Pages/germany/germany.module").then((m) => m.GermanyModule),
+      },
 
       { path: ":station", component: BoardsComponent, pathMatch: "full" },
       {
         path: ":station/:displays",
         component: BoardsComponent,
         pathMatch: "full",
+      },
+      {
+        path: "germany",
+        loadChildren: () =>
+          import("./Pages/germany/germany.module").then((m) => m.GermanyModule),
       },
       { path: "**", redirectTo: "" },
     ]),
@@ -202,6 +213,7 @@ const firebaseConfig = {
     AdminBoardService,
     BusDepartureService,
     RouteTransformerDirective,
+    BetaFeaturesGuard,
   ],
   bootstrap: [AppComponent],
   entryComponents: [

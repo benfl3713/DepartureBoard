@@ -22,8 +22,8 @@ namespace TrainDataAPI
 
             List<DBBoard> boards = JsonConvert.DeserializeObject<List<DBBoard>>(HttpUtility.HtmlDecode(response.Content.ReadAsStringAsync().Result));
             
-            if(boards.Count > count)
-                boards = boards.Take(count).ToList();
+            // if(boards.Count > count)
+            //     boards = boards.Take(count).ToList();
             
 
             Parallel.ForEach(boards, board =>
@@ -76,6 +76,8 @@ namespace TrainDataAPI
                 if (detail.stopName == board.stopName)
                 {
                     departure = new Departure(board.stopName, board.stopCode, board.track, detail.operatorName, board.dateTime, board.dateTime, details.Last().stopName, Departure.ServiceStatus.ONTIME, details.First().stopName, DateTime.Now);
+                    if (!string.IsNullOrEmpty(board.name))
+                        departure.AddExtraDetail("name", board.name);
                 }
                 else if(departure != null)
                 {
@@ -117,13 +119,9 @@ namespace TrainDataAPI
             return client.GetAsync(builder.ToString()).Result;
         }
 
-        private void AddCredentials(ref RestRequest request)
-        {
-            request.AddHeader("Authorization", $"Bearer {ConfigService.DeutscheBahnToken}");
-        }
-
         private class DBBoard
         {
+            public string name { get; set; }
             public string stopCode { get; set; }
             public string stopName { get; set; }
             public string detailsId { get; set; }

@@ -3,7 +3,6 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import {
   ActivatedRoute,
   NavigationStart,
-  Params,
   PRIMARY_OUTLET,
   Router,
   UrlSegment,
@@ -14,10 +13,10 @@ import { StationLookupService } from "src/app/Services/station-lookup.service";
 import { ToggleConfig } from "src/app/ToggleConfig";
 
 @Component({
-  templateUrl: "./germany-singleboard.component.html",
-  styleUrls: ["./germany-singleboard.component.css"],
+  templateUrl: "./germany-boards.component.html",
+  styleUrls: ["./germany-boards.component.css"],
 })
-export class GermanySingleboardComponent implements OnInit, OnDestroy {
+export class GermanyBoardsComponent implements OnInit, OnDestroy {
   constructor(
     private departureService: DepartureService,
     private route: ActivatedRoute,
@@ -31,15 +30,21 @@ export class GermanySingleboardComponent implements OnInit, OnDestroy {
       });
     });
   }
+  ngOnDestroy(): void {
+    if (this.refresher) {
+      window.clearInterval(this.refresher);
+    }
+  }
+
+  departures: Departure[];
 
   refresher;
-  noBoardsDisplay: boolean = false;
   useArrivals: boolean = false;
   showStationName: boolean = false;
   stationName;
+  displays: number = 12;
   public platform: string;
   public stationCode: string;
-  departure: Departure;
 
   ngOnInit(): void {}
 
@@ -62,6 +67,10 @@ export class GermanySingleboardComponent implements OnInit, OnDestroy {
 
     if (queryParams["showStationName"]) {
       this.showStationName = queryParams["showStationName"] == "true";
+    }
+
+    if (this.isNumber(this.route.snapshot.paramMap.get("displays"))) {
+      this.displays = Number(this.route.snapshot.paramMap.get("displays"));
     }
 
     if (queryParams["platform"]) {
@@ -101,57 +110,24 @@ export class GermanySingleboardComponent implements OnInit, OnDestroy {
 
   GetDepartures() {
     this.departureService
-      .GetDepartures(this.stationCode, 1, false, this.platform, "DEUTSCHEBAHN")
+      .GetDepartures(
+        this.stationCode,
+        this.displays,
+        false,
+        this.platform,
+        "DEUTSCHEBAHN"
+      )
       .subscribe(
         (departures) => {
-          console.log(departures);
           ToggleConfig.LoadingBar.next(false);
-          if (departures && departures.length > 0) {
-            this.departure = departures[0];
-          } else {
-            this.departure = null;
-          }
+          this.departures = departures;
+          departures.forEach((d) => console.log(d.platform));
         },
         () => ToggleConfig.LoadingBar.next(false)
       );
   }
 
-  GetStopsText(): string {
-    if (!this.departure) {
-      return "";
-    }
-
-    return this.departure.stops.map((s) => s.stationName).join(" - ");
-  }
-
-  FilterPlatform(platform: string) {
-    if (platform) {
-      const queryParams: Params = { platform };
-      this.router.navigate([], {
-        queryParams: queryParams,
-        queryParamsHandling: "merge", // remove to replace all query params by provided
-      });
-    }
-  }
-
-  ChangeStation(stationName: string) {
-    this.http
-      .get("/api/StationLookup/GetStationCodeFromName?name=" + stationName)
-      .subscribe((s) => {
-        if (!s) {
-          return;
-        }
-        if (this.useArrivals) {
-          this.router.navigate(["germany/singleboard/arrivals/", s]);
-        } else {
-          this.router.navigate(["germany/singleboard/", s]);
-        }
-      });
-  }
-
-  ngOnDestroy(): void {
-    if (this.refresher) {
-      window.clearInterval(this.refresher);
-    }
+  isNumber(value: string | number): boolean {
+    return value != null && !isNaN(Number(value.toString()));
   }
 }

@@ -1,0 +1,35 @@
+<div class="board-container">
+  <div fxLayout="row" fxLayout.xs="column" style="background-color: black">
+    <div fxLayoutAlign="center" fxLayout="column" style="width: 300px">
+      Time
+    </div>
+
+    <div fxFlex="60%" fxLayoutAlign="start" style="overflow: scroll" #via>
+      Via
+    </div>
+
+    <div
+      fxFlex="35%"
+      fxLayoutAlign="start"
+      fxLayout="column"
+      style="padding-left: 50px"
+    >
+      Destination
+    </div>
+    <span fxFlex></span>
+    <div fxLayoutAlign="end" fxLayout="column" style="padding-right: 10px">
+      Platform
+    </div>
+  </div>
+
+  <span class="hr"></span>
+
+  <h1 class="centre-text" *ngIf="departures?.length == 0">
+    No Departures Found for {{ stationName || stationCode }}
+  </h1>
+
+  <div *ngFor="let departure of departures; let odd = odd">
+    <app-germany-board-row [departure]="departure"></app-germany-board-row>
+    <span *ngIf="odd" class="hr"></span>
+  </div>
+</div>

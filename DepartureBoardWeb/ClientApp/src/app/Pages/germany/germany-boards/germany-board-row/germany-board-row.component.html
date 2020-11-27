@@ -1,0 +1,30 @@
+<div fxLayout="row" fxLayout.xs="column" class="board-row">
+  <div fxLayoutAlign="center" fxLayout="column" class="time-column">
+    {{ departure.aimedDeparture | date: "HH:mm" }}
+    {{ departure.extraDetails["name"] }}
+  </div>
+
+  <div fxFlex="60%" fxLayoutAlign="start" style="overflow: scroll" #via>
+    {{ GetStopsText() }}
+  </div>
+
+  <div
+    fxFlex="35%"
+    fxLayoutAlign="start"
+    fxLayout="column"
+    class="clickable"
+    (click)="ChangeStation(departure.destination)"
+  >
+    {{ departure.destination }}
+  </div>
+  <span fxFlex></span>
+  <div
+    fxLayoutAlign="end"
+    fxLayout="column wrap"
+    style="padding-right: 10px; min-width: 100px; text-align: right"
+    class="clickable"
+    (click)="FilterPlatform(departure.platform)"
+  >
+    {{ departure.platform }}
+  </div>
+</div>

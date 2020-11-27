@@ -5,7 +5,7 @@
 
 # Welcome
 
-This project is an angular website designed to present the UK train departures in a way similar to the led boards you find in stations accross the UK. For more info please see https://leddepartureboard.com
+This project is an angular website designed to present the UK and German train departures in a way similar to the led boards you find in stations accross the UK. For more info please see https://leddepartureboard.com
 
 ![](https://github.com/benfl3713/DepartureBoard/blob/master/DepartureBoardWeb/wwwroot/preview.png?raw=true)
 

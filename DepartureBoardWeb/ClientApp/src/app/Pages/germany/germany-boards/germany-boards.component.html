@@ -4,12 +4,12 @@
       Time
     </div>
 
-    <div fxFlex="60%" fxLayoutAlign="start" style="overflow: scroll" #via>
+    <div fxFlex="70%" fxLayoutAlign="start" style="overflow: scroll" #via>
       Via
     </div>
 
     <div
-      fxFlex="35%"
+      fxFlex="29%"
       fxLayoutAlign="start"
       fxLayout="column"
       style="padding-left: 50px"
@@ -28,7 +28,7 @@
     No Departures Found for {{ stationName || stationCode }}
   </h1>
 
-  <div *ngFor="let departure of departures; let odd = odd">
+  <div *ngFor="let departure of departures; let odd = odd; trackBy: trackByFn">
     <app-germany-board-row [departure]="departure"></app-germany-board-row>
     <span *ngIf="odd" class="hr"></span>
   </div>

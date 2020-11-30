@@ -166,5 +166,8 @@
       }
     }
   },
-  "defaultProject": "DepartureBoardWeb"
+  "defaultProject": "DepartureBoardWeb",
+  "cli": {
+    "analytics": "11136f9c-28dc-4085-b537-cdf03ddf48ce"
+  }
 }

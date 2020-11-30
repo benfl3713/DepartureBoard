@@ -120,8 +120,8 @@ export class GermanyBoardsComponent implements OnInit, OnDestroy {
       .subscribe(
         (departures) => {
           ToggleConfig.LoadingBar.next(false);
+          departures.map((d) => delete d.lastUpdated);
           this.departures = departures;
-          departures.forEach((d) => console.log(d.platform));
         },
         () => ToggleConfig.LoadingBar.next(false)
       );
@@ -129,5 +129,9 @@ export class GermanyBoardsComponent implements OnInit, OnDestroy {
 
   isNumber(value: string | number): boolean {
     return value != null && !isNaN(Number(value.toString()));
+  }
+
+  trackByFn(index, departure: Departure) {
+    return `${departure.aimedDeparture}_${departure.origin}_${departure.destination}_${departure.operatorName}_${departure.platform}`;
   }
 }

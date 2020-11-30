@@ -121,7 +121,6 @@ export class GermanyBoardsComponent implements OnInit, OnDestroy {
         (departures) => {
           ToggleConfig.LoadingBar.next(false);
           departures.map((d) => delete d.lastUpdated);
-          console.log(departures);
           this.departures = departures;
         },
         () => ToggleConfig.LoadingBar.next(false)

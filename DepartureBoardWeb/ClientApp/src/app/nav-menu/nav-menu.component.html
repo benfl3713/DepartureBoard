@@ -55,6 +55,14 @@
               ><span class="fas fa-bus"></span> Buses
             </a>
           </li>
+          <li class="nav-item" [routerLinkActive]="['page-selected']">
+            <a
+              class="nav-link text-light"
+              href="https://docs.leddepartureboard.com/"
+              target="_blank"
+              ><span class="far fa-file"></span> Docs
+            </a>
+          </li>
         </ul>
         <ul class="navbar-nav order-3 ml-auto" *ngIf="!(isHandset$ | async)">
           <li class="nav-item">
@@ -159,6 +167,14 @@
           [routerLinkActive]="['link-active']"
           (click)="PageChanged()"
           ><span class="fas fa-bus"></span> Buses</a
+        >
+        <a
+          mat-list-item
+          class="menu-item"
+          href="https://docs.leddepartureboard.com"
+          target="_blank"
+          (click)="PageChanged()"
+          ><span class="far fa-file"></span> Docs</a
         >
       </mat-nav-list>
       <mat-nav-list class="bottom-nav-items">

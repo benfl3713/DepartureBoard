@@ -5,6 +5,12 @@ export const ComingSoonItems: ComingSoonItem[] = [
       "We are expanding to overseas datasouces by implementing all current features with the German Railway (DB)",
     isBeta: true,
   },
+  {
+    title: "New Documentation Website",
+    content:
+      "We are building a brand new website to include full documentation on led departure board",
+    isHighlight: true,
+  },
 ];
 
 interface ComingSoonItem {

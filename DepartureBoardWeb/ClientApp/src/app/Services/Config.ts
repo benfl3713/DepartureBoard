@@ -26,6 +26,7 @@ export class Config {
   }
 
   public static StartTracking() {
+    (<any>window).ga("set", "anonymizeIp", true);
     (<any>window).ga("create", "UA-140494832-4", "auto");
     (<any>window).ga("send", "pageview");
   }

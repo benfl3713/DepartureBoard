@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DepartureBoardCore;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 
@@ -10,26 +11,30 @@ namespace TrainDataAPI
     public class RealTimeTrainsAPI : ITrainDatasource
     {
         private static List<CacheDeparture> cachedDepartures = new List<CacheDeparture>();
+
         public List<Departure> GetLiveDepartures(string stationCode, int count)
         {
             if (ConfigService.UseCaching && ConfigService.CachePeriod > 0)
             {
                 List<CacheDeparture> result = cachedDepartures.Where(d => d.StationCode == stationCode && d.CachedDateTime > DateTime.Now.AddMilliseconds(-ConfigService.CachePeriod)).ToList();
-                if (result.Count > 0){
+                if (result.Count > 0)
+                {
                     var cache = result[0].Departures;
                     cache.ForEach(d => d.FromDataSouce = typeof(RealTimeTrainsAPI));
                     return cache;
                 }
             }
+
             List<Departure> departures = GetDepartures(stationCode);
 
             if (ConfigService.UseCaching && ConfigService.CachePeriod > 0)
             {
                 List<CacheDeparture> oldCache = cachedDepartures.Where(d => d.StationCode == stationCode).ToList();
-                if(oldCache.Count > 0)
+                if (oldCache.Count > 0)
                     cachedDepartures.Remove(oldCache[0]);
                 cachedDepartures.Add(new CacheDeparture(stationCode, departures));
             }
+
             return departures;
         }
 
@@ -67,7 +72,7 @@ namespace TrainDataAPI
                 request.Timeout = 15000;
                 AddCredendials(ref request);
                 IRestResponse response = client.Execute(request);
-                return DeserialiseDeparture(response.Content);
+                return DeserialiseDepartures(response.Content);
             }
             catch
             {
@@ -80,121 +85,238 @@ namespace TrainDataAPI
             request.AddHeader("Authorization", $"Basic {ConfigService.RealTimeTrainsToken}");
         }
 
-        private List<Departure> DeserialiseDeparture(string json)
+        private List<Departure> DeserialiseDepartures(string json)
         {
             List<Departure> departures = new List<Departure>();
             try
             {
-                JObject results = JObject.Parse(json);
+                RealTimeTrainsResponse realTimeTrainsResponse = JsonConvert.DeserializeObject<RealTimeTrainsResponse>(json);
 
-                if (results == null || !results.HasValues)
-                    return departures;
+                string stationName = realTimeTrainsResponse.location.name;
+                string stationCode = realTimeTrainsResponse.location.crs;
 
-                JToken allDepartures = results["services"];
-
-                if (allDepartures == null || !allDepartures.HasValues)
-                    return departures;
-
-                string stationName = results["location"]["name"].ToString();
-                string stationCode = results["location"]["crs"].ToString();
-                
-                foreach (var Jdeparture in allDepartures)
+                foreach (RealTimeTrainsResponse.Service service in realTimeTrainsResponse.services)
                 {
-                    try
-                    {
-                        if (((bool)Jdeparture["isPassenger"]) == false || (Jdeparture["isPassenger"].ToString() ?? "") == "CANCELLED_CALL")
-                            continue;
+                    if (service.isPassenger == false || service.serviceType.ToLower() != "train")
+                        continue;
 
-                        string date = Jdeparture["runDate"].ToString();
-                        string platform = (Jdeparture["locationDetail"]["platform"])?.ToString() ?? "0";
-                        string operatorName = Jdeparture["atocName"].ToString();
-                        DateTime.TryParse(date + " " + Jdeparture["locationDetail"]["gbttBookedDeparture"]?.ToString().Substring(0, 2) + ":" + Jdeparture["locationDetail"]["gbttBookedDeparture"]?.ToString().Substring(2, 2), out DateTime aimedDepatureTime);
-                        if (aimedDepatureTime == DateTime.MinValue)
-                            DateTime.TryParse(date + " " + Jdeparture["locationDetail"]["gbttBookedArrival"]?.ToString().Substring(0, 2) + ":" + Jdeparture["locationDetail"]["gbttBookedArrival"]?.ToString().Substring(2, 2), out aimedDepatureTime);
-                        DateTime.TryParse(date + " " + Jdeparture["locationDetail"]["realtimeDeparture"]?.ToString().Substring(0, 2) + ":" + Jdeparture["locationDetail"]["realtimeDeparture"]?.ToString().Substring(2, 2), out DateTime expectedDepatureTime);
-                        if (expectedDepatureTime == DateTime.MinValue)
-                            DateTime.TryParse(date + " " + Jdeparture["locationDetail"]["realtimeArrival"]?.ToString().Substring(0, 2) + ":" + Jdeparture["locationDetail"]["realtimeArrival"]?.ToString().Substring(2, 2), out expectedDepatureTime);
+                    string platform = service.locationDetail.platform;
+                    string operatorName = service.atocName;
+                    string destination = service.locationDetail.destination.First().description;
+                    string origin = service.locationDetail.origin.First().description;
 
-                        string destination = Jdeparture["locationDetail"]["destination"][0]["description"]?.ToString();
-                        Departure.ServiceStatus status = (expectedDepatureTime == aimedDepatureTime) ? Departure.ServiceStatus.ONTIME : Departure.ServiceStatus.LATE;
+                    // Aimed Departure
+                    DateTime.TryParse(service.runDate + " " + service.locationDetail.gbttBookedDeparture?.Substring(0, 2) + ":" + service.locationDetail.gbttBookedDeparture?.Substring(2, 2), out DateTime aimedDepatureTime);
+                    if (aimedDepatureTime == DateTime.MinValue)
+                        DateTime.TryParse(service.runDate + " " + service.locationDetail.gbttBookedArrival?.Substring(0, 2) + ":" + service.locationDetail.gbttBookedArrival?.Substring(2, 2), out aimedDepatureTime);
 
-                        if (Jdeparture["locationDetail"]["realtimeArrivalActual"] != null && bool.TryParse(Jdeparture["locationDetail"]["realtimeArrivalActual"]?.ToString(), out bool hasArrived) && hasArrived)
-                            status = Departure.ServiceStatus.ARRIVED;
+                    // Expected Departure
+                    DateTime.TryParse(service.runDate + " " + service.locationDetail.realtimeDeparture?.Substring(0, 2) + ":" + service.locationDetail.realtimeDeparture?.Substring(2, 2), out DateTime expectedDepatureTime);
+                    if (expectedDepatureTime == DateTime.MinValue)
+                        DateTime.TryParse(service.runDate + " " + service.locationDetail.realtimeArrival?.Substring(0, 2) + ":" + service.locationDetail.realtimeArrival?.Substring(2, 2), out expectedDepatureTime);
 
-                        string origin = Jdeparture["locationDetail"]["origin"][0]["description"].ToString();
+                    DateTime? expectedDateTimeNullable = expectedDepatureTime == DateTime.MinValue ? null : expectedDepatureTime as DateTime?;
+                    Departure.ServiceStatus status = (expectedDepatureTime == aimedDepatureTime) ? Departure.ServiceStatus.ONTIME : Departure.ServiceStatus.LATE;
 
-                        string serviceTimeTable = $"https://api.rtt.io/api/v1/json/service/{Jdeparture["serviceUid"].ToString()}/{date.Replace('-', '/')}";
+                    if (expectedDateTimeNullable == null)
+                        status = Departure.ServiceStatus.ONTIME;
 
-                        Departure departure = new Departure(stationName, stationCode, platform, operatorName, aimedDepatureTime, expectedDepatureTime, destination, status, origin, null, serviceTimeTable, GetType());
-                        departures.Add(departure);
-                    }
-                    catch { }
+                    if (service.locationDetail.realtimeArrivalActual != null && service.locationDetail.realtimeArrivalActual.Value)
+                        status = Departure.ServiceStatus.ARRIVED;
+
+                    string serviceTimeTable = $"https://api.rtt.io/api/v1/json/service/{service.serviceUid}/{service.runDate.Replace('-', '/')}";
+
+                    Departure departure = new Departure(stationName, stationCode, platform, operatorName, aimedDepatureTime, expectedDateTimeNullable, destination, status, origin, null, serviceTimeTable, GetType());
+                    departures.Add(departure);
                 }
             }
-            catch
+            catch (Exception ex)
             {
-
+                Console.WriteLine(ex);
             }
 
             return departures;
         }
-
+        
         private List<StationStop> DeserialiseStationStops(string json)
         {
             List<StationStop> stops = new List<StationStop>();
             try
             {
-                JObject results = JObject.Parse(json);
+                RealTimeTrainsServiceDetailsResponse realTimeTrainsServiceDetailsResponse = JsonConvert.DeserializeObject<RealTimeTrainsServiceDetailsResponse>(json);
 
-                if (results == null || !results.HasValues)
-                    return stops;
-
-                string runDate = results["runDate"].ToString();
-
-                foreach (var JStop in results["locations"])
+                foreach (RealTimeTrainsServiceDetailsResponse.Location location in realTimeTrainsServiceDetailsResponse.locations)
                 {
                     try
                     {
-                        string stationCode = (JStop["crs"] ?? "").ToString();
-                        string stationName = (JStop["description"] ?? "").ToString();
-                        string platform = (JStop["platform"] ?? "").ToString();
+                        string stationCode = location.crs;
+                        string stationName = location.description;
+                        string platform = location.platform;
 
                         DateTime aimedDepartureDate;
-                        DateTime expectedDepartureDate;
+                        DateTime expectedDepartureDate = DateTime.MinValue;
+                        string runDate = realTimeTrainsServiceDetailsResponse.runDate;
 
-                        if (JStop["gbttBookedDeparture"] != null)
-                            DateTime.TryParse($"{runDate} {JStop["gbttBookedDeparture"]?.ToString().Substring(0, 2)}:{JStop["gbttBookedDeparture"]?.ToString().Substring(2, 2)}", out aimedDepartureDate);
+                        if (location.gbttBookedDeparture != null)
+                            DateTime.TryParse($"{runDate} {location.gbttBookedDeparture?.Substring(0, 2)}:{location.gbttBookedDeparture?.Substring(2, 2)}", out aimedDepartureDate);
                         else
-                            DateTime.TryParse($"{runDate} {JStop["gbttBookedArrival"]?.ToString().Substring(0, 2)}:{JStop["gbttBookedArrival"]?.ToString().Substring(2, 2)}", out aimedDepartureDate);
+                            DateTime.TryParse($"{runDate} {location.gbttBookedArrival?.Substring(0, 2)}:{location.gbttBookedArrival?.Substring(2, 2)}", out aimedDepartureDate);
 
-                        if(JStop["realtimeDeparture"] != null)
-                            DateTime.TryParse($"{runDate} {JStop["realtimeDeparture"]?.ToString().Substring(0, 2)}:{JStop["realtimeDeparture"]?.ToString().Substring(2, 2)}", out expectedDepartureDate);
-                        else
-                            DateTime.TryParse($"{runDate} {JStop["realtimeArrival"]?.ToString().Substring(0, 2)}:{JStop["realtimeArrival"]?.ToString().Substring(2, 2)}", out expectedDepartureDate);
+                        if (location.realtimeDeparture != null)
+                            DateTime.TryParse($"{runDate} {location.realtimeDeparture.Substring(0, 2)}:{location.realtimeDeparture.Substring(2, 2)}", out expectedDepartureDate);
+                        else if(location.realtimeArrival != null)
+                            DateTime.TryParse($"{runDate} {location.realtimeArrival.Substring(0, 2)}:{location.realtimeArrival.Substring(2, 2)}", out expectedDepartureDate);
 
-                        StationStop stop = new StationStop(stationCode, stationName, platform, aimedDepartureDate, expectedDepartureDate);
+                        StationStop stop = new StationStop(stationCode, stationName, platform, aimedDepartureDate, expectedDepartureDate == DateTime.MinValue ? null as DateTime? : expectedDepartureDate);
                         stops.Add(stop);
                     }
-                    catch { }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
                 }
             }
-            catch { }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
 
             for (int i = 1; i < stops.Count; i++)
             {
-                if (stops[i].AimedDeparture.TimeOfDay < stops[i-1].AimedDeparture.TimeOfDay)
+                if (stops[i].AimedDeparture.TimeOfDay < stops[i - 1].AimedDeparture.TimeOfDay)
                 {
                     for (int j = i; j < stops.Count; j++)
                     {
                         stops[i].AimedDeparture = stops[j].AimedDeparture.AddDays(1);
-                        stops[i].ExpectedDeparture = stops[j].ExpectedDeparture.AddDays(1);
+                        if(stops[i].ExpectedDeparture != null)
+                            stops[i].ExpectedDeparture = stops[j].ExpectedDeparture.Value.AddDays(1);
                     }
 
                     break;
                 }
             }
+
             stops.Sort((s1, s2) => s1.AimedDeparture.CompareTo(s2.AimedDeparture));
             return stops;
+        }
+
+        private class RealTimeTrainsResponse
+        {
+            public Location location { get; set; }
+            public object filter { get; set; }
+            public List<Service> services { get; set; } 
+            
+            public class Location
+            {
+                public string name { get; set; }
+                public string crs { get; set; }
+                public string tiploc { get; set; }
+            }
+
+            public class Origin
+            {
+                public string tiploc { get; set; }
+                public string description { get; set; }
+                public string workingTime { get; set; }
+                public string publicTime { get; set; }
+            }
+
+            public class Destination
+            {
+                public string tiploc { get; set; }
+                public string description { get; set; }
+                public string workingTime { get; set; }
+                public string publicTime { get; set; }
+            }
+
+            public class LocationDetail
+            {
+                public bool realtimeActivated { get; set; }
+                public string tiploc { get; set; }
+                public string crs { get; set; }
+                public string description { get; set; }
+                public string gbttBookedArrival { get; set; }
+                public string gbttBookedDeparture { get; set; }
+                public List<Origin> origin { get; set; }
+                public List<Destination> destination { get; set; }
+                public bool isCall { get; set; }
+                public bool isPublicCall { get; set; }
+                public string realtimeArrival { get; set; }
+                public bool? realtimeArrivalActual { get; set; }
+                public string realtimeDeparture { get; set; }
+                public bool realtimeDepartureActual { get; set; }
+                public string platform { get; set; }
+                public bool platformConfirmed { get; set; }
+                public bool platformChanged { get; set; }
+                public string serviceLocation { get; set; }
+                public string displayAs { get; set; }
+            }
+
+            public class Service
+            {
+                public LocationDetail locationDetail { get; set; }
+                public string serviceUid { get; set; }
+                public string runDate { get; set; }
+                public string trainIdentity { get; set; }
+                public string runningIdentity { get; set; }
+                public string atocCode { get; set; }
+                public string atocName { get; set; }
+                public string serviceType { get; set; }
+                public bool isPassenger { get; set; }
+            }
+        }
+
+        public class RealTimeTrainsServiceDetailsResponse
+        {
+            public string serviceUid { get; set; }
+            public string runDate { get; set; }
+            public string serviceType { get; set; }
+            public bool isPassenger { get; set; }
+            public string trainIdentity { get; set; }
+            public string powerType { get; set; }
+            public string trainClass { get; set; }
+            public string atocCode { get; set; }
+            public string atocName { get; set; }
+            public bool performanceMonitored { get; set; }
+            public List<Origin> origin { get; set; }
+            public List<Destination> destination { get; set; }
+            public List<Location> locations { get; set; } 
+            
+            public class Origin
+            {
+                public string tiploc { get; set; }
+                public string description { get; set; }
+                public string workingTime { get; set; }
+                public string publicTime { get; set; }
+            }
+
+            public class Destination
+            {
+                public string tiploc { get; set; }
+                public string description { get; set; }
+                public string workingTime { get; set; }
+                public string publicTime { get; set; }
+            }
+
+            public class Location
+            {
+                public string tiploc { get; set; }
+                public string crs { get; set; }
+                public string description { get; set; }
+                public string gbttBookedDeparture { get; set; }
+                public string realtimeDeparture { get; set; }
+                public string realtimeArrival { get; set; }
+                public List<Origin> origin { get; set; }
+                public List<Destination> destination { get; set; }
+                public bool isCall { get; set; }
+                public bool isPublicCall { get; set; }
+                public string platform { get; set; }
+                public string line { get; set; }
+                public string displayAs { get; set; }
+                public string path { get; set; }
+                public string gbttBookedArrival { get; set; }
+            }
+
         }
     }
 }

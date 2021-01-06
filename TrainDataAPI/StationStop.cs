@@ -11,9 +11,9 @@ namespace TrainDataAPI
         public string StationName { get; set; }
         public string Platform { get; set; }
         public DateTime AimedDeparture { get; set; }
-        public DateTime ExpectedDeparture { get; set; }
+        public DateTime? ExpectedDeparture { get; set; }
 
-        public StationStop(string stationCode, string stationName, string platform, DateTime aimedDeparture, DateTime expectedDeparture)
+        public StationStop(string stationCode, string stationName, string platform, DateTime aimedDeparture, DateTime? expectedDeparture)
         {
             StationCode = stationCode;
             StationName = stationName;

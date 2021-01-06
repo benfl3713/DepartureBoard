@@ -1,13 +1,9 @@
-export const NewsItems = [
+export const NewsItems: NewsItem[] = [
   {
-    title: "Search Options",
+    title: "New Datasource for Germany (DB)",
     content:
-      "Extra tickboxes added to the search to allow you to change to the singleboard in the search box",
-    isHighlighted: true,
-  },
-  {
-    title: "Singleboard Bugfixes",
-    content: "The issue with the scrolling text disappearing has been fixed.",
+      "We have expanded to overseas datasouces by implementing all current features with the German Railway (DB). (Currently we only support ICE trains and some local services)",
+    isHighlighted: false,
   },
   {
     title: "Departure Board Admin",
@@ -18,3 +14,9 @@ export const NewsItems = [
       <a href="/about/departureboard-admin">About Page</a>`,
   },
 ];
+
+interface NewsItem {
+  title: string;
+  content: string;
+  isHighlighted?: boolean;
+}

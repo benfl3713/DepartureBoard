@@ -6,9 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TrainDataAPI.Services;
-using System.IO;
-using System;
-using Microsoft.AspNetCore.Http;
 
 namespace DepartureBoardWeb
 {
@@ -96,20 +93,6 @@ namespace DepartureBoardWeb
 					spa.UseAngularCliServer(npmScript: "start");
 				}
 			});
-
-			//SetupConfigFiles();
-		}
-
-		public void SetupConfigFiles(){
-			try{
-				string firebaseConfig = "./ClientApp/src/app/firebaseConfig.json";
-				if(!File.Exists(firebaseConfig)){
-					File.WriteAllText(firebaseConfig, "{\"apiKey\":\"\",\"authDomain\":\"\",\"databaseURL\":\"\",\"projectId\":\"leddepartureboard\",\"storageBucket\":\"\",\"messagingSenderId\":\"\",\"appId\":\"\"}");
-				}
-			}
-			catch(Exception e){
-				Console.WriteLine(e.Message);
-			}
 		}
 	}
 }

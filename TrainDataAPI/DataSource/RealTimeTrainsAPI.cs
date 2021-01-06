@@ -116,7 +116,12 @@ namespace TrainDataAPI
                             DateTime.TryParse(date + " " + Jdeparture["locationDetail"]["realtimeArrival"]?.ToString().Substring(0, 2) + ":" + Jdeparture["locationDetail"]["realtimeArrival"]?.ToString().Substring(2, 2), out expectedDepatureTime);
 
                         string destination = Jdeparture["locationDetail"]["destination"][0]["description"]?.ToString();
+
+                        DateTime? expectedDateTimeNullable = expectedDepatureTime == DateTime.MinValue ? null : expectedDepatureTime as DateTime?;
                         Departure.ServiceStatus status = (expectedDepatureTime == aimedDepatureTime) ? Departure.ServiceStatus.ONTIME : Departure.ServiceStatus.LATE;
+
+                        if(expectedDateTimeNullable == null)
+                            status = Departure.ServiceStatus.ONTIME;
 
                         if (Jdeparture["locationDetail"]["realtimeArrivalActual"] != null && bool.TryParse(Jdeparture["locationDetail"]["realtimeArrivalActual"]?.ToString(), out bool hasArrived) && hasArrived)
                             status = Departure.ServiceStatus.ARRIVED;
@@ -125,7 +130,7 @@ namespace TrainDataAPI
 
                         string serviceTimeTable = $"https://api.rtt.io/api/v1/json/service/{Jdeparture["serviceUid"].ToString()}/{date.Replace('-', '/')}";
 
-                        Departure departure = new Departure(stationName, stationCode, platform, operatorName, aimedDepatureTime, expectedDepatureTime, destination, status, origin, null, serviceTimeTable, GetType());
+                        Departure departure = new Departure(stationName, stationCode, platform, operatorName, aimedDepatureTime, expectedDateTimeNullable, destination, status, origin, null, serviceTimeTable, GetType());
                         departures.Add(departure);
                     }
                     catch { }

@@ -104,7 +104,6 @@ export class GermanySingleboardComponent implements OnInit, OnDestroy {
       .GetDepartures(this.stationCode, 1, false, this.platform, "DEUTSCHEBAHN")
       .subscribe(
         (departures) => {
-          console.log(departures);
           ToggleConfig.LoadingBar.next(false);
           if (departures && departures.length > 0) {
             this.departure = departures[0];

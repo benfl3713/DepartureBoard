@@ -11,7 +11,6 @@ const routes: Routes = [
   {
     path: "singleboard/:station",
     component: GermanySingleboardComponent,
-    canActivate: [BetaFeaturesGuard],
   },
   { path: ":station/:displays", component: GermanyBoardsComponent },
   { path: ":station", component: GermanyBoardsComponent },

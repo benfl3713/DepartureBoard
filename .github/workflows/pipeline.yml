@@ -33,11 +33,6 @@ jobs:
           docker push docker.pkg.github.com/benfl3713/departureboard/departure-board:latest
           docker tag docker.pkg.github.com/benfl3713/departureboard/departure-board:latest benfl3713/departure-board:latest
           docker push benfl3713/departure-board:latest
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
   Deploy:
     name: Deploy to ECS

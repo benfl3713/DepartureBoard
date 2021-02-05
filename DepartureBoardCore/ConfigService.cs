@@ -104,6 +104,16 @@ namespace DepartureBoardCore
                 return _deutscheBahnToken;
             }
         }
+
+        public static int? PrometheusPort
+        {
+            get
+            {
+                if (!_prometheusPort.HasValue)
+                    LoadConfig();
+                return _prometheusPort;
+            }
+        }
         #endregion
 
         private static string _realTimeTrainsToken;
@@ -116,6 +126,7 @@ namespace DepartureBoardCore
         private static string _transportApi_app_id;
         private static string _transportApi_app_key;
         private static string _deutscheBahnToken;
+        private static int? _prometheusPort;
 
         private static void LoadConfig()
         {
@@ -136,6 +147,8 @@ namespace DepartureBoardCore
                 _transportApi_app_id = rootElement.Element("TransportAPI")?.Element("app_id")?.Value;
                 _transportApi_app_key = rootElement.Element("TransportAPI")?.Element("app_key")?.Value;
                 _deutscheBahnToken = rootElement.Element("DeutscheBahnToken")?.Value;
+                if (!string.IsNullOrEmpty(rootElement.Element("PrometheusPort")?.Value) && int.TryParse(rootElement.Element("PrometheusPort")?.Value, out int port))
+                    _prometheusPort = port;
                 if (_realTimeTrainsToken == "[INSERT_REALTIMETRAINS_TOKEN_HERE]"){
                     _realTimeTrainsToken = null;
                     throw new Exception(errorMessage);
@@ -178,6 +191,9 @@ namespace DepartureBoardCore
 
                 if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DeutscheBahnToken")))
                     _deutscheBahnToken = Environment.GetEnvironmentVariable("DeutscheBahnToken");
+
+                if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("PrometheusPort")) && int.TryParse(Environment.GetEnvironmentVariable("PrometheusPort"), out int port))
+                    _prometheusPort = port;
             }
             catch(Exception e) { Console.WriteLine(e.Message); }
         }

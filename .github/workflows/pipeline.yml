@@ -111,7 +111,8 @@ jobs:
         run: |
           cd DepartureBoardWeb
           dotnet publish -c Release -o ./Lambda_deploy
-          zip -r lambda.zip ./Lambda_deploy
+          cd Lambda_deploy
+          zip -r lambda.zip *
 
       - name: Deploy Zip to Lambda Function
         uses: appleboy/lambda-action@master
@@ -120,7 +121,7 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: eu-west-2
           function_name: api-led-departure-board
-          zip_file: ./DepartureBoardWeb/lambda.zip
+          zip_file: ./DepartureBoardWeb/Lambda_deploy/lambda.zip
           memory_size: 512
           handler: DepartureBoardWeb::DepartureBoardWeb.LambdaEntryPoint::FunctionHandlerAsync
           runtime: dotnetcore3.1

@@ -2,6 +2,19 @@ name: Pipeline
 on: [push]
 
 jobs:
+  Test_DepartureBoard_API:
+    name: Test Departure Board API
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
+      - name: Build Departure Board with dotnet
+        run: dotnet build --configuration Release
+      - name: Run Departure Board Unit Tests
+        run: dotnet test
+
   Build_Docker_Image:
     name: Build Docker Image
     runs-on: ubuntu-latest

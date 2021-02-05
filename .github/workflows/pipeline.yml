@@ -106,7 +106,7 @@ jobs:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: eu-west-2
-          function_name: departure-board-DefaultFunction-F4U2RFOLUDDQ
+          function_name: api-led-departure-board
           zip_file: ./DepartureBoardWeb/lambda.zip
           memory_size: 512
           handler: DepartureBoardWeb::DepartureBoardWeb.LambdaEntryPoint::FunctionHandlerAsync

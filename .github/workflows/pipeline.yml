@@ -85,3 +85,29 @@ jobs:
           service: LedDepartureBoard
           cluster: default
           wait-for-service-stability: true
+
+  DeployLambda:
+    name: Deploy to AWS Lambda
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Create Lambda Zip
+        run: |
+          cd DepartureBoardWeb
+          dotnet publish -c Release -o ./Lambda_deploy
+          zip -r lambda.zip ./Lambda_deploy
+
+      - name: Deploy Zip to Lambda Function
+        uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: eu-west-2
+          function_name: departure-board-DefaultFunction-F4U2RFOLUDDQ
+          zip_file: ./DepartureBoardWeb/lambda.zip
+          memory_size: 512
+          handler: DepartureBoardWeb::DepartureBoardWeb.LambdaEntryPoint::FunctionHandlerAsync
+          runtime: dotnetcore3.1

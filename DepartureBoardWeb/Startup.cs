@@ -1,3 +1,5 @@
+using System;
+using DepartureBoardCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -5,6 +7,9 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Prometheus;
+using Serilog;
+using Serilog.Events;
 using TrainDataAPI.Services;
 
 namespace DepartureBoardWeb
@@ -33,7 +38,7 @@ namespace DepartureBoardWeb
 			{
 				options.AddDefaultPolicy(builder =>
 				{
-					builder.WithOrigins(new string[]{"https://admin.leddepartureboard.com", "http://localhost:5000"});
+					builder.WithOrigins(new []{"https://admin.leddepartureboard.com", "http://localhost:5000"});
 					builder.AllowAnyMethod();
 					builder.AllowAnyHeader();
 				});
@@ -41,6 +46,22 @@ namespace DepartureBoardWeb
 
 			services.AddMemoryCache();
 			services.AddResponseCaching();
+
+			var loggerConfiguration = new LoggerConfiguration()
+				.ReadFrom.Configuration(Configuration)
+				.MinimumLevel.Override("Microsoft", LogEventLevel.Verbose)
+				.Enrich.FromLogContext()
+				.WriteTo.Logger(lc => lc
+					.Filter.ByIncludingOnly(f => f.Level >= LogEventLevel.Error)
+					.WriteTo.File("errors.txt"))
+				.WriteTo.Logger(lc => lc
+					.Filter.ByIncludingOnly(f => f.Level >= LogEventLevel.Information)
+					.WriteTo.Console(outputTemplate: "{Timestamp:HH:mm:ss:fff} [{Level}] {Message}{NewLine}{Exception}")
+				);
+
+			Log.Logger = loggerConfiguration.CreateLogger();
+
+			// services.AddSingleton(new TrainDataAPI.DarwinPushPortAPI());
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,6 +78,8 @@ namespace DepartureBoardWeb
 
 			var provider = new FileExtensionContentTypeProvider();
 			provider.Mappings[".webmanifest"] = "application/manifest+json";
+
+			//ConfigurePrometheusMetrics(app);
 
 			app.UseStaticFiles(new StaticFileOptions{
 				ContentTypeProvider = provider
@@ -93,6 +116,28 @@ namespace DepartureBoardWeb
 					spa.UseAngularCliServer(npmScript: "start");
 				}
 			});
+		}
+
+		private void ConfigurePrometheusMetrics(IApplicationBuilder app)
+		{
+			if (!ConfigService.PrometheusPort.HasValue)
+				return;
+			
+			// Custom Metrics to count requests for each endpoint and the method
+			var counter = Metrics.CreateCounter("departureboard_path_counter", "Counts requests to the API endpoints", new CounterConfiguration
+			{
+				LabelNames = new[] {"method", "endpoint", "status"}
+			});
+			app.Use((context, next) =>
+			{
+				if (!context.Request.Path.StartsWithSegments("/api"))
+					return next();
+				counter.WithLabels(context.Request.Method, context.Request.Path, context.Response.StatusCode.ToString()).Inc();
+				return next();
+			});
+
+			app.UseMetricServer();
+			//app.UseHttpMetrics();
 		}
 	}
 }

@@ -25,11 +25,11 @@ namespace DepartureBoardWeb.Controllers
             return Json(GetSingleBoardData(true, stationCode, platform, dataSource));
         }
 
-        private SingleBoardData GetSingleBoardData(bool arrivals, string stationCode, string platform = null, string dataSource = null)
+        private SingleBoardData GetSingleBoardData(bool arrivals, string stationCode, string platform = null, string dataSource = null, int count = 3)
         {
             stationCode = stationCode.ToUpper();
             ITrainDatasource trainDatasource = GetDatasource(dataSource);
-            List<Departure> departures = arrivals ? trainDatasource.GetLiveArrivals(stationCode, 3) : trainDatasource.GetLiveDepartures(stationCode, 3);
+            List<Departure> departures = arrivals ? trainDatasource.GetLiveArrivals(stationCode, count) : trainDatasource.GetLiveDepartures(stationCode, count);
             if (departures == null || departures.Count == 0)
                 return new SingleBoardData(new List<Departure>(), string.Empty);
 

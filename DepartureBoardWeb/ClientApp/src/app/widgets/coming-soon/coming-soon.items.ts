@@ -1,10 +1,16 @@
 export const ComingSoonItems: ComingSoonItem[] = [
   {
+    title: "New UI for Custom Departures",
+    content:
+      "A new interface to graphically create and edit custom departures with your own data",
+    isHighlight: true,
+  },
+  {
     title: "New Documentation Website",
     content:
       "We are building a brand new <a href='https://docs.leddepartureboard.com' target='_blank'>website</a> to include full documentation on led departure board",
     isHighlight: false,
-    isBeta: true,
+    isBeta: false,
   },
 ];
 

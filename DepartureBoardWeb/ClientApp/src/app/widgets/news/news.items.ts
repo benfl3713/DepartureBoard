@@ -1,5 +1,11 @@
 export const NewsItems: NewsItem[] = [
   {
+    title: "New Documentation Website",
+    content:
+      "A new <a href='https://docs.leddepartureboard.com' target='_blank'>website</a> has been built to provide documentation/user guides on leddepartureboard.com",
+    isHighlighted: false,
+  },
+  {
     title: "New Datasource for Germany (DB)",
     content:
       "We have expanded to overseas datasouces by implementing all current features with the German Railway (DB). (Currently we only support ICE trains and some local services)",

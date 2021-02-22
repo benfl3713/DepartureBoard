@@ -2,7 +2,8 @@
 set -e
 
 # Install Dependencies
-cd ../DepartureBoardWeb/ClientApp
+cd DepartureBoardWeb/ClientApp
+export NG_CLI_ANALYTICS=ci
 npm install
 
 cd ../
@@ -11,5 +12,7 @@ cd ../
 if [[ ! -e config.xml ]]; then
     echo '[INSERT_REALTIMETRAINS_TOKEN_HERE]' >> config.xml
 fi
+
+dotnet restore
 
 

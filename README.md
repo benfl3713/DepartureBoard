@@ -38,7 +38,8 @@ There is also a docker-compose file in this repository that will make it easier 
 
 # Run locally
 
-To run the project simply clone the repo and open the solution file and click run.  
+> To run the project simply clone the repo and open it in vscode. You should then be able to press `F5` to build and run the application
+
 **You will need to register for a real time trains api token in order to receive data. Put the token in DepartureBoardWeb/config.xml**
 The **DepartureBoardWeb/config.xml** file will be generated automatically when you first run the program and view the home page.
 If you want to use the search functionality then you will also need a national rail knowledge api username and password.

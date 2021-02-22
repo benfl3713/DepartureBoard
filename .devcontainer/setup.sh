@@ -11,6 +11,8 @@ cd ../
 
 # Create config.xml file if it does not exist
 if [[ ! -e config.xml ]]; then
-    echo '[INSERT_REALTIMETRAINS_TOKEN_HERE]' >> config.xml
+    echo '<Config>
+    <RealTimeTrainsToken>[INSERT_REALTIMETRAINS_TOKEN_HERE]</RealTimeTrainsToken>
+</Config>' >> config.xml
     echo Created config.xml file
 fi

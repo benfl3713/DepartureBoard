@@ -21,7 +21,10 @@
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"ms-dotnettools.csharp",
-		"angular.ng-template"
+		"angular.ng-template",
+		"visualstudioexptteam.vscodeintellicode",
+		"mikael.angular-beastcode",
+		"msjsdiag.debugger-for-chrome"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

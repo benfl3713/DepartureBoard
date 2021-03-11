@@ -1,23 +1,15 @@
 export const NewsItems: NewsItem[] = [
   {
+    title: "New UI for Custom Departures",
+    content:
+      "A new interface to graphically create and edit <a href='/custom-departures'>custom departures</a> with your own data",
+    isHighlighted: true,
+  },
+  {
     title: "New Documentation Website",
     content:
       "A new <a href='https://docs.leddepartureboard.com' target='_blank'>website</a> has been built to provide documentation/user guides on leddepartureboard.com",
     isHighlighted: false,
-  },
-  {
-    title: "New Datasource for Germany (DB)",
-    content:
-      "We have expanded to overseas datasouces by implementing all current features with the German Railway (DB). (Currently we only support ICE trains and some local services)",
-    isHighlighted: false,
-  },
-  {
-    title: "Departure Board Admin",
-    content: `A new
-      <a href="https://admin.leddepartureboard.com" target="_blank">webapp</a>
-      to manage your boards remotely with instant live updates. To get started
-      check out the
-      <a href="/about/departureboard-admin">About Page</a>`,
   },
 ];
 

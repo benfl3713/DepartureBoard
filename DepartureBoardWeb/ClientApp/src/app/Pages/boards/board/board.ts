@@ -128,9 +128,9 @@ export class Board {
 
   calculateStatus(data: Departure): ServiceStatus {
     if (data.expectedDeparture) {
-      return data.aimedDeparture <= data.expectedDeparture
-        ? ServiceStatus.ONTIME
-        : ServiceStatus.LATE;
+      return data.expectedDeparture.valueOf() > data.aimedDeparture.valueOf()
+        ? ServiceStatus.LATE
+        : ServiceStatus.ONTIME;
     }
 
     return ServiceStatus.ONTIME;

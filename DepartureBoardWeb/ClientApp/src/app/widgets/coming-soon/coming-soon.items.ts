@@ -1,11 +1,4 @@
-export const ComingSoonItems: ComingSoonItem[] = [
-  {
-    title: "New UI for Custom Departures",
-    content:
-      "A new interface to graphically create and edit custom departures with your own data",
-    isHighlight: true,
-  },
-];
+export const ComingSoonItems: ComingSoonItem[] = [];
 
 interface ComingSoonItem {
   title: string;

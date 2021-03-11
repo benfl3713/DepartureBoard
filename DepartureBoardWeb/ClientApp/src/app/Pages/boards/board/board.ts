@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Router, Params, UrlSegment, PRIMARY_OUTLET } from '@angular/router';
-import { ServiceStatus } from '../../singleboard/singleboard';
-import { DatePipe } from '@angular/common';
-import { Departure, StationStop } from 'src/app/models/departure.model';
+import { Component } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Router, Params, UrlSegment, PRIMARY_OUTLET } from "@angular/router";
+import { ServiceStatus } from "../../singleboard/singleboard";
+import { DatePipe } from "@angular/common";
+import { Departure, StationStop } from "src/app/models/departure.model";
 
 @Component({
   selector: "app-board",
@@ -11,7 +11,11 @@ import { Departure, StationStop } from 'src/app/models/departure.model';
   styleUrls: ["./board.css"],
 })
 export class Board {
-  constructor(private http: HttpClient, private router: Router, private datePipe: DatePipe) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private datePipe: DatePipe
+  ) {
     const s: UrlSegment[] = this.router.parseUrl(this.router.url).root.children[
       PRIMARY_OUTLET
     ].segments;
@@ -66,12 +70,7 @@ export class Board {
 
   public ProcessStops(data: StationStop[]) {
     for (let i = 0; i < data.length; i += 1) {
-      this.Stops.push(
-        new Stop(
-          data[i].stationName,
-          data[i].aimedDeparture
-        )
-      );
+      this.Stops.push(new Stop(data[i].stationName, data[i].aimedDeparture));
     }
     this.TotalPages = Math.ceil(this.Stops.length / 9);
     this.Pager();
@@ -110,23 +109,31 @@ export class Board {
     this.Length = data.length;
     this.information = this.Operator;
 
-    if (
-      data.status === ServiceStatus.LATE &&
-      data["expectedDeparture"]
-    ) {
+    if (!data.status || data.status < 0) {
+      data.status = this.calculateStatus(data);
+    }
+
+    if (data.status === ServiceStatus.LATE && data["expectedDeparture"]) {
       const fexpected = data.expectedDeparture;
-      this.Status =
-        "Exp " + this.datePipe.transform(fexpected, "HH:mm");
+      this.Status = "Exp " + this.datePipe.transform(fexpected, "HH:mm");
     } else {
-      this.Status = this.toTitleCase(
-        ServiceStatus[data.status]
-      );
+      this.Status = this.toTitleCase(ServiceStatus[data.status]);
       if (this.Status === "Ontime") {
         this.Status = "On Time";
       }
     }
 
     this.ProcessStops(data.stops);
+  }
+
+  calculateStatus(data: Departure): ServiceStatus {
+    if (data.expectedDeparture) {
+      return data.expectedDeparture.valueOf() > data.aimedDeparture.valueOf()
+        ? ServiceStatus.LATE
+        : ServiceStatus.ONTIME;
+    }
+
+    return ServiceStatus.ONTIME;
   }
 
   toTitleCase(input: string): string {

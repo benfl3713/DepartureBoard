@@ -3,12 +3,11 @@
     News
   </h2>
   <div *ngFor="let news of newsItems">
-    <div
-      class="news-item"
-      [ngClass]="{ 'news-highlight': news.isHighlighted === true }"
-    >
+    <div class="news-item" [ngClass]="{ 'news-highlight': news.isHighlighted === true }">
       <h5 class="centre-text">
-        <strong>{{ news.title }}</strong>
+        <a *ngIf="news.titleLink; else titleNoLink" [href]="news.titleLink" target="_blank"><strong>{{ news.title
+            }}</strong></a>
+        <ng-template #titleNoLink><strong>{{ news.title }}</strong></ng-template>
       </h5>
       <p class="centre-text" [innerHtml]="news.content" routeTransformer></p>
     </div>

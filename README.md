@@ -45,7 +45,7 @@ The **DepartureBoardWeb/config.xml** file will be generated automatically when y
 If you want to use the search functionality then you will also need a national rail knowledge api username and password.
 
 This project uses a c# backend system with an angular front end  
-To build the program you will need node.js installed as well asp.net core sdk  
+To build the program you will need [node.js](https://nodejs.org/en/download/) installed as well [dotnet core 3.1 sdk](https://dotnet.microsoft.com/download/dotnet/3.1)  
 To host the site once published you will need the .net core hosting bundle installed
 
 If you get a startup error saying "missing package ..." or similar then try running **npm install** in the **DepartureBoardWeb\ClientApp** directory

@@ -1,0 +1,62 @@
+<br />
+<mat-form-field *ngIf="data">
+  <mat-label>Station Name</mat-label>
+  <input matInput type="text" [(ngModel)]="data.stationName" />
+</mat-form-field>
+
+<mat-accordion multi>
+  <mat-expansion-panel *ngFor="let departure of data?.departures; let index = index">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ departure.aimedDeparture | date: "HH:mm" }} -
+        {{ departure.destination }}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-form-field>
+      <mat-label>Destination</mat-label>
+      <input matInput type="text" [(ngModel)]="departure.destination" (ngModelChange)="changedData()" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Platform</mat-label>
+      <input matInput type="text" [(ngModel)]="departure.platform" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Aimed Departure</mat-label>
+      <input matInput type="datetime-local" [(ngModel)]="departure.aimedDeparture" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Expected Departure</mat-label>
+      <input matInput type="datetime-local" [(ngModel)]="departure.expectedDeparture" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Operator Name</mat-label>
+      <input matInput type="text" [(ngModel)]="departure.operatorName" />
+    </mat-form-field>
+
+    <mat-label>Stops</mat-label>
+    <mat-list>
+      <mat-list-item *ngFor="let stop of departure?.stops;let stopIndex = index">{{stop.aimedDeparture | date: 'HH:mm'}}
+        -
+        {{stop.stationName}}
+        <div class="right-button">
+          <button mat-stroked-button color="primary" type="button" (click)="openStopDialog(index, stop)">Edit</button>
+          <button mat-stroked-button color="warn" type="button" (click)="removeStop(index, stopIndex)">Delete</button>
+        </div>
+      </mat-list-item>
+    </mat-list>
+
+    <button mat-flat-button color="primary" (click)="openStopDialog(index)">Add Stop</button><br /><br />
+
+    <button mat-flat-button color="warn" type="button" (click)="removeDeparture(index)">
+      Delete <mat-icon>delete</mat-icon>
+    </button>
+  </mat-expansion-panel>
+</mat-accordion>
+<br />
+<button mat-raised-button color="primary" (click)="addDeparture()" type="button">
+  Add Departure
+</button>

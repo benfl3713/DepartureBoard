@@ -1,25 +1,34 @@
 <div class="container">
-    <h1 id="title" class="led centre-text">{{title}}</h1>
-    <form [formGroup]="addForm" (ngSubmit)="Save()">
-        <label class="led">Name: </label>
-        <mat-form-field>
-            <mat-label>Name</mat-label>
-            <input type="text" required
-                    aria-label="name"
-                    matInput
-                    formControlName="name">
-          </mat-form-field>
-          <br>
-          <label class="led">File: </label>
-          <input type="file" required
-                    aria-label="file"
-                    (change)="fileChanged($event)">
-          <a *ngIf="oldFileHref" class="orangeReverseBtn" mat-button title="Download Old File" [href]="oldFileHref" download="old_departures.json">Download Old File</a>
-          <a class="orangeBtn" [routerLink]='["/about/custom-departures"]' target="_blank" mat-button>Learn More</a>
-          <br>
-          <label class="led">Options: </label>
-          <mat-checkbox formControlName="hideExpired">Hide Expired Departures</mat-checkbox>
-          <br>
-          <button id="btnSave" type="submit" mat-button [disabled]="!addForm.valid || !file">Save</button>
-    </form>
+  <h1 id="title" class="led centre-text">{{ title }}</h1>
+  <form [formGroup]="addForm">
+    <label class="led">Name: </label>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input type="text" required aria-label="name" matInput formControlName="name" />
+    </mat-form-field>
+
+    <mat-tab-group dynamicHeight mat-align-tabs="center">
+      <mat-tab label="UI">
+        <app-edit-custom-departure [(data)]="data"></app-edit-custom-departure>
+      </mat-tab>
+      <mat-tab label="JSON">
+        <br />
+        <label class="led">File: </label>
+        <input type="file" aria-label="file" (change)="fileChanged($event)" accept=".json" />
+        <a *ngIf="oldFileHref" class="orangeReverseBtn" mat-button title="Download Old File" [href]="oldFileHref"
+          download="old_departures.json">Download Old File</a>
+        <a class="orangeBtn" [routerLink]="['/about/custom-departures']" target="_blank" mat-button>Learn More</a>
+        <br />
+        <pre style="color: orange">{{ data | json }}</pre>
+      </mat-tab>
+    </mat-tab-group>
+
+    <br />
+    <label class="led">Options: </label>
+    <mat-checkbox formControlName="hideExpired">Hide Expired Departures</mat-checkbox>
+    <br />
+    <button id="btnSave" type="submit" mat-button [disabled]="!addForm.valid || (!file && !data)" (click)="Save()">
+      Save
+    </button>
+  </form>
 </div>

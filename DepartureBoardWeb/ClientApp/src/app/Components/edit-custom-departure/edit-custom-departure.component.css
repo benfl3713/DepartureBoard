@@ -1,0 +1,9 @@
+mat-expansion-panel mat-form-field {
+  width: 100%;
+  height: 50px;
+}
+
+.right-button {
+  position: absolute;
+  right: 0;
+}

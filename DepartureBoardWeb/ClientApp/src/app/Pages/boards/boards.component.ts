@@ -5,7 +5,6 @@ import {
   ViewContainerRef,
   OnDestroy,
 } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
 import {
   ActivatedRoute,
   PRIMARY_OUTLET,
@@ -21,6 +20,7 @@ import { AngularFirestore } from "@angular/fire/firestore";
 import { DepartureService } from "src/app/Services/departure.service";
 import { StationLookupService } from "src/app/Services/station-lookup.service";
 import { Departure } from "src/app/models/departure.model";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-boards",
@@ -42,9 +42,9 @@ export class BoardsComponent implements OnDestroy {
   public stationCode: string = "EUS";
   @ViewChild("Boards", { read: ViewContainerRef, static: true })
   Boards: ViewContainerRef;
+  subscriptions: Subscription[] = [];
 
   constructor(
-    private http: HttpClient,
     private route: ActivatedRoute,
     private resolver: ComponentFactoryResolver,
     private router: Router,
@@ -136,17 +136,16 @@ export class BoardsComponent implements OnDestroy {
         });
     }
     ToggleConfig.LoadingBar.next(true);
-    this.GetDepartures();
-    this.refresher = setInterval(() => this.GetDepartures(), 16000);
+    this.GetCustomData();
+
+    if (!this.isCustomData) {
+      this.refresher = setInterval(() => this.GetDepartures(), 16000);
+    }
   }
 
   GetDepartures() {
     if (this.stationCode == null || this.stationCode == "") {
       return;
-    }
-
-    if (this.isCustomData === true) {
-      return this.GetCustomData();
     }
 
     this.departureService
@@ -202,61 +201,67 @@ export class BoardsComponent implements OnDestroy {
   }
 
   GetCustomData() {
-    this.auth.user$.subscribe((user) => {
-      this.afs
-        .collection(`customDepartures/${user.uid}/departures`)
-        .doc(this.stationCode)
-        .get()
-        .subscribe(
-          (departureData) => {
-            ToggleConfig.LoadingBar.next(false);
-            const data = departureData.get("jsonData");
-            this.noBoardsDisplay = !data;
-            this.stationName = data.stationName;
-            document.title =
-              (data.stationName || this.stationCode) +
-              " - Departures - Departure Board";
+    this.subscriptions.push(
+      this.auth.user$.subscribe((user) => {
+        this.subscriptions.push(
+          this.afs
+            .collection(`customDepartures/${user.uid}/departures`)
+            .doc(this.stationCode)
+            .valueChanges()
+            .subscribe(
+              (departureData: any) => {
+                ToggleConfig.LoadingBar.next(false);
+                console.debug(departureData);
+                const data = departureData.jsonData;
+                this.noBoardsDisplay = !data;
+                this.stationName = data.stationName;
+                document.title =
+                  (data.stationName || this.stationCode) +
+                  " - Departures - Departure Board";
 
-            const departures: any[] = data.departures;
-            let validDepartures: any[] = new Array();
-            // Removes expired departures
-            if (departureData.get("hideExpired") == true || false) {
-              for (let i = 0; i < departures.length; i++) {
-                if (
-                  Object(departures)[i]["expectedDeparture"] &&
-                  new Date(Object(departures)[i]["expectedDeparture"]) <
-                    new Date()
-                ) {
-                  console.log(
-                    `Departure has already gone past date ${
-                      Object(departures)[i]["expectedDeparture"]
-                    } - ${<string>Object(departures)[i]["destination"]}`
-                  );
-                } else if (
-                  Object(departures)[i]["aimedDeparture"] &&
-                  new Date(Object(departures)[i]["aimedDeparture"]) < new Date()
-                ) {
-                  console.log(
-                    `Departure has already gone past date ${
-                      Object(departures)[i]["aimedDeparture"]
-                    } - ${<string>Object(departures)[i]["destination"]}`
-                  );
+                const departures: any[] = data.departures;
+                let validDepartures: any[] = new Array();
+                // Removes expired departures
+                if (departureData.hideExpired == true || false) {
+                  for (let i = 0; i < departures.length; i++) {
+                    if (
+                      Object(departures)[i]["expectedDeparture"] &&
+                      new Date(Object(departures)[i]["expectedDeparture"]) <
+                        new Date()
+                    ) {
+                      console.log(
+                        `Departure has already gone past date ${
+                          Object(departures)[i]["expectedDeparture"]
+                        } - ${<string>Object(departures)[i]["destination"]}`
+                      );
+                    } else if (
+                      Object(departures)[i]["aimedDeparture"] &&
+                      new Date(Object(departures)[i]["aimedDeparture"]) <
+                        new Date()
+                    ) {
+                      console.log(
+                        `Departure has already gone past date ${
+                          Object(departures)[i]["aimedDeparture"]
+                        } - ${<string>Object(departures)[i]["destination"]}`
+                      );
+                    } else {
+                      validDepartures.push(departures[i]);
+                    }
+                  }
                 } else {
-                  validDepartures.push(departures[i]);
+                  validDepartures = departures;
                 }
-              }
-            } else {
-              validDepartures = departures;
-            }
 
-            this.ProcessDepartures(validDepartures.slice(0, this.displays));
-          },
-          (error) => {
-            ToggleConfig.LoadingBar.next(false);
-            console.log(error);
-          }
+                this.ProcessDepartures(validDepartures.slice(0, this.displays));
+              },
+              (error) => {
+                ToggleConfig.LoadingBar.next(false);
+                console.log(error);
+              }
+            )
         );
-    });
+      })
+    );
   }
 
   arraysAreEqual(x, y): boolean {
@@ -299,8 +304,8 @@ export class BoardsComponent implements OnDestroy {
 
   ngOnDestroy() {
     clearTimeout(this.refresher);
+    this.subscriptions.forEach((s) => s.unsubscribe());
   }
-
 
   isNumber(value: string | number): boolean {
     return value != null && !isNaN(Number(value.toString()));

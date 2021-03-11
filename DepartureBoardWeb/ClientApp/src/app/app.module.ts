@@ -12,6 +12,7 @@ import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireStorageModule } from "@angular/fire/storage";
 import { AngularFireAuthModule } from "@angular/fire/auth";
 import { NotifierModule } from "angular-notifier";
+import { SettingsModule } from "@benfl3713/angular-components";
 
 import { AppComponent } from "./app.component";
 import { NavMenuComponent } from "./nav-menu/nav-menu.component";
@@ -43,6 +44,10 @@ import { BusDepartureService } from "./Services/bus-departure.service";
 import { DepartureScrollerComponent } from "./Components/departure-scroller/departure-scroller.component";
 import { RouteTransformerDirective } from "./Utils/routetransformer.directive";
 import { BetaFeaturesGuard } from "./Guards/beta-features.guard";
+import {
+  DepartureStopDialog,
+  EditCustomDepartureComponent,
+} from "./Components/edit-custom-departure/edit-custom-departure.component";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo",
@@ -75,6 +80,8 @@ const firebaseConfig = {
     AboutComponent,
     DepartureScrollerComponent,
     RouteTransformerDirective,
+    EditCustomDepartureComponent,
+    DepartureStopDialog,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
@@ -86,6 +93,7 @@ const firebaseConfig = {
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
+    SettingsModule,
     NotifierModule.withConfig({
       position: {
         horizontal: {

@@ -38,7 +38,7 @@ namespace DepartureBoardWeb
 			{
 				options.AddDefaultPolicy(builder =>
 				{
-					builder.WithOrigins(new []{"https://admin.leddepartureboard.com", "http://localhost:5000"});
+					builder.WithOrigins(new []{"https://admin.leddepartureboard.com", "http://localhost:5000", "http://localhost:5005", "https://leddepartureboard.com", "https://www.leddepartureboard.com"});
 					builder.AllowAnyMethod();
 					builder.AllowAnyHeader();
 				});

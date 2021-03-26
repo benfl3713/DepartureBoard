@@ -1,3 +1,4 @@
+import { environment } from "./../../environments/environment";
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { FormControl } from "@angular/forms";
@@ -26,9 +27,11 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.http.get("/api/StationLookup").subscribe((s) => {
-      this.stations = s;
-    });
+    this.http
+      .get(environment.apiBaseUrl + "/api/StationLookup")
+      .subscribe((s) => {
+          this.stations = s;
+        });
   }
 
   filter() {

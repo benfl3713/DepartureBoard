@@ -12,6 +12,7 @@ import { Departure } from "src/app/models/departure.model";
 import { DepartureService } from "src/app/Services/departure.service";
 import { StationLookupService } from "src/app/Services/station-lookup.service";
 import { ToggleConfig } from "src/app/ToggleConfig";
+import { environment } from "src/environments/environment";
 
 @Component({
   templateUrl: "./germany-singleboard.component.html",
@@ -135,7 +136,11 @@ export class GermanySingleboardComponent implements OnInit, OnDestroy {
 
   ChangeStation(stationName: string) {
     this.http
-      .get("/api/StationLookup/GetStationCodeFromName?name=" + stationName)
+      .get(
+        environment.apiBaseUrl +
+          "/api/StationLookup/GetStationCodeFromName?name=" +
+          stationName
+      )
       .subscribe((s) => {
         if (!s) {
           return;

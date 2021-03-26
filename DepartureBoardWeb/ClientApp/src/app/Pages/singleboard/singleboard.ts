@@ -16,6 +16,7 @@ import { DepartureService } from "src/app/Services/departure.service";
 import { StationLookupService } from "src/app/Services/station-lookup.service";
 import { Departure } from "src/app/models/departure.model";
 import { SingleBoardResponse } from "src/app/models/singleboard-response.model";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-singleboard",
@@ -232,7 +233,11 @@ export class SingleBoard implements OnDestroy, OnInit {
 
   ChangeStation(stationName: string) {
     this.http
-      .get("/api/StationLookup/GetStationCodeFromName?name=" + stationName)
+      .get(
+        environment.apiBaseUrl +
+          "/api/StationLookup/GetStationCodeFromName?name=" +
+          stationName
+      )
       .subscribe((s) => {
         if (this.useArrivals) {
           this.router.navigate(["singleboard/arrivals/", s]);

@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Departure } from "../models/departure.model";
 import { SingleBoardResponse } from "../models/singleboard-response.model";
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root",
@@ -41,7 +42,9 @@ export class DepartureService {
       params = new HttpParams().set("dataSource", dataSource);
     }
 
-    return this.http.post<Departure[]>(url, formData, { params: params });
+    return this.http.post<Departure[]>(environment.apiBaseUrl + url, formData, {
+      params: params,
+    });
   }
 
   GetSingleboardDepartures(
@@ -65,7 +68,7 @@ export class DepartureService {
     }
 
     return this.http.post<SingleBoardResponse>(
-      url,
+      environment.apiBaseUrl + url,
       JSON.stringify(stationCode),
       {
         headers: this.jsonHeaders,

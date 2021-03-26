@@ -10,6 +10,7 @@ import {
 } from "@angular/core";
 import { Params, Router } from "@angular/router";
 import { Departure } from "src/app/models/departure.model";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-germany-board-row",
@@ -62,7 +63,11 @@ export class GermanyBoardRowComponent implements OnInit, OnChanges {
 
   ChangeStation(stationName: string) {
     this.http
-      .get("/api/StationLookup/GetStationCodeFromName?name=" + stationName)
+      .get(
+        environment.apiBaseUrl +
+          "/api/StationLookup/GetStationCodeFromName?name=" +
+          stationName
+      )
       .subscribe((s) => {
         if (!s) {
           return;

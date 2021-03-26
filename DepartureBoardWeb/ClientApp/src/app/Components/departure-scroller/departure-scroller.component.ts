@@ -8,6 +8,7 @@ import {
 import { Departure } from "src/app/models/departure.model";
 import { Router, Params } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-departure-scroller",
@@ -125,7 +126,11 @@ export class DepartureScrollerComponent implements OnInit, OnChanges {
 
   ChangeStation(stationName: string) {
     this.http
-      .get("/api/StationLookup/GetStationCodeFromName?name=" + stationName)
+      .get(
+        environment.apiBaseUrl +
+          "/api/StationLookup/GetStationCodeFromName?name=" +
+          stationName
+      )
       .subscribe((s) => {
         if (this.useArrivals) {
           this.router.navigate(["singleboard/arrivals/", s]);

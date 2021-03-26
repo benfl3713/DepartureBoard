@@ -4,6 +4,7 @@ import { Router, Params, UrlSegment, PRIMARY_OUTLET } from "@angular/router";
 import { ServiceStatus } from "../../singleboard/singleboard";
 import { DatePipe } from "@angular/common";
 import { Departure, StationStop } from "src/app/models/departure.model";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-board",
@@ -88,7 +89,11 @@ export class Board {
 
   ChangeStation(stationName: string) {
     this.http
-      .get("/api/StationLookup/GetStationCodeFromName?name=" + stationName)
+      .get(
+        environment.apiBaseUrl +
+          "/api/StationLookup/GetStationCodeFromName?name=" +
+          stationName
+      )
       .subscribe((s) => {
         if (s) {
           if (this.useArrivals) {

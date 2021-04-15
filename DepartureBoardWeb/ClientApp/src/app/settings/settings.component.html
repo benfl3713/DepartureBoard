@@ -6,43 +6,24 @@
         <button mat-list-item (click)="settingsType = 'general'" class="orange">
           General
         </button>
-        <button
-          mat-list-item
-          (click)="settingsType = 'mainboard'"
-          class="orange"
-        >
+        <button mat-list-item (click)="settingsType = 'mainboard'" class="orange">
           Main Board
         </button>
-        <button
-          mat-list-item
-          (click)="settingsType = 'singleboard'"
-          class="orange"
-        >
+        <button mat-list-item (click)="settingsType = 'singleboard'" class="orange">
           Single Board
         </button>
-        <button
-          mat-list-item
-          (click)="settingsType = 'departureadmin'"
-          class="orange"
-        >
+        <button mat-list-item (click)="settingsType = 'departureadmin'" class="orange">
           Departure Admin
         </button>
         <button mat-list-item (click)="settingsType = 'buses'" class="orange">
           Buses
-          <span style="margin-left: 15px" class="badge badge-pill badge-primary"
-            >Beta</span
-          >
+          <span style="margin-left: 15px" class="badge badge-pill badge-primary">Beta</span>
         </button>
       </mat-action-list>
     </mat-list>
   </div>
 
-  <form
-    class="col"
-    [formGroup]="settingsForm"
-    (ngSubmit)="Save()"
-    ngNativeValidate
-  >
+  <form class="col" [formGroup]="settingsForm" (ngSubmit)="Save()" ngNativeValidate>
     <div id="settings-general container" *ngIf="settingsType == 'general'">
       <h1 class="led">General</h1>
       <div class="row">
@@ -50,12 +31,8 @@
           <label>Main Colour:</label>
           <input formControlName="general_mainColour" type="color" />
         </div>
-        <button
-          mat-button
-          (click)="SetFormValue('general_mainColour', '#ff9729')"
-          style="margin-left: 20px"
-          class="btnOrange col-1"
-        >
+        <button mat-button (click)="SetFormValue('general_mainColour', '#ff9729')" style="margin-left: 20px"
+          class="btnOrange col-1">
           Reset
         </button>
       </div>
@@ -65,12 +42,8 @@
           <label>Background Colour:</label>
           <input formControlName="general_backgroundColour" type="color" />
         </div>
-        <button
-          mat-button
-          (click)="SetFormValue('general_backgroundColour', 'black')"
-          style="margin-left: 20px"
-          class="btnOrange col-1"
-        >
+        <button mat-button (click)="SetFormValue('general_backgroundColour', 'black')" style="margin-left: 20px"
+          class="btnOrange col-1">
           Reset
         </button>
       </div>
@@ -85,18 +58,12 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <button
-          mat-button
-          (click)="SetFormValue('general_dataSource', null)"
-          style="margin-left: 20px"
-          class="btnOrange col-1"
-        >
+        <button mat-button (click)="SetFormValue('general_dataSource', null)" style="margin-left: 20px"
+          class="btnOrange col-1">
           Reset
         </button>
       </div>
-      <mat-checkbox formControlName="general_betaFeatures"
-        >Beta Features</mat-checkbox
-      >
+      <mat-checkbox formControlName="general_betaFeatures">Beta Features</mat-checkbox>
       <br />
       <button mat-flat-button color="primary" (click)="changeCookies()">
         Change Cookie Settings
@@ -107,105 +74,72 @@
       <h1 class="led">Main Board</h1>
       <mat-form-field>
         <mat-label>Default Board Count</mat-label>
-        <input
-          type="number"
-          aria-label="default board count"
-          matInput
-          formControlName="mainboard_count"
-        />
+        <input type="number" aria-label="default board count" matInput formControlName="mainboard_count" />
       </mat-form-field>
-      <button
-        mat-button
-        (click)="SetFormValue('mainboard_count', 6)"
-        style="margin-left: 20px"
-        class="btnOrange"
-      >
+      <button mat-button (click)="SetFormValue('mainboard_count', 6)" style="margin-left: 20px" class="btnOrange">
         Reset
       </button>
       <br />
-      <mat-slide-toggle
-        [checked]="settingsForm.controls.mainboard_showStationName.value"
-        (change)="
+      <mat-slide-toggle [checked]="settingsForm.controls.mainboard_showStationName.value" (change)="
           settingsForm.controls.mainboard_showStationName.value = $event.checked
-        "
-        >Show Station Name</mat-slide-toggle
-      >
+        ">Show Station Name</mat-slide-toggle>
       <br />
     </div>
     <div id="settings-singleboard" *ngIf="settingsType == 'singleboard'">
       <h1 class="led">Singleboard</h1>
-      <mat-slide-toggle
-        [checked]="settingsForm.controls.singleboard_showStationName.value"
-        (change)="
+      <mat-slide-toggle [checked]="settingsForm.controls.singleboard_showStationName.value" (change)="
           settingsForm.controls.singleboard_showStationName.value =
             $event.checked
-        "
-        >Show Station Name</mat-slide-toggle
-      ><br />
-      <mat-slide-toggle
-        [checked]="settingsForm.controls.singleboard_alternateSecondRow.value"
-        (change)="
+        ">Show Station Name</mat-slide-toggle><br />
+      <mat-slide-toggle [checked]="settingsForm.controls.singleboard_alternateSecondRow.value" (change)="
           settingsForm.controls.singleboard_alternateSecondRow.value =
             $event.checked
-        "
-        >Alternate Second Row</mat-slide-toggle
-      ><br />
+        ">Alternate Second Row</mat-slide-toggle><br />
+      <div class="row">
+        <div class="col">
+          <label>Scroll Speed</label>
+          <mat-slider #singleboardScrollSpeed min="0" max="500" step="50"
+            [value]="settingsForm.controls.singleboard_scrollspeed.value" color="primary" thumbLabel
+            (change)="settingsForm.controls.singleboard_scrollspeed.value = $event.value">
+          </mat-slider>
+          <mat-hint>{{singleboardScrollSpeed.value}}</mat-hint>
+        </div>
+        <button mat-button (click)="SetFormValue('singleboard_scrollspeed', 300)" style="margin-left: 20px"
+          class="btnOrange col-1">
+          Reset
+        </button>
+      </div>
+      <br />
+
     </div>
     <div id="settings-departureadmin" *ngIf="settingsType == 'departureadmin'">
       <h1 class="led">Departure Admin</h1>
 
       <h6>
         To get your Unique id add a new board in
-        <a href="https://admin.leddepartureboard.com" target="_blank"
-          >departure board admin</a
-        >
+        <a href="https://admin.leddepartureboard.com" target="_blank">departure board admin</a>
       </h6>
       <mat-form-field style="width: 300px">
         <mat-label>Unique Id</mat-label>
-        <input
-          type="text"
-          aria-label="departure admin id"
-          matInput
-          formControlName="departureadmin_uid"
-        />
+        <input type="text" aria-label="departure admin id" matInput formControlName="departureadmin_uid" />
         <mat-hint>From Departure Board Admin</mat-hint>
       </mat-form-field>
       <br />
-      <mat-slide-toggle
-        [checked]="settingsForm.controls.departureadmin_enabled.value"
-        (change)="
+      <mat-slide-toggle [checked]="settingsForm.controls.departureadmin_enabled.value" (change)="
           settingsForm.controls.departureadmin_enabled.value = $event.checked
-        "
-        >Enable Board</mat-slide-toggle
-      >
+        ">Enable Board</mat-slide-toggle>
       <br />
-      <a
-        class="orangeBtn"
-        [routerLink]="['/about/departureboard-admin']"
-        target="_blank"
-        mat-button
-        >Learn More</a
-      >
+      <a class="orangeBtn" [routerLink]="['/about/departureboard-admin']" target="_blank" mat-button>Learn More</a>
       <br /><br />
     </div>
     <div id="settings-buses" *ngIf="settingsType == 'buses'">
       <h1 class="led">Buses</h1>
-      <mat-slide-toggle
-        [checked]="settingsForm.controls.buses_showStopName.value"
-        (change)="
+      <mat-slide-toggle [checked]="settingsForm.controls.buses_showStopName.value" (change)="
           settingsForm.controls.buses_showStopName.value = $event.checked
-        "
-        >Show Stop Name</mat-slide-toggle
-      >
+        ">Show Stop Name</mat-slide-toggle>
     </div>
 
-    <button
-      mat-raised-button
-      id="btnSave"
-      class="btnGreen"
-      type="submit"
-      style="margin-right: 5px"
-    >
+    <button mat-raised-button id="btnSave" class="btnGreen" type="submit" style="margin-right: 5px">
       Save
     </button>
     <button mat-raised-button id="btnReset" class="btnRed" (click)="ResetAll()">

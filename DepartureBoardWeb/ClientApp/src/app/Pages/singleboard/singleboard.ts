@@ -127,10 +127,13 @@ export class SingleBoard implements OnDestroy, OnInit {
     });
   }
   ngOnInit(): void {
+    let scrollSpeed =
+      localStorage.getItem("settings_singleboard_scrollspeed") ?? 300;
+
     this.marquee = new Marquee(
       document.getElementById("singleboard-information"),
       {
-        rate: -300,
+        rate: -scrollSpeed,
       }
     );
 

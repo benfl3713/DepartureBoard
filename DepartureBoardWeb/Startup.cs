@@ -1,4 +1,3 @@
-using System;
 using DepartureBoardCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,7 +37,7 @@ namespace DepartureBoardWeb
 			{
 				options.AddDefaultPolicy(builder =>
 				{
-					builder.WithOrigins("https://admin.leddepartureboard.com", "http://localhost:5000", "http://localhost:5005", "https://leddepartureboard.com", "https://www.leddepartureboard.com", "https://beta.leddepartureboard.com");
+					builder.AllowAnyOrigin();
 					builder.AllowAnyMethod();
 					builder.AllowAnyHeader();
 				});

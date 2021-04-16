@@ -9,14 +9,20 @@ using TrainDataAPI;
 
 namespace DepartureBoardWeb.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class ConfigController : Controller
     {
-        [HttpGet("[action]")]
+        [HttpGet]
         public bool UseAnalytics()
         {
             return ConfigService.UseAnalytics;
+        }
+
+        [HttpGet]
+        public IActionResult Ping()
+        {
+            return Ok();
         }
     }
 }

@@ -5,6 +5,9 @@ import { FormControl } from "@angular/forms";
 import { Router } from "@angular/router";
 import { StationLookupService } from "../Services/station-lookup.service";
 import { Station } from "../models/station.model";
+import { Subject } from "rxjs";
+import { debounceTime } from "rxjs/operators";
+import { ToggleConfig } from "../ToggleConfig";
 
 @Component({
   selector: "app-components-search",
@@ -17,6 +20,7 @@ export class SearchComponent implements OnInit {
   isSingleboard = new FormControl(false);
   isArrivals = new FormControl(false);
   filteredOptions: Station[];
+  typedEvent: Subject<void> = new Subject();
 
   constructor(
     private http: HttpClient,
@@ -30,16 +34,27 @@ export class SearchComponent implements OnInit {
     this.http
       .get(environment.apiBaseUrl + "/api/StationLookup")
       .subscribe((s) => {
-          this.stations = s;
-        });
+        this.stations = s;
+      });
+
+    this.typedEvent.pipe(debounceTime(200)).subscribe(() => this.filter());
+  }
+
+  keyPressed() {
+    this.typedEvent.next();
   }
 
   filter() {
     const query = this.searchBox.value;
     if (query) {
-      this.stationLookup.Search(query).subscribe((s) => {
-        this.filteredOptions = s;
-      });
+      ToggleConfig.LoadingBar.next(true);
+      this.stationLookup.Search(query).subscribe(
+        (s) => {
+          this.filteredOptions = s;
+        },
+        null,
+        () => ToggleConfig.LoadingBar.next(false)
+      );
     } else {
       this.filteredOptions = Array<Station>();
     }

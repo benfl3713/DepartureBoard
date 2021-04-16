@@ -6,9 +6,11 @@
     "start": "echo Starting... && ng serve --verbose",
     "build": "ng build",
     "build:ssr": "ng run DepartureBoardWeb:server:dev",
+    "build:prod": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "dev": "ng serve --port 5005"
   },
   "private": true,
   "dependencies": {

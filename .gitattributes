@@ -63,7 +63,7 @@
 #*.RTF   diff=astextplain
 
 
-DepartureBoardWeb/wwwroot/cookie-policy.html linguist-vendored
-DepartureBoardWeb/wwwroot/privacy-policy.html linguist-vendored
+DepartureBoardWeb/ClientApp/src/assets/cookie-policy.html linguist-vendored
+DepartureBoardWeb/ClientApp/src/assets/privacy-policy.html linguist-vendored
 TrainDataAPI/Connected Services/NationalRailService/Reference.cs linguist-vendored
 *.html linguist-vendored

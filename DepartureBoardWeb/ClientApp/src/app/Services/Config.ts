@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { CookieService } from "ngx-cookie-service";
+import { environment } from "src/environments/environment";
 
 export class Config {
   public static LoadUseAnalytics(
@@ -8,7 +9,7 @@ export class Config {
   ): () => Promise<any> {
     return () =>
       http
-        .get<boolean>("/api/Config/UseAnalytics")
+        .get<boolean>(environment.apiBaseUrl + "/api/Config/UseAnalytics")
         .toPromise()
         .then((useAnalytics) => {
           if (useAnalytics === true) {

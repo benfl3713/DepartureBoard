@@ -23,26 +23,27 @@ export class DepartureService {
     platform: string = null,
     dataSource: string = null
   ): Observable<Departure[]> {
-    const formData = new FormData();
-    formData.append("stationCode", stationCode.toUpperCase());
-    formData.append("amount", displays.toString());
-    var url =
-      "/api/LiveDepartures/" +
-      (useArrivals ? "GetLatestArrivals" : "GetLatestDepatures");
+    const params: any = {
+      stationCode,
+      count: displays,
+    };
 
     if (platform) {
-      url = url + "?platform=" + platform;
+      params.platform = platform;
     }
-
     if (!dataSource) {
       dataSource = localStorage.getItem("settings_general_dataSource");
     }
-    var params;
     if (dataSource) {
-      params = new HttpParams().set("dataSource", dataSource);
+      params.dataSource = dataSource;
     }
 
-    return this.http.post<Departure[]>(environment.apiBaseUrl + url, formData, {
+    var url =
+      environment.apiBaseUrl +
+      "/api/LiveDepartures/" +
+      (useArrivals ? "GetLatestArrivals" : "GetLatestDepatures");
+
+    return this.http.get<Departure[]>(url, {
       params: params,
     });
   }
@@ -53,27 +54,28 @@ export class DepartureService {
     platform: string = null
   ): Observable<SingleBoardResponse> {
     let url =
+      environment.apiBaseUrl +
       "/api/LiveDepartures/" +
       (useArrivals
         ? "GetLatestArrivalsSingleBoard"
         : "GetLatestDepaturesSingleBoard");
+
+    const params: any = {
+      stationCode,
+    };
+
     if (platform) {
-      url = url + "?platform=" + platform;
+      params.platform = platform;
     }
 
     const dataSource = localStorage.getItem("settings_general_dataSource");
-    let params;
     if (dataSource) {
-      params = new HttpParams().set("dataSource", dataSource);
+      params.dataSource = dataSource;
     }
 
-    return this.http.post<SingleBoardResponse>(
-      environment.apiBaseUrl + url,
-      JSON.stringify(stationCode),
-      {
-        headers: this.jsonHeaders,
-        params: params,
-      }
-    );
+    return this.http.get<SingleBoardResponse>(url, {
+      headers: this.jsonHeaders,
+      params: params,
+    });
   }
 }

@@ -9,11 +9,6 @@ import { environment } from "src/environments/environment";
   providedIn: "root",
 })
 export class DepartureService {
-  private jsonHeaders = new HttpHeaders().set(
-    "Content-Type",
-    "application/json"
-  );
-
   constructor(private http: HttpClient) {}
 
   GetDepartures(
@@ -74,7 +69,6 @@ export class DepartureService {
     }
 
     return this.http.get<SingleBoardResponse>(url, {
-      headers: this.jsonHeaders,
       params: params,
     });
   }

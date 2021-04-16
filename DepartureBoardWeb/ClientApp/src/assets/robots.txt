@@ -1,0 +1,3 @@
+User-agent: * 
+Allow: *
+SiteMap: https://www.leddepartureboard.com/sitemap.xml

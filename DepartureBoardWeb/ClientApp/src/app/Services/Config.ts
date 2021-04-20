@@ -7,23 +7,32 @@ export class Config {
     http: HttpClient,
     cookieService: CookieService
   ): () => Promise<any> {
+    if (environment["useAnalytics"] === true) {
+      Config.EnableAnalytics(cookieService);
+      return () => Promise.resolve();
+    }
+
     return () =>
       http
         .get<boolean>(environment.apiBaseUrl + "/api/Config/UseAnalytics")
         .toPromise()
         .then((useAnalytics) => {
           if (useAnalytics === true) {
-            var cookie = cookieService.get("CookieScriptConsent");
-            if (cookie == "") {
-              return;
-            }
-            var cookieEnabled = JSON.parse(cookie)["action"];
-            if (cookieEnabled == "accept") {
-              Config.StartTracking();
-            }
+            Config.EnableAnalytics(cookieService);
           }
         })
         .catch((error) => console.log(error));
+  }
+
+  private static EnableAnalytics(cookieService: CookieService) {
+    var cookie = cookieService.get("CookieScriptConsent");
+    if (cookie == "") {
+      return;
+    }
+    var cookieEnabled = JSON.parse(cookie)["action"];
+    if (cookieEnabled == "accept") {
+      Config.StartTracking();
+    }
   }
 
   public static StartTracking() {

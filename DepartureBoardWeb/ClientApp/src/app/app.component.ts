@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from "@angular/core";
+import { Component } from "@angular/core";
 import {
   Router,
   NavigationEnd,
@@ -9,10 +9,11 @@ import { ToggleConfig } from "./ToggleConfig";
 import { Config } from "./Services/Config";
 import { ThemeService } from "./Services/ThemeService";
 import { SwUpdate } from "@angular/service-worker";
-import { MatSnackBar } from "@angular/material/snack-bar";
 import { AdminBoardService } from "./Services/admin-board.service";
 import { GlobalEvents } from "./GlobalEvents";
 import { CookieService } from "ngx-cookie-service";
+import { HttpClient } from "@angular/common/http";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-root",
@@ -33,7 +34,8 @@ export class AppComponent {
     private updates: SwUpdate,
     adminBoardService: AdminBoardService,
     route: ActivatedRoute,
-    cookieService: CookieService
+    cookieService: CookieService,
+    private http: HttpClient
   ) {
     ToggleConfig.LoadingBar.subscribe(
       (isvisible) => (this.LoadingBar = isvisible)
@@ -74,6 +76,8 @@ export class AppComponent {
       Config.StartTracking();
     });
 
+    this.PingApiService();
+
     this.CheckForUpdate();
     //Checks for update 30 minutes
     setInterval(() => this.CheckForUpdate(), 1800000);
@@ -90,6 +94,14 @@ export class AppComponent {
     this.updates.available.subscribe(() => {
       this.updates.activateUpdate().then(() => document.location.reload());
     });
+  }
+
+  /*
+   * Pings the API Service to wake it up
+   * (Mainly used to cold start the AWS lambda)
+   */
+  PingApiService() {
+    this.http.get(environment.apiBaseUrl + "/api/Config/Ping").subscribe();
   }
 
   private setCookie(

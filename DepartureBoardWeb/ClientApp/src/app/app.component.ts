@@ -28,6 +28,8 @@ import { environment } from "src/environments/environment";
 export class AppComponent {
   title = "app";
   LoadingBar: boolean = false;
+  showSplashScreen = false;
+  splashScreenText;
 
   constructor(
     private router: Router,
@@ -101,7 +103,23 @@ export class AppComponent {
    * (Mainly used to cold start the AWS lambda)
    */
   PingApiService() {
-    this.http.get(environment.apiBaseUrl + "/api/Config/Ping").subscribe();
+    const splashUrls = [
+      "/",
+      "/examples",
+      "/about",
+      "/buses",
+      "/settings",
+      "/search",
+    ];
+
+    this.showSplashScreen = splashUrls.includes(location.pathname);
+    this.splashScreenText = "Loading API Service";
+    this.http.get(environment.apiBaseUrl + "/api/Config/Ping").subscribe({
+      complete: () => {
+        this.showSplashScreen = false;
+        this.splashScreenText = null;
+      },
+    });
   }
 
   private setCookie(

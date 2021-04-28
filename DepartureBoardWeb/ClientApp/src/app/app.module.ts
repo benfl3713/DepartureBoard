@@ -11,6 +11,7 @@ import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireStorageModule } from "@angular/fire/storage";
 import { AngularFireAuthModule } from "@angular/fire/auth";
+import { FlexLayoutModule } from "@angular/flex-layout";
 import { NotifierModule } from "angular-notifier";
 import { SettingsModule } from "@benfl3713/angular-components";
 
@@ -48,6 +49,7 @@ import {
   DepartureStopDialog,
   EditCustomDepartureComponent,
 } from "./Components/edit-custom-departure/edit-custom-departure.component";
+import { SplashScreenComponent } from "./Components/splash-screen/splash-screen.component";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo",
@@ -82,6 +84,7 @@ const firebaseConfig = {
     RouteTransformerDirective,
     EditCustomDepartureComponent,
     DepartureStopDialog,
+    SplashScreenComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
@@ -93,6 +96,7 @@ const firebaseConfig = {
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
+    FlexLayoutModule,
     SettingsModule,
     NotifierModule.withConfig({
       position: {

@@ -1,7 +1,7 @@
 # DepartureBoard
 
 ![](https://github.com/benfl3713/DepartureBoard/workflows/Pipeline/badge.svg?branch=master)
-![](https://github.com/benfl3713/DepartureBoard/workflows/.NET%20Core/badge.svg?branch=master)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/a70bdae7-f88d-43fc-8811-d2e0d16e65c7/deploy-status)](https://app.netlify.com/sites/leddepartureboardcom/deploys)
 
 # Welcome
 

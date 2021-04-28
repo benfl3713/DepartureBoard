@@ -78,7 +78,9 @@ export class AppComponent {
       Config.StartTracking();
     });
 
-    this.PingApiService();
+    if (environment.apiBaseUrl && environment.apiBaseUrl !== "") {
+      this.PingApiService();
+    }
 
     this.CheckForUpdate();
     //Checks for update 30 minutes

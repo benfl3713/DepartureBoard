@@ -1,7 +1,10 @@
-<mat-progress-bar *ngIf="LoadingBar" id="loading-bar" mode="indeterminate" color="var(--mainColour);"></mat-progress-bar>
+<mat-progress-bar *ngIf="LoadingBar" id="loading-bar" mode="indeterminate" color="var(--mainColour);">
+</mat-progress-bar>
+<app-splash-screen *ngIf="showSplashScreen" [text]="splashScreenText"></app-splash-screen>
+
 <body>
-<div>
-  <notifier-container></notifier-container>
-  <app-nav-menu></app-nav-menu>
-</div>
+  <div>
+    <notifier-container></notifier-container>
+    <app-nav-menu></app-nav-menu>
+  </div>
 </body>

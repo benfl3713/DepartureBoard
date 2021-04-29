@@ -47,58 +47,6 @@ jobs:
           docker tag docker.pkg.github.com/benfl3713/departureboard/departure-board:latest benfl3713/departure-board:latest
           docker push benfl3713/departure-board:latest
 
-  Deploy:
-    name: Deploy to ECS
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    needs: [Build_Docker_Image]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-        with:
-          fetch-depth: 1
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-2
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-
-      - name: Push Image to ECR
-        id: push-image
-        run: |
-          docker login docker.pkg.github.com -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-          timestamp=$(date +%Y%m%d%H%M%S)
-          docker pull docker.pkg.github.com/benfl3713/departureboard/departure-board:latest
-          docker tag docker.pkg.github.com/benfl3713/departureboard/departure-board:latest 778499062515.dkr.ecr.eu-west-2.amazonaws.com/leddepartureboard:$timestamp
-          docker push 778499062515.dkr.ecr.eu-west-2.amazonaws.com/leddepartureboard:$timestamp
-          echo "::set-output name=image::778499062515.dkr.ecr.eu-west-2.amazonaws.com/leddepartureboard:$timestamp"
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
-        #Fill in the new image ID in the Amazon ECS task definition
-      - name: Update ECS Task Definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: .github/workflows/task-definition.json
-          container-name: LedDepartureBoard
-          image: ${{ steps.push-image.outputs.image }}
-
-      - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: LedDepartureBoard
-          cluster: default
-          wait-for-service-stability: true
-
   DeployLambda:
     name: Deploy to AWS Lambda
     runs-on: ubuntu-latest

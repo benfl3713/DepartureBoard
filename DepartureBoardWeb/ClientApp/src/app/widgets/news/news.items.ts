@@ -1,5 +1,10 @@
 export const NewsItems: NewsItem[] = [
   {
+    title: "Serverless Design",
+    content:
+      "The production website has been moved to a new serverless deployment. Please let me know if you have any issues",
+  },
+  {
     title: "New UI for Custom Departures",
     content:
       "A new interface to graphically create and edit <a href='/custom-departures'>custom departures</a> with your own data",

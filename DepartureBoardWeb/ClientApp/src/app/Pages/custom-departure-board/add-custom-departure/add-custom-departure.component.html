@@ -9,7 +9,7 @@
 
     <mat-tab-group dynamicHeight mat-align-tabs="center">
       <mat-tab label="UI">
-        <app-edit-custom-departure [(data)]="data"></app-edit-custom-departure>
+        <app-edit-custom-departure [(data)]="data" (dataChange)="ValidateDataEvent()"></app-edit-custom-departure>
       </mat-tab>
       <mat-tab label="JSON">
         <br />
@@ -27,7 +27,7 @@
     <label class="led">Options: </label>
     <mat-checkbox formControlName="hideExpired">Hide Expired Departures</mat-checkbox>
     <br />
-    <button id="btnSave" type="submit" mat-button [disabled]="!addForm.valid || (!file && !data)" (click)="Save()">
+    <button id="btnSave" type="submit" mat-button [disabled]="!addForm.valid || (!file && !data) || isValidData == true" (click)="Save()">
       Save
     </button>
   </form>

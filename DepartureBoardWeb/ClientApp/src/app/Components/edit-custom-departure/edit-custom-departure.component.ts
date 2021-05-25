@@ -1,8 +1,11 @@
 import {
   Component,
+  DoCheck,
   EventEmitter,
   Inject,
   Input,
+  KeyValueDiffers,
+  OnChanges,
   OnInit,
   Output,
 } from "@angular/core";
@@ -19,14 +22,27 @@ import { StationStop } from "src/app/models/departure.model";
   templateUrl: "./edit-custom-departure.component.html",
   styleUrls: ["./edit-custom-departure.component.css"],
 })
-export class EditCustomDepartureComponent implements OnInit {
-  constructor(public dialog: MatDialog) {}
+export class EditCustomDepartureComponent implements OnInit, DoCheck {
+  constructor(public dialog: MatDialog, differs: KeyValueDiffers) {
+    this.differ = differs.find({}).create();
+  }
 
   @Input() data: CustomDeparture;
   @Output()
   dataChange: EventEmitter<CustomDeparture> = new EventEmitter<CustomDeparture>();
+  differ: any;
 
   ngOnInit(): void {}
+
+  ngDoCheck(): void {
+    var changes = this.differ.diff(this.data);
+    if(changes){
+      changes.forEachChangedItem(r => console.log('changed ', r.currentValue));
+			changes.forEachAddedItem(r => console.log('added ' + r.currentValue));
+			changes.forEachRemovedItem(r => console.log('removed ' + r.currentValue));
+      this.changedData();
+    }
+  }
 
   addDeparture() {
     if (!this.data) {

@@ -93,4 +93,8 @@ div .bottom {
      overflow: hidden;
      width: 80%;
   }
+
+  .destination {
+    width: 100%;
+  }
 }

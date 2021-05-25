@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import * as Ajv from "ajv";
 import { AngularFirestore } from "@angular/fire/firestore";
@@ -9,18 +9,27 @@ import { ToggleConfig } from "src/app/ToggleConfig";
 import { GoogleAnalyticsEventsService } from "src/app/Services/google.analytics";
 import { DomSanitizer } from "@angular/platform-browser";
 import { CustomDeparture } from "src/app/models/custom-departure.model";
+import { debounceTime, map, startWith } from "rxjs/operators";
+import { of } from "rxjs";
 
 @Component({
   selector: "app-add-custom-departure",
   templateUrl: "./add-custom-departure.component.html",
   styleUrls: ["./add-custom-departure.component.css"],
 })
-export class AddCustomDepartureComponent implements OnInit {
+export class AddCustomDepartureComponent {
   isEdit: boolean = false;
   oldId: string;
   title: string = "";
   oldFileHref;
   data: CustomDeparture;
+  addForm = new FormGroup({
+    name: new FormControl(null, [Validators.required]),
+    hideExpired: new FormControl(true, [Validators.required]),
+  });
+  file: File;
+
+  isValidData = true;
 
   constructor(
     private afs: AngularFirestore,
@@ -66,6 +75,7 @@ export class AddCustomDepartureComponent implements OnInit {
                   document.title = "Edit Custom Departure - Departure Board";
                   this.title = "Edit Custom Departures";
                   ToggleConfig.LoadingBar.next(false);
+                  this.ValidateDataEvent();
                 } else {
                   this.router.navigate(["custom-departures"]);
                 }
@@ -80,13 +90,6 @@ export class AddCustomDepartureComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
-  addForm = new FormGroup({
-    name: new FormControl(null, [Validators.required]),
-    hideExpired: new FormControl(true, [Validators.required]),
-  });
-  file: File;
-
   Save() {
     if (!this.data) {
       alert("Please add some data");
@@ -100,7 +103,7 @@ export class AddCustomDepartureComponent implements OnInit {
       return;
     }
 
-    this.ValidateDepartures();
+    this.ValidateAndSaveDepartures();
   }
 
   fileChanged(e) {
@@ -110,28 +113,39 @@ export class AddCustomDepartureComponent implements OnInit {
     }
   }
 
-  ValidateDepartures(): boolean {
-    try {
-      var ajv = new Ajv({ schemaId: "auto" });
-      var validate = ajv.compile(require("./departure.schema.json"));
-      var valid = validate(this.data);
-      if (valid == false) {
+  Validate(showError: boolean = true): boolean {
+    console.log("Validate");
+    var ajv = new Ajv({ schemaId: "auto" });
+    var validate = ajv.compile(require("./departure.schema.json"));
+    var valid = validate(this.data);
+    if (valid == false) {
+      if (showError == true) {
         this.notifierService.notify("error", "Cannot Save: Invalid Data");
         this.googleAnalyticsEventsService.emitEvent(
           "CustomDepartures",
           "InvalidFile"
         );
-        return;
       }
+      return false;
+    }
 
+    if (showError == true) {
       console.log("Schema is Valid");
       this.notifierService.notify("default", "Schema is Valid");
+    }
 
-      // Updates Last modified date
-      // this.data?.departures.map(d => {
-      //   d.lastUpdated = new Date().toLocaleString()
-      //   return d;
-      // })
+    return true;
+  }
+
+  ValidateDataEvent() {
+    this.isValidData = this.Validate(false);
+  }
+
+  ValidateAndSaveDepartures(showError: boolean = true): boolean {
+    try {
+      if (this.Validate() == false) {
+        return false;
+      }
 
       var toSaveForm = {
         createdDate: new Date(),

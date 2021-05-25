@@ -14,27 +14,27 @@
     </mat-expansion-panel-header>
     <mat-form-field>
       <mat-label>Destination</mat-label>
-      <input matInput type="text" [(ngModel)]="departure.destination" (ngModelChange)="changedData()" />
+      <input matInput type="text" [(ngModel)]="departure.destination" (ngModelChange)="changedData()" required />
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Platform</mat-label>
-      <input matInput type="text" [(ngModel)]="departure.platform" />
+      <input matInput type="text" [(ngModel)]="departure.platform" required />
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Aimed Departure</mat-label>
-      <input matInput type="datetime-local" [(ngModel)]="departure.aimedDeparture" />
+      <input matInput type="datetime-local" [(ngModel)]="departure.aimedDeparture" required />
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Expected Departure</mat-label>
-      <input matInput type="datetime-local" [(ngModel)]="departure.expectedDeparture" />
+      <input matInput type="datetime-local" [(ngModel)]="departure.expectedDeparture" required />
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Operator Name</mat-label>
-      <input matInput type="text" [(ngModel)]="departure.operatorName" />
+      <input matInput type="text" [(ngModel)]="departure.operatorName" required />
     </mat-form-field>
 
     <mat-label>Stops</mat-label>

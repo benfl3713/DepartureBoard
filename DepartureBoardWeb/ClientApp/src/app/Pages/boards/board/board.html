@@ -23,15 +23,12 @@
       <td class="inline-row status stop">{{CurrentPage}}/{{TotalPages}}</td>
     </tr>
     <tr class="board-row" *ngFor="let stop of DisplayedStops">
-      <td class="inline-row">
-        <div
-          class="stopname clickable stop"
-          (click)="ChangeStation(stop.StationName)"
-        >
-          {{stop.StationName}}
-        </div>
+      <td class="inline-row stopname-cell stopname clickable stop" (click)="ChangeStation(stop.StationName)">
+        {{stop.StationName}}
       </td>
-      <td class="inline-row status stop">{{stop.Time | date: 'HH:mm'}}</td>
+      <td class="inline-row status stop stop-time">
+        {{stop.Time | date: 'HH:mm'}}
+      </td>
     </tr>
   </table>
   <div class="board-row bottom">

@@ -65,17 +65,32 @@ div .bottom {
     height: 100vh !important;
   }
 
+  .stops {
+    width: 100%;
+  }
+
   .stop, .stopname, .destination, .operator {
     font-size: 4vh !important;
     height: auto;
     width: auto;
   }
 
+  .stop-time {
+    width: 20%
+  }
+
   .bottom, h5 {
     font-size: 4vh !important;
   }
 
-  .stops {
-    width: 100%;
+  .stop-time {
+    white-space: nowrap;
+  }
+
+  .stopname-cell {
+    white-space: nowrap;
+     text-overflow:ellipsis;
+     overflow: hidden;
+     width: 80%;
   }
 }

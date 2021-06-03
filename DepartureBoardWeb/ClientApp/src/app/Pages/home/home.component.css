@@ -1,4 +1,4 @@
-#title {
+/* #title {
   margin-top: 10px;
   margin-bottom: 20px;
 }
@@ -30,4 +30,45 @@
   border-radius: 8px;
   color: var(--mainColour);
   padding: 10px;
+} */
+
+.header {
+  width: 100%;
+  height: 300px;
+}
+
+.header-background {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  display: block;
+  background: url(/assets/departure_background.png) no-repeat center;
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);
+  width: inherit;
+  height: inherit;
+}
+
+.header-content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.header-title {
+  font-size: 48px;
+  text-align: center;
+  color: white;
+  margin-top: 102px;
+}
+
+section {
+  margin-bottom: 50px;
 }

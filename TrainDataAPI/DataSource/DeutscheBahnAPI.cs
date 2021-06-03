@@ -13,7 +13,7 @@ namespace TrainDataAPI
 {
     public class DeutscheBahnAPI : ITrainDatasource
     {
-        public List<Departure> GetLiveDepartures(string stationCode, int count)
+        public List<Departure> GetLiveDepartures(string stationCode, string platform, int count)
         {
             List<Departure> departures = new List<Departure>();
             HttpResponseMessage response = SendFahrplanRequest("departureBoard", stationCode, DateTime.Now);
@@ -21,10 +21,6 @@ namespace TrainDataAPI
                 return departures;
 
             List<DBBoard> boards = JsonConvert.DeserializeObject<List<DBBoard>>(HttpUtility.HtmlDecode(response.Content.ReadAsStringAsync().Result));
-            
-            // if(boards.Count > count)
-            //     boards = boards.Take(count).ToList();
-            
 
             Parallel.ForEach(boards, board =>
             {
@@ -36,18 +32,14 @@ namespace TrainDataAPI
                     departures.Add(d);
             });
 
-            // foreach (DBBoard board in boards)
-            // {
-            //     board.stopCode = stationCode;
-            //     Departure d = GetDepartureFromDBBoard(board);
-            //     if (d != null)
-            //         departures.Add(d);
-            // }
 
-            return departures.OrderBy(d => d.AimedDeparture).ToList();
+            if (!string.IsNullOrEmpty(platform))
+	            departures = departures.Where(d => d.Platform == platform).ToList();
+
+            return departures.OrderBy(d => d.AimedDeparture).Take(count).ToList();
         }
 
-        public List<Departure> GetLiveArrivals(string stationCode, int count)
+        public List<Departure> GetLiveArrivals(string stationCode, string platform, int count)
         {
             throw new System.NotImplementedException();
         }
@@ -66,7 +58,7 @@ namespace TrainDataAPI
             List<DBJourneyDetails> details = JsonConvert.DeserializeObject<List<DBJourneyDetails>>(HttpUtility.HtmlDecode(response.Content.ReadAsStringAsync().Result));
             Departure departure = null;
             bool foundCurrencyStation = false;
-            
+
             foreach (DBJourneyDetails detail in details)
             {
                 if(foundCurrencyStation == false && detail.stopName != board.stopName)
@@ -83,7 +75,7 @@ namespace TrainDataAPI
                 {
                     if(!DateTime.TryParse($"{board.dateTime:yyyy-MM-dd}T{detail.depTime}", out DateTime expectedDate))
                         continue;
-                    
+
                     departure.Stops.Add(new StationStop(null, detail.stopName, null, expectedDate, expectedDate));
                 }
             }

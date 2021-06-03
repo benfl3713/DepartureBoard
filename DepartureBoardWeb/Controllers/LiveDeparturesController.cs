@@ -11,27 +11,24 @@ namespace DepartureBoardWeb.Controllers
     public class LiveDeparturesController : Controller
     {
         [HttpGet("[action]")]
-        public JsonResult GetLatestDepaturesSingleBoard([Required] string stationCode, string platform = null, string dataSource = null)
+        public JsonResult GetLatestDepaturesSingleBoard([Required] string stationCode, string platform = null, string dataSource = null, int count = 3)
         {
-            return Json(GetSingleBoardData(false, stationCode, platform, dataSource));
+            return Json(GetSingleBoardData(false, stationCode, platform, dataSource, count));
         }
 
         [HttpGet("[action]")]
-        public JsonResult GetLatestArrivalsSingleBoard([Required] string stationCode, string platform = null, string dataSource = null)
+        public JsonResult GetLatestArrivalsSingleBoard([Required] string stationCode, string platform = null, string dataSource = null, int count = 3)
         {
-            return Json(GetSingleBoardData(true, stationCode, platform, dataSource));
+            return Json(GetSingleBoardData(true, stationCode, platform, dataSource, count));
         }
 
-        private SingleBoardData GetSingleBoardData(bool arrivals, string stationCode, string platform = null, string dataSource = null, int count = 3)
+        private SingleBoardData GetSingleBoardData(bool arrivals, string stationCode, string platform, string dataSource, int count)
         {
             stationCode = stationCode.ToUpper();
             ITrainDatasource trainDatasource = GetDatasource(dataSource);
-            List<Departure> departures = arrivals ? trainDatasource.GetLiveArrivals(stationCode, count) : trainDatasource.GetLiveDepartures(stationCode, count);
+            List<Departure> departures = arrivals ? trainDatasource.GetLiveArrivals(stationCode, platform, count) : trainDatasource.GetLiveDepartures(stationCode, platform, count);
             if (departures == null || departures.Count == 0)
                 return new SingleBoardData(new List<Departure>(), string.Empty);
-
-            if (platform != null)
-                departures = departures.Where(d => d.Platform == platform).ToList();
 
             string information = StopInformationBuilder(departures[0]);
 
@@ -68,12 +65,9 @@ namespace DepartureBoardWeb.Controllers
             stationCode = stationCode?.ToUpper();
 
             ITrainDatasource trainDatasource = GetDatasource(dataSource);
-            List<Departure> departures = arrivals ? trainDatasource.GetLiveArrivals(stationCode, count) : trainDatasource.GetLiveDepartures(stationCode, count);
+            List<Departure> departures = arrivals ? trainDatasource.GetLiveArrivals(stationCode, platform, count) : trainDatasource.GetLiveDepartures(stationCode, platform, count);
             if (departures == null || departures.Count == 0)
                 return new List<Departure>();
-
-            if (platform != null)
-                departures = departures.Where(d => d.Platform == platform).ToList();
 
             departures = departures.Take(count).ToList();
             departures.AsParallel().ForAll(d => d.LoadStops());

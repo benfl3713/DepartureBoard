@@ -12,7 +12,7 @@ namespace TrainDataAPI
     {
         private static List<CacheDeparture> cachedDepartures = new List<CacheDeparture>();
 
-        public List<Departure> GetLiveDepartures(string stationCode, int count)
+        public List<Departure> GetLiveDepartures(string stationCode, string platform, int count)
         {
             if (ConfigService.UseCaching && ConfigService.CachePeriod > 0)
             {
@@ -25,7 +25,7 @@ namespace TrainDataAPI
                 }
             }
 
-            List<Departure> departures = GetDepartures(stationCode);
+            List<Departure> departures = GetDepartures(stationCode, count, platform);
 
             if (ConfigService.UseCaching && ConfigService.CachePeriod > 0)
             {
@@ -38,9 +38,9 @@ namespace TrainDataAPI
             return departures;
         }
 
-        public List<Departure> GetLiveArrivals(string stationCode, int count)
+        public List<Departure> GetLiveArrivals(string stationCode, string platform, int count)
         {
-            return GetDepartures(stationCode, true);
+            return GetDepartures(stationCode, count, platform, true);
         }
 
         public List<StationStop> GetStationStops(string url)
@@ -60,7 +60,7 @@ namespace TrainDataAPI
             }
         }
 
-        private List<Departure> GetDepartures(string stationCode, bool getArrivals = false)
+        private List<Departure> GetDepartures(string stationCode, int count, string platform, bool getArrivals = false)
         {
             try
             {
@@ -72,7 +72,12 @@ namespace TrainDataAPI
                 request.Timeout = 15000;
                 AddCredendials(ref request);
                 IRestResponse response = client.Execute(request);
-                return DeserialiseDepartures(response.Content);
+                List<Departure> departures = DeserialiseDepartures(response.Content);
+
+                if (!string.IsNullOrEmpty(platform))
+	                departures = departures.Where(d => d.Platform == platform).ToList();
+
+	            return departures.Take(count).ToList();
             }
             catch
             {
@@ -137,7 +142,7 @@ namespace TrainDataAPI
 
             return departures;
         }
-        
+
         private List<StationStop> DeserialiseStationStops(string json)
         {
             List<StationStop> stops = new List<StationStop>();
@@ -204,8 +209,8 @@ namespace TrainDataAPI
         {
             public Location location { get; set; }
             public object filter { get; set; }
-            public List<Service> services { get; set; } 
-            
+            public List<Service> services { get; set; }
+
             public class Location
             {
                 public string name { get; set; }
@@ -280,8 +285,8 @@ namespace TrainDataAPI
             public bool performanceMonitored { get; set; }
             public List<Origin> origin { get; set; }
             public List<Destination> destination { get; set; }
-            public List<Location> locations { get; set; } 
-            
+            public List<Location> locations { get; set; }
+
             public class Origin
             {
                 public string tiploc { get; set; }

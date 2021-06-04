@@ -4,6 +4,10 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HttpClient } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
 import { DatePipe } from "@angular/common";
+import {TuiRootModule} from '@taiga-ui/core';
+import {TuiIslandModule} from '@taiga-ui/kit'
+import {TuiThemeNightModule} from '@taiga-ui/core';
+
 import { MaterialModule } from "./material.module";
 import { DeviceDetectorModule } from "ngx-device-detector";
 import { CookieService } from "ngx-cookie-service";
@@ -97,6 +101,9 @@ const firebaseConfig = {
     AngularFireAuthModule,
     AngularFireStorageModule,
     FlexLayoutModule,
+    TuiRootModule,
+    TuiIslandModule,
+    TuiThemeNightModule,
     SettingsModule,
     NotifierModule.withConfig({
       position: {

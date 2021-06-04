@@ -16,8 +16,12 @@
     ],
     "lib": [
       "es2017",
+      "ES2015",
       "dom"
     ],
   "skipLibCheck": true
+  },
+  "angularCompilerOptions": {
+    "enableIvy": true
   }
 }

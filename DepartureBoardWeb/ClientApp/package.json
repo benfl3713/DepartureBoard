@@ -20,7 +20,7 @@
     "@angular/common": "9.1.12",
     "@angular/compiler": "9.1.12",
     "@angular/core": "^9.1.12",
-    "@angular/fire": "^6.0.0",
+    "@angular/fire": "^6.1.5",
     "@angular/flex-layout": "^11.0.0-beta.33",
     "@angular/forms": "9.1.12",
     "@angular/material": "^9.2.4",

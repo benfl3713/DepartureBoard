@@ -4,11 +4,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HttpClient } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
 import { DatePipe } from "@angular/common";
-import {TuiRootModule} from '@taiga-ui/core';
-import {TuiIslandModule} from '@taiga-ui/kit'
-import {TuiThemeNightModule} from '@taiga-ui/core';
 
-import { MaterialModule } from "./material.module";
+import { MaterialModule } from "./external/material.module";
 import { DeviceDetectorModule } from "ngx-device-detector";
 import { CookieService } from "ngx-cookie-service";
 import { AngularFireModule } from "@angular/fire";
@@ -54,6 +51,8 @@ import {
   EditCustomDepartureComponent,
 } from "./Components/edit-custom-departure/edit-custom-departure.component";
 import { SplashScreenComponent } from "./Components/splash-screen/splash-screen.component";
+import { TuiModule } from "./external/tui.module";
+import { FeaturesComponent } from './widgets/features/features.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo",
@@ -89,6 +88,7 @@ const firebaseConfig = {
     EditCustomDepartureComponent,
     DepartureStopDialog,
     SplashScreenComponent,
+    FeaturesComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
@@ -101,9 +101,7 @@ const firebaseConfig = {
     AngularFireAuthModule,
     AngularFireStorageModule,
     FlexLayoutModule,
-    TuiRootModule,
-    TuiIslandModule,
-    TuiThemeNightModule,
+    TuiModule,
     SettingsModule,
     NotifierModule.withConfig({
       position: {

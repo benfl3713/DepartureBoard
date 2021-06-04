@@ -7,6 +7,5 @@ import { Component } from "@angular/core";
 })
 export class HomeComponent {
   constructor() {
-    document.title = "Departure Board";
   }
 }

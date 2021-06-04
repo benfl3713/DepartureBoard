@@ -1,18 +1,31 @@
 <article>
-  <section class="header">
+  <div class="header">
     <div class="header-background"></div>
     <div class="header-content">
       <h1 class="header-title led">Led Departure Board</h1>
+
+      <tui-input class="header-search" tuiTextfieldSize="m" tuiTextfieldCleaner="true" tuiMode="onDark">
+        Search a Station
+    </tui-input>
     </div>
-  </section>
+  </div>
 
   <section class="news-container">
     <h2 class="led centre-text">News</h2>
+    <br>
     <app-components-widgets-news></app-components-widgets-news>
+  </section>
+
+  <section class="news-container">
+    <h2 class="led centre-text">About</h2>
+    <br>
+
   </section>
 
 <section class="features-container">
   <h2 class="led centre-text">Features</h2>
+  <br />
+  <app-features></app-features>
 </section>
 
   <section class="search-container">

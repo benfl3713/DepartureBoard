@@ -1,4 +1,5 @@
 :root {
   --mainColour: #ff9729;
   --backgroundColour: black;
+  --tui-primary: #ff9729 !important;
 }

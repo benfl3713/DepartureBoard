@@ -22,7 +22,7 @@
       <td class="inline-row stop">Calling at:</td>
       <td class="inline-row status stop">{{CurrentPage}}/{{TotalPages}}</td>
     </tr>
-    <tr class="board-row" *ngFor="let stop of DisplayedStops">
+    <tr class="board-row stop-row" *ngFor="let stop of DisplayedStops">
       <td class="inline-row stopname-cell stopname clickable stop" (click)="ChangeStation(stop.StationName)">
         {{stop.StationName}}
       </td>

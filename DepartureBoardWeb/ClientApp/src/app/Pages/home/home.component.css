@@ -39,7 +39,24 @@
 .header-search {
   text-align: center;
   width: 300px;
+}
+
+.search-container {
+  display: flex;
+  flex-direction: row;
   margin: auto;
+  width: 356px;
+  --tui-link: #ff9729;
+}
+
+.search-container button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.search-container tui-input {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 section {

@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
-import { TuiRootModule, TuiThemeNightModule, TuiModeModule, TuiButtonModule } from '@taiga-ui/core';
-import { TuiIslandModule, TuiInputModule } from '@taiga-ui/kit';
+import { TuiRootModule, TuiThemeNightModule, TuiModeModule, TuiButtonModule, TuiDataListModule } from '@taiga-ui/core';
+import { TuiIslandModule, TuiInputModule, TuiAvatarModule } from '@taiga-ui/kit';
+import {TuiLetModule} from '@taiga-ui/cdk';
+
+
 
 
 
@@ -11,7 +14,10 @@ import { TuiIslandModule, TuiInputModule } from '@taiga-ui/kit';
     TuiThemeNightModule,
     TuiInputModule,
     TuiModeModule,
-    TuiButtonModule
+    TuiButtonModule,
+    TuiLetModule,
+    TuiDataListModule,
+    TuiAvatarModule
 	]
 })
 export class TuiModule { }

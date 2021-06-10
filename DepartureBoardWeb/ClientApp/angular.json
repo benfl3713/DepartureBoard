@@ -31,6 +31,8 @@
               }
             ],
             "styles": [
+              "node_modules/@taiga-ui/core/styles/taiga-ui-global.less",
+              "node_modules/@taiga-ui/core/styles/taiga-ui-theme.less",
               "src/default.theme.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css",
@@ -41,9 +43,7 @@
               "./node_modules/angular-notifier/styles/types/type-error.css",
               "./node_modules/angular-notifier/styles/types/type-info.css",
               "./node_modules/angular-notifier/styles/types/type-success.css",
-              "./node_modules/angular-notifier/styles/types/type-warning.css",
-              "node_modules/@taiga-ui/core/styles/taiga-ui-global.less",
-              "node_modules/@taiga-ui/core/styles/taiga-ui-theme.less"
+              "./node_modules/angular-notifier/styles/types/type-warning.css"
             ],
             "scripts": [],
             "vendorChunk": true,

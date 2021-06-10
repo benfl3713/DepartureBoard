@@ -1,35 +1,73 @@
-<article>
-  <div class="header">
-    <div class="header-background"></div>
-    <div class="header-content">
-      <h1 class="header-title led">Led Departure Board</h1>
+<tui-root>
+  <article>
+    <div class="header">
+      <div class="header-background"></div>
+      <div class="header-content">
+        <h1 class="header-title led">Led Departure Board</h1>
 
-      <tui-input class="header-search" tuiTextfieldSize="m" tuiTextfieldCleaner="true" tuiMode="onDark">
-        Search a Station
-    </tui-input>
+        <form class="search-container" (ngSubmit)="Search()">
+          <tui-input
+            class="header-search"
+            tuiTextfieldSize="l"
+            tuiTextfieldCleaner="true"
+            tuiMode="onDark"
+            [formControl]="searchForm"
+            *tuiLet="stationLookup$ | async as stations"
+            tuiTextfieldCleaner="true"
+          >
+            Search a Station
+            <ng-container *ngIf="stations?.length">
+              <tui-data-list *tuiDataList>
+                <button
+                  *ngFor="let station of stations"
+                  tuiOption
+                  value="{{ station.name }} - ({{ station.code }})"
+                >
+                  {{ station.name }} - ({{ station.code }})
+                  <tui-avatar
+                    size="xs"
+                    [avatarUrl]="getCountryLogo(station)"
+                    [text]="station.country"
+                  ></tui-avatar>
+                </button>
+              </tui-data-list>
+            </ng-container>
+          </tui-input>
+
+          <button tuiIconButton type="submit" appearance="secondary">
+            <mat-icon>search</mat-icon>
+          </button>
+        </form>
+      </div>
     </div>
-  </div>
 
-  <section class="news-container">
-    <h2 class="led centre-text">News</h2>
-    <br>
-    <app-components-widgets-news></app-components-widgets-news>
-  </section>
+    <section class="news-container centre-text">
+      <h2 class="led">About</h2>
+      <br />
+      <p style="font-size: 18px;">
+        Led Departure Board is a webapp designed to re-create the platform signs
+        you get at British and German train stations.<br>
+        The data is collected live from
+        network rail and displayed in different custom panels.
+      </p>
+    </section>
 
-  <section class="news-container">
-    <h2 class="led centre-text">About</h2>
-    <br>
+    <section class="news-container">
+      <h2 class="led centre-text">News</h2>
+      <br />
+      <app-components-widgets-news></app-components-widgets-news>
+    </section>
 
-  </section>
+    <section *ngIf="!(isHandset$ | async)">
+      <h2 class="led centre-text">Example (London Euston)</h2>
+      <br />
+      <app-singleboard stationCode="EUS" [positionAbsolute]="false" [showStationName]="false" [showClock]="false"></app-singleboard>
+    </section>
 
-<section class="features-container">
-  <h2 class="led centre-text">Features</h2>
-  <br />
-  <app-features></app-features>
-</section>
-
-  <section class="search-container">
-    <h2 class="led centre-text">Find your Station</h2>
-    <app-components-search></app-components-search>
-  </section>
-</article>
+    <section class="features-container">
+      <h2 class="led centre-text">Features</h2>
+      <br />
+      <app-features></app-features>
+    </section>
+  </article>
+</tui-root>

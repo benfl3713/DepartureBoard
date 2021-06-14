@@ -16,7 +16,7 @@
             tuiTextfieldCleaner="true"
           >
             Search a Station
-            <ng-container *ngIf="stations?.length">
+            <ng-container *ngIf="stations; else loading">
               <tui-data-list *tuiDataList>
                 <button
                   *ngFor="let station of stations"
@@ -47,7 +47,7 @@
       <p style="font-size: 18px">
         Led Departure Board is a webapp designed to re-create the platform signs
         you get at British and German train stations.<br />
-        The data is collected live from network rail and displayed in different
+        The data is collected live from multiple datasource's and displayed in different
         custom panels.
       </p>
     </section>
@@ -69,7 +69,7 @@
     </section>
 
     <section *ngIf="!(isHandset$ | async)">
-      <h2 class="led centre-text">Example (London Euston)</h2>
+      <h2 class="led centre-text"><a class="led" href="singleboard/EUS">Example (London Euston)</a></h2>
       <br />
       <app-singleboard
         stationCode="EUS"

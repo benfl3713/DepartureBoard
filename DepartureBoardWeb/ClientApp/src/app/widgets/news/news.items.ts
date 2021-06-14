@@ -1,15 +1,13 @@
 export const NewsItems: NewsItem[] = [
   {
+    title: 'New UI Project',
+    content:
+      "Brand new redesigned UI being introduced into the application. Starting with this home page"
+  },
+  {
     title: "Serverless Design",
     content:
       "The production website has been moved to a new serverless deployment. Please let me know if you have any issues",
-  },
-  {
-    title: "New UI for Custom Departures",
-    content:
-      "A new interface to graphically create and edit <a href='/custom-departures'>custom departures</a> with your own data",
-    isHighlighted: true,
-    titleLink: "https://docs.leddepartureboard.com/blog/custom-departure-ui",
   },
   {
     title: "New Documentation Website",

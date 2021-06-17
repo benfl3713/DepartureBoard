@@ -4,6 +4,8 @@ import {
   ComponentFactoryResolver,
   ViewContainerRef,
   OnDestroy,
+  OnInit,
+  Input,
 } from "@angular/core";
 import {
   ActivatedRoute,
@@ -27,7 +29,7 @@ import { Subscription } from "rxjs";
   templateUrl: "./boards.component.html",
   styleUrls: ["./boards.styling.css"],
 })
-export class BoardsComponent implements OnDestroy {
+export class BoardsComponent implements OnInit, OnDestroy {
   time = new Date();
   refresher;
   noBoardsDisplay: boolean = false;
@@ -37,9 +39,9 @@ export class BoardsComponent implements OnDestroy {
   showStationName: boolean = false;
   stationName;
   previousData;
-  public displays: number = 6;
+  @Input() public displays: number = 6;
   public platform: string;
-  public stationCode: string = "EUS";
+  @Input() public stationCode: string = "EUS";
   @ViewChild("Boards", { read: ViewContainerRef, static: true })
   Boards: ViewContainerRef;
   subscriptions: Subscription[] = [];
@@ -57,7 +59,9 @@ export class BoardsComponent implements OnDestroy {
     setInterval(() => {
       this.time = new Date();
     }, 1000);
+  }
 
+  ngOnInit() {
     this.route.params.subscribe(() => {
       this.route.queryParams.subscribe((queryParams) => {
         this.SetupDisplay(queryParams);
@@ -75,16 +79,16 @@ export class BoardsComponent implements OnDestroy {
   SetupDisplay(queryParams) {
     const s: UrlSegment[] = this.router.parseUrl(this.router.url).root.children[
       PRIMARY_OUTLET
-    ].segments;
-    if (s[0].path && s[0].path.toLowerCase() == "arrivals") {
+    ]?.segments;
+    if (s && s[0].path && s[0].path.toLowerCase() == "arrivals") {
       this.useArrivals = true;
     }
 
-    if (s[0].path && s[0].path.toLowerCase() == "custom-departures") {
+    if (s && s[0].path && s[0].path.toLowerCase() == "custom-departures") {
       this.isCustomData = true;
     }
 
-    this.stationCode = this.route.snapshot.paramMap.get("station");
+    this.stationCode = this.route.snapshot.paramMap.get("station") ?? this.stationCode;
 
     if (localStorage.getItem("settings_mainboard_showStationName")) {
       this.showStationName =

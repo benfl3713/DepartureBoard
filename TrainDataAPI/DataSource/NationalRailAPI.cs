@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DepartureBoardCore;
 using NationalRailService;
-using Newtonsoft.Json;
 
 namespace TrainDataAPI
 {
@@ -10,17 +10,27 @@ namespace TrainDataAPI
     {
         private AccessToken AccessToken = new AccessToken() { TokenValue = ConfigService.NationalRail_AccessToken};
         private LDBServiceSoapClient client = new LDBServiceSoapClient(LDBServiceSoapClient.EndpointConfiguration.LDBServiceSoap);
-        public List<Departure> GetLiveArrivals(string stationCode, int count)
+        public List<Departure> GetLiveArrivals(string stationCode, string platform, int count)
         {
             GetArrivalBoardResponse arrivalsResponse = client.GetArrivalBoardAsync(AccessToken, ushort.Parse(count.ToString()), stationCode, null, FilterType.to, 0, 1440).Result;
-            var test = JsonConvert.SerializeObject(arrivalsResponse.GetStationBoardResult);
-            return DeserialiseDepartures(arrivalsResponse.GetStationBoardResult);
+            List<Departure> departures = DeserialiseDepartures(arrivalsResponse.GetStationBoardResult);
+
+            if (!string.IsNullOrEmpty(platform))
+	            departures = departures.Where(d => d.Platform == platform).ToList();
+
+            return departures.Take(count).ToList();
         }
 
-        public List<Departure> GetLiveDepartures(string stationCode, int count)
+        public List<Departure> GetLiveDepartures(string stationCode, string platform, int count)
         {
             GetDepartureBoardResponse departuresResponse = client.GetDepartureBoardAsync(AccessToken, ushort.Parse(count.ToString()), stationCode, null, FilterType.to, 0, 1440).Result;
-            return DeserialiseDepartures(departuresResponse.GetStationBoardResult);
+
+            List<Departure> departures = DeserialiseDepartures(departuresResponse.GetStationBoardResult);
+
+            if (!string.IsNullOrEmpty(platform))
+	            departures = departures.Where(d => d.Platform == platform).ToList();
+
+            return departures.Take(count).ToList();
         }
 
         private List<Departure> DeserialiseDepartures(StationBoard departuresResponse){
@@ -38,7 +48,7 @@ namespace TrainDataAPI
                     status = Departure.ServiceStatus.LATE;
                 }
 
-                
+
 
                 if (departure.isCancelled)
                     status = Departure.ServiceStatus.CANCELLED;

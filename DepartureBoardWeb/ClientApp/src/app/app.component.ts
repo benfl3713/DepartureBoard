@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component } from "@angular/core";
 import {
   Router,
   NavigationEnd,
@@ -25,7 +25,7 @@ import { environment } from "src/environments/environment";
     "./fonts/ledfont3/stylesheet.css",
   ],
 })
-export class AppComponent {
+export class AppComponent implements AfterViewChecked {
   title = "app";
   LoadingBar: boolean = false;
   showSplashScreen = false;
@@ -37,11 +37,9 @@ export class AppComponent {
     adminBoardService: AdminBoardService,
     route: ActivatedRoute,
     cookieService: CookieService,
-    private http: HttpClient
+    private http: HttpClient,
+    private changeDetector : ChangeDetectorRef
   ) {
-    ToggleConfig.LoadingBar.subscribe(
-      (isvisible) => (this.LoadingBar = isvisible)
-    );
     ThemeService.LoadTheme();
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -92,6 +90,15 @@ export class AppComponent {
       adminBoardService.stopListening();
       adminBoardService.startListening(this.router);
     });
+  }
+
+  ngAfterViewChecked() {
+    ToggleConfig.LoadingBar.subscribe(
+      (isvisible) => {
+        this.LoadingBar = isvisible;
+        this.changeDetector.detectChanges();
+      }
+    );
   }
 
   CheckForUpdate() {

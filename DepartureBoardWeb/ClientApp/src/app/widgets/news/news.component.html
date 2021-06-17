@@ -1,52 +1,31 @@
-<div class="container">
-  <h2 id="news-title" class="led-bold centre-text" style="padding-left: 10px">
-    News
-  </h2>
-  <div *ngFor="let news of newsItems">
-    <div class="news-item" [ngClass]="{ 'news-highlight': news.isHighlighted === true }">
-      <h5 class="centre-text">
-        <a *ngIf="news.titleLink; else titleNoLink" [href]="news.titleLink" target="_blank"><strong>{{ news.title
-            }}</strong></a>
-        <ng-template #titleNoLink><strong>{{ news.title }}</strong></ng-template>
-      </h5>
-      <p class="centre-text" [innerHtml]="news.content" routeTransformer></p>
-    </div>
-  </div>
+<div
+  fxLayout="row"
+  fxLayout.xs="column"
+  fxLayoutGap="30px"
+  fxLayoutAlign="center"
+>
+  <tui-island *ngFor="let news of newsItems" fxFlex="25%" tuiMode="onDark">
+    <h3 class="tui-island__title">{{ news.title }}</h3>
+    <p
+      class="tui-island__paragraph"
+      [innerHtml]="news.content"
+      routeTransformer
+    ></p>
+    <p
+      class="tui-island__paragraph tui-island__paragraph_link"
+      *ngIf="news.titleLink"
+    >
+      <a
+          tuiButton
+          type="button"
+          class="tui-island__footer-button"
+          appearance="flat"
+          size="s"
+          [href]="news.titleLink"
+          target="_blank"
+      >
+        More Info
+      </a>
+    </p>
+  </tui-island>
 </div>
-
-<!-- <div class="container">
-  <h2 id="news-title" class="led-bold centre-text" style="padding-left: 10px;">
-    News
-  </h2>
-  <div class="news-item news-highlight">
-    <h5 class="centre-text">
-      <strong>Departure Board Admin</strong>
-    </h5>
-    <p class="centre-text">
-      A new
-      <a href="https://admin.leddepartureboard.com" target="_blank">webapp</a>
-      to manage your boards remotely with instant live updates. To get started
-      check out the
-      <a [routerLink]="['/about/departureboard-admin']">About Page</a>
-    </p>
-  </div>
-  <div class="news-item">
-    <h5 class="centre-text">
-      <strong>Bus Data</strong>
-    </h5>
-    <p class="centre-text">
-      A new datasource of all uk bus data displayed on a new type of board. To
-      get started visit <a [routerLink]="['/buses']">/buses</a>
-    </p>
-  </div>
-  <div class="news-item">
-    <h5 class="centre-text">
-      <strong>Alternating Singleboard Second Row</strong>
-    </h5>
-    <a class="centre-text">
-      The singleboard now alternates the second row between 2nd and 3rd
-      departure. You can turn this off in the singleboard section of
-      <a [routerLink]="['/settings']">settings</a>
-    </a>
-  </div>
-</div> -->

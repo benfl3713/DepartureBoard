@@ -19,8 +19,8 @@ export class Board {
   ) {
     const s: UrlSegment[] = this.router.parseUrl(this.router.url).root.children[
       PRIMARY_OUTLET
-    ].segments;
-    if (s[0].path && s[0].path.toLowerCase() == "arrivals") {
+    ]?.segments;
+    if (s && s[0].path && s[0].path.toLowerCase() == "arrivals") {
       this.useArrivals = true;
     }
     setInterval(() => {

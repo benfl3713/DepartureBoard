@@ -1,17 +1,18 @@
+@use '~@angular/material' as mat;
 @import '~@angular/material/theming';
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // **Be sure that you only ever include this mixin once!**
-@include mat-core();
+@include mat.core();
 
 
 //Dark theme
-$departureboard-dark-primary: mat-palette($mat-orange);
-$departureboard-dark-accent: mat-palette($mat-blue);
-$departureboard-dark-warn: mat-palette($mat-red);
-$departureboard-dark-theme: mat-dark-theme($departureboard-dark-primary, $departureboard-dark-accent, $departureboard-dark-warn);
+$departureboard-dark-primary: mat.define-palette(mat.$orange-palette);
+$departureboard-dark-accent: mat.define-palette(mat.$blue-palette);
+$departureboard-dark-warn: mat.define-palette(mat.$red-palette);
+$departureboard-dark-theme: mat.define-dark-theme($departureboard-dark-primary, $departureboard-dark-accent, $departureboard-dark-warn);
 
 $departureboard-dark-background-colour: #000000;
 $departureboard-dark-background: map-get($departureboard-dark-theme, background);
@@ -19,4 +20,4 @@ $departureboard-dark-background: map_merge($departureboard-dark-background, (bac
 $departureboard-dark-theme: map_merge($departureboard-dark-theme, (background: $departureboard-dark-background));
 
 // Include the default theme styles.
-@include angular-material-theme($departureboard-dark-theme);
+@include mat.all-component-themes($departureboard-dark-theme);

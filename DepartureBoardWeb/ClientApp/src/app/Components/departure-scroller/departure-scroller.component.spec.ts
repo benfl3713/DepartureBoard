@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { DepartureScrollerComponent } from './departure-scroller.component';
 
@@ -6,7 +6,7 @@ describe('DepartureScrollerComponent', () => {
   let component: DepartureScrollerComponent;
   let fixture: ComponentFixture<DepartureScrollerComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ DepartureScrollerComponent ]
     })

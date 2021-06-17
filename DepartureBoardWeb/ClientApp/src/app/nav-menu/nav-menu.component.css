@@ -65,3 +65,7 @@ html {
 #nav-hamburger-button {
   z-index: 20;
 }
+
+.scrollbar {
+  width: 0 !important;
+}

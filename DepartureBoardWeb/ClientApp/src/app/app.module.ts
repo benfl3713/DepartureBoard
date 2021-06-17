@@ -4,7 +4,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HttpClient } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
 import { DatePipe } from "@angular/common";
-import { MaterialModule } from "./material.module";
+
+import { MaterialModule } from "./external/material.module";
 import { DeviceDetectorModule } from "ngx-device-detector";
 import { CookieService } from "ngx-cookie-service";
 import { AngularFireModule } from "@angular/fire";
@@ -50,6 +51,8 @@ import {
   EditCustomDepartureComponent,
 } from "./Components/edit-custom-departure/edit-custom-departure.component";
 import { SplashScreenComponent } from "./Components/splash-screen/splash-screen.component";
+import { TuiModule } from "./external/tui.module";
+import { FeaturesComponent } from './widgets/features/features.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo",
@@ -85,6 +88,7 @@ const firebaseConfig = {
     EditCustomDepartureComponent,
     DepartureStopDialog,
     SplashScreenComponent,
+    FeaturesComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
@@ -97,6 +101,7 @@ const firebaseConfig = {
     AngularFireAuthModule,
     AngularFireStorageModule,
     FlexLayoutModule,
+    TuiModule,
     SettingsModule,
     NotifierModule.withConfig({
       position: {
@@ -113,96 +118,92 @@ const firebaseConfig = {
       },
     }),
     RouterModule.forRoot([
-      { path: "", component: HomeComponent, pathMatch: "full" },
-      { path: "search", component: SearchComponent, pathMatch: "full" },
-      { path: "examples", component: ExamplesComponent, pathMatch: "full" },
-      { path: "settings", component: SettingsComponent, pathMatch: "full" },
-      {
+    { path: "", component: HomeComponent, pathMatch: "full" },
+    { path: "search", component: SearchComponent, pathMatch: "full" },
+    { path: "examples", component: ExamplesComponent, pathMatch: "full" },
+    { path: "settings", component: SettingsComponent, pathMatch: "full" },
+    {
         path: "custom-departures",
         component: CustomDepartureBoardComponent,
         pathMatch: "full",
-      },
-      {
+    },
+    {
         path: "custom-departures/add",
         component: AddCustomDepartureComponent,
         pathMatch: "full",
-      },
-      {
+    },
+    {
         path: "custom-departures/edit/:id",
         component: AddCustomDepartureComponent,
         pathMatch: "full",
-      },
-      //About
-      {
+    },
+    //About
+    {
         path: "about",
         component: AboutComponent,
         pathMatch: "full",
-      },
-      {
+    },
+    {
         path: "about/custom-departures",
         component: AboutCustomDepartureComponent,
         pathMatch: "full",
-      },
-      {
+    },
+    {
         path: "about/departureboard-admin",
         component: AboutDepartureboardAdminComponent,
         pathMatch: "full",
-      },
-      //Boards
-      {
+    },
+    //Boards
+    {
         path: "arrivals/:station/:displays",
         component: BoardsComponent,
         pathMatch: "full",
-      },
-      {
+    },
+    {
         path: "arrivals/:station",
         component: BoardsComponent,
         pathMatch: "full",
-      },
-      {
+    },
+    {
         path: "singleboard/arrivals/:station",
         component: SingleBoard,
         pathMatch: "full",
-      },
-      {
+    },
+    {
         path: "singleboard/:station",
         component: SingleBoard,
         pathMatch: "full",
-      },
-      {
+    },
+    {
         path: "custom-departures/:station",
         component: BoardsComponent,
         pathMatch: "full",
-      },
-      {
+    },
+    {
         path: "custom-departures/:station/:displays",
         component: BoardsComponent,
         pathMatch: "full",
-      },
-      {
+    },
+    {
         path: "buses",
-        loadChildren: () =>
-          import("./Pages/buses/buses/buses.module").then((m) => m.BusesModule),
-      },
-      {
+        loadChildren: () => import("./Pages/buses/buses/buses.module").then((m) => m.BusesModule),
+    },
+    {
         path: "germany",
-        loadChildren: () =>
-          import("./Pages/germany/germany.module").then((m) => m.GermanyModule),
-      },
-
-      { path: ":station", component: BoardsComponent, pathMatch: "full" },
-      {
+        loadChildren: () => import("./Pages/germany/germany.module").then((m) => m.GermanyModule),
+    },
+    { path: ":station", component: BoardsComponent, pathMatch: "full" },
+    {
         path: ":station/:displays",
         component: BoardsComponent,
         pathMatch: "full",
-      },
-      {
+    },
+    {
         path: "germany",
-        loadChildren: () =>
-          import("./Pages/germany/germany.module").then((m) => m.GermanyModule),
-      },
-      { path: "**", redirectTo: "" },
-    ]),
+        loadChildren: () => import("./Pages/germany/germany.module").then((m) => m.GermanyModule),
+    },
+    { path: "**", redirectTo: "" },
+], { relativeLinkResolution: 'legacy' }),
     BrowserAnimationsModule,
     DeviceDetectorModule.forRoot(),
     ServiceWorkerModule.register("ngsw-worker.js", {

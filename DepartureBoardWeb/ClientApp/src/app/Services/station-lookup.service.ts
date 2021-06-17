@@ -20,7 +20,7 @@ export class StationLookupService {
 
   Search(query: string): Observable<Station[]> {
     return this.http.get<Station[]>(
-      environment.apiBaseUrl + "/api/StationLookup?query=" + query
+      environment.apiBaseUrl + "/api/StationLookup/Search?query=" + query ?? ""
     );
   }
 }

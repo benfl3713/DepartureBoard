@@ -1,6 +1,6 @@
 # Setup Environment
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \ 
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
 	&& apt update \
 	&& apt install -y nodejs
 WORKDIR /app

@@ -2,12 +2,11 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "module": "esnext",
+    "module": "es2020",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es2015",
     "typeRoots": [
@@ -16,8 +15,12 @@
     ],
     "lib": [
       "es2017",
+      "ES2015",
       "dom"
     ],
   "skipLibCheck": true
+  },
+  "angularCompilerOptions": {
+    "enableIvy": true
   }
 }

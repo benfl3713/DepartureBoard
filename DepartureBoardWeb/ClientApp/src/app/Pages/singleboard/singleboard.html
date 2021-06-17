@@ -1,4 +1,4 @@
-<div class="singleboard">
+<div class="singleboard" [ngClass]="{'singleboard-absolute': positionAbsolute}">
   <h1 id="title" class="led centre-text" *ngIf="showStationName">
     {{stationName}}
   </h1>

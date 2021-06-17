@@ -25,6 +25,24 @@ namespace DepartureBoardWeb
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			var loggerConfiguration = new LoggerConfiguration()
+				.ReadFrom.Configuration(Configuration)
+				.MinimumLevel.Override("Microsoft", LogEventLevel.Verbose)
+				.MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Verbose)
+				.Enrich.FromLogContext()
+				.WriteTo.Logger(lc => lc
+					.Filter.ByIncludingOnly(f => f.Level >= LogEventLevel.Information)
+					.WriteTo.Console(outputTemplate: "{Timestamp:HH:mm:ss:fff} [{Level}] {Message}{NewLine}{Exception}")
+				);
+
+
+			if (!string.IsNullOrEmpty(Configuration.GetValue<string>("Datalust_Server")))
+			{
+				loggerConfiguration.WriteTo.Seq(Configuration.GetValue<string>("Datalust_Server"), apiKey: Configuration.GetValue<string>("Datalust_ApiKey"));
+			}
+
+			Log.Logger = loggerConfiguration.CreateLogger();
+
 			services.AddControllersWithViews();
 			services.AddSingleton(new StationLookup());
 			// In production, the Angular files will be served from this directory
@@ -45,20 +63,6 @@ namespace DepartureBoardWeb
 
 			services.AddMemoryCache();
 			services.AddResponseCaching();
-
-			var loggerConfiguration = new LoggerConfiguration()
-				.ReadFrom.Configuration(Configuration)
-				.MinimumLevel.Override("Microsoft", LogEventLevel.Verbose)
-				.Enrich.FromLogContext()
-				.WriteTo.Logger(lc => lc
-					.Filter.ByIncludingOnly(f => f.Level >= LogEventLevel.Error)
-					.WriteTo.File("errors.txt"))
-				.WriteTo.Logger(lc => lc
-					.Filter.ByIncludingOnly(f => f.Level >= LogEventLevel.Information)
-					.WriteTo.Console(outputTemplate: "{Timestamp:HH:mm:ss:fff} [{Level}] {Message}{NewLine}{Exception}")
-				);
-
-			Log.Logger = loggerConfiguration.CreateLogger();
 
 			// services.AddSingleton(new TrainDataAPI.DarwinPushPortAPI());
 		}
@@ -96,6 +100,8 @@ namespace DepartureBoardWeb
 
 			app.UseResponseCaching();
 
+			app.UseSerilogRequestLogging();
+
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllerRoute(
@@ -121,7 +127,7 @@ namespace DepartureBoardWeb
 		{
 			if (!ConfigService.PrometheusPort.HasValue)
 				return;
-			
+
 			// Custom Metrics to count requests for each endpoint and the method
 			var counter = Metrics.CreateCounter("departureboard_path_counter", "Counts requests to the API endpoints", new CounterConfiguration
 			{

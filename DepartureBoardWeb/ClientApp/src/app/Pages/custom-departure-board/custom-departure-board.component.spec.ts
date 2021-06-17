@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CustomDepartureBoardComponent } from './custom-departure-board.component';
 
@@ -6,7 +6,7 @@ describe('CustomDepartureBoardComponent', () => {
   let component: CustomDepartureBoardComponent;
   let fixture: ComponentFixture<CustomDepartureBoardComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CustomDepartureBoardComponent ]
     })

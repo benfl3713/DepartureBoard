@@ -1,4 +1,9 @@
-export const ComingSoonItems: ComingSoonItem[] = [];
+export const ComingSoonItems: ComingSoonItem[] = [
+  {
+    title: "New UI",
+    content: "Brand New UI coming to the home and search pages"
+  }
+];
 
 interface ComingSoonItem {
   title: string;

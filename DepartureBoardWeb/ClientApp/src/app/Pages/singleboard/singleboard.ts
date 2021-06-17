@@ -33,6 +33,7 @@ export class SingleBoard implements OnDestroy, OnInit {
   @Input() showClock: boolean = true;
   @Input() useArrivals: boolean = false;
   @Input() showStationName = false;
+  @Input() changeTitle = true;
   stationName;
   nextDepartures: Departure[] = [];
 
@@ -108,17 +109,24 @@ export class SingleBoard implements OnDestroy, OnInit {
         }
 
         ToggleConfig.LoadingBar.next(true);
-        document.title =
+
+        if(this.changeTitle === true){
+          document.title =
           this.stationCode +
           (this.useArrivals ? " - Arrivals" : " - Departures") +
           " - Departure Board";
+        }
+
         this.stationLookupService
           .GetStationNameFromCode(this.stationCode)
           .subscribe((name) => {
-            document.title =
+            if(this.changeTitle === true){
+              document.title =
               name +
               (this.useArrivals ? " - Arrivals" : " - Departures") +
               " - Departure Board";
+            }
+
             this.stationName = name;
             if (this.platform) {
               this.stationName = `${name} (Platform ${this.platform})`;

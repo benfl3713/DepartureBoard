@@ -51,11 +51,6 @@
             >
           </li>
           <li class="nav-item" [routerLinkActive]="['page-selected']">
-            <a class="nav-link text-light" [routerLink]="['/buses']"
-              ><span class="fas fa-bus"></span> Buses
-            </a>
-          </li>
-          <li class="nav-item" [routerLinkActive]="['page-selected']">
             <a
               class="nav-link text-light"
               href="https://docs.leddepartureboard.com/"
@@ -159,14 +154,6 @@
           [routerLinkActive]="['link-active']"
           (click)="PageChanged()"
           ><span class="fas fa-info"></span> About</a
-        >
-        <a
-          mat-list-item
-          class="menu-item"
-          [routerLink]="['/buses']"
-          [routerLinkActive]="['link-active']"
-          (click)="PageChanged()"
-          ><span class="fas fa-bus"></span> Buses</a
         >
         <a
           mat-list-item

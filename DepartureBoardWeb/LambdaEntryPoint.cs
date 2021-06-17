@@ -7,6 +7,7 @@ namespace DepartureBoardWeb
     {
         protected override void Init(IWebHostBuilder builder)
         {
+	        Startup.IsLambda = true;
             builder.UseStartup<Startup>()
                 .UseLambdaServer();
         }

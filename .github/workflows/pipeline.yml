@@ -61,6 +61,8 @@ jobs:
           dotnet publish -c Release -o ./Lambda_deploy
           cd Lambda_deploy
           zip -r lambda.zip *
+		env:
+			IgnoreAngularProject: true
 
       - name: Deploy Zip to Lambda Function
         uses: appleboy/lambda-action@master

@@ -15,6 +15,8 @@ namespace DepartureBoardWeb
 {
 	public class Startup
 	{
+		public static bool IsLambda = false;
+
 		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;
@@ -45,11 +47,15 @@ namespace DepartureBoardWeb
 
 			services.AddControllersWithViews();
 			services.AddSingleton(new StationLookup());
-			// In production, the Angular files will be served from this directory
-			services.AddSpaStaticFiles(configuration =>
+
+			if (!IsLambda)
 			{
-				configuration.RootPath = "ClientApp/dist";
-			});
+				// In production, the Angular files will be served from this directory
+				services.AddSpaStaticFiles(configuration =>
+				{
+					configuration.RootPath = "ClientApp/dist";
+				});
+			}
 
 			services.AddCors(options =>
 			{
@@ -84,14 +90,19 @@ namespace DepartureBoardWeb
 
 			//ConfigurePrometheusMetrics(app);
 
-			app.UseStaticFiles(new StaticFileOptions{
-				ContentTypeProvider = provider
-			});
-			if (!env.IsDevelopment())
+			if (!IsLambda)
 			{
-				app.UseSpaStaticFiles(new StaticFileOptions{
+				app.UseStaticFiles(new StaticFileOptions
+				{
 					ContentTypeProvider = provider
 				});
+				if (!env.IsDevelopment())
+				{
+					app.UseSpaStaticFiles(new StaticFileOptions
+					{
+						ContentTypeProvider = provider
+					});
+				}
 			}
 
 			app.UseRouting();
@@ -109,18 +120,21 @@ namespace DepartureBoardWeb
 					pattern: "{controller}/{action=Index}/{id?}");
 			});
 
-			app.UseSpa(spa =>
+			if (!IsLambda)
 			{
-				// To learn more about options for serving an Angular SPA from ASP.NET Core,
-				// see https://go.microsoft.com/fwlink/?linkid=864501
-
-				spa.Options.SourcePath = "ClientApp";
-
-				if (env.IsDevelopment())
+				app.UseSpa(spa =>
 				{
-					spa.UseAngularCliServer(npmScript: "start");
-				}
-			});
+					// To learn more about options for serving an Angular SPA from ASP.NET Core,
+					// see https://go.microsoft.com/fwlink/?linkid=864501
+
+					spa.Options.SourcePath = "ClientApp";
+
+					if (env.IsDevelopment())
+					{
+						spa.UseAngularCliServer(npmScript: "start");
+					}
+				});
+			}
 		}
 
 		private void ConfigurePrometheusMetrics(IApplicationBuilder app)

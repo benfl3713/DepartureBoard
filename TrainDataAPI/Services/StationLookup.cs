@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using Newtonsoft.Json;
@@ -17,7 +18,7 @@ namespace TrainDataAPI.Services
 	{
 		public StationLookup()
 		{
-			LoadStationList();
+			Task.Run(LoadStationList);
 		}
 		public List<Station> Stations
 		{
@@ -27,7 +28,7 @@ namespace TrainDataAPI.Services
 				{
 					LoadStationList();
 				}
-				return _stations; 
+				return _stations;
 			}
 		}
 		private List<Station> _stations = new List<Station>();
@@ -96,7 +97,7 @@ namespace TrainDataAPI.Services
 			{
 				if(!dbStation.evaNumbers.Any())
 					continue;
-				
+
 				_stations.Add(new Station(dbStation.evaNumbers.First().number, dbStation.name, "DE"));
 			}
 		}

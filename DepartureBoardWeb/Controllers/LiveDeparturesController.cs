@@ -64,6 +64,10 @@ namespace DepartureBoardWeb.Controllers
         {
             stationCode = stationCode?.ToUpper();
 
+
+            Serilog.Log.Information("GetLiveDepartureData: Loading {count} {arrivals} displays for StationCode {stationCode}. Using datasource {datasource}",
+	            count, arrivals ? "arrival" : "departure", stationCode, dataSource);
+
             ITrainDatasource trainDatasource = GetDatasource(dataSource);
             List<Departure> departures = arrivals ? trainDatasource.GetLiveArrivals(stationCode, platform, count) : trainDatasource.GetLiveDepartures(stationCode, platform, count);
             if (departures == null || departures.Count == 0)

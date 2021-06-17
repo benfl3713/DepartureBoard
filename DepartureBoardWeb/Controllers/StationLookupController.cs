@@ -24,10 +24,14 @@ namespace DepartureBoardWeb.Controllers
       return _stationLookup.Stations;
     }
 
-    private List<StationLookup.Station> Search(string query)
+	[HttpGet("[action]")]
+    public List<StationLookup.Station> Search(string query, int maxCount = 15)
     {
+	  if (string.IsNullOrEmpty(query))
+	  	return new List<StationLookup.Station>();
+
       List<StationLookup.Station> stations = _stationLookup.Stations;
-      return stations?.Where(s => s.Name.Contains(query, StringComparison.InvariantCultureIgnoreCase) || s.Code.Contains(query, StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(s => s.Name.StartsWith(query, StringComparison.InvariantCultureIgnoreCase)).Take(15).ToList();
+      return stations?.Where(s => s.Name.Contains(query, StringComparison.InvariantCultureIgnoreCase) || s.Code.Contains(query, StringComparison.InvariantCultureIgnoreCase)).OrderByDescending(s => s.Name.StartsWith(query, StringComparison.InvariantCultureIgnoreCase)).Take(maxCount).ToList();
     }
 
     [HttpGet("[action]")]

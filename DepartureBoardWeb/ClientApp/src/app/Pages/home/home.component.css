@@ -69,6 +69,13 @@ section {
   width: fit-content;
 }
 
-.howToUse-container > h2 {
+.howToUse-container > p {
   margin-bottom: 30px;
+}
+
+.howToUse-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }

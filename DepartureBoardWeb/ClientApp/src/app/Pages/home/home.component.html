@@ -60,24 +60,13 @@
 
     <section class="howToUse-container autofit-container">
       <h2 class="led centre-text">How to Use</h2>
+      <p>Learn how to use all the custom features on our document website.</p>
       <a
         tuiButton
         href="https://docs.leddepartureboard.com/docs/getting-started/introduction"
         target="_blank"
         >Learn More</a
       >
-    </section>
-
-    <section *ngIf="!(isHandset$ | async)">
-      <h2 class="led centre-text"><a class="led" href="singleboard/EUS">Example (London Euston)</a></h2>
-      <br />
-      <app-singleboard
-        stationCode="EUS"
-        [positionAbsolute]="false"
-        [showStationName]="false"
-        [showClock]="false"
-        [changeTitle]="false"
-      ></app-singleboard>
     </section>
 
     <section class="features-container">

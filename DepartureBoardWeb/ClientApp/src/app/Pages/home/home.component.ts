@@ -4,7 +4,7 @@ import { FormControl } from "@angular/forms";
 import { Router } from "@angular/router";
 import { tuiReplayedValueChangesFrom } from "@taiga-ui/cdk";
 import { Observable } from "rxjs";
-import { catchError, map, shareReplay, switchMap, tap } from "rxjs/operators";
+import { catchError, debounceTime, map, shareReplay, switchMap, tap } from "rxjs/operators";
 import { Station } from "src/app/models/station.model";
 import { StationLookupService } from "src/app/Services/station-lookup.service";
 import { ToggleConfig } from "src/app/ToggleConfig";
@@ -71,6 +71,7 @@ export class HomeComponent {
   readonly stationLookup$ = tuiReplayedValueChangesFrom<string>(
     this.searchForm
   ).pipe(
+    debounceTime(250),
     switchMap((value) => {
       //const filtered = USERS.filter(user => TUI_DEFAULT_MATCHER(user, value));
       ToggleConfig.LoadingBar.next(true);

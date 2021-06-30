@@ -46,7 +46,7 @@ namespace DepartureBoardWeb
 			Log.Logger = loggerConfiguration.CreateLogger();
 
 			services.AddControllersWithViews();
-			services.AddSingleton(new StationLookup());
+			services.AddSingleton<IStationLookup>(new StationLookup());
 
 			if (!IsLambda)
 			{

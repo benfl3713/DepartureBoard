@@ -14,7 +14,13 @@ using Newtonsoft.Json;
 
 namespace TrainDataAPI.Services
 {
-	public class StationLookup
+	public interface IStationLookup
+	{
+		List<StationLookup.Station> Stations { get; }
+		StationLookup.Station GetStationFromCode(string code);
+	}
+
+	public class StationLookup : IStationLookup
 	{
 		public StationLookup()
 		{
@@ -35,8 +41,16 @@ namespace TrainDataAPI.Services
 		private readonly object _stationsLock = new object();
 		private DateTime _lastUpdated = DateTime.MinValue;
 
+
+		public Station GetStationFromCode(string code)
+		{
+			return Stations.Find(s => s.Code == code);
+		}
+
 		public void LoadStationList()
 		{
+			Serilog.Log.Information("Loading StationList for all countries");
+
 			if (string.IsNullOrEmpty(ConfigService.NationalRail_Username) || string.IsNullOrEmpty(ConfigService.NationalRail_Password))
 			{
 				Console.WriteLine("***National Rail Credentials Need Populating in the config.xml file***");

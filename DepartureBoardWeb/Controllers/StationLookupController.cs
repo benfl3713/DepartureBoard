@@ -10,9 +10,9 @@ namespace DepartureBoardWeb.Controllers
   [ApiController]
   public class StationLookupController : Controller
   {
-    private StationLookup _stationLookup;
+    private IStationLookup _stationLookup;
 
-    public StationLookupController(StationLookup stationLookup)
+    public StationLookupController(IStationLookup stationLookup)
     {
       _stationLookup = stationLookup;
     }

@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using TrainDataAPI;
+using TrainDataAPI.Services;
 
 namespace DepartureBoardWeb.Controllers
 {
@@ -10,6 +11,12 @@ namespace DepartureBoardWeb.Controllers
     [ApiController]
     public class LiveDeparturesController : Controller
     {
+	    private readonly IStationLookup _stationLookup;
+	    public LiveDeparturesController(IStationLookup stationLookup)
+	    {
+		    _stationLookup = stationLookup;
+	    }
+
         [HttpGet("[action]")]
         public JsonResult GetLatestDepaturesSingleBoard([Required] string stationCode, string platform = null, string dataSource = null, int count = 3)
         {
@@ -64,9 +71,8 @@ namespace DepartureBoardWeb.Controllers
         {
             stationCode = stationCode?.ToUpper();
 
-
-            Serilog.Log.Information("GetLiveDepartureData: Loading {count} {arrivals} displays for StationCode {stationCode}. Using datasource {datasource}",
-	            count, arrivals ? "arrival" : "departure", stationCode, dataSource);
+            Serilog.Log.Information("GetLiveDepartureData: Loading {count} {arrivals} displays for StationCode {stationCode} ({stationName}). Using datasource {datasource}",
+	            count, arrivals ? "arrival" : "departure", stationCode, _stationLookup?.GetStationFromCode(stationCode)?.Name, dataSource);
 
             ITrainDatasource trainDatasource = GetDatasource(dataSource);
             List<Departure> departures = arrivals ? trainDatasource.GetLiveArrivals(stationCode, platform, count) : trainDatasource.GetLiveDepartures(stationCode, platform, count);

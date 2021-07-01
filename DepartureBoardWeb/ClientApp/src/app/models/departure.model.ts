@@ -32,3 +32,10 @@ export enum StopType {
 export interface Dictionary<T> {
   [Key: string]: T;
 }
+
+export enum ServiceStatus {
+  ONTIME,
+  LATE,
+  CANCELLED,
+  ARRIVED,
+}

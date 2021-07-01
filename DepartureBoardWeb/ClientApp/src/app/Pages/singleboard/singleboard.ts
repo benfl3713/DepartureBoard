@@ -14,9 +14,13 @@ import { GoogleAnalyticsEventsService } from "../../Services/google.analytics";
 import { Marquee } from "dynamic-marquee";
 import { DepartureService } from "src/app/Services/departure.service";
 import { StationLookupService } from "src/app/Services/station-lookup.service";
-import { Departure } from "src/app/models/departure.model";
+import { Departure, ServiceStatus } from "src/app/models/departure.model";
 import { SingleBoardResponse } from "src/app/models/singleboard-response.model";
 import { environment } from "src/environments/environment";
+import {
+  BoardParametersService,
+  BoardParams,
+} from "src/app/Services/board-parameters.service";
 
 @Component({
   selector: "app-singleboard",
@@ -24,25 +28,17 @@ import { environment } from "src/environments/environment";
   styleUrls: ["./singleboard.styling.css"],
 })
 export class SingleBoard implements OnDestroy, OnInit {
-  @Input() stationCode: string;
   @Input() positionAbsolute: boolean = true;
-  platform: string;
+  @Input() boardParams: BoardParams;
+  @Input() changeTitle = true;
+  @Input() useArrivals = false;
+  nextDepartures: Departure[] = [];
+  firstRow: Departure;
+
   time = new Date();
   refresher;
   noBoardsDisplay: boolean = false;
-  @Input() showClock: boolean = true;
-  @Input() useArrivals: boolean = false;
-  @Input() showStationName = false;
-  @Input() changeTitle = true;
   stationName;
-  nextDepartures: Departure[] = [];
-
-  //first
-  firstTime: Date;
-  firstPlatform: string;
-  firstDestination: string;
-  firstStatus: string = "";
-
   information: string;
   marquee;
   alternateSecondRow: boolean = true;
@@ -54,13 +50,12 @@ export class SingleBoard implements OnDestroy, OnInit {
     private router: Router,
     public googleAnalyticsEventsService: GoogleAnalyticsEventsService,
     private departureService: DepartureService,
-    private stationLookupService: StationLookupService
+    private stationLookupService: StationLookupService,
+    private boardParametersService: BoardParametersService
   ) {
     setInterval(() => {
       this.time = new Date();
     }, 1000);
-
-
   }
   ngOnInit(): void {
     const s: UrlSegment[] = this.router.parseUrl(this.router.url).root.children[
@@ -70,72 +65,37 @@ export class SingleBoard implements OnDestroy, OnInit {
       this.useArrivals = true;
     }
 
-    if (localStorage.getItem("settings_singleboard_showStationName")) {
-      this.showStationName =
-        localStorage
-          .getItem("settings_singleboard_showStationName")
-          .toLowerCase() == "true";
-    }
+    this.setupMarqueeScroller();
 
-    if (localStorage.getItem("settings_singleboard_alternateSecondRow")) {
-      this.alternateSecondRow =
-        localStorage
-          .getItem("settings_singleboard_alternateSecondRow")
-          .toLowerCase() == "true";
-    }
+    this.route.paramMap.subscribe((routeParams) => {
+      this.route.queryParamMap.subscribe((queryParamMap) => {
+        this.boardParams = this.boardParametersService.parseParameters(
+          routeParams,
+          queryParamMap
+        );
 
-    this.route.params.subscribe(() => {
-      this.route.queryParams.subscribe((queryParams) => {
-        this.stationCode = this.route.snapshot.paramMap.get("station") ?? this.stationCode;
+        console.log(this.boardParams);
 
-        if(!this.stationCode){
-          return;
+        if (localStorage.getItem("settings_singleboard_showStationName") && this.boardParams.showStationName === false) {
+          this.boardParams.showStationName =
+            localStorage
+              .getItem("settings_singleboard_showStationName")
+              .toLowerCase() == "true";
         }
 
-        if (queryParams["platform"]) {
-          this.platform = queryParams["platform"];
-        } else {
-          this.platform = null;
+        if (localStorage.getItem("settings_singleboard_alternateSecondRow")) {
+          this.alternateSecondRow =
+            localStorage
+              .getItem("settings_singleboard_alternateSecondRow")
+              .toLowerCase() == "true";
         }
 
-        if (queryParams["hideClock"]) {
-          this.showClock = !(
-            (<string>queryParams["hideClock"]).toLowerCase() === "true"
-          );
-        }
-
-        if (queryParams["showStationName"]) {
-          this.showStationName = queryParams["showStationName"] == "true";
-        }
+        this.setupPageTitle();
 
         ToggleConfig.LoadingBar.next(true);
-
-        if(this.changeTitle === true){
-          document.title =
-          this.stationCode +
-          (this.useArrivals ? " - Arrivals" : " - Departures") +
-          " - Departure Board";
-        }
-
-        this.stationLookupService
-          .GetStationNameFromCode(this.stationCode)
-          .subscribe((name) => {
-            if(this.changeTitle === true){
-              document.title =
-              name +
-              (this.useArrivals ? " - Arrivals" : " - Departures") +
-              " - Departure Board";
-            }
-
-            this.stationName = name;
-            if (this.platform) {
-              this.stationName = `${name} (Platform ${this.platform})`;
-            }
-          });
-        this.GetDepartures();
-        this.refresher = setInterval(() => this.GetDepartures(), 10000);
-      });
-    });
+        this.getDepartures();
+      })
+    })
 
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
@@ -143,7 +103,103 @@ export class SingleBoard implements OnDestroy, OnInit {
       }
     });
 
+    this.refresher = setInterval(() => this.getDepartures(), 16000);
+  }
 
+  getDepartures() {
+    if (
+      this.boardParams?.stationCode == null ||
+      this.boardParams?.stationCode == ""
+    ) {
+      return;
+    }
+    this.googleAnalyticsEventsService.emitEvent(
+      "GetSingleBoardDepartures",
+      this.boardParams.stationCode,
+      this.useArrivals
+        ? "GetLatestArrivalsSingleBoard"
+        : "GetLatestDepaturesSingleBoard"
+    );
+    this.departureService
+      .GetSingleboardDepartures(
+        this.boardParams.stationCode,
+        this.useArrivals,
+        this.boardParams.platform
+      )
+      .subscribe(
+        (response) => {
+          ToggleConfig.LoadingBar.next(false);
+          this.processDepartures(response);
+        },
+        () => ToggleConfig.LoadingBar.next(false)
+      );
+  }
+
+  processDepartures(data: SingleBoardResponse) {
+    this.nextDepartures = [];
+
+    if (!data || data.departures.length === 0) {
+      return;
+    }
+
+    if (data.information !== this.information) {
+      this.information = data.information;
+      this.marquee.clear();
+      const $item = document.createElement("div");
+      $item.textContent = this.information;
+      this.marquee.appendItem($item);
+    }
+
+    data.departures = data.departures.map((d) => ({
+      ...d,
+      status: this.calculateStatusField(d),
+    }));
+
+    this.firstRow = data.departures[0];
+    this.nextDepartures = data.departures.slice(1, data.departures.length);
+  }
+
+  calculateStatusField(departure: Departure): string {
+    if (departure.status === ServiceStatus.LATE) {
+      const fexpected = departure.expectedDeparture;
+      return "Exp " + this.datePipe.transform(fexpected, "HH:mm");
+    } else {
+      let status = this.toTitleCase(ServiceStatus[departure.status]);
+      if (status === "Ontime") {
+        status = "On Time";
+      }
+
+      return status.toString();
+    }
+  }
+
+  setupPageTitle(){
+    if(this.changeTitle === true){
+      document.title =
+      this.boardParams.stationCode +
+      (this.useArrivals ? " - Arrivals" : " - Departures") +
+      " - Departure Board";
+    }
+
+
+    this.stationLookupService
+      .GetStationNameFromCode(this.boardParams.stationCode)
+      .subscribe((name) => {
+        if(this.changeTitle === true){
+          document.title =
+          name +
+          (this.useArrivals ? " - Arrivals" : " - Departures") +
+          " - Departure Board";
+        }
+
+        this.stationName = name;
+        if (this.boardParams.platform) {
+          this.stationName = `${name} (Platform ${this.boardParams.platform})`;
+        }
+      });
+  }
+
+  setupMarqueeScroller(): void {
     let scrollSpeed =
       localStorage.getItem("settings_singleboard_scrollspeed") ?? 300;
 
@@ -157,88 +213,12 @@ export class SingleBoard implements OnDestroy, OnInit {
     this.marquee.onAllItemsRemoved(() => {
       const $item = document.createElement("div");
       $item.textContent = this.information;
-      this.marquee.appendItem($item);
+      this.marquee?.appendItem($item);
     });
   }
 
-  GetDepartures() {
-    if (this.stationCode == null || this.stationCode == "") {
-      return;
-    }
-    this.googleAnalyticsEventsService.emitEvent(
-      "GetSingleBoardDepartures",
-      this.stationCode,
-      this.useArrivals
-        ? "GetLatestArrivalsSingleBoard"
-        : "GetLatestDepaturesSingleBoard"
-    );
-    this.departureService
-      .GetSingleboardDepartures(
-        this.stationCode,
-        this.useArrivals,
-        this.platform
-      )
-      .subscribe(
-        (response) => {
-          ToggleConfig.LoadingBar.next(false);
-          this.ProcessDepartures(response);
-        },
-        () => ToggleConfig.LoadingBar.next(false)
-      );
-  }
-
-  ProcessDepartures(data: SingleBoardResponse) {
-    this.nextDepartures = [];
-    this.noBoardsDisplay = data.departures.length === 0;
-    if (data.information !== this.information) {
-      this.information = data.information;
-      this.marquee.clear();
-      const $item = document.createElement("div");
-      $item.textContent = this.information;
-      this.marquee.appendItem($item);
-    }
-
-    // First
-    this.firstTime = data.departures[0].aimedDeparture;
-    this.firstPlatform = data.departures[0].platform;
-    if (this.firstPlatform === "0") {
-      this.firstPlatform = " ";
-    }
-
-    this.firstDestination = data.departures[0].destination;
-
-    const tempfirststatus = data.departures[0].status;
-    if (tempfirststatus === ServiceStatus.LATE) {
-      const fexpected = data.departures[0].expectedDeparture;
-      this.firstStatus = "Exp " + this.datePipe.transform(fexpected, "HH:mm");
-    } else {
-      this.firstStatus = this.toTitleCase(ServiceStatus[tempfirststatus]);
-      if (this.firstStatus === "Ontime") {
-        this.firstStatus = "On Time";
-      }
-    }
-
-    for (let index = 1; index < data.departures.length; index++) {
-      const departure = data.departures[index] as Departure;
-      if (departure.status === ServiceStatus.LATE) {
-        const expected = departure.expectedDeparture;
-        departure.status = "Exp " + this.datePipe.transform(expected, "HH:mm");
-      } else {
-        departure.status = this.toTitleCase(ServiceStatus[departure.status]);
-        if (departure.status === "Ontime") {
-          departure.status = "On Time";
-        }
-      }
-      this.nextDepartures.push(departure);
-    }
-  }
-
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     clearTimeout(this.refresher);
-  }
-
-  isNumber(value: string | number): boolean {
-    return value != null && !isNaN(Number(value.toString()));
   }
 
   FilterPlatform(platform: string) {
@@ -272,11 +252,4 @@ export class SingleBoard implements OnDestroy, OnInit {
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
   }
-}
-
-export enum ServiceStatus {
-  ONTIME,
-  LATE,
-  CANCELLED,
-  ARRIVED,
 }

@@ -1,27 +1,29 @@
 <div class="singleboard" [ngClass]="{'singleboard-absolute': positionAbsolute}">
-  <h1 id="title" class="led centre-text" *ngIf="showStationName">
+  <h1 id="title" class="led centre-text" *ngIf="boardParams.showStationName">
     {{stationName}}
   </h1>
-  <div class="row">
+  <div class="row" *ngIf="firstRow">
     <h1 class="led col-md-1 col-sm-12">1st</h1>
-    <h1 class="led col-md-1 col-sm-12">{{firstTime | date: 'HH:mm'}}</h1>
+    <h1 class="led col-md-1 col-sm-12">
+      {{firstRow.aimedDeparture | date: 'HH:mm'}}
+    </h1>
     <h1
       class="led col-md-1 col-sm-12 clickable"
-      (click)="FilterPlatform(firstPlatform)"
+      (click)="FilterPlatform(firstRow.platform)"
     >
-      {{firstPlatform}}
+      {{firstRow.platform}}
     </h1>
     <h1
       class="led col-md-7 col-sm-12 clickable"
-      (click)="ChangeStation(firstDestination)"
+      (click)="ChangeStation(firstRow.destination)"
     >
-      {{firstDestination}}
+      {{firstRow.destination}}
     </h1>
     <h1
       class="led col-md-2 status"
-      [ngClass]="{ 'ontime': firstStatus=='On Time', 'late': firstStatus.includes('Exp'), 'arrived': firstStatus=='Arrived', 'cancelled': firstStatus=='Cancelled'}"
+      [ngClass]="{ 'ontime': firstRow.status =='On Time', 'late': firstRow.status?.includes('Exp'), 'arrived': firstRow.status=='Arrived', 'cancelled': firstRow.status=='Cancelled'}"
     >
-      {{firstStatus}}
+      {{firstRow.status}}
     </h1>
   </div>
   <div class="row">
@@ -36,7 +38,11 @@
     [enableScoll]="alternateSecondRow"
     [useArrivals]="useArrivals"
   ></app-departure-scroller>
-  <h1 class="led time clickable" [routerLink]='["/"]' *ngIf="showClock">
+  <h1
+    class="led time clickable"
+    [routerLink]='["/"]'
+    *ngIf="boardParams.showClock"
+  >
     {{ time | date: 'HH:mm:ss' }}
   </h1>
 </div>

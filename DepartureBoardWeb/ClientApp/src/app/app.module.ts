@@ -53,6 +53,7 @@ import {
 import { SplashScreenComponent } from "./Components/splash-screen/splash-screen.component";
 import { TuiModule } from "./external/tui.module";
 import { FeaturesComponent } from './widgets/features/features.component';
+import { BoardParametersService } from "./Services/board-parameters.service";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo",
@@ -227,6 +228,7 @@ const firebaseConfig = {
     BusDepartureService,
     RouteTransformerDirective,
     BetaFeaturesGuard,
+    BoardParametersService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

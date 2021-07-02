@@ -1,9 +1,8 @@
 import { Component } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Router, Params, UrlSegment, PRIMARY_OUTLET } from "@angular/router";
-import { ServiceStatus } from "../../singleboard/singleboard";
 import { DatePipe } from "@angular/common";
-import { Departure, StationStop } from "src/app/models/departure.model";
+import { Departure, ServiceStatus, StationStop } from "src/app/models/departure.model";
 import { environment } from "src/environments/environment";
 
 @Component({

@@ -18,6 +18,7 @@ export class HomeComponent {
   constructor(private stationLookupService: StationLookupService, private router: Router, private breakpointObserver: BreakpointObserver) {}
 
   searchForm = new FormControl();
+  isLoadingStations = false;
 
   async Search() {
     const value: string = this.searchForm.value;
@@ -71,16 +72,21 @@ export class HomeComponent {
   readonly stationLookup$ = tuiReplayedValueChangesFrom<string>(
     this.searchForm
   ).pipe(
-    debounceTime(250),
-    switchMap((value) => {
-      //const filtered = USERS.filter(user => TUI_DEFAULT_MATCHER(user, value));
+    debounceTime(200),
+    switchMap((value: string) => {
       ToggleConfig.LoadingBar.next(true);
+      this.isLoadingStations = true;
+
       return this.stationLookupService
         .Search(value)
         .pipe(map((s) => s.splice(0, 10)))
-        .pipe(tap(() => ToggleConfig.LoadingBar.next(false)))
+        .pipe(tap(() => {
+          ToggleConfig.LoadingBar.next(false); 
+          this.isLoadingStations = false;
+        }))
         .pipe(catchError((error) => {
           ToggleConfig.LoadingBar.next(false);
+          this.isLoadingStations = false;
           throw error;
         }))
     })

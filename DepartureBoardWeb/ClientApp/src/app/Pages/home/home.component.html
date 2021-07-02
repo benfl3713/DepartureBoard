@@ -30,6 +30,7 @@
                     [text]="station.country"
                   ></tui-avatar>
                 </button>
+                <mat-spinner *ngIf="isLoadingStations" [diameter]="40" class="search-spinner"></mat-spinner>
               </tui-data-list>
             </ng-container>
           </tui-input>

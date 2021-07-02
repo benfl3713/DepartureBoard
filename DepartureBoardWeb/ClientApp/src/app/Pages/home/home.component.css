@@ -41,6 +41,15 @@
   width: 300px;
 }
 
+.search-spinner {
+  margin:auto;
+  position: absolute;
+  left: 0; 
+  right: 0; 
+  margin-left: auto; 
+  margin-right: auto; 
+}
+
 .search-container {
   display: flex;
   flex-direction: row;

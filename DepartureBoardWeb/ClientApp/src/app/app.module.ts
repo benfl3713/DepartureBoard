@@ -207,7 +207,7 @@ const firebaseConfig = {
     BrowserAnimationsModule,
     DeviceDetectorModule.forRoot(),
     ServiceWorkerModule.register("ngsw-worker.js", {
-      enabled: environment.production,
+      enabled: environment.enablePWA,
       registrationStrategy: "registerImmediately",
     }),
   ],

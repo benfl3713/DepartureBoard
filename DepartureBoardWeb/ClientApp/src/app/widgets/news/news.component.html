@@ -4,7 +4,7 @@
   fxLayoutGap="30px"
   fxLayoutAlign="center"
 >
-  <tui-island *ngFor="let news of newsItems" fxFlex="25%" tuiMode="onDark">
+  <mat-card *ngFor="let news of newsItems" fxFlex="25%">
     <h3 class="tui-island__title">{{ news.title }}</h3>
     <p
       class="tui-island__paragraph"
@@ -16,16 +16,15 @@
       *ngIf="news.titleLink"
     >
       <a
-          tuiButton
+          mat-button
           type="button"
           class="tui-island__footer-button"
           appearance="flat"
-          size="s"
           [href]="news.titleLink"
           target="_blank"
       >
         More Info
       </a>
     </p>
-  </tui-island>
+  </mat-card>
 </div>

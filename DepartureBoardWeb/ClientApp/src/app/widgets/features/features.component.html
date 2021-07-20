@@ -4,12 +4,12 @@
   fxLayoutGap="30px"
   fxLayoutAlign="center"
 >
-  <tui-island *ngFor="let feature of features" fxFlex="33%" tuiMode="onDark" hoverable="true">
+  <mat-card *ngFor="let feature of features" fxFlex="33%">
     <h3 class="tui-island__title">{{feature.title}}</h3>
     <p
       class="tui-island__paragraph"
       routeTransformer
       [innerHtml]="feature.content"
     ></p>
-  </tui-island>
+  </mat-card>
 </div>

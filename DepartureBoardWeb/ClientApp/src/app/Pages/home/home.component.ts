@@ -2,7 +2,6 @@ import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 import { Component } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { Router } from "@angular/router";
-import { tuiReplayedValueChangesFrom } from "@taiga-ui/cdk";
 import { Observable } from "rxjs";
 import { catchError, debounceTime, map, shareReplay, switchMap, tap } from "rxjs/operators";
 import { Station } from "src/app/models/station.model";
@@ -68,29 +67,6 @@ export class HomeComponent {
 
     return null;
   }
-
-  readonly stationLookup$ = tuiReplayedValueChangesFrom<string>(
-    this.searchForm
-  ).pipe(
-    debounceTime(200),
-    switchMap((value: string) => {
-      ToggleConfig.LoadingBar.next(true);
-      this.isLoadingStations = true;
-
-      return this.stationLookupService
-        .Search(value)
-        .pipe(map((s) => s.splice(0, 10)))
-        .pipe(tap(() => {
-          ToggleConfig.LoadingBar.next(false); 
-          this.isLoadingStations = false;
-        }))
-        .pipe(catchError((error) => {
-          ToggleConfig.LoadingBar.next(false);
-          this.isLoadingStations = false;
-          throw error;
-        }))
-    })
-  );
 
   getCountryLogo(station: Station): string{
     if(station.country == "GB"){

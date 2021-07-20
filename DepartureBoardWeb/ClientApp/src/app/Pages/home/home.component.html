@@ -1,11 +1,11 @@
-<tui-root>
+<div>
   <article>
     <div class="header">
       <div class="header-background"></div>
       <div class="header-content">
         <h1 class="header-title led">Led Departure Board</h1>
 
-        <form class="search-container" (ngSubmit)="Search()">
+        <!-- <form class="search-container" (ngSubmit)="Search()">
           <tui-input
             class="header-search"
             tuiTextfieldSize="l"
@@ -38,7 +38,7 @@
           <button tuiIconButton type="submit" appearance="secondary">
             <mat-icon>search</mat-icon>
           </button>
-        </form>
+        </form> -->
       </div>
     </div>
 
@@ -63,7 +63,7 @@
       <h2 class="led centre-text">How to Use</h2>
       <p>Learn how to use all the custom features on our document website.</p>
       <a
-        tuiButton
+        mat-button
         href="https://docs.leddepartureboard.com/docs/getting-started/introduction"
         target="_blank"
         >Learn More</a
@@ -76,7 +76,7 @@
       <app-features></app-features>
     </section>
 
-    <section class="autofit-container">
+    <!-- <section class="autofit-container" style="max-width: 1000px;">
       <h2 class="led centre-text">Data Sources</h2>
       <ul class="tui-list tui-list_large">
         <li class="tui-list__item">
@@ -121,7 +121,7 @@
           </div>
         </li>
       </ul>
-    </section>
+    </section> -->
 
     <section class="centre-text">
       <h2 class="led">Project Info</h2>
@@ -158,4 +158,4 @@
   </article>
 
   <app-components-footer></app-components-footer>
-</tui-root>
+</div>

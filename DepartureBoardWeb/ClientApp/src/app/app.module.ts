@@ -51,7 +51,6 @@ import {
   EditCustomDepartureComponent,
 } from "./Components/edit-custom-departure/edit-custom-departure.component";
 import { SplashScreenComponent } from "./Components/splash-screen/splash-screen.component";
-import { TuiModule } from "./external/tui.module";
 import { FeaturesComponent } from './widgets/features/features.component';
 
 const firebaseConfig = {
@@ -101,7 +100,6 @@ const firebaseConfig = {
     AngularFireAuthModule,
     AngularFireStorageModule,
     FlexLayoutModule,
-    TuiModule,
     SettingsModule,
     NotifierModule.withConfig({
       position: {

@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import {
   ActivatedRoute,
@@ -24,16 +24,14 @@ import { environment } from "src/environments/environment";
   styleUrls: ["./singleboard.styling.css"],
 })
 export class SingleBoard implements OnDestroy, OnInit {
-  @Input() stationCode: string;
-  @Input() positionAbsolute: boolean = true;
+  stationCode: string;
   platform: string;
   time = new Date();
   refresher;
   noBoardsDisplay: boolean = false;
-  @Input() showClock: boolean = true;
-  @Input() useArrivals: boolean = false;
-  @Input() showStationName = false;
-  @Input() changeTitle = true;
+  showClock: boolean = true;
+  useArrivals: boolean = false;
+  showStationName = false;
   stationName;
   nextDepartures: Departure[] = [];
 
@@ -60,13 +58,10 @@ export class SingleBoard implements OnDestroy, OnInit {
       this.time = new Date();
     }, 1000);
 
-
-  }
-  ngOnInit(): void {
     const s: UrlSegment[] = this.router.parseUrl(this.router.url).root.children[
       PRIMARY_OUTLET
-    ]?.segments;
-    if (s && s[1].path && s[1].path.toLowerCase() === "arrivals") {
+    ].segments;
+    if (s[1].path && s[1].path.toLowerCase() === "arrivals") {
       this.useArrivals = true;
     }
 
@@ -84,14 +79,9 @@ export class SingleBoard implements OnDestroy, OnInit {
           .toLowerCase() == "true";
     }
 
-    this.route.params.subscribe(() => {
-      this.route.queryParams.subscribe((queryParams) => {
-        this.stationCode = this.route.snapshot.paramMap.get("station") ?? this.stationCode;
-
-        if(!this.stationCode){
-          return;
-        }
-
+    route.params.subscribe(() => {
+      route.queryParams.subscribe((queryParams) => {
+        this.stationCode = this.route.snapshot.paramMap.get("station");
         if (queryParams["platform"]) {
           this.platform = queryParams["platform"];
         } else {
@@ -109,24 +99,17 @@ export class SingleBoard implements OnDestroy, OnInit {
         }
 
         ToggleConfig.LoadingBar.next(true);
-
-        if(this.changeTitle === true){
-          document.title =
+        document.title =
           this.stationCode +
           (this.useArrivals ? " - Arrivals" : " - Departures") +
           " - Departure Board";
-        }
-
         this.stationLookupService
           .GetStationNameFromCode(this.stationCode)
           .subscribe((name) => {
-            if(this.changeTitle === true){
-              document.title =
+            document.title =
               name +
               (this.useArrivals ? " - Arrivals" : " - Departures") +
               " - Departure Board";
-            }
-
             this.stationName = name;
             if (this.platform) {
               this.stationName = `${name} (Platform ${this.platform})`;
@@ -142,8 +125,8 @@ export class SingleBoard implements OnDestroy, OnInit {
         clearTimeout(this.refresher);
       }
     });
-
-
+  }
+  ngOnInit(): void {
     let scrollSpeed =
       localStorage.getItem("settings_singleboard_scrollspeed") ?? 300;
 

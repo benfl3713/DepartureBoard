@@ -1,8 +1,5 @@
 .singleboard {
   width: 100%;
-}
-
-.singleboard-absolute {
   position: absolute;
   top: 50%;
   left: 50%;

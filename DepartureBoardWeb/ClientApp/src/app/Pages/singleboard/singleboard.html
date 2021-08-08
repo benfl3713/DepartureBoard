@@ -25,11 +25,7 @@
     </h1>
   </div>
   <div class="row">
-    <div
-      id="singleboard-information"
-      class="led info col-12"
-      style="height: 48px"
-    ></div>
+    <ng-ticker class="led info col-12" style="height: 48px">{{information}}</ng-ticker>
   </div>
   <app-departure-scroller
     [departures]="nextDepartures"

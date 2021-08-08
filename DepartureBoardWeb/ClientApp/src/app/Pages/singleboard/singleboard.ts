@@ -11,7 +11,6 @@ import {
 import { DatePipe } from "@angular/common";
 import { ToggleConfig } from "../../ToggleConfig";
 import { GoogleAnalyticsEventsService } from "../../Services/google.analytics";
-import { Marquee } from "dynamic-marquee";
 import { DepartureService } from "src/app/Services/departure.service";
 import { StationLookupService } from "src/app/Services/station-lookup.service";
 import { Departure } from "src/app/models/departure.model";
@@ -42,7 +41,7 @@ export class SingleBoard implements OnDestroy, OnInit {
   firstStatus: string = "";
 
   information: string;
-  marquee;
+  scrollSpeed;
   alternateSecondRow: boolean = true;
 
   constructor(
@@ -116,7 +115,7 @@ export class SingleBoard implements OnDestroy, OnInit {
             }
           });
         this.GetDepartures();
-        this.refresher = setInterval(() => this.GetDepartures(), 10000);
+        this.refresher = setInterval(() => this.GetDepartures(), 16000);
       });
     });
 
@@ -127,21 +126,8 @@ export class SingleBoard implements OnDestroy, OnInit {
     });
   }
   ngOnInit(): void {
-    let scrollSpeed =
-      localStorage.getItem("settings_singleboard_scrollspeed") ?? 300;
-
-    this.marquee = new Marquee(
-      document.getElementById("singleboard-information"),
-      {
-        rate: -scrollSpeed,
-      }
-    );
-
-    this.marquee.onAllItemsRemoved(() => {
-      const $item = document.createElement("div");
-      $item.textContent = this.information;
-      this.marquee.appendItem($item);
-    });
+    this.scrollSpeed =
+      (+localStorage.getItem("settings_singleboard_scrollspeed") ?? 300) / 10;
   }
 
   GetDepartures() {
@@ -175,10 +161,6 @@ export class SingleBoard implements OnDestroy, OnInit {
     this.noBoardsDisplay = data.departures.length === 0;
     if (data.information !== this.information) {
       this.information = data.information;
-      this.marquee.clear();
-      const $item = document.createElement("div");
-      $item.textContent = this.information;
-      this.marquee.appendItem($item);
     }
 
     // First

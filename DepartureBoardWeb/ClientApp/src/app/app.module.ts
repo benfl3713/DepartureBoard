@@ -14,6 +14,7 @@ import { AngularFireStorageModule } from "@angular/fire/storage";
 import { AngularFireAuthModule } from "@angular/fire/auth";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { NotifierModule } from "angular-notifier";
+import { NgTickerModule } from 'ng-ticker';
 import { SettingsModule } from "@benfl3713/angular-components";
 
 import { AppComponent } from "./app.component";
@@ -100,6 +101,7 @@ const firebaseConfig = {
     AngularFireAuthModule,
     AngularFireStorageModule,
     FlexLayoutModule,
+    NgTickerModule,
     SettingsModule,
     NotifierModule.withConfig({
       position: {

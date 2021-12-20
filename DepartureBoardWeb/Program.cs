@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace DepartureBoardWeb
@@ -15,7 +11,10 @@ namespace DepartureBoardWeb
 		public static int Main(string[] args)
 		{
 			try
-			{
+            {
+                if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DEPARTUREBOARD_API_ONLY")))
+                    Startup.IsLambda = bool.Parse(Environment.GetEnvironmentVariable("DEPARTUREBOARD_API_ONLY") ?? "false");
+
 				CreateHostBuilder(args).Build().Run();
 				return 0;
 			}

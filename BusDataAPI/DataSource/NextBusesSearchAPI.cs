@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 
 namespace BusDataAPI.DataSource
 {
@@ -20,7 +18,7 @@ namespace BusDataAPI.DataSource
 		private List<BusDeparture> ParseHtmlPage(string htmlResponse)
 		{
 			List<BusDeparture> busDepartures = new List<BusDeparture>();
-			try { 
+			try {
 				HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
 				// There are various options, set as needed
 				htmlDoc.OptionFixNestedTags = true;
@@ -66,7 +64,7 @@ namespace BusDataAPI.DataSource
 						}
 					}
 				}
-				
+
 			}
 			catch (Exception ex)
 			{

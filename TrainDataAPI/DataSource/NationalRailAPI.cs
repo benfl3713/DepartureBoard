@@ -2,89 +2,101 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DepartureBoardCore;
-using NationalRailService;
+using NationalRailDarwin;
+using StationBoard2 = NationalRailDarwin.StationBoard2;
 
 namespace TrainDataAPI
 {
     public class NationalRailAPI : ITrainDatasource
     {
-        private AccessToken AccessToken = new AccessToken() { TokenValue = ConfigService.NationalRail_AccessToken};
-        private LDBServiceSoapClient client = new LDBServiceSoapClient(LDBServiceSoapClient.EndpointConfiguration.LDBServiceSoap);
-        public List<Departure> GetLiveArrivals(string stationCode, string platform, int count)
+        private const int MAX_TIME_WINDOW = 1440;
+
+        private readonly AccessToken _accessToken = new AccessToken { TokenValue = ConfigService.NationalRail_AccessToken};
+        private readonly LDBSVServiceSoapClient _client = new LDBSVServiceSoapClient(LDBSVServiceSoapClient.EndpointConfiguration.LDBSVServiceSoap);
+        public List<Departure> GetLiveArrivals(LiveDeparturesRequest request)
         {
-            GetArrivalBoardResponse arrivalsResponse = client.GetArrivalBoardAsync(AccessToken, ushort.Parse(count.ToString()), stationCode, null, FilterType.to, 0, 1440).Result;
-            List<Departure> departures = DeserialiseDepartures(arrivalsResponse.GetStationBoardResult);
+            // If a platform is specified then we can't limit the request count before we then apply the platform filter
+            ushort numRows = string.IsNullOrEmpty(request.platform)
+                ? ushort.Parse(request.count.ToString())
+                : (ushort)150;
 
-            if (!string.IsNullOrEmpty(platform))
-	            departures = departures.Where(d => d.Platform == platform).ToList();
+            StationBoard2 arrivalsResponse = _client.GetArrivalBoardByCRS(_accessToken, numRows,
+                request.stationCode, DateTime.Now, MAX_TIME_WINDOW, null, FilterType.to, null, null,
+                request.includeNonPassenger);
 
-            return departures.Take(count).ToList();
+            List<Departure> departures = DeserialiseDepartures(arrivalsResponse);
+
+            if (!string.IsNullOrEmpty(request.platform))
+	            departures = departures.Where(d => d.Platform == request.platform).ToList();
+
+            return departures.Take(request.count).ToList();
         }
 
-        public List<Departure> GetLiveDepartures(string stationCode, string platform, int count)
+        public List<Departure> GetLiveDepartures(LiveDeparturesRequest request)
         {
-            GetDepartureBoardResponse departuresResponse = client.GetDepartureBoardAsync(AccessToken, ushort.Parse(count.ToString()), stationCode, null, FilterType.to, 0, 1440).Result;
+            // If a platform is specified then we can't limit the request count before we then apply the platform filter
+            ushort numRows = string.IsNullOrEmpty(request.platform)
+                ? ushort.Parse(request.count.ToString())
+                : (ushort)150;
 
-            List<Departure> departures = DeserialiseDepartures(departuresResponse.GetStationBoardResult);
+            StationBoard2 departuresResponse = _client.GetDepartureBoardByCRS(_accessToken, numRows,
+                request.stationCode, DateTime.Now, MAX_TIME_WINDOW, null, FilterType.to, null, null,
+                request.includeNonPassenger);
 
-            if (!string.IsNullOrEmpty(platform))
-	            departures = departures.Where(d => d.Platform == platform).ToList();
+            List<Departure> departures = DeserialiseDepartures(departuresResponse);
 
-            return departures.Take(count).ToList();
+            if (!string.IsNullOrEmpty(request.platform))
+	            departures = departures.Where(d => d.Platform == request.platform).ToList();
+
+            return departures.Take(request.count).ToList();
         }
 
-        private List<Departure> DeserialiseDepartures(StationBoard departuresResponse){
-            List<Departure> departures = new List<Departure>();
-            DateTime generated = departuresResponse.generatedAt;
-            foreach (ServiceItem2 departure in departuresResponse.trainServices)
-            {
-                Departure.ServiceStatus status = Departure.ServiceStatus.ONTIME;
-                DateTime.TryParse(departure.std ?? departure.sta, out DateTime std);
-                DateTime scheduledDeparture = new DateTime(generated.Year, generated.Month, generated.Day, std.Hour, std.Minute, std.Second);
-                DateTime expectedDeparture = scheduledDeparture;
-                if (DateTime.TryParse(departure.etd ?? departure.eta, out DateTime etd))
-                {
-                    expectedDeparture = new DateTime(generated.Year, generated.Month, generated.Day, etd.Hour, etd.Minute, etd.Second);
-                    status = Departure.ServiceStatus.LATE;
-                }
+        private List<Departure> DeserialiseDepartures(StationBoard2 departuresResponse)
+        {
+	        List<Departure> departures = new List<Departure>();
+	        DateTime generated = departuresResponse.generatedAt;
+	        foreach (ServiceItem2 departure in departuresResponse.trainServices)
+	        {
+		        DateTime scheduledDeparture = new DateTime(generated.Year, generated.Month, generated.Day, departure.std.Hour, departure.std.Minute, departure.std.Second);
+		        DateTime expectedDeparture = new DateTime(generated.Year, generated.Month, generated.Day, departure.etd.Hour, departure.etd.Minute, departure.etd.Second);
+		        Departure.ServiceStatus status = departure.std == departure.etd ? Departure.ServiceStatus.ONTIME : Departure.ServiceStatus.LATE;
 
+		        if (departure.isCancelled)
+			        status = Departure.ServiceStatus.CANCELLED;
 
+		        departures.Add(new Departure(departuresResponse.locationName,
+			        departuresResponse.crs,
+			        departure.platform,
+			        departure.@operator,
+			        scheduledDeparture,
+			        expectedDeparture,
+			        departure.destination[0].locationName,
+			        status,
+			        departure.origin[0].locationName,
+			        departuresResponse.generatedAt,
+			        departure.rid,
+			        GetType(),
+			        Convert.ToInt32(departure.length)));
+	        }
 
-                if (departure.isCancelled)
-                    status = Departure.ServiceStatus.CANCELLED;
-
-                departures.Add(new Departure(departuresResponse.locationName,
-                    departuresResponse.crs,
-                    departure.platform,
-                    departure.@operator,
-                    scheduledDeparture,
-                    expectedDeparture,
-                    departure.destination[0].locationName,
-                    status,
-                    departure.origin[0].locationName,
-                    departuresResponse.generatedAt,
-                    departure.serviceID,
-                    GetType(),
-                    Convert.ToInt32(departure.length)));
-            }
-            return departures;
+	        return departures;
         }
 
-        public List<StationStop> GetStationStops(string url)
+        public List<StationStop> GetStationStops(string rid, LiveDeparturesRequest request)
         {
             List<StationStop> stops = new List<StationStop>();
             try
             {
-                GetServiceDetailsResponse stopsResponse = client.GetServiceDetailsAsync(AccessToken, url).Result;
-                DateTime generated = stopsResponse.GetServiceDetailsResult.generatedAt;
-                foreach(CallingPoint1 stop in stopsResponse.GetServiceDetailsResult.subsequentCallingPoints[0].callingPoint)
+                ServiceDetails1 stopsResponse = _client.GetServiceDetailsByRID(_accessToken, rid);
+                foreach(ServiceLocation1 stop in stopsResponse.locations)
                 {
-                    DateTime st = DateTime.Parse(stop.st);
-                    DateTime scheduledDeparture = new DateTime(generated.Year, generated.Month, generated.Day, st.Hour, st.Minute, st.Second);
-                    DateTime expectedDeparture = scheduledDeparture;
-                    if (DateTime.TryParse(stop.et, out DateTime etd))
-                        expectedDeparture = new DateTime(generated.Year, generated.Month, generated.Day, etd.Hour, etd.Minute, etd.Second);
-                    stops.Add(new StationStop(stop.crs, stop.locationName, null, scheduledDeparture, expectedDeparture));
+                    DateTime scheduledDeparture = stop.std;
+                    DateTime expectedDeparture = stop.etdSpecified ? stop.etd : scheduledDeparture;
+
+                    if (stop.isPass && !request.includeNonPassenger)
+                        continue;
+
+                    stops.Add(new StationStop(stop.crs, stop.locationName, stop.platform, scheduledDeparture, expectedDeparture));
                 }
                 return stops;
             }

@@ -20,20 +20,20 @@ namespace DepartureBoardWeb.Controllers
         }
 
         [HttpGet("[action]")]
-        public List<BusDeparture> GetBusLiveDepartures(string atco, int? count)
+        public List<BusDeparture> GetBusLiveDepartures(string code, int? count)
         {
-            var cacheEntry = _cache.GetOrCreate($"{atco}_{count}", entry =>
+            var cacheEntry = _cache.GetOrCreate($"{code}_{count}", entry =>
             {
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30);
-                return GetBusDepartures(atco, count);
+                return GetBusDepartures(code, count);
             });
             return cacheEntry;
         }
 
-        private List<BusDeparture> GetBusDepartures(string atco, int? count)
+        private List<BusDeparture> GetBusDepartures(string code, int? count)
         {
-            IBusDatasource busDatasource = new NextBusesSearchAPI();
-            var departures = busDatasource.GetLiveDepartures(atco);
+            IBusDatasource busDatasource = new TflAPI();
+            var departures = busDatasource.GetLiveDepartures(code);
             if (count.HasValue)
                 return departures.Take(count.Value).ToList();
             return departures;

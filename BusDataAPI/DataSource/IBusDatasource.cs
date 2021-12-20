@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace BusDataAPI.DataSource
 {
 	public interface IBusDatasource
 	{
-		List<BusDeparture> GetLiveDepartures(string atcoCode);
+		List<BusDeparture> GetLiveDepartures(string code);
 	}
 }

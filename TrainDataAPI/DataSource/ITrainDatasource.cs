@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace TrainDataAPI
+namespace TrainDataAPI;
+
+public interface ITrainDatasource
 {
-    public interface ITrainDatasource
-    {
-        List<Departure> GetLiveDepartures(string stationCode, string platform, int count);
-        List<Departure> GetLiveArrivals(string stationCode, string platform, int count);
-        List<StationStop> GetStationStops(string url);
-    }
+	List<Departure> GetLiveDepartures(LiveDeparturesRequest request);
+	List<Departure> GetLiveArrivals(LiveDeparturesRequest request);
+	List<StationStop> GetStationStops(string serviceIdentifier, LiveDeparturesRequest request);
 }
+
+public record LiveDeparturesRequest(string stationCode, string platform, int count, bool includeNonPassenger = false);

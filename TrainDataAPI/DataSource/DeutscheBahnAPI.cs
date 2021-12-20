@@ -7,16 +7,15 @@ using System.Threading.Tasks;
 using System.Web;
 using DepartureBoardCore;
 using Newtonsoft.Json;
-using RestSharp;
 
 namespace TrainDataAPI
 {
     public class DeutscheBahnAPI : ITrainDatasource
     {
-        public List<Departure> GetLiveDepartures(string stationCode, string platform, int count)
+        public List<Departure> GetLiveDepartures(LiveDeparturesRequest request)
         {
             List<Departure> departures = new List<Departure>();
-            HttpResponseMessage response = SendFahrplanRequest("departureBoard", stationCode, DateTime.Now);
+            HttpResponseMessage response = SendFahrplanRequest("departureBoard", request.stationCode, DateTime.Now);
             if (response.StatusCode != HttpStatusCode.OK)
                 return departures;
 
@@ -26,25 +25,25 @@ namespace TrainDataAPI
             {
                 if (board.dateTime < DateTime.Now)
                     return;
-                board.stopCode = stationCode;
+                board.stopCode = request.stationCode;
                 Departure d = GetDepartureFromDBBoard(board);
                 if (d != null)
                     departures.Add(d);
             });
 
 
-            if (!string.IsNullOrEmpty(platform))
-	            departures = departures.Where(d => d.Platform == platform).ToList();
+            if (!string.IsNullOrEmpty(request.platform))
+	            departures = departures.Where(d => d.Platform == request.platform).ToList();
 
-            return departures.OrderBy(d => d.AimedDeparture).Take(count).ToList();
+            return departures.OrderBy(d => d.AimedDeparture).Take(request.count).ToList();
         }
 
-        public List<Departure> GetLiveArrivals(string stationCode, string platform, int count)
+        public List<Departure> GetLiveArrivals(LiveDeparturesRequest request)
         {
             throw new System.NotImplementedException();
         }
 
-        public List<StationStop> GetStationStops(string detailsId)
+        public List<StationStop> GetStationStops(string detailsId, LiveDeparturesRequest request)
         {
             return null;
         }

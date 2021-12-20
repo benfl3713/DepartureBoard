@@ -1,0 +1,37 @@
+﻿{
+  "ProviderId": "Microsoft.VisualStudio.ConnectedService.Wcf",
+  "Version": "15.0.40203.910",
+  "GettingStartedDocument": {
+    "Uri": "https://go.microsoft.com/fwlink/?linkid=858517"
+  },
+  "ExtendedData": {
+    "inputs": [
+      "https://lite.realtime.nationalrail.co.uk/OpenLDBSVWS/wsdl.aspx?ver=2017-10-01"
+    ],
+    "collectionTypes": [
+      "System.Collections.Generic.Dictionary`2",
+      "System.Collections.Generic.List`1"
+    ],
+    "namespaceMappings": [
+      "*, NationalRailDarwin"
+    ],
+    "references": [
+      "Apache.NMS, {Apache.NMS, 1.8.0}",
+      "Apache.NMS.ActiveMQ, {Apache.NMS.ActiveMQ, 1.8.0}",
+      "C:\\Users\\buses\\Documents\\Programing\\DepartureBoard\\TrainDataAPI\\bin\\Debug\\netcoreapp3.1\\DepartureBoardCore.dll",
+      "Newtonsoft.Json, {Newtonsoft.Json, 12.0.3}",
+      "RestSharp, {RestSharp, 106.10.1}",
+      "Serilog, {Serilog, 2.10.0}",
+      "System.Runtime, {System.Runtime, 4.3.1}",
+      "System.ServiceModel, {System.ServiceModel.Primitives, 4.4.4}",
+      "System.ServiceModel.Duplex, {System.ServiceModel.Duplex, 4.4.4}",
+      "System.ServiceModel.Http, {System.ServiceModel.Http, 4.4.4}",
+      "System.ServiceModel.NetTcp, {System.ServiceModel.NetTcp, 4.4.4}",
+      "System.ServiceModel.Primitives, {System.ServiceModel.Primitives, 4.4.4}",
+      "System.ServiceModel.Security, {System.ServiceModel.Security, 4.4.4}"
+    ],
+    "sync": true,
+    "targetFramework": "netcoreapp3.1",
+    "typeReuseMode": "All"
+  }
+}

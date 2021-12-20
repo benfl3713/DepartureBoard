@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using DepartureBoardCore;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using RestSharp;
 
 namespace TrainDataAPI
@@ -12,11 +11,11 @@ namespace TrainDataAPI
     {
         private static List<CacheDeparture> cachedDepartures = new List<CacheDeparture>();
 
-        public List<Departure> GetLiveDepartures(string stationCode, string platform, int count)
+        public List<Departure> GetLiveDepartures(LiveDeparturesRequest request)
         {
             if (ConfigService.UseCaching && ConfigService.CachePeriod > 0)
             {
-                List<CacheDeparture> result = cachedDepartures.Where(d => d.StationCode == stationCode && d.CachedDateTime > DateTime.Now.AddMilliseconds(-ConfigService.CachePeriod)).ToList();
+                List<CacheDeparture> result = cachedDepartures.Where(d => d.StationCode == request.stationCode && d.CachedDateTime > DateTime.Now.AddMilliseconds(-ConfigService.CachePeriod)).ToList();
                 if (result.Count > 0)
                 {
                     var cache = result[0].Departures;
@@ -25,25 +24,25 @@ namespace TrainDataAPI
                 }
             }
 
-            List<Departure> departures = GetDepartures(stationCode, count, platform);
+            List<Departure> departures = GetDepartures(request.stationCode, request.count, request.platform);
 
             if (ConfigService.UseCaching && ConfigService.CachePeriod > 0)
             {
-                List<CacheDeparture> oldCache = cachedDepartures.Where(d => d.StationCode == stationCode).ToList();
+                List<CacheDeparture> oldCache = cachedDepartures.Where(d => d.StationCode == request.stationCode).ToList();
                 if (oldCache.Count > 0)
                     cachedDepartures.Remove(oldCache[0]);
-                cachedDepartures.Add(new CacheDeparture(stationCode, departures));
+                cachedDepartures.Add(new CacheDeparture(request.stationCode, departures));
             }
 
             return departures;
         }
 
-        public List<Departure> GetLiveArrivals(string stationCode, string platform, int count)
+        public List<Departure> GetLiveArrivals(LiveDeparturesRequest request)
         {
-            return GetDepartures(stationCode, count, platform, true);
+            return GetDepartures(request.stationCode, request.count, request.platform, true);
         }
 
-        public List<StationStop> GetStationStops(string url)
+        public List<StationStop> GetStationStops(string url, LiveDeparturesRequest apiRequest)
         {
             try
             {

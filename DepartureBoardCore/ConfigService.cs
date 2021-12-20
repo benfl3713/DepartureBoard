@@ -114,6 +114,16 @@ namespace DepartureBoardCore
                 return _prometheusPort;
             }
         }
+
+        public static string TflApiToken
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_tflApiToken))
+                    LoadConfig();
+                return _tflApiToken;
+            }
+        }
         #endregion
 
         private static string _realTimeTrainsToken;
@@ -127,6 +137,7 @@ namespace DepartureBoardCore
         private static string _transportApi_app_key;
         private static string _deutscheBahnToken;
         private static int? _prometheusPort;
+        private static string _tflApiToken;
 
         private static void LoadConfig()
         {
@@ -136,7 +147,7 @@ namespace DepartureBoardCore
                 var rootElement = XElement.Parse(File.ReadAllText("config.xml"));
                 if(rootElement == null)
                     return;
-                
+
                 _realTimeTrainsToken = rootElement.Element("RealTimeTrainsToken")?.Value;
                 _useAnalytics = bool.Parse(rootElement.Element("UseAnalytics")?.Value ?? "false");
                 _nationalRail_Username = rootElement.Element("NationalRail")?.Element("username")?.Value;
@@ -147,6 +158,7 @@ namespace DepartureBoardCore
                 _transportApi_app_id = rootElement.Element("TransportAPI")?.Element("app_id")?.Value;
                 _transportApi_app_key = rootElement.Element("TransportAPI")?.Element("app_key")?.Value;
                 _deutscheBahnToken = rootElement.Element("DeutscheBahnToken")?.Value;
+                _tflApiToken = rootElement.Element("TflApiToken")?.Value;
                 if (!string.IsNullOrEmpty(rootElement.Element("PrometheusPort")?.Value) && int.TryParse(rootElement.Element("PrometheusPort")?.Value, out int port))
                     _prometheusPort = port;
                 if (_realTimeTrainsToken == "[INSERT_REALTIMETRAINS_TOKEN_HERE]"){
@@ -155,7 +167,6 @@ namespace DepartureBoardCore
                 }
 
                 CheckEnviornmentVariableConfig();
-                return;
             }
             catch(Exception e){
                 CheckEnviornmentVariableConfig();
@@ -191,6 +202,9 @@ namespace DepartureBoardCore
 
                 if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DeutscheBahnToken")))
                     _deutscheBahnToken = Environment.GetEnvironmentVariable("DeutscheBahnToken");
+
+                if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TflApiToken")))
+                    _tflApiToken = Environment.GetEnvironmentVariable("TflApiToken");
 
                 if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("PrometheusPort")) && int.TryParse(Environment.GetEnvironmentVariable("PrometheusPort"), out int port))
                     _prometheusPort = port;

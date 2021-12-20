@@ -41,7 +41,7 @@ There is also a docker-compose file in this repository that will make it easier 
 
 1. Make sure you have the following installed on your machine
    -  [node.js](https://nodejs.org/en/download/)
-   -  [dotnet 6.0 sdk](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+   -  [dotnet core 3.1 sdk](https://dotnet.microsoft.com/download/dotnet/3.1)
 
 2. Clone this repository locally
     ```bash

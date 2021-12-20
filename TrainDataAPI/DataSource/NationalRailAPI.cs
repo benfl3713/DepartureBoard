@@ -54,11 +54,10 @@ namespace TrainDataAPI
         private List<Departure> DeserialiseDepartures(StationBoard2 departuresResponse)
         {
 	        List<Departure> departures = new List<Departure>();
-	        DateTime generated = departuresResponse.generatedAt;
-	        foreach (ServiceItem2 departure in departuresResponse.trainServices)
-	        {
-		        DateTime scheduledDeparture = new DateTime(generated.Year, generated.Month, generated.Day, departure.std.Hour, departure.std.Minute, departure.std.Second);
-		        DateTime expectedDeparture = new DateTime(generated.Year, generated.Month, generated.Day, departure.etd.Hour, departure.etd.Minute, departure.etd.Second);
+            foreach (ServiceItem2 departure in departuresResponse.trainServices)
+            {
+                DateTime scheduledDeparture = departure.std;
+                DateTime expectedDeparture = departure.etd;
 		        Departure.ServiceStatus status = departure.std == departure.etd ? Departure.ServiceStatus.ONTIME : Departure.ServiceStatus.LATE;
 
 		        if (departure.isCancelled)
@@ -87,10 +86,20 @@ namespace TrainDataAPI
             List<StationStop> stops = new List<StationStop>();
             try
             {
+                bool foundCurrentStop = false;
                 ServiceDetails1 stopsResponse = _client.GetServiceDetailsByRID(_accessToken, rid);
                 foreach(ServiceLocation1 stop in stopsResponse.locations)
                 {
-                    DateTime scheduledDeparture = stop.std;
+                    if (String.Equals(stop.crs, request.stationCode, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        foundCurrentStop = true;
+                        continue;
+                    }
+
+                    if (!foundCurrentStop)
+                        continue;
+
+                    DateTime scheduledDeparture = stop.stdSpecified ? stop.std : stop.sta;
                     DateTime expectedDeparture = stop.etdSpecified ? stop.etd : scheduledDeparture;
 
                     if (stop.isPass && !request.includeNonPassenger)

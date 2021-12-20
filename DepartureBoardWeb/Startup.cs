@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using AspNetCoreRateLimit;
 using DepartureBoardCore;
 using Microsoft.AspNetCore.Builder;

@@ -72,6 +72,9 @@ namespace DepartureBoardWeb.Controllers
         {
 	        (string stationCode, int count, string platform, string dataSource, bool includeNonPassengerServices) = request;
 
+            if (count == 0)
+                count = 6;
+
 	        stationCode = stationCode?.ToUpper();
 	        Serilog.Log.Information("GetLiveDepartureData: Loading {count} {arrivals} displays for StationCode {stationCode} ({stationName}). Using datasource {datasource}",
 	            count, arrivals ? "arrival" : "departure", stationCode, _stationLookup?.GetStationFromCode(stationCode)?.Name, dataSource);

@@ -1,5 +1,5 @@
 # Setup Environment
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
 	&& apt update \
 	&& apt install -y nodejs
@@ -19,12 +19,12 @@ RUN npm install
 
 # Copy everything else and build
 WORKDIR /app/DepartureBoardWeb/
-RUN dotnet publish -c Release -o /app/DepartureBoardWeb/deploy
+RUN dotnet publish -c Release -p:PublishReadyToRun=true -o /app/DepartureBoardWeb/deploy
 #Creates config file
 RUN echo "<Config><RealTimeTrainsToken>$RTT_Token</RealTimeTrainsToken></Config>" > /app/DepartureBoardWeb/deploy/config.xml
 
 # Generate runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:6.0
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 COPY --from=build-env /app/DepartureBoardWeb/deploy .
 EXPOSE 80
 ENTRYPOINT ["dotnet", "DepartureBoardWeb.dll"]

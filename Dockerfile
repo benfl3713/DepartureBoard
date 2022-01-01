@@ -19,7 +19,7 @@ RUN npm install
 
 # Copy everything else and build
 WORKDIR /app/DepartureBoardWeb/
-RUN dotnet publish -c Release -p:PublishReadyToRun=true -o /app/DepartureBoardWeb/deploy
+RUN dotnet publish -c Release -o /app/DepartureBoardWeb/deploy
 #Creates config file
 RUN echo "<Config><RealTimeTrainsToken>$RTT_Token</RealTimeTrainsToken></Config>" > /app/DepartureBoardWeb/deploy/config.xml
 

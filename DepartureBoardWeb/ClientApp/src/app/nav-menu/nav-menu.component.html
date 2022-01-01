@@ -45,6 +45,11 @@
               ><span class="fas fa-chalkboard"></span> Custom Departures</a
             >
           </li>
+          <li class="nav-item" [routerLinkActive]="['page-selected']" *ngIf="isBetaEnabled">
+            <a class="nav-link text-light" [routerLink]="['/buses']"
+              ><span class="fas fa-bus"></span> Buses</a
+            >
+          </li>
           <li class="nav-item" [routerLinkActive]="['page-selected']">
             <a class="nav-link text-light" [routerLink]="['/about']"
               ><span class="fas fa-info"></span> About</a
@@ -146,6 +151,15 @@
           [routerLinkActive]="['link-active']"
           (click)="PageChanged()"
           ><span class="fas fa-chalkboard"></span> Custom Departures</a
+        >
+        <a
+          *ngIf="isBetaEnabled"
+          mat-list-item
+          class="menu-item"
+          [routerLink]="['/buses']"
+          [routerLinkActive]="['link-active']"
+          (click)="PageChanged()"
+          ><span class="fas fa-bus"></span> Buses</a
         >
         <a
           mat-list-item

@@ -5,6 +5,7 @@ using Serilog;
 
 namespace DepartureBoardWeb
 {
+	// ReSharper disable once UnusedType.Global
 	public class LambdaEntryPoint : APIGatewayProxyFunction
 	{
 		protected override void Init(IWebHostBuilder builder)

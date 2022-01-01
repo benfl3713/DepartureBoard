@@ -22,6 +22,7 @@ import { Observable } from "rxjs";
 })
 export class NavMenuComponent {
   showHome: boolean = true;
+  isBetaEnabled = localStorage.getItem("settings_general_betaFeatures") === "true";
   timer;
   fixedMenuPages: Array<string> = [
     "/",

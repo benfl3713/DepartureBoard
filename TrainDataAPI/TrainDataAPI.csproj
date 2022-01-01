@@ -1,38 +1,38 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Apache.NMS.ActiveMQ" Version="1.8.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="RestSharp" Version="106.10.1" />
-    <PackageReference Include="Serilog" Version="2.10.0" />
-    <PackageReference Include="System.ServiceModel.Duplex" Version="4.4.*" />
-    <PackageReference Include="System.ServiceModel.Http" Version="4.4.*" />
-    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.4.*" />
-    <PackageReference Include="System.ServiceModel.Security" Version="4.4.*" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Apache.NMS.ActiveMQ" Version="1.8.0"/>
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.3"/>
+        <PackageReference Include="RestSharp" Version="106.10.1"/>
+        <PackageReference Include="Serilog" Version="2.10.0"/>
+        <PackageReference Include="System.ServiceModel.Duplex" Version="4.4.*"/>
+        <PackageReference Include="System.ServiceModel.Http" Version="4.4.*"/>
+        <PackageReference Include="System.ServiceModel.NetTcp" Version="4.4.*"/>
+        <PackageReference Include="System.ServiceModel.Security" Version="4.4.*"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\DepartureBoardCore\DepartureBoardCore.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\DepartureBoardCore\DepartureBoardCore.csproj"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\newtonsoft.json\11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+    <ItemGroup>
+        <Reference Include="Newtonsoft.Json">
+            <HintPath>..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\newtonsoft.json\11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
+        </Reference>
+    </ItemGroup>
 
-  <ItemGroup>
-    <None Update="config.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+    <ItemGroup>
+        <None Update="config.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services" />
-  </ItemGroup>
+    <ItemGroup>
+        <WCFMetadata Include="Connected Services"/>
+    </ItemGroup>
 
 </Project>

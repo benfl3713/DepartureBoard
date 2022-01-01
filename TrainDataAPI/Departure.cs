@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Text.Json.Serialization;
 
 namespace TrainDataAPI
@@ -52,10 +51,10 @@ namespace TrainDataAPI
             Length = length;
         }
 
-        public void LoadStops()
+        public void LoadStops(LiveDeparturesRequest request)
         {
             if (FromDataSouce != null && !string.IsNullOrEmpty(ServiceTimeTableUrl) && Activator.CreateInstance(FromDataSouce) is ITrainDatasource trainDatasource) {
-                _stops = trainDatasource.GetStationStops(ServiceTimeTableUrl);
+                _stops = trainDatasource.GetStationStops(ServiceTimeTableUrl, request);
             }
         }
 
@@ -87,7 +86,7 @@ namespace TrainDataAPI
             ExtraDetails ??= new Dictionary<string, object>();
             return ExtraDetails.TryAdd(key, value);
         }
-        
+
 
         public enum ServiceStatus
         {

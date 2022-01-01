@@ -1,3 +1,4 @@
+using AspNetCoreRateLimit;
 using DepartureBoardCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -70,7 +71,13 @@ namespace DepartureBoardWeb
 			services.AddMemoryCache();
 			services.AddResponseCaching();
 
-			// services.AddSingleton(new TrainDataAPI.DarwinPushPortAPI());
+            services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting"));
+            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+            services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+            services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+
+            // services.AddSingleton(new TrainDataAPI.DarwinPushPortAPI());
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -119,6 +126,8 @@ namespace DepartureBoardWeb
 					name: "default",
 					pattern: "{controller}/{action=Index}/{id?}");
 			});
+
+            app.UseIpRateLimiting();
 
 			if (!IsLambda)
 			{

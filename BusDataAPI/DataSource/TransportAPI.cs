@@ -4,7 +4,6 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace BusDataAPI.DataSource
 {
@@ -43,7 +42,7 @@ namespace BusDataAPI.DataSource
 						var date = departure["date"] ?? DateTime.Today.ToString("yyyy-MM-dd");
 						DateTime.TryParse($"{date} {departure["aimed_departure_time"]}", out DateTime aimedDeparture);
 
-						DateTime expectedDeparture = aimedDeparture;						
+						DateTime expectedDeparture = aimedDeparture;
 						if(departure["expected_departure_date"].HasValues && departure["expected_departure_time"].HasValues)
 						{
 							DateTime.TryParse($"{departure["expected_departure_date"]} {departure["expected_departure_time"]}", out expectedDeparture);

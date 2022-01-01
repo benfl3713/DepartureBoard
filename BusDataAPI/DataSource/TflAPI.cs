@@ -11,7 +11,7 @@ namespace BusDataAPI.DataSource
     public class TflAPI : IBusDatasource
     {
         private readonly RestClient _client = new RestClient("https://api.tfl.gov.uk");
-        private static string AppKey => ConfigService.DeutscheBahnToken;
+        private static string AppKey => ConfigService.TflApiToken;
 
         public List<BusDeparture> GetLiveDepartures(string atocCode)
         {

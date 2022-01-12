@@ -19,22 +19,22 @@ namespace DepartureBoardWeb.Controllers
 	    }
 
         [HttpGet]
-        public JsonResult GetLatestDepaturesSingleBoard([Required] string stationCode, string platform = null, string dataSource = null, int count = 3)
+        public JsonResult GetLatestDepaturesSingleBoard([Required] string stationCode, string platform = null, string dataSource = null, int count = 3, bool includeNonPassengerServices = false)
         {
-            return Json(GetSingleBoardData(false, stationCode, platform, dataSource, count));
+            return Json(GetSingleBoardData(false, stationCode, platform, dataSource, count, includeNonPassengerServices));
         }
 
         [HttpGet]
-        public JsonResult GetLatestArrivalsSingleBoard([Required] string stationCode, string platform = null, string dataSource = null, int count = 3)
+        public JsonResult GetLatestArrivalsSingleBoard([Required] string stationCode, string platform = null, string dataSource = null, int count = 3, bool includeNonPassengerServices = false)
         {
-            return Json(GetSingleBoardData(true, stationCode, platform, dataSource, count));
+            return Json(GetSingleBoardData(true, stationCode, platform, dataSource, count, includeNonPassengerServices));
         }
 
-        private SingleBoardData GetSingleBoardData(bool arrivals, string stationCode, string platform, string dataSource, int count)
+        private SingleBoardData GetSingleBoardData(bool arrivals, string stationCode, string platform, string dataSource, int count, bool includeNonPassengerServices)
         {
             stationCode = stationCode.ToUpper();
             ITrainDatasource trainDatasource = GetDatasource(dataSource);
-            LiveDeparturesRequest liveDeparturesRequest = new LiveDeparturesRequest(stationCode, platform, count);
+            LiveDeparturesRequest liveDeparturesRequest = new LiveDeparturesRequest(stationCode, platform, count, includeNonPassengerServices);
             List<Departure> departures = arrivals
                 ? trainDatasource.GetLiveArrivals(liveDeparturesRequest)
                 : trainDatasource.GetLiveDepartures(liveDeparturesRequest);
@@ -131,7 +131,7 @@ namespace DepartureBoardWeb.Controllers
                     information = "Calling at ";
                     foundFirst = true;
                 }
-                else if (stop.StationCode.ToUpper() == departure.StationCode.ToUpper() && !foundFirst)
+                else if (stop.StationCode?.ToUpper() == departure.StationCode?.ToUpper() && !foundFirst)
                 {
                     foundFirst = true;
                     information = "Calling at ";
@@ -139,7 +139,7 @@ namespace DepartureBoardWeb.Controllers
                 }
                 if (!foundFirst)
                     continue;
-                information += $"{stop.StationName} ({stop.AimedDeparture.ToString("HH:mm")})       ";
+                information += $"{stop.StationName} ({stop.AimedDeparture:HH:mm})       ";
             }
             if (information == "Calling at ")
                 information = "";

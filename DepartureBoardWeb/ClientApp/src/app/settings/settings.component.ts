@@ -1,10 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { FormGroup, FormControl } from "@angular/forms";
 import { ThemeService } from "../Services/ThemeService";
 import { GoogleAnalyticsEventsService } from "../Services/google.analytics";
 import { NotifierService } from "angular-notifier";
 import { GlobalEvents } from "../GlobalEvents";
-import { CookieService } from "ngx-cookie-service";
 
 @Component({
   selector: "app-component-settings",
@@ -17,8 +16,7 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     public googleAnalyticsEventsService: GoogleAnalyticsEventsService,
-    private notifierService: NotifierService,
-    private cookieService: CookieService
+    private notifierService: NotifierService
   ) {
     document.title = "Settings - Departure Board";
   }
@@ -33,6 +31,7 @@ export class SettingsComponent implements OnInit {
     general_mainColour: new FormControl("#ff9729"),
     general_backgroundColour: new FormControl("black"),
     general_dataSource: new FormControl("REALTIMETRAINS"),
+    general_includeNonPassengerServices: new FormControl(false),
     general_betaFeatures: new FormControl(false),
 
     singleboard_showStationName: new FormControl(false),
@@ -82,6 +81,7 @@ export class SettingsComponent implements OnInit {
       general_mainColour: "#ff9729",
       general_backgroundColour: "black",
       general_dataSource: "REALTIMETRAINS",
+      general_includeNonPassengerServices: false,
       general_betaFeatures: false,
       singleboard_showStationName: false,
       singleboard_alternateSecondRow: true,
@@ -93,14 +93,5 @@ export class SettingsComponent implements OnInit {
     this.Save(false);
     this.Load();
     this.googleAnalyticsEventsService.emitEvent("Settings", "ResetAll");
-  }
-
-  SetFormValue(key: string, value) {
-    this.settingsForm.controls[key].setValue(value);
-  }
-
-  changeCookies() {
-    this.cookieService.delete("CookieScriptConsent");
-    window.location.reload();
   }
 }

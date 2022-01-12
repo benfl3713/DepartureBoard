@@ -1,4 +1,9 @@
-import { AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component } from "@angular/core";
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+} from "@angular/core";
 import {
   Router,
   NavigationEnd,
@@ -38,7 +43,7 @@ export class AppComponent implements AfterViewChecked {
     route: ActivatedRoute,
     cookieService: CookieService,
     private http: HttpClient,
-    private changeDetector : ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef
   ) {
     ThemeService.LoadTheme();
     this.router.events.subscribe((event) => {
@@ -93,18 +98,48 @@ export class AppComponent implements AfterViewChecked {
   }
 
   ngAfterViewChecked() {
-    ToggleConfig.LoadingBar.subscribe(
-      (isvisible) => {
-        this.LoadingBar = isvisible;
-        this.changeDetector.detectChanges();
-      }
-    );
+    ToggleConfig.LoadingBar.subscribe((isvisible) => {
+      this.LoadingBar = isvisible;
+      this.changeDetector.detectChanges();
+    });
   }
 
   CheckForUpdate() {
+    this.CheckAndRemoveServiceWorkerIfDisabled();
+
     this.updates.available.subscribe(() => {
       this.updates.activateUpdate().then(() => document.location.reload());
     });
+  }
+
+  CheckAndRemoveServiceWorkerIfDisabled() {
+    if (environment.enablePWA !== false) {
+      return;
+    }
+
+    try {
+      if ("caches" in window) {
+        caches.keys().then(function (keyList) {
+          return Promise.all(
+            keyList.map(function (key) {
+              return caches.delete(key);
+            })
+          );
+        });
+      }
+
+      if (window.navigator && navigator.serviceWorker) {
+        navigator.serviceWorker
+          .getRegistrations()
+          .then(function (registrations) {
+            for (let registration of registrations) {
+              registration.unregister();
+            }
+          });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   /*

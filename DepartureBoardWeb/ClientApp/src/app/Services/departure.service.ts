@@ -33,6 +33,10 @@ export class DepartureService {
       params.dataSource = dataSource;
     }
 
+    if (localStorage.getItem("settings_general_includeNonPassengerServices") === "true") {
+      params.includeNonPassengerServices = true;
+    }
+
     var url =
       environment.apiBaseUrl +
       "/api/LiveDepartures/" +
@@ -66,6 +70,10 @@ export class DepartureService {
     const dataSource = localStorage.getItem("settings_general_dataSource");
     if (dataSource) {
       params.dataSource = dataSource;
+    }
+
+    if (localStorage.getItem("settings_general_includeNonPassengerServices") === "true") {
+      params.includeNonPassengerServices = true;
     }
 
     return this.http.get<SingleBoardResponse>(url, {

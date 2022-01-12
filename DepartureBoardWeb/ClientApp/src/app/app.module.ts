@@ -14,7 +14,6 @@ import { AngularFireStorageModule } from "@angular/fire/storage";
 import { AngularFireAuthModule } from "@angular/fire/auth";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { NotifierModule } from "angular-notifier";
-import { SettingsModule } from "@benfl3713/angular-components";
 
 import { AppComponent } from "./app.component";
 import { NavMenuComponent } from "./nav-menu/nav-menu.component";
@@ -30,13 +29,13 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { GoogleAnalyticsEventsService } from "./Services/google.analytics";
 import { Config } from "./Services/Config";
 import { FooterComponent } from "./footer/footer.component";
-import { SettingsComponent } from "./settings/settings.component";
+import { SettingsModule } from "./settings/settings.module";
 import { CustomDepartureBoardComponent } from "./Pages/custom-departure-board/custom-departure-board.component";
 import { AddCustomDepartureComponent } from "./Pages/custom-departure-board/add-custom-departure/add-custom-departure.component";
 import { AboutCustomDepartureComponent } from "./Pages/custom-departure-board/about-custom-departure/about-custom-departure.component";
 import { DepartureService } from "./Services/departure.service";
 import { StationLookupService } from "./Services/station-lookup.service";
-import { ServiceWorkerModule, SwUpdate } from "@angular/service-worker";
+import { ServiceWorkerModule } from "@angular/service-worker";
 import { environment } from "../environments/environment";
 import { AdminBoardService } from "./Services/admin-board.service";
 import { ComingSoonWidgetComponent } from "./widgets/coming-soon/coming-soon.component";
@@ -53,6 +52,7 @@ import {
 import { SplashScreenComponent } from "./Components/splash-screen/splash-screen.component";
 import { TuiModule } from "./external/tui.module";
 import { FeaturesComponent } from './widgets/features/features.component';
+import { ROUTES } from "./routes";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo",
@@ -76,7 +76,6 @@ const firebaseConfig = {
     SearchComponent,
     NewsWidgetComponent,
     FooterComponent,
-    SettingsComponent,
     CustomDepartureBoardComponent,
     AddCustomDepartureComponent,
     AboutCustomDepartureComponent,
@@ -117,93 +116,7 @@ const firebaseConfig = {
         autoHide: 3500,
       },
     }),
-    RouterModule.forRoot([
-    { path: "", component: HomeComponent, pathMatch: "full" },
-    { path: "search", component: SearchComponent, pathMatch: "full" },
-    { path: "examples", component: ExamplesComponent, pathMatch: "full" },
-    { path: "settings", component: SettingsComponent, pathMatch: "full" },
-    {
-        path: "custom-departures",
-        component: CustomDepartureBoardComponent,
-        pathMatch: "full",
-    },
-    {
-        path: "custom-departures/add",
-        component: AddCustomDepartureComponent,
-        pathMatch: "full",
-    },
-    {
-        path: "custom-departures/edit/:id",
-        component: AddCustomDepartureComponent,
-        pathMatch: "full",
-    },
-    //About
-    {
-        path: "about",
-        component: AboutComponent,
-        pathMatch: "full",
-    },
-    {
-        path: "about/custom-departures",
-        component: AboutCustomDepartureComponent,
-        pathMatch: "full",
-    },
-    {
-        path: "about/departureboard-admin",
-        component: AboutDepartureboardAdminComponent,
-        pathMatch: "full",
-    },
-    //Boards
-    {
-        path: "arrivals/:station/:displays",
-        component: BoardsComponent,
-        pathMatch: "full",
-    },
-    {
-        path: "arrivals/:station",
-        component: BoardsComponent,
-        pathMatch: "full",
-    },
-    {
-        path: "singleboard/arrivals/:station",
-        component: SingleBoard,
-        pathMatch: "full",
-    },
-    {
-        path: "singleboard/:station",
-        component: SingleBoard,
-        pathMatch: "full",
-    },
-    {
-        path: "custom-departures/:station",
-        component: BoardsComponent,
-        pathMatch: "full",
-    },
-    {
-        path: "custom-departures/:station/:displays",
-        component: BoardsComponent,
-        pathMatch: "full",
-    },
-    {
-        path: "buses",
-        loadChildren: () => import("./Pages/buses/buses/buses.module").then((m) => m.BusesModule),
-    },
-    {
-        path: "germany",
-        loadChildren: () => import("./Pages/germany/germany.module").then((m) => m.GermanyModule),
-    },
-    { path: ":station", component: BoardsComponent, pathMatch: "full" },
-    {
-        path: ":station/:displays",
-        component: BoardsComponent,
-        pathMatch: "full",
-    },
-    {
-        path: "germany",
-        loadChildren: () => import("./Pages/germany/germany.module").then((m) => m.GermanyModule),
-    },
-    { path: "**", redirectTo: "" },
-], { relativeLinkResolution: 'legacy' }),
+    RouterModule.forRoot(ROUTES, { relativeLinkResolution: 'legacy' }),
     BrowserAnimationsModule,
     DeviceDetectorModule.forRoot(),
     ServiceWorkerModule.register("ngsw-worker.js", {
@@ -216,8 +129,7 @@ const firebaseConfig = {
     GoogleAnalyticsEventsService,
     {
       provide: APP_INITIALIZER,
-      useFactory: Config.LoadUseAnalytics,
-      deps: [HttpClient, CookieService],
+      useFactory: Config.LoadUseAnalytics,      deps: [HttpClient, CookieService],
       multi: true,
     },
     CookieService,

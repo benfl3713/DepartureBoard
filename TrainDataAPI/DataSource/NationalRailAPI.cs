@@ -54,6 +54,10 @@ namespace TrainDataAPI
         private List<Departure> DeserialiseDepartures(StationBoard2 departuresResponse)
         {
 	        List<Departure> departures = new List<Departure>();
+
+            if (departuresResponse?.trainServices == null)
+                return departures;
+
             foreach (ServiceItem2 departure in departuresResponse.trainServices)
             {
                 DateTime scheduledDeparture = departure.std;

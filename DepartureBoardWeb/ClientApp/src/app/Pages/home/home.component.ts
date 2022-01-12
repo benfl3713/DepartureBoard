@@ -23,8 +23,9 @@ export class HomeComponent {
   async Search() {
     const value: string = this.searchForm.value;
     let station = null;
-    if(value.split('-').length === 2) {
-      let code = value.split('-')[1].trim();
+    if(value.split('-').length >= 2) {
+      let code = value.trim().split('-').slice(-1)[0]?.trim();
+      console.debug("Found Code", code);
       code = code.replace(/\(|\)/g, '');
       station = await this.attemptCalculate(code)
     }
@@ -81,7 +82,7 @@ export class HomeComponent {
         .Search(value)
         .pipe(map((s) => s.splice(0, 10)))
         .pipe(tap(() => {
-          ToggleConfig.LoadingBar.next(false); 
+          ToggleConfig.LoadingBar.next(false);
           this.isLoadingStations = false;
         }))
         .pipe(catchError((error) => {

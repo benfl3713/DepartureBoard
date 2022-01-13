@@ -3,8 +3,10 @@ using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Newtonsoft.Json;
@@ -74,6 +76,29 @@ namespace TrainDataAPI.Services
 
 		private void LoadUKStations()
 		{
+			using (Stream fs = Assembly.GetExecutingAssembly().GetManifestResourceStream("TrainDataAPI.Services.stations.json"))
+			using (StreamReader sr = new StreamReader(fs))
+			using (JsonTextReader reader = new JsonTextReader(sr))
+			{
+				while (reader.Read())
+				{
+					if (reader.TokenType == JsonToken.StartObject)
+					{
+						// Load each object from the stream and do something with it
+						JObject obj = JObject.Load(reader);
+						string code = obj["crsCode"].ToString();
+						string name = obj["stationName"].ToString();
+						if (!string.IsNullOrEmpty(code) && !string.IsNullOrEmpty(name) && IsValidEntry(name, code))
+							_stations.Add(new Station(code, name, "GB"));
+					}
+				}
+			}
+
+			_lastUpdated = DateTime.Now;
+			
+			return;
+		
+		
 			string token = GetSecretToken();
 			var client = new RestClient("https://opendata.nationalrail.co.uk/api/staticfeeds/4.0/stations");
 			var request = new RestRequest(Method.GET);

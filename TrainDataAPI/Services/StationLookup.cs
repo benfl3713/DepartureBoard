@@ -76,6 +76,32 @@ namespace TrainDataAPI.Services
 
 		private void LoadUKStations()
 		{
+			string token = GetSecretToken();
+			var client = new RestClient("https://opendata.nationalrail.co.uk/api/staticfeeds/4.0/stations");
+			var request = new RestRequest(Method.GET);
+			request.Timeout = 13000;
+			request.AddHeader("X-Auth-Token", token);
+			var response = client.Execute(request);
+			if (response.StatusCode != HttpStatusCode.OK)
+			{
+				LoadBackupUKStations();
+				return;
+			}
+
+			XElement xmlResponse = XElement.Parse(response.Content);
+			foreach (XElement element in xmlResponse.Elements())
+			{
+				string code = element.Element("{http://nationalrail.co.uk/xml/station}CrsCode")?.Value;
+				string name = element.Element("{http://nationalrail.co.uk/xml/station}Name")?.Value;
+				if (!string.IsNullOrEmpty(code) && !string.IsNullOrEmpty(name) && IsValidEntry(name, code))
+					_stations.Add(new Station(code, name, "GB"));
+			}
+
+			_lastUpdated = DateTime.Now;
+		}
+
+		private void LoadBackupUKStations()
+		{
 			using (Stream fs = Assembly.GetExecutingAssembly().GetManifestResourceStream("TrainDataAPI.Services.stations.json"))
 			using (StreamReader sr = new StreamReader(fs))
 			using (JsonTextReader reader = new JsonTextReader(sr))
@@ -92,28 +118,6 @@ namespace TrainDataAPI.Services
 							_stations.Add(new Station(code, name, "GB"));
 					}
 				}
-			}
-
-			_lastUpdated = DateTime.Now;
-			
-			return;
-		
-		
-			string token = GetSecretToken();
-			var client = new RestClient("https://opendata.nationalrail.co.uk/api/staticfeeds/4.0/stations");
-			var request = new RestRequest(Method.GET);
-			request.Timeout = 13000;
-			request.AddHeader("X-Auth-Token", token);
-			var response = client.Execute(request);
-			if (response.StatusCode != HttpStatusCode.OK)
-				return;
-			XElement xmlResponse = XElement.Parse(response.Content);
-			foreach (XElement element in xmlResponse.Elements())
-			{
-				string code = element.Element("{http://nationalrail.co.uk/xml/station}CrsCode")?.Value;
-				string name = element.Element("{http://nationalrail.co.uk/xml/station}Name")?.Value;
-				if (!string.IsNullOrEmpty(code) && !string.IsNullOrEmpty(name) && IsValidEntry(name, code))
-					_stations.Add(new Station(code, name, "GB"));
 			}
 
 			_lastUpdated = DateTime.Now;

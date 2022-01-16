@@ -1,0 +1,211 @@
+/*
+
+
+Template: Sofbox - Angular 8 Software landing page
+Author: iqonic.design
+Version: 1.0
+Design and Developed by: iqonic.design
+
+NOTE: This is main stylesheet of template, This file contains the styling for the actual Template. Please do not change anything here! write in a custom.css file if required!
+
+*/
+
+
+/*Color Skins*/
+
+.iq-customizer .color-1 {
+	background: #4ac4f3;
+}
+
+.iq-customizer .color-2 {
+	background: #8c79f7;
+}
+
+.iq-customizer .color-3 {
+	background: #3b90fd;
+}
+
+.iq-customizer .color-4 {
+	background: #f46d4f;
+}
+
+.iq-customizer .color-5 {
+	background: #01dabb;
+}
+
+.iq-customizer .color-6 {
+	background: #7570ff;
+}
+
+.iq-customizer .color-7 {
+	background: #4a2fb4;
+}
+
+.iq-customizer .color-8 {
+	background: #80c02b;
+}
+
+.iq-customizer .color-9 {
+	background: #04cae7;
+}
+
+.iq-customizer .color-10 {
+	background: #7fc129;
+}
+
+.iq-customizer .color-11 {
+	background: #ff5033;
+}
+
+.iq-customizer .color-12 {
+	background: #f8a4d8;
+}
+
+.iq-customizer .color-13 {
+	background: #1edae6;
+}
+
+.iq-customizer .color-14 {
+	background: #1ad993;
+}
+
+.iq-customizer {
+	background-color: #fff;
+	color: #666;
+	z-index: 10000;
+	right: -300px;
+	width: 300px;
+	height: 385px;
+	position: fixed;
+	top: 200px;
+	box-shadow: -3px 0 50px -2px rgba(0, 0, 0, 0.14);
+	bottom: 0;
+}
+
+.iq-customizer.closed {
+	box-shadow: none;
+}
+
+.iq-customizer .content-chooser {
+	padding: 15px 30px 30px;
+	position: absolute;
+	background-color: #ffffff;
+	border-top: none;
+}
+
+.iq-customizer.opened .content-chooser {
+	opacity: 1;
+}
+
+.iq-customizer h3 {
+	font-size: 21px;
+	margin-top: 0px;
+	font-weight: 600;
+}
+
+.iq-customizer a.opener {
+	display: block;
+	height: 45px;
+	background: #fff;
+	width: 45px;
+	font-size: 24px;
+	line-height: 45px;
+	color: #000;
+	position: absolute;
+	right: 300px;
+	top: 90px;
+	text-align: center;
+	text-decoration: none;
+	-webkit-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+	box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+}
+
+.iq-customizer.opened a.opener {
+	left: -45px;
+	border-color: transparent;
+}
+
+.iq-customizer ul {
+	list-style: none;
+	margin: 0;
+	padding: 5px 0 0 0;
+	font-size: 0;
+}
+
+.iq-customizer ul li {
+	width: 52px;
+	height: 38px;
+	float: left;
+	position: relative;
+	display: inline-block;
+	cursor: pointer;
+	margin: 0 10px 8px 0;
+	-webkit-transition: all linear 0.5s;
+	-moz-transition: all linear 0.5s;
+	-o-transition: all linear 0.5s;
+	-ms-transition: all linear 0.5s;
+	transition: all linear 0.5s;
+}
+
+.iq-customizer ul li.selected:before {
+	color: #fff;
+	content: "\f00c";
+	font-size: 16px;
+	display: inline-block;
+	position: absolute;
+	top: 16%;
+	left: 50%;
+	text-align: center;
+	font-family: "Font Awesome 5 Free";
+	font-weight: 900;
+	transform: translateY(-50%);
+	-webkit-transform: translateY(-50%);
+	-o-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	-moz-transform: translateY(-50%);
+	transform: translateX(-50%);
+	-webkit-transform: translateX(-50%);
+	-o-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	-moz-transform: translateX(-50%);
+}
+
+.iq-customizer ul.resetAll li {
+	width: 100%;
+	padding: 6px 0;
+	min-width: 0;
+	text-align: center;
+	margin-top: 30px;
+}
+
+.iq-customizer select {
+	width: 100%;
+	padding: 5px;
+	border: 1px solid #b2bfca;
+}
+
+.iq-customizer .button {
+	width: 100%;
+	text-align: center;
+	margin-top: 10px;
+	text-transform: capitalize;
+}
+
+.iq-customizer ul li:nth-child(4) {
+	margin-right: 0px;
+}
+
+.iq-customizer ul li:nth-child(8) {
+	margin-right: 0px;
+}
+
+.iq-customizer ul li:nth-child(12) {
+	margin-right: 0px;
+}
+
+@media(max-width:1023px) {
+	.iq-customizer {
+		display: none !important;
+	}
+}

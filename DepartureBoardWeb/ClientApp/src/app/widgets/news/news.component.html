@@ -1,4 +1,4 @@
-<div
+<!-- <div
   fxLayout="row"
   fxLayout.xs="column"
   fxLayoutGap="30px"
@@ -28,4 +28,23 @@
       </a>
     </p>
   </tui-island>
+</div> -->
+
+
+<div class="row">
+  <div class="col-lg-4" *ngFor="let news of newsItems; let i = index" >
+    <div [ngClass]="'iq-work wow fadeInUp'" data-wow-duration="0.5s">
+      <app-black-card-style1>
+        <div cardNumber>{{i + 1 | number: '2.0'}}</div>
+        <div cardContent>
+          <i class="flaticon-responsive flaticon mb-3"></i>
+          <h4 class=" iq-fw-8">{{news.title}}</h4>
+          <p class="mt-3 mb-0" [innerHtml]="news.content" routeTransformer></p>
+        </div>
+        <div cardLink *ngIf="news.titleLink">
+          <a class="readmore iq-fw-5" [href]="news.titleLink"><i class="ion-arrow-right-c"></i></a>
+        </div>
+      </app-black-card-style1>
+    </div>
+  </div>
 </div>

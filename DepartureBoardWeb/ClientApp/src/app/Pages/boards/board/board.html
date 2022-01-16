@@ -1,8 +1,8 @@
 <div class="board led col">
   <div class="board-row">
-    <h5 class="inline-row">{{DepartureTime | date: 'HH:mm'}}</h5>
+    <h5 class="inline-row led">{{DepartureTime | date: 'HH:mm'}}</h5>
     <h5
-      class="inline-row status clickable"
+      class="inline-row status clickable led"
       (click)="FilterPlatform(Platform)"
       *ngIf="Platform && Platform != '0'"
     >

@@ -14,6 +14,7 @@ import { AngularFireStorageModule } from "@angular/fire/storage";
 import { AngularFireAuthModule } from "@angular/fire/auth";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { NotifierModule } from "angular-notifier";
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 import { AppComponent } from "./app.component";
 import { NavMenuComponent } from "./nav-menu/nav-menu.component";
@@ -50,9 +51,11 @@ import {
   EditCustomDepartureComponent,
 } from "./Components/edit-custom-departure/edit-custom-departure.component";
 import { SplashScreenComponent } from "./Components/splash-screen/splash-screen.component";
-import { TuiModule } from "./external/tui.module";
 import { FeaturesComponent } from './widgets/features/features.component';
 import { ROUTES } from "./routes";
+import { BoardSkeletonComponent } from './Components/board-skeleton/board-skeleton.component';
+import { BlackCardStyle1Component } from "./Components/cards/black-card-style1/black-card-style1.component";
+import { BlackSectionTitleComponent } from "./Components/black-section-title/black-section-title.component";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo",
@@ -88,6 +91,9 @@ const firebaseConfig = {
     DepartureStopDialog,
     SplashScreenComponent,
     FeaturesComponent,
+    BoardSkeletonComponent,
+    BlackCardStyle1Component,
+    BlackSectionTitleComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
@@ -100,8 +106,8 @@ const firebaseConfig = {
     AngularFireAuthModule,
     AngularFireStorageModule,
     FlexLayoutModule,
-    TuiModule,
     SettingsModule,
+    NgxSkeletonLoaderModule,
     NotifierModule.withConfig({
       position: {
         horizontal: {

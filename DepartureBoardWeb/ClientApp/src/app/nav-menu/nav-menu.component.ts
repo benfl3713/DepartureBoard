@@ -102,4 +102,39 @@ export class NavMenuComponent {
       map((result) => result.matches),
       shareReplay()
     );
+
+
+    navItemList: any = [
+      {
+        href: '/', title: 'Home',
+        routerLinkActiveOptions: { exact: true },
+        is_link: true,
+        icon: "fas fa-home"
+      },
+      { href: '/search', title: 'Search', is_link: true, icon: "fas fa-search" },
+      { href: '/examples', title: 'Examples', is_link: true, icon: "far fa-lightbulb" },
+      { href: '/custom-departures', title: 'Custom Departures', is_link: true, icon: "fas fa-chalkboard" },
+      { href: '', title: 'Learn', is_link: false, children: true, child: [
+        { href: '/about', title: 'About', is_link: true },
+        { href: 'https://docs.leddepartureboard.com', title: 'Docs', is_link: true },
+      ] },
+      { href: '/buses', title: 'Buses', is_link: true, icon: "fas fa-bus" },
+      { href: '/settings', title: 'Settings', is_link: true, icon: "fas fa-cogs" },
+      { href: 'https://admin.leddepartureboard.com', title: 'Admin', is_link: true, icon: "fas fa-external-link-alt" },
+      // {
+      //   href: '#blog', title: 'Blog',
+      //   is_link: false,
+      //   _is_active: false,
+      //   children: true,
+      //   child: [
+      //     { href: '/sofbox-saas/blog-list', title: 'All Blog' },
+      //     { href: '/sofbox-saas/blog-detail', title: 'Blog Detail' },
+      //     { href: '/sofbox-saas/blog-detail-left-sidebar', title: 'Blog Details Left Sidebar' },
+      //     { href: '/sofbox-saas/blog-detail-right-sidebar', title: 'Blog Details Right Sidebar' },
+      //     { href: '/sofbox-saas/blog-list-left-sidebar', title: 'Blog Left Sidebar' },
+      //     { href: '/sofbox-saas/blog-list-right-sidebar', title: 'Blog Right Sidebar' },
+      //   ]
+      // },
+      { href: '/contact-us', title: 'Contact Us', is_link: true }
+    ];
 }

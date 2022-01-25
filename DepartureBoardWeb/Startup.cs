@@ -1,12 +1,15 @@
+using System.Collections.Generic;
 using AspNetCoreRateLimit;
 using DepartureBoardCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Moesif.Middleware;
 using Prometheus;
 using Serilog;
 using Serilog.Events;
@@ -77,6 +80,8 @@ namespace DepartureBoardWeb
             services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
             services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 
+            services.Configure<KestrelServerOptions>(options => { options.AllowSynchronousIO = true; });
+
             // services.AddSingleton(new TrainDataAPI.DarwinPushPortAPI());
 		}
 
@@ -91,6 +96,12 @@ namespace DepartureBoardWeb
 			{
 				app.UseExceptionHandler("/Error");
 			}
+
+			if (!string.IsNullOrEmpty(ConfigService.MoesifApplicationId))
+				app.UseMiddleware<MoesifMiddleware>(new Dictionary<string, object>
+				{
+					{ "ApplicationId", ConfigService.MoesifApplicationId }
+				});
 
 			var provider = new FileExtensionContentTypeProvider();
 			provider.Mappings[".webmanifest"] = "application/manifest+json";
@@ -112,6 +123,8 @@ namespace DepartureBoardWeb
 				}
 			}
 
+			//app.UseIpRateLimiting();
+
 			app.UseRouting();
 
 			app.UseCors();
@@ -126,8 +139,6 @@ namespace DepartureBoardWeb
 					name: "default",
 					pattern: "{controller}/{action=Index}/{id?}");
 			});
-
-            app.UseIpRateLimiting();
 
 			if (!IsLambda)
 			{

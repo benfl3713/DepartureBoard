@@ -4,4 +4,6 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
 }

@@ -16,7 +16,7 @@
                   <ul class="navbar-nav ml-auto">
                     <ng-container *ngFor="let option of navItemList">
                       <li class="nav-item dropdown" *ngIf="option.children; else elseBlock">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle clickable" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span [class]="option.icon" *ngIf="option.icon"></span>
                           {{ option.title }}
                         </a>
@@ -31,13 +31,28 @@
                             <span [class]="option.icon" *ngIf="option.icon"></span>
                             {{ option.title }}
                           </a>
-                          <a class="nav-link" [routerLink]="option.href" *ngIf="option.is_link;" routerLinkActive="active" [routerLinkActiveOptions]="option.routerLinkActiveOptions || {}">
+                          <a class="nav-link" [routerLink]="option.href" *ngIf="option.is_link && !option.use_href" routerLinkActive="active" [routerLinkActiveOptions]="option.routerLinkActiveOptions || {}">
+                            <span [class]="option.icon" *ngIf="option.icon"></span>
+                            {{ option.title }}
+                          </a>
+                          <a class="nav-link" [href]="option.href" *ngIf="option.is_link && option.use_href === true" target="_blank">
                             <span [class]="option.icon" *ngIf="option.icon"></span>
                             {{ option.title }}
                           </a>
                         </li>
                       </ng-template>
                     </ng-container>
+                    <li class="nav-item menu-item" >
+                      <a class="nav-link clickable" (click)="auth.signOut()" *ngIf="auth.user$ | async as user; else guest">
+                        <img [src]="user.photoURL" height="20" />
+                        Logout
+                      </a>
+                      <ng-template #guest>
+                        <a class="nav-link clickable" (click)="auth.googleSignin()">
+                          Login
+                        </a>
+                      </ng-template>
+                    </li>
                   </ul>
                 </div>
               </nav>

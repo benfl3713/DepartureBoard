@@ -37,7 +37,6 @@ export class NavMenuComponent {
     "/about/departureboard-admin",
     "/buses",
   ];
-  @ViewChild(MatSidenav, { static: true }) public sidenav: MatSidenav;
 
   constructor(
     private router: Router,
@@ -82,10 +81,6 @@ export class NavMenuComponent {
     this.timer = setTimeout(() => (this.showHome = false), 3000);
   }
 
-  PageChanged() {
-    this.sidenav.close();
-  }
-
   @HostListener("document:mousemove", ["$event"])
   @HostListener("document:touchstart", ["$event"])
   ResetTimer(e) {
@@ -113,14 +108,16 @@ export class NavMenuComponent {
       },
       { href: '/search', title: 'Search', is_link: true, icon: "fas fa-search" },
       { href: '/examples', title: 'Examples', is_link: true, icon: "far fa-lightbulb" },
-      { href: '/custom-departures', title: 'Custom Departures', is_link: true, icon: "fas fa-chalkboard" },
+      { href: '', title: 'Boards', is_link: false, children: true, child: [
+        { href: '/custom-departures', title: 'Custom', is_link: true, icon: "fas fa-chalkboard" },
+        { href: '/buses', title: 'Buses', is_link: true, icon: "fas fa-bus" },
+      ] },
       { href: '', title: 'Learn', is_link: false, children: true, child: [
         { href: '/about', title: 'About', is_link: true },
-        { href: 'https://docs.leddepartureboard.com', title: 'Docs', is_link: true },
+        { href: 'https://docs.leddepartureboard.com', title: 'Docs', is_link: true, use_href: true },
       ] },
-      { href: '/buses', title: 'Buses', is_link: true, icon: "fas fa-bus" },
       { href: '/settings', title: 'Settings', is_link: true, icon: "fas fa-cogs" },
-      { href: 'https://admin.leddepartureboard.com', title: 'Admin', is_link: true, icon: "fas fa-external-link-alt" },
+      { href: 'https://admin.leddepartureboard.com', title: 'Admin', is_link: true, use_href: true, icon: "fas fa-external-link-alt" },
       // {
       //   href: '#blog', title: 'Blog',
       //   is_link: false,
@@ -135,6 +132,5 @@ export class NavMenuComponent {
       //     { href: '/sofbox-saas/blog-list-right-sidebar', title: 'Blog Right Sidebar' },
       //   ]
       // },
-      { href: '/contact-us', title: 'Contact Us', is_link: true }
     ];
 }

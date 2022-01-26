@@ -65,6 +65,7 @@ export class HomeComponent implements AfterViewInit {
             return;
           }
 
+          this.board.clear();
           const factory = this.resolver.resolveComponentFactory(Board);
           const componentRef = this.board.createComponent(factory);
           componentRef.instance.Initilize(data[0]);

@@ -115,8 +115,3 @@ html {
   border-color: var(--mainColour);
   color: var(--mainColour);
 }
-
-::-webkit-scrollbar {
-  display: none; /* Chrome Safari */
-}
-

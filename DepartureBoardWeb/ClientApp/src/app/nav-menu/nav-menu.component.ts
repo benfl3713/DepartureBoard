@@ -51,12 +51,14 @@ export class NavMenuComponent {
         clearTimeout(this.timer);
         this.timer = null;
         this.showHome = true;
+        document.documentElement.style.overflow = '';
         //hides menu if parameter is supplied
         if (
           event.urlAfterRedirects.split("?").length > 1 &&
           event.urlAfterRedirects.split("?")[1].includes("hideMenu=true")
         ) {
           this.showHome = false;
+          document.documentElement.style.overflow = 'hidden';
           return;
         }
         if (
@@ -78,7 +80,10 @@ export class NavMenuComponent {
   }
 
   SetTimer(): void {
-    this.timer = setTimeout(() => (this.showHome = false), 3000);
+    this.timer = setTimeout(() => {
+      this.showHome = false;
+      document.documentElement.style.overflow = 'hidden';
+    }, 3000);
   }
 
   @HostListener("document:mousemove", ["$event"])
@@ -86,6 +91,7 @@ export class NavMenuComponent {
   ResetTimer(e) {
     if (this.timer && this.timer != null) {
       this.showHome = true;
+      if (document.documentElement.style.overflow == 'hidden') document.documentElement.style.overflow = '';
       clearTimeout(this.timer);
       this.SetTimer();
     }

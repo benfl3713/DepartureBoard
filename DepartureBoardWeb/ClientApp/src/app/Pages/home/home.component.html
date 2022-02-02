@@ -1,127 +1,239 @@
-<div class="main-slider position-relative header">
-  <div class="header-background"></div>
-  <div class="header-content">
-    <div class="d-flex flex-wrap align-items-center">
-      <div class="col-md-6 col-lg-8 slider-left-block">
-        <br />
-        <h1 class="slider-title" style="font-family: 'Montserrat', 'sans-serif';font-weight: 700;">Led Departure Board</h1>
-        <p class="slider-description mt-5">
-          A webapp designed to re-create the platform led signs you get at British and German train stations.<br />
-          The data is collected live from multiple datasource's and displayed in multiple custom built panels.
-        </p>
-        <br />
-        <a class="button mt-5 slider-btn" (click)="scrollToSearch()">Find your Station</a>
-      </div>
-      <div class="col-md-6 col-lg-4">
-        <div [hidden]="(isHandset$ | async) === true">
-          <h4 style="text-align: center;width: 300px;text-decoration: dotted underline;margin-bottom: 8px;margin-top: 30px;" class="led">Example: Euston</h4>
-          <div class="board-example">
-            <div></div>
-            <div class="board">
-              <template #board></template>
+<div class="home">
+  <div class="main-slider position-relative header">
+    <div class="header-background"></div>
+    <div class="header-content">
+      <div class="d-flex flex-wrap align-items-center">
+        <div class="col-md-6 col-lg-8 slider-left-block">
+          <br />
+          <h1
+            class="slider-title led-font"
+            style="font-size: 3.3em;"
+          >
+            Led Departure Board
+          </h1>
+          <p class="slider-description mt-5">
+            A webapp designed to re-create the platform led signs you get at
+            British and German train stations.<br />
+            The data is collected live from multiple datasource's and displayed
+            in multiple custom built panels.
+          </p>
+          <br />
+          <a class="button mt-5 slider-btn" (click)="scrollToSearch()"
+            >Find your Station</a
+          >
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div [hidden]="(isHandset$ | async) === true">
+            <h4
+              style="
+                text-align: center;
+                width: 300px;
+                text-decoration: dotted underline;
+                margin-bottom: 8px;
+                margin-top: 30px;
+              "
+              class="led"
+            >
+              Example: Euston
+            </h4>
+            <div class="board-example">
+              <div></div>
+              <div class="board">
+                <template #board></template>
+              </div>
+              <app-board-skeleton
+                class="board-example"
+                [hidden]="
+                  hasLoadedExampleBoard === true ||
+                  (isHandset$ | async) === true
+                "
+              ></app-board-skeleton>
             </div>
-            <app-board-skeleton class="board-example" [hidden]="hasLoadedExampleBoard === true || (isHandset$ | async) === true"></app-board-skeleton>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <section class="container">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12" #searchView>
+          <app-black-section-title
+            title="Search"
+            subtitle="Find your Station"
+          ></app-black-section-title>
+        </div>
+      </div>
+      <app-components-search id="search"></app-components-search>
+    </div>
+  </section>
+
+  <section class="iq-how-work pt-0" id="how-it-works">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+          <app-black-section-title
+            title="News"
+            subtitle="Recent News & Updates"
+          ></app-black-section-title>
+        </div>
+      </div>
+      <app-components-widgets-news></app-components-widgets-news>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+          <app-black-section-title
+            title="How to Use"
+            subtitle="Learn More"
+          ></app-black-section-title>
+        </div>
+      </div>
+      <div class="col text-center">
+        <p style="font-size: 20px;">
+          Visit our documention website<br/> to learn all the way from the basics to
+          the advanced features of this website!<br/><br/>
+        </p>
+        <a
+          class="button"
+          href="https://docs.leddepartureboard.com/docs/getting-started/introduction"
+          target="_blank"
+          >How to Use</a
+        >
+      </div>
+    </div>
+  </section>
+
+  <section class="iq-features iq-rpt-0" id="feature">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+          <app-black-section-title
+            title="Data Sources"
+            subtitle="Where we get live departures from"
+          ></app-black-section-title>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-4 col-md-6">
+          <app-black-card-style2>
+            <div cardImage>
+              <img
+                src="https://www.realtimetrains.co.uk/assets/img/favicon/favicon-32-e1e094d9.png"
+                class="img-fluid"
+                alt="images"
+                style="width: 80px !important"
+              />
+            </div>
+            <h5 class="mb-3" cardTitle>Real Time Trains</h5>
+            <p class="mb-0" cardContent>
+              UK Live Departure Data is provided by the
+              <a href="https://www.realtimetrains.co.uk/" target="_blank"
+                >Realtime Trains API</a
+              >. This api then talks to network rail to get the data back. This
+              means we receive the most up to date data from network rail.
+            </p>
+          </app-black-card-style2>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <app-black-card-style2>
+            <div cardImage>
+              <img
+                src="/assets/NRE_Powered_logo.png"
+                class="img-fluid"
+                alt="images"
+              />
+            </div>
+            <h5 class="mb-3" cardTitle>National Rail</h5>
+            <div class="mb-0" cardContent>
+              <ul>
+                <li>
+                  The search functionality is powered by the national rail data
+                  feed (NRE). For more information visit,
+                  <a
+                    href="https://www.nationalrail.co.uk/100296.aspx"
+                    target="_blank"
+                    >https://www.nationalrail.co.uk/100296.aspx</a
+                  >
+                </li>
+                <li>
+                  Departure Data can also be fetched from national rail
+                  (Including train car length for certain services) by changing
+                  the data source in settings. This is fetched using the darwin
+                  api
+                </li>
+              </ul>
+            </div>
+          </app-black-card-style2>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <app-black-card-style2>
+            <div cardImage>
+              <img
+                src="https://data.deutschebahn.com/images/logo.png"
+                class="img-fluid"
+                alt="images"
+                style="width: 80px !important"
+              />
+            </div>
+            <h5 class="mb-3" cardTitle>DeutscheBahn API</h5>
+            <p class="mb-0" cardContent>
+              Search and Live Departures for Germany are provided by the
+              <a
+                href="https://developer.deutschebahn.com/store/site/pages/home.jag"
+                >DeutscheBahn API</a
+              >.
+              <strong
+                >Note they only supply data relating to there trains.</strong
+              >
+            </p>
+          </app-black-card-style2>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <app-black-card-style2>
+            <div cardImage>
+              <img
+                src="https://airdrive-images.s3-eu-west-1.amazonaws.com/london/img/publisher/2018-05-25T16%3A57%3A41.14/tfl.png"
+                class="img-fluid"
+                alt="images"
+                style="width: 180px !important"
+              />
+            </div>
+            <h5 class="mb-3" cardTitle>TfL Open Data</h5>
+            <p class="mb-0" cardContent>
+              Search and Live Departures for London buses are Powered by
+              <a href="https://tfl.gov.uk/">TfL Open Data</a>. This also
+              Contains OS data © Crown copyright and database rights 2016' and
+              Geomni UK Map data © and database rights [2019]
+            </p>
+          </app-black-card-style2>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="centre-text">
+    <app-black-section-title
+      title="Project Info"
+      subtitle="Open Source Project"
+    ></app-black-section-title>
+    <br />
+    <p style="font-size: 16px">
+      This is an open source project so is free to used under the Apache-2.0
+      Liscense.<br />
+      For more info or for the source code of the project then visit the
+      <a
+        style="font-weight: bold"
+        href="https://github.com/benfl3713/DepartureBoard"
+        target="_blank"
+        >github page</a
+      >
+    </p>
+  </section>
+
+  <app-components-footer></app-components-footer>
 </div>
-
-<section class="iq-how-work pt-0" id="how-it-works">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12">
-        <app-black-section-title title="News" subtitle="Recent News & Updates"></app-black-section-title>
-      </div>
-    </div>
-    <app-components-widgets-news></app-components-widgets-news>
-  </div>
-</section>
-
-<section class="container">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12" #searchView>
-        <app-black-section-title title="Search" subtitle="Find your Station"></app-black-section-title>
-      </div>
-    </div>
-    <app-components-search id="search"></app-components-search>
-  </div>
-</section>
-
-<section class="container">
-  <app-black-section-title title="Data Sources" subtitle="Where we get live departures from"></app-black-section-title>
-  <ul class="tui-list tui-list_large">
-    <li class="tui-list__item">
-      <div class="tui-list__item-title">Real Time Trains</div>
-      <div class="tui-list__description">
-        UK Live Departure Data is provided by the
-        <a href="https://www.realtimetrains.co.uk/" target="_blank"
-          >Realtime Trains API</a
-        >. This api then talks to network rail to get the data back. This
-        means we receive the most up to date data from network rail.
-      </div>
-    </li>
-    <li class="tui-list__item">
-      <div class="tui-list__item-title">National Rail</div>
-      <div class="tui-list__description">
-        <ul class="tui-list tui-list_linear tui-list_nested">
-          <li class="tui-list__item">
-            The search functionality is powered by the national rail data
-            feed (NRE). For more information visit,
-            <a
-              href="https://www.nationalrail.co.uk/100296.aspx"
-              target="_blank"
-              >https://www.nationalrail.co.uk/100296.aspx</a
-            >
-          </li>
-          <li class="tui-list__item">
-            Departure Data can also be fetched from national rail (Including
-            train car length for certain services) by changing the data
-            source in settings. This is fetched using the darwin api
-          </li>
-        </ul>
-      </div>
-    </li>
-    <li class="tui-list__item">
-      <div class="tui-list__item-title">DeutscheBahn API</div>
-      <div class="tui-list__description">
-        Search and Live Departures for Germany are provided by the
-        <a
-          href="https://developer.deutschebahn.com/store/site/pages/home.jag"
-          >DeutscheBahn API</a
-        >. Note they only supply data relating to there trains.
-      </div>
-    </li>
-    <li class="tui-list__item">
-      <div class="tui-list__item-title">TfL Open Data</div>
-      <div class="tui-list__description">
-        Search and Live Departures for London buses are Powered by
-        <a
-          href="https://tfl.gov.uk/"
-          >TfL Open Data</a
-        >. This also Contains OS data © Crown copyright and database rights 2016' and Geomni UK Map data © and database rights [2019]
-      </div>
-    </li>
-  </ul>
-</section>
-
-<section class="centre-text">
-  <app-black-section-title title="Project Info"></app-black-section-title>
-  <br />
-  <p style="font-size: 16px">
-    This is an open source project so is free to used under the Apache-2.0
-    Liscense.<br />
-    For more info or for the source code of the project then visit the
-    <a
-      style="font-weight: bold"
-      href="https://github.com/benfl3713/DepartureBoard"
-      target="_blank"
-      >github page</a
-    >
-  </p>
-</section>
-
-
-<app-components-footer></app-components-footer>

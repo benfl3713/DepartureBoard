@@ -32,6 +32,10 @@ html {
   color: var(--mainColour);
 }
 
+.led-font {
+  font-family: "LEDBOARD3", Arial, sans-serif;
+}
+
 .led-bold {
   font-family: "LEDBOARD3-BOLD", Arial, sans-serif;
   color: var(--mainColour);

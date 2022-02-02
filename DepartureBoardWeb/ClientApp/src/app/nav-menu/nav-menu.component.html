@@ -1,68 +1,139 @@
 <!--=================================
       Header -->
-      <header id="header" *ngIf="showHome">
-        <div class="container-fluid">
-          <div class="row align-items-center">
-            <div class="col-lg-12">
-              <nav class="navbar navbar-expand-lg navbar-light">
-                <a class="navbar-brand" [routerLink]="['/']">
-                  <img src="favicon.png" alt="logo" height="50" width="50">
-                  <h4 style="padding-top:7px;padding-left: 15px;">Led Departure Board</h4>
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                  <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                  <ul class="navbar-nav ml-auto">
-                    <ng-container *ngFor="let option of navItemList">
-                      <li class="nav-item dropdown" *ngIf="option.children; else elseBlock">
-                        <a class="nav-link dropdown-toggle clickable" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <span [class]="option.icon" *ngIf="option.icon"></span>
-                          {{ option.title }}
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                          <span [class]="option.icon" *ngIf="option.icon"></span>
-                          <a class="dropdown-item" *ngFor="let child of option.child" [routerLink]="child.href">{{ child.title }}</a>
-                        </div>
-                      </li>
-                      <ng-template #elseBlock>
-                        <li class="nav-item menu-item">
-                          <a class="nav-link" (click)="jumpTo(option.href); false" [href]="option.href" *ngIf="!option.is_link;">
-                            <span [class]="option.icon" *ngIf="option.icon"></span>
-                            {{ option.title }}
-                          </a>
-                          <a class="nav-link" [routerLink]="option.href" *ngIf="option.is_link && !option.use_href" routerLinkActive="active" [routerLinkActiveOptions]="option.routerLinkActiveOptions || {}">
-                            <span [class]="option.icon" *ngIf="option.icon"></span>
-                            {{ option.title }}
-                          </a>
-                          <a class="nav-link" [href]="option.href" *ngIf="option.is_link && option.use_href === true" target="_blank">
-                            <span [class]="option.icon" *ngIf="option.icon"></span>
-                            {{ option.title }}
-                          </a>
-                        </li>
-                      </ng-template>
-                    </ng-container>
-                    <li class="nav-item menu-item" >
-                      <a class="nav-link clickable" (click)="auth.signOut()" *ngIf="auth.user$ | async as user; else guest">
-                        <img [src]="user.photoURL" height="20" />
-                        Logout
-                      </a>
-                      <ng-template #guest>
-                        <a class="nav-link clickable" (click)="auth.googleSignin()">
-                          Login
-                        </a>
-                      </ng-template>
-                    </li>
-                  </ul>
-                </div>
-              </nav>
-            </div>
+<header id="header" *ngIf="showHome">
+  <div class="container-fluid">
+    <div class="row align-items-center">
+      <div class="col-lg-12">
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <a class="navbar-brand" [routerLink]="['/']">
+            <img src="favicon.png" alt="logo" height="50" width="50" />
+            <h4 style="padding-top: 7px; padding-left: 15px">
+              Led Departure Board
+            </h4>
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ml-auto">
+              <ng-container *ngFor="let option of navItemList">
+                <li
+                  class="nav-item dropdown"
+                  *ngIf="option.children; else elseBlock"
+                >
+                  <a
+                    [matMenuTriggerFor]="menu"
+                    class="nav-link dropdown-toggle clickable"
+                    id="navbarDropdown"
+                    role="button"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <span [class]="option.icon" *ngIf="option.icon"></span>
+                    {{ option.title }}
+                  </a>
 
+                  <mat-menu #menu>
+                    <div *ngFor="let child of option.child">
+                      <a mat-menu-item *ngIf="!child.use_href; else elseChild" [routerLink]="child.href"
+                        ><span
+                          style="padding-right: 10px"
+                          [class]="child.icon"
+                          *ngIf="child.icon"
+                        ></span
+                        >{{ child.title }}
+                        <span
+                          *ngIf="child.isBeta"
+                          class="badge badge-pill badge-primary"
+                          >Beta</span
+                        ></a
+                      >
+                      <ng-template #elseChild>
+                        <a mat-menu-item [href]="child.href" target="_blank"
+                        ><span
+                          style="padding-right: 10px"
+                          [class]="child.icon"
+                          *ngIf="child.icon"
+                        ></span
+                        >{{ child.title }}
+                        <span
+                          *ngIf="child.isBeta"
+                          class="badge badge-pill badge-primary"
+                          >Beta</span
+                        ></a
+                      >
+                      </ng-template>
+                    </div>
+                  </mat-menu>
+                </li>
+                <ng-template #elseBlock>
+                  <li class="nav-item menu-item">
+                    <a
+                      class="nav-link"
+                      (click)="jumpTo(option.href); (false)"
+                      [href]="option.href"
+                      *ngIf="!option.is_link"
+                    >
+                      <span [class]="option.icon" *ngIf="option.icon"></span>
+                      {{ option.title }}
+                    </a>
+                    <a
+                      class="nav-link"
+                      [routerLink]="option.href"
+                      *ngIf="option.is_link && !option.use_href"
+                      routerLinkActive="active"
+                      [routerLinkActiveOptions]="
+                        option.routerLinkActiveOptions || {}
+                      "
+                    >
+                      <span [class]="option.icon" *ngIf="option.icon"></span>
+                      {{ option.title }}
+                    </a>
+                    <a
+                      class="nav-link"
+                      [href]="option.href"
+                      *ngIf="option.is_link && option.use_href === true"
+                      target="_blank"
+                    >
+                      <span [class]="option.icon" *ngIf="option.icon"></span>
+                      {{ option.title }}
+                    </a>
+                  </li>
+                </ng-template>
+              </ng-container>
+              <li class="nav-item menu-item">
+                <a
+                  class="nav-link clickable"
+                  (click)="auth.signOut()"
+                  *ngIf="auth.user$ | async as user; else guest"
+                >
+                  <img [src]="user.photoURL" height="20" />
+                  Logout
+                </a>
+                <ng-template #guest>
+                  <a class="nav-link clickable" (click)="auth.googleSignin()">
+                    Login
+                  </a>
+                </ng-template>
+              </li>
+            </ul>
           </div>
-        </div>
-      </header>
-      <!--=================================
-      Header -->
-      <div [ngClass]="{main: showHome}">
-        <router-outlet></router-outlet>
+        </nav>
       </div>
+    </div>
+  </div>
+</header>
+<!--=================================
+      Header -->
+<div [ngClass]="{ main: showHome }">
+  <router-outlet></router-outlet>
+</div>

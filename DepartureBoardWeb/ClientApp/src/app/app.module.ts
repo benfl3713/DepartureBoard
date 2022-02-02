@@ -56,6 +56,7 @@ import { ROUTES } from "./routes";
 import { BoardSkeletonComponent } from './Components/board-skeleton/board-skeleton.component';
 import { BlackCardStyle1Component } from "./Components/cards/black-card-style1/black-card-style1.component";
 import { BlackSectionTitleComponent } from "./Components/black-section-title/black-section-title.component";
+import { BlackCardStyle2Component } from './Components/black-card-style2/black-card-style2.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo",
@@ -93,7 +94,8 @@ const firebaseConfig = {
     FeaturesComponent,
     BoardSkeletonComponent,
     BlackCardStyle1Component,
-    BlackSectionTitleComponent
+    BlackSectionTitleComponent,
+    BlackCardStyle2Component
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),

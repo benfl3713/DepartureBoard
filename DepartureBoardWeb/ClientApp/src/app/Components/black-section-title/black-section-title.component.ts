@@ -15,4 +15,7 @@ export class BlackSectionTitleComponent implements OnInit {
   ngOnInit() {
   }
 
+  getAnchorUrl():string {
+    return "#" + this.title.toLowerCase().replace(/ /g, '-');
+  }
 }

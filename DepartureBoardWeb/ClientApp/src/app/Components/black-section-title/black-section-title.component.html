@@ -1,4 +1,4 @@
 <div class="title-box text-center" [ngClass]="{noMarginBottom: !subtitle}">
-      <h6 class="title text-white">{{title}}</h6>
+      <h6 class="title text-white"><a [href]="getAnchorUrl()">{{title}}</a></h6>
       <h2 *ngIf="subtitle" class="text-white">{{subtitle}}</h2>
 </div>

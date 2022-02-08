@@ -71,11 +71,11 @@ namespace DepartureBoardWeb
 			services.AddMemoryCache();
 			services.AddResponseCaching();
 
-            services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting"));
-            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
-            services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
-            services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
-            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+            // services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting"));
+            // services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+            // services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+            // services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+            // services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 
             // services.AddSingleton(new TrainDataAPI.DarwinPushPortAPI());
 		}
@@ -127,8 +127,6 @@ namespace DepartureBoardWeb
 					pattern: "{controller}/{action=Index}/{id?}");
 			});
 
-            app.UseIpRateLimiting();
-
 			if (!IsLambda)
 			{
 				app.UseSpa(spa =>
@@ -144,28 +142,6 @@ namespace DepartureBoardWeb
 					}
 				});
 			}
-		}
-
-		private void ConfigurePrometheusMetrics(IApplicationBuilder app)
-		{
-			if (!ConfigService.PrometheusPort.HasValue)
-				return;
-
-			// Custom Metrics to count requests for each endpoint and the method
-			var counter = Metrics.CreateCounter("departureboard_path_counter", "Counts requests to the API endpoints", new CounterConfiguration
-			{
-				LabelNames = new[] {"method", "endpoint", "status"}
-			});
-			app.Use((context, next) =>
-			{
-				if (!context.Request.Path.StartsWithSegments("/api"))
-					return next();
-				counter.WithLabels(context.Request.Method, context.Request.Path, context.Response.StatusCode.ToString()).Inc();
-				return next();
-			});
-
-			app.UseMetricServer();
-			//app.UseHttpMetrics();
 		}
 	}
 }

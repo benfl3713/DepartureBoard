@@ -65,7 +65,7 @@ export class NavMenuComponent {
           return;
         }
         if (
-          !this.fixedMenuPages.includes(event.urlAfterRedirects)
+          !this.fixedMenuPages.includes(event.urlAfterRedirects.split("#")[0])
         ) {
           this.SetTimer();
         }

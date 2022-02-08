@@ -126,7 +126,7 @@ const firebaseConfig = {
         autoHide: 3500,
       },
     }),
-    RouterModule.forRoot(ROUTES, { relativeLinkResolution: 'legacy' }),
+    RouterModule.forRoot(ROUTES, { relativeLinkResolution: 'legacy', anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' }),
     BrowserAnimationsModule,
     DeviceDetectorModule.forRoot(),
     ServiceWorkerModule.register("ngsw-worker.js", {

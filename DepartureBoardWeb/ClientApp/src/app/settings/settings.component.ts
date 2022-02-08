@@ -4,6 +4,7 @@ import { ThemeService } from "../Services/ThemeService";
 import { GoogleAnalyticsEventsService } from "../Services/google.analytics";
 import { NotifierService } from "angular-notifier";
 import { GlobalEvents } from "../GlobalEvents";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-component-settings",
@@ -16,12 +17,14 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     public googleAnalyticsEventsService: GoogleAnalyticsEventsService,
-    private notifierService: NotifierService
+    private notifierService: NotifierService,
+    private route: ActivatedRoute
   ) {
     document.title = "Settings - Departure Board";
   }
   ngOnInit(): void {
     this.Load();
+    this.CheckUrlRoute();
   }
 
   settingsForm = new FormGroup({
@@ -93,5 +96,32 @@ export class SettingsComponent implements OnInit {
     this.Save(false);
     this.Load();
     this.googleAnalyticsEventsService.emitEvent("Settings", "ResetAll");
+  }
+
+  CheckUrlRoute(){
+    if(this.route.children.length != 1)return;
+
+    this.route.children[0].paramMap.subscribe(u => {
+      if (!u.has("type")) return;
+
+
+      switch (u.get("type")) {
+        case "general":
+          this.settingsType = "general";
+          break;
+        case "mainboard":
+          this.settingsType = "mainboard";
+          break;
+        case "singleboard":
+          this.settingsType = "singleboard";
+          break;
+        case "departureadmin":
+          this.settingsType = "departureadmin";
+          break;
+        case "buses":
+          this.settingsType = "buses";
+          break;
+      }
+    });
   }
 }

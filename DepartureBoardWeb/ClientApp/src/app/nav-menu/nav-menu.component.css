@@ -13,8 +13,10 @@
 .main {
   margin-top: 110px;
 }
-.fa,
-.fas,
-.far {
 
+.navbar-toggler {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+  border: 0 !important;
+  color: #fff !important
 }
+

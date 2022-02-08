@@ -19,8 +19,9 @@
             aria-controls="navbarNavDropdown"
             aria-expanded="false"
             aria-label="Toggle navigation"
+            (click)="toggleMobileMenu()"
           >
-            <span class="navbar-toggler-icon"></span>
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
           </button>
           <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ml-auto">
@@ -131,9 +132,10 @@
       </div>
     </div>
   </div>
+  <app-nav-menu-mobile *ngIf="showMobileMenu" (pageClicked)="toggleMobileMenu()"></app-nav-menu-mobile>
 </header>
 <!--=================================
       Header -->
-<div [ngClass]="{ main: showHome }">
+<div [ngClass]="{ main: showHome }" style="overflow-x: hidden; padding-left: 10px">
   <router-outlet></router-outlet>
 </div>

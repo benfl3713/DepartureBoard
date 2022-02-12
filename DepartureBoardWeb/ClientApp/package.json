@@ -33,7 +33,7 @@
     "@taiga-ui/cdk": "^2.11.2",
     "@taiga-ui/core": "^2.11.2",
     "@taiga-ui/kit": "^2.11.2",
-    "ajv": "^6.12.2",
+    "ajv": "^6.12.3",
     "angular-notifier": "^6.0.2",
     "aspnet-prerendering": "^3.0.1",
     "bootstrap": "^4.4.1",

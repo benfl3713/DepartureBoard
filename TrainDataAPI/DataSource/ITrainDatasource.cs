@@ -16,13 +16,15 @@ namespace TrainDataAPI
         public string platform;
         public int count;
         public bool includeNonPassenger;
+        public string toCrsCode;
 
-        public LiveDeparturesRequest(string stationCode = null, string platform = null, int count = 6, bool includeNonPassenger = false)
+        public LiveDeparturesRequest(string stationCode = null, string platform = null, int count = 6, bool includeNonPassenger = false, string toCrsCode = null)
         {
             this.stationCode = stationCode;
             this.platform = platform;
             this.count = count;
             this.includeNonPassenger = includeNonPassenger;
+            this.toCrsCode = toCrsCode;
         }
     };
 }

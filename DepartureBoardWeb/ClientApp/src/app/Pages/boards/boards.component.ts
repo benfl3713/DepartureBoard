@@ -38,6 +38,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
   showClock: boolean = true;
   showStationName: boolean = false;
   stationName;
+  toCrsCode;
   previousData;
   @Input() public displays: number = 6;
   public platform: string;
@@ -89,6 +90,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
     }
 
     this.stationCode = this.route.snapshot.paramMap.get("station") ?? this.stationCode;
+    this.toCrsCode = this.route.snapshot.paramMap.get("toCrsCode");
 
     if (localStorage.getItem("settings_mainboard_showStationName")) {
       this.showStationName =
@@ -159,7 +161,9 @@ export class BoardsComponent implements OnInit, OnDestroy {
         this.stationCode,
         this.displays,
         this.useArrivals,
-        this.platform
+        this.platform,
+        null,
+        this.toCrsCode
       )
       .subscribe(
         (response) => {

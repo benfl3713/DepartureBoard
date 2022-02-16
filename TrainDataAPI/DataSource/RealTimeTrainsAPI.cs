@@ -24,7 +24,7 @@ namespace TrainDataAPI
                 }
             }
 
-            List<Departure> departures = GetDepartures(request.stationCode, request.count, request.platform);
+            List<Departure> departures = GetDepartures(request.stationCode, request.count, request.platform, request.toCrsCode);
 
             if (ConfigService.UseCaching && ConfigService.CachePeriod > 0)
             {
@@ -39,7 +39,7 @@ namespace TrainDataAPI
 
         public List<Departure> GetLiveArrivals(LiveDeparturesRequest request)
         {
-            return GetDepartures(request.stationCode, request.count, request.platform, true);
+            return GetDepartures(request.stationCode, request.count, request.platform, request.toCrsCode, true);
         }
 
         public List<StationStop> GetStationStops(string url, LiveDeparturesRequest apiRequest)
@@ -59,11 +59,15 @@ namespace TrainDataAPI
             }
         }
 
-        private List<Departure> GetDepartures(string stationCode, int count, string platform, bool getArrivals = false)
+        private List<Departure> GetDepartures(string stationCode, int count, string platform, string toCrsCode, bool getArrivals = false)
         {
             try
             {
                 string url = $"https://api.rtt.io/api/v1/json/search/{stationCode.ToUpper()}";
+
+                if (!string.IsNullOrEmpty(toCrsCode))
+                    url += $"/to/{toCrsCode}";
+                
                 if (getArrivals)
                     url += "/arrivals";
                 var client = new RestClient(url);

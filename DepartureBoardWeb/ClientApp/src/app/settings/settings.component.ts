@@ -1,3 +1,4 @@
+import { switchMap } from 'rxjs/operators';
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl } from "@angular/forms";
 import { ThemeService } from "../Services/ThemeService";
@@ -5,6 +6,7 @@ import { GoogleAnalyticsEventsService } from "../Services/google.analytics";
 import { NotifierService } from "angular-notifier";
 import { GlobalEvents } from "../GlobalEvents";
 import { ActivatedRoute } from "@angular/router";
+import { of } from 'rxjs';
 
 @Component({
   selector: "app-component-settings",
@@ -99,10 +101,8 @@ export class SettingsComponent implements OnInit {
   }
 
   CheckUrlRoute(){
-    if(this.route.children.length != 1)return;
-
-    this.route.children[0].paramMap.subscribe(u => {
-      if (!u.has("type")) return;
+    this.route.url.pipe(switchMap(() => this.route.firstChild?.paramMap ?? of(null))).subscribe(u => {
+      if (!u || !u.has("type")) return;
 
 
       switch (u.get("type")) {

@@ -1,7 +1,10 @@
 steps:
   - label: Test DepartureBoard API
     command: |
-      snap install dotnet-sdk --classic --channel=3.1 &&
-      snap alias dotnet-sdk.dotnet dotnet &&
+      wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb &&
+      pkg -i packages-microsoft-prod.deb &&
+      apt update &&
+      apt install apt-transport-https &&
+      apt install dotnet-sdk-3.1 &&
       dotnet build --configuration Release &&
       dotnet test

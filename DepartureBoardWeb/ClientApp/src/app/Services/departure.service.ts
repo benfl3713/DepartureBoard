@@ -16,7 +16,8 @@ export class DepartureService {
     displays: number,
     useArrivals: boolean,
     platform: string = null,
-    dataSource: string = null
+    dataSource: string = null,
+    toCrsCode: string = null
   ): Observable<Departure[]> {
     const params: any = {
       stationCode,
@@ -31,6 +32,9 @@ export class DepartureService {
     }
     if (dataSource) {
       params.dataSource = dataSource;
+    }
+    if (toCrsCode){
+      params.toCrsCode = toCrsCode;
     }
 
     if (localStorage.getItem("settings_general_includeNonPassengerServices") === "true") {
@@ -50,7 +54,8 @@ export class DepartureService {
   GetSingleboardDepartures(
     stationCode: string,
     useArrivals: boolean,
-    platform: string = null
+    platform: string = null,
+    toCrsCode: string = null
   ): Observable<SingleBoardResponse> {
     let url =
       environment.apiBaseUrl +
@@ -74,6 +79,10 @@ export class DepartureService {
 
     if (localStorage.getItem("settings_general_includeNonPassengerServices") === "true") {
       params.includeNonPassengerServices = true;
+    }
+
+    if (toCrsCode) {
+      params.toCrsCode = toCrsCode;
     }
 
     return this.http.get<SingleBoardResponse>(url, {

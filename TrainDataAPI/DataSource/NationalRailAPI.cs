@@ -21,7 +21,7 @@ namespace TrainDataAPI
                 : (ushort)150;
 
             StationBoard2 arrivalsResponse = _client.GetArrivalBoardByCRS(_accessToken, numRows,
-                request.stationCode, DateTime.Now, MAX_TIME_WINDOW, null, FilterType.to, null, null,
+                request.stationCode, DateTime.Now, MAX_TIME_WINDOW, request.toCrsCode, FilterType.to, null, null,
                 request.includeNonPassenger);
 
             List<Departure> departures = DeserialiseDepartures(arrivalsResponse);
@@ -40,7 +40,7 @@ namespace TrainDataAPI
                 : (ushort)150;
 
             StationBoard2 departuresResponse = _client.GetDepartureBoardByCRS(_accessToken, numRows,
-                request.stationCode, DateTime.Now, MAX_TIME_WINDOW, null, FilterType.to, null, null,
+                request.stationCode, DateTime.Now, MAX_TIME_WINDOW, request.toCrsCode, FilterType.to, null, null,
                 request.includeNonPassenger);
 
             List<Departure> departures = DeserialiseDepartures(departuresResponse);

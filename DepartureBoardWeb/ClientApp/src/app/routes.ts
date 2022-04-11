@@ -53,22 +53,42 @@ export const ROUTES: Route[] = [
   },
   //Boards
   {
+      path: "arrivals/:station/to/:toCrsCode/:displays",
+      component: BoardsComponent,
+      pathMatch: "full",
+  },
+  {
     path: "arrivals/:station/:displays",
     component: BoardsComponent,
     pathMatch: "full",
   },
   {
-    path: "arrivals/:station",
+      path: "arrivals/:station",
+      component: BoardsComponent,
+      pathMatch: "full",
+  },
+  {
+    path: "arrivals/:station/to/:toCrsCode",
     component: BoardsComponent,
     pathMatch: "full",
   },
   {
-    path: "singleboard/arrivals/:station",
+      path: "singleboard/arrivals/:station",
+      component: SingleBoard,
+      pathMatch: "full",
+  },
+  {
+    path: "singleboard/arrivals/:station/to/:toCrsCode",
     component: SingleBoard,
     pathMatch: "full",
   },
   {
-    path: "singleboard/:station",
+      path: "singleboard/:station",
+      component: SingleBoard,
+      pathMatch: "full",
+  },
+  {
+    path: "singleboard/:station/to/:toCrsCode",
     component: SingleBoard,
     pathMatch: "full",
   },
@@ -94,7 +114,17 @@ export const ROUTES: Route[] = [
   },
   { path: ":station", component: BoardsComponent, pathMatch: "full" },
   {
-    path: ":station/:displays",
+      path: ":station/:displays",
+      component: BoardsComponent,
+      pathMatch: "full",
+  },
+  {
+    path: ":station/to/:toCrsCode",
+    component: BoardsComponent,
+    pathMatch: "full",
+  },
+  {
+    path: ":station/to/:toCrsCode/:displays",
     component: BoardsComponent,
     pathMatch: "full",
   },

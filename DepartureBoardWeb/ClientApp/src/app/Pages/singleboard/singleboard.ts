@@ -27,6 +27,7 @@ export class SingleBoard implements OnDestroy, OnInit {
   @Input() stationCode: string;
   @Input() positionAbsolute: boolean = true;
   platform: string;
+  toCrsCode: string;
   time = new Date();
   refresher;
   noBoardsDisplay: boolean = false;
@@ -87,6 +88,7 @@ export class SingleBoard implements OnDestroy, OnInit {
     this.route.params.subscribe(() => {
       this.route.queryParams.subscribe((queryParams) => {
         this.stationCode = this.route.snapshot.paramMap.get("station") ?? this.stationCode;
+        this.toCrsCode = this.route.snapshot.paramMap.get("toCrsCode");
 
         if(!this.stationCode){
           return;
@@ -176,7 +178,8 @@ export class SingleBoard implements OnDestroy, OnInit {
       .GetSingleboardDepartures(
         this.stationCode,
         this.useArrivals,
-        this.platform
+        this.platform,
+        this.toCrsCode
       )
       .subscribe(
         (response) => {

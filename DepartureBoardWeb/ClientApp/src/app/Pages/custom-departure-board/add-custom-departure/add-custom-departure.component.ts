@@ -28,7 +28,7 @@ export class AddCustomDepartureComponent {
     hideExpired: new FormControl(true, [Validators.required]),
   });
   file: File;
-
+  error = '';
   isValidData = true;
 
   constructor(
@@ -118,6 +118,7 @@ export class AddCustomDepartureComponent {
     var ajv = new Ajv({ schemaId: "auto" });
     var validate = ajv.compile(require("./departure.schema.json"));
     var valid = validate(this.data);
+    this.error = ajv.errorsText(validate.errors);
     if (valid == false) {
       if (showError == true) {
         this.notifierService.notify("error", "Cannot Save: Invalid Data");

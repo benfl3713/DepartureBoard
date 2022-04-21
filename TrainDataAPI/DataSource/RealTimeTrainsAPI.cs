@@ -189,23 +189,27 @@ namespace TrainDataAPI
                 Console.WriteLine(ex);
             }
 
-            for (int i = 1; i < stops.Count; i++)
-            {
-                if (stops[i].AimedDeparture.TimeOfDay < stops[i - 1].AimedDeparture.TimeOfDay)
-                {
-                    for (int j = i; j < stops.Count; j++)
-                    {
-                        stops[i].AimedDeparture = stops[j].AimedDeparture.AddDays(1);
-                        if(stops[i].ExpectedDeparture != null)
-                            stops[i].ExpectedDeparture = stops[j].ExpectedDeparture.Value.AddDays(1);
-                    }
-
-                    break;
-                }
-            }
-
+            FixStopDates(ref stops);
             stops.Sort((s1, s2) => s1.AimedDeparture.CompareTo(s2.AimedDeparture));
             return stops;
+        }
+
+        private static void FixStopDates(ref List<StationStop> stops)
+        {
+            for (int i = 1; i < stops.Count; i++)
+            {
+                if (stops[i].AimedDeparture.TimeOfDay >= stops[i - 1].AimedDeparture.TimeOfDay)
+                    continue;
+
+                for (int j = i; j < stops.Count; j++)
+                {
+                    stops[i].AimedDeparture = stops[j].AimedDeparture.AddDays(1);
+                    if (stops[i].ExpectedDeparture != null)
+                        stops[i].ExpectedDeparture = stops[j].ExpectedDeparture?.AddDays(1);
+                }
+
+                break;
+            }
         }
 
         private class RealTimeTrainsResponse

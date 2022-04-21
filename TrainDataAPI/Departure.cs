@@ -68,7 +68,7 @@ namespace TrainDataAPI
             List<StationStop> toRemove = new List<StationStop>();
             foreach (StationStop stop in _stops)
             {
-                if (stop.StationCode != StationCode)
+                if (stop.StationCode != StationCode || stop.AimedDeparture < AimedDeparture)
                 {
                     toRemove.Add(stop);
                 }

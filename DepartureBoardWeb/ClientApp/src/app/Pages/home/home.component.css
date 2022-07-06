@@ -86,8 +86,9 @@ a {
   color: #fff;
 }
 
-/* #how-to-use {
-  background-color: #ff9729;
+#how-to-use {
+  background:linear-gradient(135deg, #ff9729 0%,#da4606 100%);
   border-radius: 50px;
-} */
-
+  max-width: 1500px;
+  margin: auto;
+}

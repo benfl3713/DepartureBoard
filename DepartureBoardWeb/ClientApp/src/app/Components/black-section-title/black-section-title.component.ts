@@ -8,8 +8,8 @@ import {Component, Input, OnInit} from '@angular/core';
 export class BlackSectionTitleComponent implements OnInit {
 
   @Input() title: any;
-
   @Input() subtitle: any;
+  @Input() icon: string;
   constructor() { }
 
   ngOnInit() {

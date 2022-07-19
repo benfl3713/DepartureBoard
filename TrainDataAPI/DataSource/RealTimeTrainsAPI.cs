@@ -222,12 +222,10 @@ namespace TrainDataAPI
             {
                 public string name { get; set; }
                 public string crs { get; set; }
-                public string tiploc { get; set; }
             }
 
             public class Origin
             {
-                public string tiploc { get; set; }
                 public string description { get; set; }
                 public string workingTime { get; set; }
                 public string publicTime { get; set; }
@@ -235,7 +233,6 @@ namespace TrainDataAPI
 
             public class Destination
             {
-                public string tiploc { get; set; }
                 public string description { get; set; }
                 public string workingTime { get; set; }
                 public string publicTime { get; set; }
@@ -244,7 +241,6 @@ namespace TrainDataAPI
             public class LocationDetail
             {
                 public bool realtimeActivated { get; set; }
-                public string tiploc { get; set; }
                 public string crs { get; set; }
                 public string description { get; set; }
                 public string gbttBookedArrival { get; set; }
@@ -296,7 +292,6 @@ namespace TrainDataAPI
 
             public class Origin
             {
-                public string tiploc { get; set; }
                 public string description { get; set; }
                 public string workingTime { get; set; }
                 public string publicTime { get; set; }
@@ -304,7 +299,6 @@ namespace TrainDataAPI
 
             public class Destination
             {
-                public string tiploc { get; set; }
                 public string description { get; set; }
                 public string workingTime { get; set; }
                 public string publicTime { get; set; }
@@ -312,7 +306,6 @@ namespace TrainDataAPI
 
             public class Location
             {
-                public string tiploc { get; set; }
                 public string crs { get; set; }
                 public string description { get; set; }
                 public string gbttBookedDeparture { get; set; }

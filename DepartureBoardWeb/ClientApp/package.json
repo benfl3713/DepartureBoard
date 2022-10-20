@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "echo Starting... && ng serve --verbose",
+    "start": "echo Starting... && ng serve",
     "build": "ng build",
     "build:ssr": "ng run DepartureBoardWeb:server:dev",
     "build:prod": "ng build --configuration production",
@@ -11,7 +11,10 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "dev": "ng serve --port 5005"
+    "dev": "ng serve --port 5005",
+    "cypress:open": "cypress open",
+    "cy:run": "cypress run",
+    "cypress:test": "start-server-and-test start http://localhost:4200 cy:run"
   },
   "private": true,
   "dependencies": {
@@ -30,21 +33,20 @@
     "@angular/router": "12.0.3",
     "@angular/service-worker": "^12.0.3",
     "@benfl3713/angular-components": "0.0.2",
-    "@popperjs/core": "^2.11.2",
+    "@popperjs/core": "^2.11.6",
     "ajv": "^6.12.2",
     "angular-notifier": "^6.0.2",
     "aspnet-prerendering": "^3.0.1",
-    "bootstrap": "^4.4.1",
+    "bootstrap": "^5.2.2",
     "core-js": "^3.6.5",
     "dynamic-marquee": "^1.2.2",
     "firebase": "^7.14.3",
-    "jquery": "3.5.0",
+    "jquery": "^3.6.1",
     "logrocket": "^1.0.7",
     "ngx-cookie-service": "^3.0.4",
     "ngx-device-detector": "^1.4.2",
     "ngx-skeleton-loader": "^4.0.0",
     "oidc-client": "^1.10.1",
-    "popper.js": "^1.16.1",
     "rxjs": "^6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.4"
@@ -58,6 +60,7 @@
     "@types/jasminewd2": "~2.0.8",
     "@types/node": "^12.11.1",
     "codelyzer": "^6.0.0",
+    "cypress": "^10.10.0",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~6.3.3",
@@ -65,6 +68,7 @@
     "karma-coverage-istanbul-reporter": "~3.0.2",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
+    "start-server-and-test": "^1.14.0",
     "typescript": "4.2.4"
   },
   "optionalDependencies": {

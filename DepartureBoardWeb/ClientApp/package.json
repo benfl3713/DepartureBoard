@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "ngcc": "ngcc",
     "start": "echo Starting... && ng serve",
     "build": "ng build",
     "build:ssr": "ng run DepartureBoardWeb:server:dev",

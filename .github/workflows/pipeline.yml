@@ -26,10 +26,15 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
+          build: npm run ngcc
           start: npm start
           wait-on: 'http://localhost:4200'
           browser: chrome
+          record: true
           working-directory: ./DepartureBoardWeb/ClientApp
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   Build_Docker_Image:
     name: Build Docker Image

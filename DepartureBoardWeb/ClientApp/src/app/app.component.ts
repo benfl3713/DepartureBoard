@@ -68,6 +68,17 @@ export class AppComponent implements AfterViewChecked {
           90
         );
         window.location.reload();
+      } else if (
+        params.acceptCookies == "false" &&
+        !cookieService.check("CookieScriptConsent")
+      ) {
+        console.log("Auto Rejected Cookie Policy");
+        this.setCookie(
+          "CookieScriptConsent",
+          `{"action":"reject","categories":"[]"}`,
+          90
+        );
+        window.location.reload();
       }
 
       if (params.token) {
@@ -154,6 +165,7 @@ export class AppComponent implements AfterViewChecked {
       "/buses",
       "/settings",
       "/search",
+      "/contact",
     ];
 
     this.showSplashScreen = splashUrls.includes(location.pathname);

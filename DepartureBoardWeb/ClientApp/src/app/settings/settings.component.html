@@ -3,19 +3,19 @@
   <div class="col-md-2 col-sm-12">
     <mat-list id="setting-types" class="orange">
       <mat-action-list>
-        <button mat-list-item (click)="settingsType = 'general'" class="orange">
+        <button mat-list-item [routerLink]="['/settings/general']" class="orange">
           General
         </button>
-        <button mat-list-item (click)="settingsType = 'mainboard'" class="orange">
+        <button mat-list-item [routerLink]="['/settings/mainboard']" class="orange">
           Main Board
         </button>
-        <button mat-list-item (click)="settingsType = 'singleboard'" class="orange">
+        <button mat-list-item [routerLink]="['/settings/singleboard']" class="orange">
           Single Board
         </button>
-        <button mat-list-item (click)="settingsType = 'departureadmin'" class="orange">
+        <button mat-list-item [routerLink]="['/settings/departureadmin']" class="orange">
           Departure Admin
         </button>
-        <button mat-list-item (click)="settingsType = 'buses'" class="orange">
+        <button mat-list-item [routerLink]="['/settings/buses']" class="orange">
           Buses
           <span style="margin-left: 15px" class="badge badge-pill badge-primary">Beta</span>
         </button>

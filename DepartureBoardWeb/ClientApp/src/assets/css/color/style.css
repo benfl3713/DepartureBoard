@@ -1,0 +1,9 @@
+
+/* Style.css import */
+@import "../../../assets/css/style.css";
+
+/* Responsive css import */
+@import "../../../assets/css/responsive.css";
+
+/*Color css*/
+@import "../../../assets/css/color/color.scss";

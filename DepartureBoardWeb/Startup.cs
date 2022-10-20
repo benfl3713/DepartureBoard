@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using AspNetCoreRateLimit;
-using DepartureBoardCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -9,8 +6,6 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Moesif.Middleware;
-using Prometheus;
 using Serilog;
 using Serilog.Events;
 using TrainDataAPI.Services;
@@ -74,11 +69,11 @@ namespace DepartureBoardWeb
 			services.AddMemoryCache();
 			services.AddResponseCaching();
 
-            services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting"));
-            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
-            services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
-            services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
-            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+            // services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting"));
+            // services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+            // services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+            // services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+            // services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 
             services.Configure<KestrelServerOptions>(options => { options.AllowSynchronousIO = true; });
 
@@ -96,12 +91,6 @@ namespace DepartureBoardWeb
 			{
 				app.UseExceptionHandler("/Error");
 			}
-
-			if (!string.IsNullOrEmpty(ConfigService.MoesifApplicationId))
-				app.UseMiddleware<MoesifMiddleware>(new Dictionary<string, object>
-				{
-					{ "ApplicationId", ConfigService.MoesifApplicationId }
-				});
 
 			var provider = new FileExtensionContentTypeProvider();
 			provider.Mappings[".webmanifest"] = "application/manifest+json";
@@ -155,28 +144,6 @@ namespace DepartureBoardWeb
 					}
 				});
 			}
-		}
-
-		private void ConfigurePrometheusMetrics(IApplicationBuilder app)
-		{
-			if (!ConfigService.PrometheusPort.HasValue)
-				return;
-
-			// Custom Metrics to count requests for each endpoint and the method
-			var counter = Metrics.CreateCounter("departureboard_path_counter", "Counts requests to the API endpoints", new CounterConfiguration
-			{
-				LabelNames = new[] {"method", "endpoint", "status"}
-			});
-			app.Use((context, next) =>
-			{
-				if (!context.Request.Path.StartsWithSegments("/api"))
-					return next();
-				counter.WithLabels(context.Request.Method, context.Request.Path, context.Response.StatusCode.ToString()).Inc();
-				return next();
-			});
-
-			app.UseMetricServer();
-			//app.UseHttpMetrics();
 		}
 	}
 }

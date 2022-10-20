@@ -1,71 +1,22 @@
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.navbar-brand {
+  display: inline-flex;
 }
 
-.nav-link {
-  color: var(--mainColour) !important;
+#header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
-.sidenav-container {
-  margin-top: 5px;
+.main {
+  margin-top: 110px;
 }
 
-.sidenav {
-  width: 300px;
-  border: 0;
+.navbar-toggler {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+  border: 0 !important;
+  color: #fff !important
 }
 
-/*Pads Icons*/
-.sidenav .fa,
-.sidenav .fas,
-.sidenav .far {
-  padding-right: 10px;
-}
-
-.logo {
-  height: 20px;
-  margin-right: 10px;
-}
-
-.navbar {
-  height: 35px;
-}
-
-.page-selected {
-  font-weight: bold;
-}
-
-.dropdown-toggle {
-  background-color: black;
-  color: var(--mainColour);
-  border: 0;
-}
-
-.bottom-nav-items {
-  position: absolute;
-  bottom: 0px;
-  width: 100%;
-}
-
-.container-fluid {
-  padding-right: 0;
-  padding-left: 10px;
-  background-color: var(--backgroundColour);
-}
-
-.mat-drawer-container {
-  background-color: var(--backgroundColour);
-}
-
-#nav-hamburger-button {
-  z-index: 20;
-}
-
-.scrollbar {
-  width: 0 !important;
-}

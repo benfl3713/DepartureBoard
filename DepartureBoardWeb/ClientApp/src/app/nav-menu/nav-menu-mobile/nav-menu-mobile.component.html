@@ -1,0 +1,84 @@
+<mat-sidenav
+  #drawer
+  id="sidenav"
+  class="sidenav"
+  fixedInViewport
+  mode="over"
+  opened="true"
+>
+  <mat-toolbar
+    class="clickable"
+    color="primary"
+    [routerLink]="['/']"
+    (click)="PageChanged()"
+    ><img class="logo" src="favicon.png" height="30" /><span
+      >Led Departure Board</span
+    ></mat-toolbar
+  >
+  <mat-nav-list>
+    <div *ngFor="let item of menuItems">
+      <a
+        *ngIf="item.is_link && !item.use_href"
+        mat-list-item
+        class="menu-item"
+        [routerLink]="item.href"
+        [routerLinkActive]="['link-active']"
+        (click)="PageChanged()"
+        ><span [class]="item.icon"></span> {{ item.title }}</a
+      >
+      <a
+        *ngIf="item.is_link && item.use_href"
+        mat-list-item
+        class="menu-item"
+        [href]="item.href"
+        target="_blank"
+        (click)="PageChanged()"
+        ><span [class]="item.icon"></span> {{item.title}}</a
+      >
+
+      <div *ngIf="item.child">
+        <div *ngFor="let child of item.child">
+          <a
+          *ngIf="child.is_link && !child.use_href"
+          mat-list-item
+          class="menu-item"
+          [routerLink]="child.href"
+          [routerLinkActive]="['link-active']"
+          (click)="PageChanged()"
+          ><span [class]="child.icon"></span> {{ child.title }}</a
+        >
+        <a
+          *ngIf="child.is_link && child.use_href"
+          mat-list-item
+          class="menu-item"
+          [href]="child.href"
+          target="_blank"
+          (click)="PageChanged()"
+          ><span [class]="item.icon"></span> {{child.title}}</a
+        >
+        </div>
+      </div>
+    </div>
+  </mat-nav-list>
+  <mat-nav-list class="bottom-nav-items">
+    <!--To put items at the bottom of the navigation bar-->
+    <a [routerLinkActive]="['page-selected']">
+      <div *ngIf="auth.user$ | async; then authenticated; else guest"></div>
+      <ng-template #guest
+        ><a class="clickable" mat-list-item (click)="auth.googleSignin()"
+          ><span class="far fa-user"></span> Login</a
+        ></ng-template
+      >
+      <ng-template #authenticated
+        ><a
+          *ngIf="auth.user$ | async as user"
+          class="clickable"
+          mat-list-item
+          (click)="auth.signOut()"
+          ><img [src]="user.photoURL" height="20" style="margin-right: 10px" />
+          Log Out</a
+        ></ng-template
+      >
+    </a>
+  </mat-nav-list>
+</mat-sidenav>

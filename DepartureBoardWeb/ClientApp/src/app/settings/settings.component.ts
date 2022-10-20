@@ -1,9 +1,12 @@
+import { switchMap } from 'rxjs/operators';
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl } from "@angular/forms";
 import { ThemeService } from "../Services/ThemeService";
 import { GoogleAnalyticsEventsService } from "../Services/google.analytics";
 import { NotifierService } from "angular-notifier";
 import { GlobalEvents } from "../GlobalEvents";
+import { ActivatedRoute } from "@angular/router";
+import { of } from 'rxjs';
 
 @Component({
   selector: "app-component-settings",
@@ -16,12 +19,14 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     public googleAnalyticsEventsService: GoogleAnalyticsEventsService,
-    private notifierService: NotifierService
+    private notifierService: NotifierService,
+    private route: ActivatedRoute
   ) {
     document.title = "Settings - Departure Board";
   }
   ngOnInit(): void {
     this.Load();
+    this.CheckUrlRoute();
   }
 
   settingsForm = new FormGroup({
@@ -93,5 +98,30 @@ export class SettingsComponent implements OnInit {
     this.Save(false);
     this.Load();
     this.googleAnalyticsEventsService.emitEvent("Settings", "ResetAll");
+  }
+
+  CheckUrlRoute(){
+    this.route.url.pipe(switchMap(() => this.route.firstChild?.paramMap ?? of(null))).subscribe(u => {
+      if (!u || !u.has("type")) return;
+
+
+      switch (u.get("type")) {
+        case "general":
+          this.settingsType = "general";
+          break;
+        case "mainboard":
+          this.settingsType = "mainboard";
+          break;
+        case "singleboard":
+          this.settingsType = "singleboard";
+          break;
+        case "departureadmin":
+          this.settingsType = "departureadmin";
+          break;
+        case "buses":
+          this.settingsType = "buses";
+          break;
+      }
+    });
   }
 }

@@ -165,6 +165,7 @@ export class AppComponent implements AfterViewChecked {
       "/buses",
       "/settings",
       "/search",
+      "/contact",
     ];
 
     this.showSplashScreen = splashUrls.includes(location.pathname);

@@ -1,108 +1,78 @@
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
-import { Component } from "@angular/core";
+import {
+  AfterViewInit,
+  Component,
+  ComponentFactoryResolver,
+  ElementRef,
+  ViewChild,
+  ViewContainerRef,
+} from "@angular/core";
 import { FormControl } from "@angular/forms";
-import { Router } from "@angular/router";
-import { tuiReplayedValueChangesFrom } from "@taiga-ui/cdk";
 import { Observable } from "rxjs";
-import { catchError, debounceTime, map, shareReplay, switchMap, tap } from "rxjs/operators";
-import { Station } from "src/app/models/station.model";
-import { StationLookupService } from "src/app/Services/station-lookup.service";
-import { ToggleConfig } from "src/app/ToggleConfig";
+import {
+  map,
+  shareReplay,
+  switchMap,
+} from "rxjs/operators";
+import { Departure } from "src/app/models/departure.model";
+import { DepartureService } from "src/app/Services/departure.service";
+import { Board } from "../boards/board/board";
 
 @Component({
   selector: "app-home",
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.css"],
 })
-export class HomeComponent {
-  constructor(private stationLookupService: StationLookupService, private router: Router, private breakpointObserver: BreakpointObserver) {}
+export class HomeComponent implements AfterViewInit {
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    private resolver: ComponentFactoryResolver,
+    private departureService: DepartureService
+  ) {}
 
   searchForm = new FormControl();
   isLoadingStations = false;
+  hasLoadedExampleBoard = false;
 
-  async Search() {
-    const value: string = this.searchForm.value;
-    let station = null;
-    if(value.split('-').length >= 2) {
-      let code = value.trim().split('-').slice(-1)[0]?.trim();
-      console.debug("Found Code", code);
-      code = code.replace(/\(|\)/g, '');
-      station = await this.attemptCalculate(code)
-    }
+  @ViewChild("board", { read: ViewContainerRef, static: true })
+  board: ViewContainerRef;
 
-    if (!station) {
-      station = await this.attemptCalculate(value);
-    }
+  @ViewChild('searchView') searchView: ElementRef;
 
-    if (!station) {
-      alert("Invalid Station");
-      return;
-    }
-
-    let prefixUrl = "";
-
-    if (station.country == "DE") {
-      prefixUrl = "germany/";
-    }
-
-    this.router.navigate([prefixUrl, station.code]);
+  ngAfterViewInit(): void {
+    this.startExampleBoard();
   }
 
-  async attemptCalculate(value): Promise<Station> {
-    const stations = await this.stationLookupService
-      .Search(value)
-      .toPromise();
+  startExampleBoard() {
+    this.isHandset$
+      .pipe(
+        switchMap((isHandset) => {
+          return !isHandset
+            ? this.departureService.GetDepartures(
+                "EUS",
+                1,
+                false,
+                null,
+                "REALTIMETRAINS"
+              )
+            : new Observable<Departure[]>(obs => obs.complete());
+        })
+      )
+      ?.subscribe(
+        (data) => {
+          this.hasLoadedExampleBoard = true;
+          if (!data && data.length == 0) {
+            return;
+          }
 
-    const codeMatchedStations = stations.filter(
-      (s) => s.code.toUpperCase() === value.toUpperCase()
-    );
-    if (codeMatchedStations.length > 0) {
-      return codeMatchedStations[0];
-    }
-
-    const nameMatchedStations = stations.filter(
-      (s) => s.name.toLowerCase() === value.toLowerCase()
-    );
-    if (nameMatchedStations.length > 0) {
-      return nameMatchedStations[0];
-    }
-
-    return null;
-  }
-
-  readonly stationLookup$ = tuiReplayedValueChangesFrom<string>(
-    this.searchForm
-  ).pipe(
-    debounceTime(200),
-    switchMap((value: string) => {
-      ToggleConfig.LoadingBar.next(true);
-      this.isLoadingStations = true;
-
-      return this.stationLookupService
-        .Search(value)
-        .pipe(map((s) => s.splice(0, 10)))
-        .pipe(tap(() => {
-          ToggleConfig.LoadingBar.next(false);
-          this.isLoadingStations = false;
-        }))
-        .pipe(catchError((error) => {
-          ToggleConfig.LoadingBar.next(false);
-          this.isLoadingStations = false;
-          throw error;
-        }))
-    })
-  );
-
-  getCountryLogo(station: Station): string{
-    if(station.country == "GB"){
-      return "assets/images/flags/united-kingdom.svg";
-    }
-
-    if(station.country == "DE") {
-      return "assets/images/flags/germany.webp";
-    }
-
-    return null;
+          this.board.clear();
+          const factory = this.resolver.resolveComponentFactory(Board);
+          const componentRef = this.board.createComponent(factory);
+          componentRef.instance.Initilize(data[0]);
+        },
+        null,
+        () => (this.hasLoadedExampleBoard = true)
+      );
   }
 
   isHandset$: Observable<boolean> = this.breakpointObserver
@@ -111,4 +81,11 @@ export class HomeComponent {
       map((result) => result.matches),
       shareReplay()
     );
+
+    scrollToSearch() {
+      const elementRect = this.searchView.nativeElement.getBoundingClientRect();
+      const absoluteElementTop = elementRect.top + window.pageYOffset;
+      const middle = absoluteElementTop - (elementRect.height / 2);
+      window.scrollTo(0, middle); // have a window object reference in your component
+    }
 }

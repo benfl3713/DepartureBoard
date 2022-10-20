@@ -4,6 +4,15 @@
     <template #Boards></template>
   </tr>
 </table>
+
+<table *ngIf="isLoading">
+  <tr class="row">
+    <div *ngFor="let i of ' '.repeat(displays).split('')">
+      <app-board-skeleton></app-board-skeleton>
+    </div>
+  </tr>
+</table>
+
 <h1 class="led centre-text" *ngIf="noBoardsDisplay">
   No Departures Found for {{ stationName || stationCode }}
 </h1>

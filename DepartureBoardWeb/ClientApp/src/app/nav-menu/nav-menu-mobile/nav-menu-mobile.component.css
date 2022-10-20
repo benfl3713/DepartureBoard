@@ -1,0 +1,18 @@
+.sidenav {
+  z-index: 999999;
+  width: 300px;
+  border: 0;
+}
+
+/*Pads Icons*/
+.sidenav .fa,
+.sidenav .fas,
+.sidenav .far {
+  padding-right: 10px;
+}
+
+.bottom-nav-items {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+}

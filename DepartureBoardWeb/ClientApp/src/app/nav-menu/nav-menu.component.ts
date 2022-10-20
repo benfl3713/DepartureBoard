@@ -31,6 +31,7 @@ export class NavMenuComponent {
     "/",
     "/search",
     "/examples",
+    "/contact",
     "/settings",
     "/settings/general",
     "/settings/mainboard",

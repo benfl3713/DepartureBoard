@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1
       - name: Build Departure Board with dotnet
@@ -15,12 +15,33 @@ jobs:
       - name: Run Departure Board Unit Tests
         run: dotnet test
 
+  cypress-run:
+    name: Cypress Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v4
+        with:
+          build: npm run ngcc
+          start: npm start
+          wait-on: 'http://localhost:4200'
+          browser: chrome
+          record: true
+          working-directory: ./DepartureBoardWeb/ClientApp
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   Build_Docker_Image:
     name: Build Docker Image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
         with:
           fetch-depth: 1
 
@@ -53,7 +74,7 @@ jobs:
     if: github.ref == 'refs/heads/master'
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
       - name: Create Lambda Zip
         run: |

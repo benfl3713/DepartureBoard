@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using AspNetCoreRateLimit;
-using DepartureBoardCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -9,8 +6,6 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Moesif.Middleware;
-using Prometheus;
 using Serilog;
 using Serilog.Events;
 using TrainDataAPI.Services;
@@ -96,12 +91,6 @@ namespace DepartureBoardWeb
 			{
 				app.UseExceptionHandler("/Error");
 			}
-
-			if (!string.IsNullOrEmpty(ConfigService.MoesifApplicationId))
-				app.UseMiddleware<MoesifMiddleware>(new Dictionary<string, object>
-				{
-					{ "ApplicationId", ConfigService.MoesifApplicationId }
-				});
 
 			var provider = new FileExtensionContentTypeProvider();
 			provider.Mappings[".webmanifest"] = "application/manifest+json";

@@ -1,0 +1,70 @@
+/*
+
+Template: Sofbox - Responsive Software Landing Page
+Author: iqonicthemes.in
+Version: 3.0
+Design and Developed by: iqonicthemes.in
+
+NOTE: This is main stylesheet of template, This file contains the styling for the actual Template. Please do not change anything here! write in a custom.css file if required!
+
+*/
+
+
+*::-moz-selection { background:  var(--primary-theme-color); color: var(--white-theme-color); text-shadow: none; }
+::-moz-selection { background:  var(--primary-theme-color); color: var(--white-theme-color); text-shadow: none; }
+::selection { background:  var(--primary-theme-color); color: var(--white-theme-color); text-shadow: none; }
+
+header.menu-sticky.header-white { background: var(--white-theme-color); }
+
+.button-blue-shadow, .button-line-shadow { -webkit-box-shadow: 0px 20px 70px -16px rgba(var(--primary-rgb-theme-color), 1); -moz-box-shadow: 0px 20px 70px -16px rgba(var(--primary-rgb-theme-color), 1); box-shadow: 0px 20px 70px -16px rgba(var(--primary-rgb-theme-color), 1); }
+
+/*---------------------------------------------------------------------
+                            Text Color
+-----------------------------------------------------------------------*/
+.iq-banner .iq-video, .iq-works-box .step, .iq-banner-04 .iq-video, .iq-border-block .step, .iq-footer .iq-contact .contact-block i, .iq-footer .post-blog, a:hover, .iq-footer .footer-menu li a:hover, .iq-footer .iq-copyright a:hover, .iq-font-blue, .iq-amazing-tab .nav.nav-tabs li a.active i, .iq-amazing-tab .nav.nav-tabs li a.active:hover i, .iq-amazing-tab .nav.nav-tabs li a.active:focus i, .iq-amazing-tab .nav.nav-tabs li a:hover, .iq-amazing-tab .nav.nav-tabs li a:hover i, .iq-fancy-box .iq-icon, .counter-info .iq-video, .iq-progress-bar-text, .iq-blog-detail a:hover, .iq-blog-detail .blog-title a:hover h5, .iq-footer-box .iq-icon i, .footer-copyright a, .iq-breadcrumb .breadcrumb li.active, .iq-breadcrumb .breadcrumb li a:hover, .pagination .page-link, .iq-sidebar-widget .iq-widget-search i, .iq-widget-menu ul li a span:hover, .iq-widget-menu ul ul li a span:hover, .iq-sidebar-widget .iq-recent-post .media-body>a:hover, .iq-tags li a:hover, .iq-widget-archives li a:hover, .iq-comment-list .iq-comment-metadata i, header.header-fancy .navbar .navbar-nav .nav-item a:hover, header.header-fancy .navbar .navbar-nav .nav-item a:focus, header.header-fancy .navbar .navbar-nav .nav-item a.active, header.header-fancy .navbar .navbar-nav .nav-item a.active:focus, header.header-fancy .navbar .navbar-nav .nav-item a.active:hover, header.header-white .navbar .navbar-nav .nav-item a:hover, header.header-white .navbar .navbar-nav .nav-item a:focus, header.header-white .navbar .navbar-nav .nav-item a.active, header.header-white .navbar .navbar-nav .nav-item a.active:focus, header.header-white .navbar .navbar-nav .nav-item a.active:hover, .iq-works-box.round-icon .icon-bg i, .terms-of-service .btn.btn-link, .iq-amazing-tab .nav.nav-tabs li a.active1 i, .iq-amazing-tab .nav.nav-tabs li a.active1:hover i, .iq-banner-03 .iq-video, .iq-fancy-box-1 .iq-icon, .our-pricing-1 .iq-icon, .pricing-price, .iq-fancy-box-1 .iq-icon, .our-pricing-1 .iq-icon, .pricing-price, .iq-fancy-box-1 .iq-icon, .our-pricing-1 .iq-icon, .pricing-price, .iq-fancy-box-1 .iq-icon, .our-pricing-1 .iq-icon, .pricing-price, header.dark .navbar .navbar-nav .nav-item a:hover, header.dark .navbar .navbar-nav .nav-item a:focus, header.dark .navbar .navbar-nav .nav-item a.active, header.dark .navbar .navbar-nav .nav-item a.active:focus, header.dark .navbar .navbar-nav .nav-item a.active:hover, .button-line, .button-line-shadow, .iq-works-box a, .iq-team-1 .iq-star i, .iq-footer3 .iq-contact i, .iq-footer3 .menu li a:hover, .iq-footer3 .link li a:hover, .iq-footer3 .iq-copyright a, .heading-title-2 i, .heading-title-2.text-left i, .iq-feature-01:hover .icon-box, .iq-banner-09 i,  .iq-footer3 .support li a:hover, .iq-footer3 .build li a:hover, .iq-footer3 .about li a:hover, .iq-footer3 .contact li a:hover,header.new-header .navbar .navbar-nav .nav-item a.active,.iq-footerr .iq-contact i,.iq-footerr .iq-copyright a,.media.service-box i,header.new-header .navbar .navbar-nav .nav-item a:hover, header.new-header .navbar .navbar-nav .nav-item a:focus, header.new-header .navbar .navbar-nav .nav-item a.active, header.new-header .navbar .navbar-nav .nav-item a.active:focus, header.new-header .navbar .navbar-nav .nav-item a.active:hover,.iq-team2 .team-social li a,.iq-feature1 .iq-blog i,.iq-shadow i,header.header-one .navbar .navbar-nav .nav-item a:hover,  header.header-one .navbar .navbar-nav .nav-item a.active, header.header-one .navbar .navbar-nav .nav-item a.active:focus, header.header-one .navbar .navbar-nav .nav-item a.active:hover,header.header-one .header-top-bar ul li a:hover,.iq-footerr .office-day li a:hover,.iq-footerr .menu li a:hover,.iq-footerr .link li a:hover,.iq-feature10 .left i, .iq-works-boxes .icons i { color: var(--primary-theme-color); }
+
+/*---------------------------------------------------------------------
+                          Background Color
+-----------------------------------------------------------------------*/
+.heading-title .title:before, .button, .iq-border-block:before, .iq-border-block:after, .iq-border-block > .border-box:before, .iq-border-block > .border-box:after, .iq-amazing-tab .nav.nav-tabs li a:before, .iq-amazing-tab .nav.nav-tabs li a:hover:before, .iq-amazing-tab .nav.nav-tabs li a:focus:before, .iq-fancy-box:hover .iq-icon, .iq-client:before, .owl-carousel .owl-nav i:hover, .iq-team .share ul li a:hover, .iq-accordion .accordion-title:before, .owl-carousel.owl-theme .owl-dots .owl-dot.active span, .owl-carousel.owl-theme .owl-dots .owl-dot:hover span, .owl-carousel.arrow-1 .owl-nav i:hover, .button.bt-white:hover, .button.bt-white:focus, .info-share li a:hover, .iq-error h6, .pagination .page-item.active .page-link, .blue-bg, header.header-white .navbar .navbar-nav .nav-item a::before, .iq-feature .step-number, .our-pricing-1 .iq-icon:hover, header.dark .navbar .navbar-nav .nav-item a::before, .button-line:hover, .button-line:focus, .button-blue-shadow, .button-line-shadow:hover, .button-line-shadow:focus, .iq-banner-07 .iq-video, .ani-moving-square, .ani-hamburger .hamburger-line, .iq-footer4 .iq-media-blog li a,header.new-header .navbar .navbar-nav .nav-item a::before,.animation-shap .shap-bg, .animationnew-shap .shap-bg,.iq-feature10:hover .left i, .iq-pricing.active .price-title { background: var(--primary-theme-color); }
+
+header.menu-sticky, #back-to-top .top:hover,.iq-fancy-boxnew.text-center .icon-bg,.iq-tab .nav-pills .nav-link.active, .iq-tab .nav-pills .show>.nav-link, .iq-tab .nav-pills .nav-link:hover { background: rgba(var(--primary-rgb-theme-color), 0.9); }
+#great-screenshots .nav-link.active,#great-screenshots .nav-link:hover { background: rgba(125, 210, 243, 0.7) !important;color: #ffffff; }
+#great-screenshots .nav-link.active1 { background: rgba(125, 210, 243, 0.7) !important;color: #ffffff; }
+
+/*---------------------------------------------------------------------
+                       Background Gradient
+---------------------------------------------------------------------*/
+.iq-over-blue-10:before { background: rgba(var(--primary-rgb-theme-color), 0.1); }
+.iq-over-blue-20:before, .iq-banner-07 .iq-waves .waves { background: rgba(var(--primary-rgb-theme-color), 0.2); }
+.iq-over-blue-30:before { background: rgba(var(--primary-rgb-theme-color), 0.3); }
+.iq-over-blue-40:before { background: rgba(var(--primary-rgb-theme-color), 0.4); }
+.iq-over-blue-50:before { background: rgba(var(--primary-rgb-theme-color), 0.5); }
+.iq-over-blue-60:before { background: rgba(var(--primary-rgb-theme-color), 0.6); }
+.iq-over-blue-70:before { background: rgba(var(--primary-rgb-theme-color), 0.7); }
+.iq-over-blue-80:before { background: rgba(var(--primary-rgb-theme-color), 0.8); }
+.iq-over-blue-85:before { background: rgba(var(--primary-rgb-theme-color), 0.85); }
+.iq-over-blue-90:before { background: rgba(var(--primary-rgb-theme-color), 0.9); }
+.iq-over-blue-95:before { background: rgba(var(--primary-rgb-theme-color), 0.95); }
+.iq-works-box:hover, .iq-works-box.round-icon:hover .icon-bg { -webkit-box-shadow: 8px 12px 22px 0px rgba(0,0,0,0.1);
+-moz-box-shadow: 8px 12px 22px 0px rgba(0,0,0,0.1);
+box-shadow: 8px 12px 22px 0px rgba(0,0,0,0.1); }
+.iq-team .iq-team-img:before { background: rgba(var(--primary-rgb-theme-color), 0); background: -moz-linear-gradient(top, rgba(var(--primary-rgb-theme-color), 0) 0%, rgba(var(--primary-rgb-theme-color), 1) 100%); background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(var(--primary-rgb-theme-color), 0)), color-stop(100%, rgba(var(--primary-rgb-theme-color), 1))); background: -webkit-linear-gradient(top, rgba(var(--primary-rgb-theme-color), 0) 0%, rgba(var(--primary-rgb-theme-color), 1) 100%); background: -o-linear-gradient(top, rgba(var(--primary-rgb-theme-color), 0) 0%, rgba(var(--primary-rgb-theme-color), 1) 100%); background: -ms-linear-gradient(top, rgba(var(--primary-rgb-theme-color), 0) 0%, rgba(var(--primary-rgb-theme-color), 1) 100%); background: linear-gradient(to bottom, rgba(var(--primary-rgb-theme-color), 0) 0%, rgba(var(--primary-rgb-theme-color), 1) 100%); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='var(--primary-theme-color)', endColorstr='var(--primary-theme-color)', GradientType=0); }
+svg #followPath { stroke: var(--primary-theme-color); }
+svg #airplain { fill: var(--primary-theme-color); }
+.ani-cube .cube-face.face_top, .ani-cube .cube-face.face_bottom { background: var(--primary-theme-color); }
+.ani-cube .cube-face.face_front, .ani-cube .cube-face.face_back { background-color: var(--primary-theme-color); }
+.ani-cube .cube-face.face_right, .ani-cube .cube-face.face_left,.iq-tab .nav-pills .nav-link.active, .iq-tab .nav-pills .show>.nav-link, .iq-tab .nav-pills .nav-link:hover  { background-color: var(--primary-theme-color); }
+
+/* Background Gradient Black */
+.iq-over-Gradient-top { background: rgba(255, 93, 177, 0); background: -moz-linear-gradient(top, rgba(255, 93, 177, 0) 0%, rgba(255, 93, 177, 0) 0%, rgba(204, 122, 195, 0) 28%, rgba(var(--primary-rgb-theme-color), 0.8) 100%); background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255, 93, 177, 0)), color-stop(0%, rgba(255, 93, 177, 0)), color-stop(28%, rgba(204, 122, 195, 0)), color-stop(100%, rgba(var(--primary-rgb-theme-color), 0.8))); background: -webkit-linear-gradient(top, rgba(255, 93, 177, 0) 0%, rgba(255, 93, 177, 0) 0%, rgba(204, 122, 195, 0) 28%, rgba(var(--primary-rgb-theme-color), 0.8) 100%); background: -o-linear-gradient(top, rgba(255, 93, 177, 0) 0%, rgba(255, 93, 177, 0) 0%, rgba(204, 122, 195, 0) 28%, rgba(var(--primary-rgb-theme-color), 0.8) 100%); background: -ms-linear-gradient(top, rgba(255, 93, 177, 0) 0%, rgba(255, 93, 177, 0) 0%, rgba(204, 122, 195, 0) 28%, rgba(var(--primary-rgb-theme-color), 0.8) 100%); background: linear-gradient(to bottom, rgba(255, 93, 177, 0) 0%, rgba(255, 93, 177, 0) 0%, rgba(204, 122, 195, 0) 28%, rgba(var(--primary-rgb-theme-color), 0.8) 100%); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5db1', endColorstr='#4ac4f3', GradientType=0); }
+.ani-cube.ani-cube-3 .cube-face.face_front, .ani-cube.ani-cube-3 .cube-face.face_right, .ani-cube.ani-cube-3 .cube-face.face_left, .ani-cube.ani-cube-3 .cube-face.face_top, .ani-cube.ani-cube-3 .cube-face.face_bottom, .ani-cube.ani-cube-3 .cube-face.face_back { box-shadow: inset 0 0 0 2px var(--primary-theme-color), 0 0 0 2px var(--primary-theme-color); }
+
+/*---------------------------------------------------------------------
+                      		 Boder Color
+---------------------------------------------------------------------*/
+.iq-objects .iq-objects-04, .iq-objects-software .iq-objects-03, .iq-objects-asked .iq-objects-03, .owl-carousel.owl-theme .owl-dots .owl-dot.active span, .owl-carousel.owl-theme .owl-dots .owl-dot:hover span, .contact-form .section-field input:focus, .contact-form .section-field.textarea textarea:focus, .info-share li a:hover, .pagination .page-item.active .page-link, .iq-sidebar-widget .iq-widget-search input:focus, .iq-tags li a:hover, .blockquote, blockquote, .iq-pricing-01:hover, .iq-pricing-01.active, .iq-pricing-01:hover, .iq-pricing-01.active, .button-line, .iq-banner-02.style-1 .banner-objects .banner-objects-02, .button-line-shadow, .iq-team-1 .team-blog, .ani-cube.ani-cube-3 .cube-face.face_front, .ani-cube.ani-cube-3 .cube-face.face_right, .ani-cube.ani-cube-3 .cube-face.face_left, .ani-cube.ani-cube-3 .cube-face.face_top, .ani-cube.ani-cube-3 .cube-face.face_bottom, .ani-cube.ani-cube-3 .cube-face.face_back, .iq-footer4 .iq-media-blog li a,.iq-pricing-5:hover, .iq-pricing-5.active,.iq-objectsnew .iq-objects-04,.iq-objects-softwarenew .iq-objects-03,.iq-feature1 .iq-blog:hover, .iq-feature1 .iq-blog.active,.iq-feature10:hover .left, .iq-feature10:hover .left i { border-color: var(--primary-theme-color); }
+
+@media(max-width:992px) {
+  .navbar-light .navbar-toggler span, header .navbar .navbar-nav .nav-item a:hover, header .navbar .navbar-nav .nav-item a:focus, header .navbar .navbar-nav .nav-item a.active, header .navbar .navbar-nav .nav-item a.active:focus, header .navbar .navbar-nav .nav-item a.active:hover { color: var(--primary-theme-color); }
+}

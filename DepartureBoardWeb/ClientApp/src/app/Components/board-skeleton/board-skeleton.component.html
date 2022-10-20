@@ -1,0 +1,40 @@
+<div class="board led col">
+  <div class="board-row">
+    <h5 class="inline-row led"> <ngx-skeleton-loader animation="pulse" [theme]="{'width.em': 4, 'background-color': 'grey'}"></ngx-skeleton-loader></h5>
+    <h5
+      class="inline-row status"
+    >
+      <ngx-skeleton-loader animation="pulse" [theme]="{'width.em': 9, 'background-color': 'grey'}"></ngx-skeleton-loader>
+    </h5>
+  </div>
+  <div class="board-row">
+    <div
+      class="inline-row no-wrap destination"
+    >
+      <ngx-skeleton-loader animation="pulse" [theme]="{'width.em': 9, 'background-color': 'grey'}"></ngx-skeleton-loader>
+    </div>
+  </div>
+  <table class="stops">
+    <tr class="board-row">
+      <ngx-skeleton-loader animation="pulse" [theme]="{'width.em': 12, 'background-color': 'grey'}"></ngx-skeleton-loader>
+    </tr>
+    <tr class="board-row stop-row" *ngFor="let stop of ' '.repeat(6).split(''); let odd = odd">
+      <td class="inline-row stopname-cell stopname stop">
+        <ngx-skeleton-loader animation="pulse" [theme]="{'width.em': odd ? 4 : 7, 'background-color': 'grey'}"></ngx-skeleton-loader>
+      </td>
+      <td class="inline-row status stop stop-time">
+        <ngx-skeleton-loader animation="pulse" [theme]="{'width.em': 3, 'background-color': 'grey'}"></ngx-skeleton-loader>
+      </td>
+    </tr>
+  </table>
+  <div class="board-row bottom">
+    <div
+    >
+      <ngx-skeleton-loader animation="pulse" [theme]="{'width.em': 5, 'background-color': 'grey'}"></ngx-skeleton-loader>
+    </div>
+    <div class="operator">
+      <ngx-skeleton-loader animation="pulse" [theme]="{'width.em': 8, 'background-color': 'grey'}"></ngx-skeleton-loader>
+    </div>
+  </div>
+</div>
+

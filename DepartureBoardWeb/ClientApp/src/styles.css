@@ -1,9 +1,18 @@
+@import url('assets/sofbox-sass-black/css/flaticon.css');
+@import url('assets/sofbox-sass-black/css/typography.css');
+@import url('assets/sofbox-sass-black/revslider/css/settings.css');
+@import url('assets/sofbox-sass-black/css/style.css');
+@import url('assets/sofbox-sass-black/css/responsive.css');
+.main-bg{
+  background-size: cover;
+}
+
 /* You can add global styles to this file, and also import other style files */
 html,
 body {
   background-color: var(--backgroundColour);
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  /* scrollbar-width: none; */
+  /* -ms-overflow-style: none; */
 }
 
 body {
@@ -14,13 +23,17 @@ html {
   overflow-x: hidden;
 }
 
-tui-root > tui-scroll-controls {
+/* tui-root > tui-scroll-controls {
   display: none;
-}
+} */
 
 .led {
   font-family: "LEDBOARD3", Arial, sans-serif;
   color: var(--mainColour);
+}
+
+.led-font {
+  font-family: "LEDBOARD3", Arial, sans-serif;
 }
 
 .led-bold {
@@ -101,8 +114,4 @@ tui-root > tui-scroll-controls {
   border: 2px solid var(--mainColour);
   border-color: var(--mainColour);
   color: var(--mainColour);
-}
-
-::-webkit-scrollbar {
-  display: none; /* Chrome Safari */
 }

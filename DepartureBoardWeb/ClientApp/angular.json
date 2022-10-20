@@ -31,8 +31,6 @@
               }
             ],
             "styles": [
-              "node_modules/@taiga-ui/core/styles/taiga-ui-global.less",
-              "node_modules/@taiga-ui/core/styles/taiga-ui-theme.less",
               "src/default.theme.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css",
@@ -45,7 +43,11 @@
               "./node_modules/angular-notifier/styles/types/type-success.css",
               "./node_modules/angular-notifier/styles/types/type-warning.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "./node_modules/popper.js/dist/popper.min.js",
+              "./node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "./node_modules/jquery/dist/jquery.min.js"
+            ],
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,

@@ -1,228 +1,139 @@
-<header>
-  <mat-sidenav-container
-    class="sidenav-container"
-    fullscreen
-    style="overflow: hidden"
-  >
-    <nav
-      id="top-navbar"
-      class="navbar navbar-expand navbar-dark"
-      *ngIf="showHome"
-    >
-      <div class="container-fluid">
-        <button
-          id="nav-hamburger-button"
-          type="button"
-          aria-label="Toggle sidenav"
-          mat-icon-button
-          (click)="sidenav.toggle()"
-          *ngIf="isHandset$ | async"
-        >
+<!--=================================
+      Header -->
+<header id="header" *ngIf="showHome">
+  <div class="container-fluid">
+    <div class="row align-items-center">
+      <div class="col-lg-12">
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <a class="navbar-brand" [routerLink]="['/']">
+            <img src="favicon.png" alt="logo" height="50" width="50" />
+            <h4 style="padding-top: 7px; padding-left: 15px">
+              Led Departure Board
+            </h4>
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            aria-controls="navbarNavDropdown"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+            (click)="toggleMobileMenu()"
+          >
           <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-        </button>
-        <ul class="navbar-nav" *ngIf="!(isHandset$ | async)">
-          <li
-            class="nav-item"
-            [routerLinkActive]="['page-selected']"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            <a class="nav-link text-light" [routerLink]="['/']"
-              ><span class="fas fa-home"></span> Home</a
-            >
-          </li>
-          <li class="nav-item" [routerLinkActive]="['page-selected']">
-            <a class="nav-link text-light" [routerLink]="['/search']"
-              ><span class="fas fa-search"></span> Search</a
-            >
-          </li>
-          <li class="nav-item" [routerLinkActive]="['page-selected']">
-            <a class="nav-link text-light" [routerLink]="['/examples']"
-              ><span class="far fa-lightbulb"></span> Examples</a
-            >
-          </li>
-          <li class="nav-item" [routerLinkActive]="['page-selected']">
-            <a class="nav-link text-light" [routerLink]="['/custom-departures']"
-              ><span class="fas fa-chalkboard"></span> Custom Departures</a
-            >
-          </li>
-          <li class="nav-item" [routerLinkActive]="['page-selected']" *ngIf="isBetaEnabled">
-            <a class="nav-link text-light" [routerLink]="['/buses']"
-              ><span class="fas fa-bus"></span> Buses</a
-            >
-          </li>
-          <li class="nav-item" [routerLinkActive]="['page-selected']">
-            <a class="nav-link text-light" [routerLink]="['/about']"
-              ><span class="fas fa-info"></span> About</a
-            >
-          </li>
-          <li class="nav-item" [routerLinkActive]="['page-selected']">
-            <a
-              class="nav-link text-light"
-              href="https://docs.leddepartureboard.com/"
-              target="_blank"
-              ><span class="far fa-file"></span> Docs
-            </a>
-          </li>
-        </ul>
-        <ul class="navbar-nav order-3 ml-auto" *ngIf="!(isHandset$ | async)">
-          <li class="nav-item">
-            <a
-              class="nav-link text-light"
-              href="https://admin.leddepartureboard.com"
-              target="_blank"
-              ><span class="fas fa-external-link-alt"></span> Admin</a
-            >
-          </li>
-          <li class="nav-item" [routerLinkActive]="['page-selected']">
-            <a class="nav-link text-light" [routerLink]="['/settings']"
-              ><span class="fas fa-cogs"></span> Settings</a
-            >
-          </li>
-          <li class="nav-item" [routerLinkActive]="['page-selected']">
-            <div
-              *ngIf="auth.user$ | async; then authenticated; else guest"
-            ></div>
-            <ng-template #guest
-              ><a
-                class="nav-link text-light clickable"
-                (click)="auth.googleSignin()"
-                ><span class="far fa-user"></span> Login</a
-              ></ng-template
-            >
-            <ng-template #authenticated
-              ><a
-                *ngIf="auth.user$ | async as user"
-                class="nav-link text-light clickable"
-                (click)="auth.signOut()"
-                ><img [src]="user.photoURL" height="20" /> Log Out</a
-              ></ng-template
-            >
-          </li>
-        </ul>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ml-auto">
+              <ng-container *ngFor="let option of navItemList">
+                <li
+                  class="nav-item dropdown"
+                  *ngIf="option.children; else elseBlock"
+                >
+                  <a
+                    [matMenuTriggerFor]="menu"
+                    class="nav-link dropdown-toggle clickable"
+                    id="navbarDropdown"
+                    role="button"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <span [class]="option.icon" *ngIf="option.icon"></span>
+                    {{ option.title }}
+                  </a>
+
+                  <mat-menu #menu>
+                    <div *ngFor="let child of option.child">
+                      <a mat-menu-item *ngIf="!child.use_href; else elseChild" [routerLink]="child.href"
+                        ><span
+                          style="padding-right: 10px"
+                          [class]="child.icon"
+                          *ngIf="child.icon"
+                        ></span
+                        >{{ child.title }}
+                        <span
+                          *ngIf="child.isBeta"
+                          class="badge badge-pill badge-primary"
+                          >Beta</span
+                        ></a
+                      >
+                      <ng-template #elseChild>
+                        <a mat-menu-item [href]="child.href" target="_blank"
+                        ><span
+                          style="padding-right: 10px"
+                          [class]="child.icon"
+                          *ngIf="child.icon"
+                        ></span
+                        >{{ child.title }}
+                        <span
+                          *ngIf="child.isBeta"
+                          class="badge badge-pill badge-primary"
+                          >Beta</span
+                        ></a
+                      >
+                      </ng-template>
+                    </div>
+                  </mat-menu>
+                </li>
+                <ng-template #elseBlock>
+                  <li class="nav-item menu-item">
+                    <a
+                      class="nav-link"
+                      (click)="jumpTo(option.href); (false)"
+                      [href]="option.href"
+                      *ngIf="!option.is_link"
+                    >
+                      <span [class]="option.icon" *ngIf="option.icon"></span>
+                      {{ option.title }}
+                    </a>
+                    <a
+                      class="nav-link"
+                      [routerLink]="option.href"
+                      *ngIf="option.is_link && !option.use_href"
+                      routerLinkActive="active"
+                      [routerLinkActiveOptions]="
+                        option.routerLinkActiveOptions || {}
+                      "
+                    >
+                      <span [class]="option.icon" *ngIf="option.icon"></span>
+                      {{ option.title }}
+                    </a>
+                    <a
+                      class="nav-link"
+                      [href]="option.href"
+                      *ngIf="option.is_link && option.use_href === true"
+                      target="_blank"
+                    >
+                      <span [class]="option.icon" *ngIf="option.icon"></span>
+                      {{ option.title }}
+                    </a>
+                  </li>
+                </ng-template>
+              </ng-container>
+              <li class="nav-item menu-item">
+                <a
+                  class="nav-link clickable"
+                  (click)="auth.signOut()"
+                  *ngIf="auth.user$ | async as user; else guest"
+                >
+                  <img [src]="user.photoURL" height="20" />
+                  Logout
+                </a>
+                <ng-template #guest>
+                  <a class="nav-link clickable" (click)="auth.googleSignin()">
+                    Login
+                  </a>
+                </ng-template>
+              </li>
+            </ul>
+          </div>
+        </nav>
       </div>
-    </nav>
-
-    <mat-sidenav
-      #drawer
-      id="sidenav"
-      class="sidenav"
-      fixedInViewport
-      mode="over"
-      opened="false"
-    >
-      <mat-toolbar
-        class="clickable"
-        color="primary"
-        [routerLink]="['/']"
-        (click)="PageChanged()"
-        ><img class="logo" src="favicon.png" /><span
-          >Led Departure Board</span
-        ></mat-toolbar
-      >
-      <mat-nav-list>
-        <a
-          mat-list-item
-          class="menu-item"
-          [routerLink]="['/']"
-          [routerLinkActive]="['link-active']"
-          (click)="PageChanged()"
-          ><span class="fas fa-home"></span> Home</a
-        >
-        <a
-          mat-list-item
-          class="menu-item"
-          [routerLink]="['/search']"
-          [routerLinkActive]="['link-active']"
-          (click)="PageChanged()"
-          ><span class="fas fa-search"></span> Search</a
-        >
-        <a
-          mat-list-item
-          class="menu-item"
-          [routerLink]="['/examples']"
-          [routerLinkActive]="['link-active']"
-          (click)="PageChanged()"
-          ><span class="far fa-lightbulb"></span> Examples</a
-        >
-        <a
-          mat-list-item
-          class="menu-item"
-          [routerLink]="['/custom-departures']"
-          [routerLinkActive]="['link-active']"
-          (click)="PageChanged()"
-          ><span class="fas fa-chalkboard"></span> Custom Departures</a
-        >
-        <a
-          *ngIf="isBetaEnabled"
-          mat-list-item
-          class="menu-item"
-          [routerLink]="['/buses']"
-          [routerLinkActive]="['link-active']"
-          (click)="PageChanged()"
-          ><span class="fas fa-bus"></span> Buses</a
-        >
-        <a
-          mat-list-item
-          class="menu-item"
-          [routerLink]="['/about']"
-          [routerLinkActive]="['link-active']"
-          (click)="PageChanged()"
-          ><span class="fas fa-info"></span> About</a
-        >
-        <a
-          mat-list-item
-          class="menu-item"
-          href="https://docs.leddepartureboard.com"
-          target="_blank"
-          (click)="PageChanged()"
-          ><span class="far fa-file"></span> Docs</a
-        >
-      </mat-nav-list>
-      <mat-nav-list class="bottom-nav-items">
-        <!--To put items at the bottom of the navigation bar-->
-        <a
-          mat-list-item
-          class="menu-item"
-          href="https://admin.leddepartureboard.com"
-          target="_blank"
-          (click)="PageChanged()"
-          ><span class="fas fa-external-link-alt"></span> Admin</a
-        >
-        <a
-          mat-list-item
-          class="menu-item"
-          [routerLink]="['/settings']"
-          [routerLinkActive]="['link-active']"
-          (click)="PageChanged()"
-          ><span class="fas fa-cogs"></span> Settings</a
-        >
-        <a [routerLinkActive]="['page-selected']">
-          <div *ngIf="auth.user$ | async; then authenticated; else guest"></div>
-          <ng-template #guest
-            ><a class="clickable" mat-list-item (click)="auth.googleSignin()"
-              ><span class="far fa-user"></span> Login</a
-            ></ng-template
-          >
-          <ng-template #authenticated
-            ><a
-              *ngIf="auth.user$ | async as user"
-              class="clickable"
-              mat-list-item
-              (click)="auth.signOut()"
-              ><img
-                [src]="user.photoURL"
-                height="20"
-                style="margin-right: 10px"
-              />
-              Log Out</a
-            ></ng-template
-          >
-        </a>
-      </mat-nav-list>
-    </mat-sidenav>
-
-    <div class="container-fluid">
-      <router-outlet></router-outlet>
     </div>
-  </mat-sidenav-container>
+  </div>
+  <app-nav-menu-mobile *ngIf="showMobileMenu" (pageClicked)="toggleMobileMenu()"></app-nav-menu-mobile>
 </header>
+<!--=================================
+      Header -->
+<div [ngClass]="{ main: showHome }" style="overflow-x: hidden; padding-left: 10px">
+  <router-outlet></router-outlet>
+</div>

@@ -27,8 +27,10 @@
     <label class="led">Options: </label>
     <mat-checkbox formControlName="hideExpired">Hide Expired Departures</mat-checkbox>
     <br />
-    <button id="btnSave" type="submit" mat-button [disabled]="!addForm.valid || (!file && !data) || isValidData == true" (click)="Save()">
+    <button id="btnSave" type="submit" mat-button [disabled]="!addForm.valid || (!file && !data) || isValidData === false" (click)="Save()">
       Save
     </button>
   </form>
 </div>
+
+<mat-error *ngIf="error && error !== 'No errors'">{{error}}</mat-error>

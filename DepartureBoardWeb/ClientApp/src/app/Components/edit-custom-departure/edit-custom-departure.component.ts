@@ -106,6 +106,8 @@ export class EditCustomDepartureComponent implements OnInit, DoCheck {
       } else {
         this.data.departures[departureIndex].stops.push(result);
       }
+
+      this.changedData();
     });
   }
 }

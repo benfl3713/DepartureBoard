@@ -1,7 +1,7 @@
 <br />
 <mat-form-field *ngIf="data">
   <mat-label>Station Name</mat-label>
-  <input matInput type="text" [(ngModel)]="data.stationName" />
+  <input matInput type="text" [(ngModel)]="data.stationName" (ngModelChange)="changedData()" />
 </mat-form-field>
 
 <mat-accordion multi>
@@ -19,22 +19,22 @@
 
     <mat-form-field>
       <mat-label>Platform</mat-label>
-      <input matInput type="text" [(ngModel)]="departure.platform" required />
+      <input matInput type="text" [(ngModel)]="departure.platform" (ngModelChange)="changedData()" required />
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Aimed Departure</mat-label>
-      <input matInput type="datetime-local" [(ngModel)]="departure.aimedDeparture" required />
+      <input matInput type="datetime-local" [(ngModel)]="departure.aimedDeparture" (ngModelChange)="changedData()" required />
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Expected Departure</mat-label>
-      <input matInput type="datetime-local" [(ngModel)]="departure.expectedDeparture" required />
+      <input matInput type="datetime-local" [(ngModel)]="departure.expectedDeparture" (ngModelChange)="changedData()" required />
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Operator Name</mat-label>
-      <input matInput type="text" [(ngModel)]="departure.operatorName" required />
+      <input matInput type="text" [(ngModel)]="departure.operatorName" (ngModelChange)="changedData()" required />
     </mat-form-field>
 
     <mat-label>Stops</mat-label>

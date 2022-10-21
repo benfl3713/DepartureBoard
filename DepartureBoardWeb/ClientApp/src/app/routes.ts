@@ -1,4 +1,5 @@
 import { Route } from "@angular/router";
+import { ContactUsComponent } from "./Components/contact-us/contact-us.component";
 import { AboutDepartureboardAdminComponent } from "./Pages/about/about-departureboard-admin/about-departureboard-admin.component";
 import { AboutComponent } from "./Pages/about/about.component";
 import { BoardsComponent } from "./Pages/boards/boards.component";
@@ -14,6 +15,7 @@ import { SettingsComponent } from "./settings/settings.component";
 export const ROUTES: Route[] = [
   { path: "", component: HomeComponent, pathMatch: "full" },
   { path: "search", component: SearchComponent, pathMatch: "full" },
+  { path: "contact", component: ContactUsComponent, pathMatch: "full" },
   { path: "examples", component: ExamplesComponent, pathMatch: "full" },
   {
     path: "settings",
@@ -35,7 +37,7 @@ export const ROUTES: Route[] = [
     component: AddCustomDepartureComponent,
     pathMatch: "full",
   },
-  //About
+  // About
   {
     path: "about",
     component: AboutComponent,
@@ -51,7 +53,7 @@ export const ROUTES: Route[] = [
     component: AboutDepartureboardAdminComponent,
     pathMatch: "full",
   },
-  //Boards
+  // Boards
   {
       path: "arrivals/:station/to/:toCrsCode/:displays",
       component: BoardsComponent,

@@ -60,6 +60,7 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+          CYPRESS_INSTALL_BINARY: 0
 
       - name: Docker Publish
         if: github.ref == 'refs/heads/master'

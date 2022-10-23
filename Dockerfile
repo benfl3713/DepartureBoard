@@ -5,9 +5,10 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
 	&& apt install -y nodejs
 WORKDIR /app
 
-# Copy csproj and restore
+ENV CYPRESS_INSTALL_BINARY=0
 ARG RTT_Token=[INSERT_REALTIMETRAINS_TOKEN_HERE]
 
+# Copy csproj and restore
 COPY ./ ./
 WORKDIR /app/DepartureBoardWeb/
 RUN dotnet restore

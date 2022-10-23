@@ -1,0 +1,102 @@
+.board {
+  width: 300px;
+  padding: 10px;
+  height: 450px !important;
+  padding-left: 5px;
+  border: 0;
+  margin: 0;
+}
+
+.stop {
+  height: 25px;
+  font-size: 20px;
+}
+
+div .bottom {
+  position: absolute;
+  bottom: 0px;
+  font-size: 18px;
+}
+
+.destination {
+  font-size: 20px;
+  display: block;
+  margin: 0;
+  width: 300px;
+}
+
+.no-wrap {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stopname {
+  width: 200px;
+  white-space: nowrap;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 20px;
+}
+
+.operator {
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+  width: 250px;
+  text-overflow: ellipsis;
+}
+
+@media only screen and (min-width: 960px) {
+  .board {
+    margin-right: 18px;
+  }
+}
+
+@media only screen and (min-width: 1080px) {
+  .board {
+    margin-right: 20px;
+  }
+}
+
+/* Fill full screen with each board when in portrait mode */
+@media screen and (orientation:portrait) {
+  .board {
+    width: 100vw !important;
+    height: 100vh !important;
+  }
+
+  .stops {
+    width: 100%;
+  }
+
+  .stop, .stopname, .destination, .operator {
+    font-size: 4vh !important;
+    height: auto;
+    width: auto;
+  }
+
+  .stop-time {
+    width: 20%
+  }
+
+  .bottom, h5 {
+    font-size: 4vh !important;
+  }
+
+  .stop-time {
+    white-space: nowrap;
+  }
+
+  .stopname-cell {
+    white-space: nowrap;
+     text-overflow:ellipsis;
+     overflow: hidden;
+     width: 80%;
+  }
+
+  .destination {
+    width: 100%;
+  }
+}

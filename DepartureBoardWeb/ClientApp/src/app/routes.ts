@@ -1,4 +1,5 @@
 import { Route } from "@angular/router";
+import { ContactUsComponent } from "./Components/contact-us/contact-us.component";
 import { AboutDepartureboardAdminComponent } from "./Pages/about/about-departureboard-admin/about-departureboard-admin.component";
 import { AboutComponent } from "./Pages/about/about.component";
 import { BoardsComponent } from "./Pages/boards/boards.component";
@@ -14,40 +15,45 @@ import { SettingsComponent } from "./settings/settings.component";
 export const ROUTES: Route[] = [
   { path: "", component: HomeComponent, pathMatch: "full" },
   { path: "search", component: SearchComponent, pathMatch: "full" },
+  { path: "contact", component: ContactUsComponent, pathMatch: "full" },
   { path: "examples", component: ExamplesComponent, pathMatch: "full" },
-  { path: "settings", component: SettingsComponent, pathMatch: "full" },
   {
-      path: "custom-departures",
-      component: CustomDepartureBoardComponent,
-      pathMatch: "full",
+    path: "settings",
+    component: SettingsComponent,
+    children: [{ path: ":type", component: SettingsComponent }],
   },
   {
-      path: "custom-departures/add",
-      component: AddCustomDepartureComponent,
-      pathMatch: "full",
+    path: "custom-departures",
+    component: CustomDepartureBoardComponent,
+    pathMatch: "full",
   },
   {
-      path: "custom-departures/edit/:id",
-      component: AddCustomDepartureComponent,
-      pathMatch: "full",
-  },
-  //About
-  {
-      path: "about",
-      component: AboutComponent,
-      pathMatch: "full",
+    path: "custom-departures/add",
+    component: AddCustomDepartureComponent,
+    pathMatch: "full",
   },
   {
-      path: "about/custom-departures",
-      component: AboutCustomDepartureComponent,
-      pathMatch: "full",
+    path: "custom-departures/edit/:id",
+    component: AddCustomDepartureComponent,
+    pathMatch: "full",
+  },
+  // About
+  {
+    path: "about",
+    component: AboutComponent,
+    pathMatch: "full",
   },
   {
-      path: "about/departureboard-admin",
-      component: AboutDepartureboardAdminComponent,
-      pathMatch: "full",
+    path: "about/custom-departures",
+    component: AboutCustomDepartureComponent,
+    pathMatch: "full",
   },
-  //Boards
+  {
+    path: "about/departureboard-admin",
+    component: AboutDepartureboardAdminComponent,
+    pathMatch: "full",
+  },
+  // Boards
   {
       path: "arrivals/:station/to/:toCrsCode/:displays",
       component: BoardsComponent,
@@ -89,22 +95,24 @@ export const ROUTES: Route[] = [
     pathMatch: "full",
   },
   {
-      path: "custom-departures/:station",
-      component: BoardsComponent,
-      pathMatch: "full",
+    path: "custom-departures/:station",
+    component: BoardsComponent,
+    pathMatch: "full",
   },
   {
-      path: "custom-departures/:station/:displays",
-      component: BoardsComponent,
-      pathMatch: "full",
+    path: "custom-departures/:station/:displays",
+    component: BoardsComponent,
+    pathMatch: "full",
   },
   {
-      path: "buses",
-      loadChildren: () => import("./Pages/buses/buses/buses.module").then((m) => m.BusesModule),
+    path: "buses",
+    loadChildren: () =>
+      import("./Pages/buses/buses/buses.module").then((m) => m.BusesModule),
   },
   {
-      path: "germany",
-      loadChildren: () => import("./Pages/germany/germany.module").then((m) => m.GermanyModule),
+    path: "germany",
+    loadChildren: () =>
+      import("./Pages/germany/germany.module").then((m) => m.GermanyModule),
   },
   { path: ":station", component: BoardsComponent, pathMatch: "full" },
   {
@@ -123,8 +131,9 @@ export const ROUTES: Route[] = [
     pathMatch: "full",
   },
   {
-      path: "germany",
-      loadChildren: () => import("./Pages/germany/germany.module").then((m) => m.GermanyModule),
+    path: "germany",
+    loadChildren: () =>
+      import("./Pages/germany/germany.module").then((m) => m.GermanyModule),
   },
   { path: "**", redirectTo: "" },
 ];

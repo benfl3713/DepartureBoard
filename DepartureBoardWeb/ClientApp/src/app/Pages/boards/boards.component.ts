@@ -46,6 +46,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
   @ViewChild("Boards", { read: ViewContainerRef, static: true })
   Boards: ViewContainerRef;
   subscriptions: Subscription[] = [];
+  isLoading = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -107,7 +108,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
       this.displays = Number(this.route.snapshot.paramMap.get("displays"));
     } else {
       this.displays = Number(
-        localStorage.getItem("settings_mainboard_count") || 6
+        localStorage.getItem("settings_mainboard_count") || this.displays
       );
     }
 
@@ -142,6 +143,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
         });
     }
     ToggleConfig.LoadingBar.next(true);
+    this.isLoading = true
 
     if (!this.isCustomData) {
       this.GetDepartures();
@@ -168,9 +170,13 @@ export class BoardsComponent implements OnInit, OnDestroy {
       .subscribe(
         (response) => {
           ToggleConfig.LoadingBar.next(false);
+          this.isLoading = false;
           this.ProcessDepartures(response);
         },
-        () => ToggleConfig.LoadingBar.next(false)
+        () => {
+          ToggleConfig.LoadingBar.next(false);
+          this.isLoading = false;
+        }
       );
   }
 
@@ -221,6 +227,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
             .subscribe(
               (departureData: any) => {
                 ToggleConfig.LoadingBar.next(false);
+                this.isLoading = false;
                 console.debug(departureData);
                 const data = departureData.jsonData;
                 this.noBoardsDisplay = !data;
@@ -266,6 +273,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
               },
               (error) => {
                 ToggleConfig.LoadingBar.next(false);
+                this.isLoading = false;
                 console.log(error);
               }
             )

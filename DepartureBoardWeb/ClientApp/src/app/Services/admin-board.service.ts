@@ -87,6 +87,8 @@ export class AdminBoardService {
       showStationName: config.showStationName,
     };
 
+    console.log(this.calculateUrl(config))
+
     if (config.stationCode.key) {
       router.navigate([this.calculateUrlOld(config)], {
         queryParams: queryParams,
@@ -102,11 +104,14 @@ export class AdminBoardService {
   calculateUrl(config): string {
     const arrivals = config.isArrivals === true ? "/arrivals/" : "";
     const boardCount = config.boardCount ? `/${config.boardCount}/` : "";
+    const toStation = config.filterToStation === true && config.toStationCode ? `/to/${config.toStationCode.code}` : "";
+
+
     if (config.boardType == "main") {
-      return `${arrivals}${config.stationCode.code}${boardCount}`;
+      return `${arrivals}${config.stationCode.code}${toStation}${boardCount}`;
     }
     if (config.boardType == "singleboard") {
-      return `singleboard/${arrivals}${config.stationCode.code}`;
+      return `singleboard/${arrivals}${config.stationCode.code}${toStation}`;
     }
 
     return null;

@@ -23,6 +23,9 @@ import { DepartureService } from "src/app/Services/departure.service";
 import { StationLookupService } from "src/app/Services/station-lookup.service";
 import { Departure } from "src/app/models/departure.model";
 import { Subscription } from "rxjs";
+import {Speech} from "../../RAG/Speech";
+import {ServiceStatus} from "../singleboard/singleboard";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: "app-boards",
@@ -56,7 +59,8 @@ export class BoardsComponent implements OnInit, OnDestroy {
     private auth: AuthService,
     private afs: AngularFirestore,
     private departureService: DepartureService,
-    private stationLookupService: StationLookupService
+    private stationLookupService: StationLookupService,
+    private datePipe: DatePipe
   ) {
     setInterval(() => {
       this.time = new Date();
@@ -213,7 +217,28 @@ export class BoardsComponent implements OnInit, OnDestroy {
         console.log(e);
       }
     }
-    this.previousData = data;
+
+    data[0].status = ServiceStatus.ARRIVED;
+
+    this.AnnounceArrivals(data).then(() => this.previousData = data);
+  }
+
+  async AnnounceArrivals(data) {
+    for (let i = 0; i < data.length; i += 1) {
+      try {
+        if (data.length > i + 1 && data[i].status === ServiceStatus.ARRIVED
+          && (this.previousData?.length > i + 1 && this.previousData[i].status !== ServiceStatus.ARRIVED)) {
+          const vox = new Speech(this.datePipe);
+          console.log("speak");
+          const code = await this.stationLookupService.GetStationCodeFromName(data[i].destination).toPromise();
+          data[i].stationCode = code;
+          vox.speak(data[i], {});
+          break;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
   }
 
   GetCustomData() {

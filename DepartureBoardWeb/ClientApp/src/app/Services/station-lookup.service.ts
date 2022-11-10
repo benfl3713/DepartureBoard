@@ -18,6 +18,14 @@ export class StationLookupService {
     );
   }
 
+  GetStationCodeFromName(stationName: string): Observable<string> {
+    return this.http.get<string>(
+      environment.apiBaseUrl +
+      "/api/StationLookup/GetStationCodeFromName?name=" +
+      stationName
+    );
+  }
+
   Search(query: string): Observable<Station[]> {
     return this.http.get<Station[]>(
       environment.apiBaseUrl + "/api/StationLookup/Search?query=" + query ?? ""

@@ -45,10 +45,25 @@ namespace TrainDataAPI
 
             List<Departure> departures = DeserialiseDepartures(departuresResponse);
 
-            if (!string.IsNullOrEmpty(request.platform))
-	            departures = departures.Where(d => d.Platform == request.platform).ToList();
+            departures = FilterPlatforms(request.platform, departures);
 
             return departures.Take(request.count).ToList();
+        }
+
+        private static List<Departure> FilterPlatforms(string platform, List<Departure> departures)
+        {
+            if (string.IsNullOrEmpty(platform))
+                return departures;
+
+            if (platform.Contains(','))
+            {
+                string[] platforms = platform.Split(',');
+                departures = departures.Where(d => platforms.Contains(d.Platform)).ToList();
+            }
+            else
+                departures = departures.Where(d => d.Platform == platform).ToList();
+
+            return departures;
         }
 
         private List<Departure> DeserialiseDepartures(StationBoard2 departuresResponse)

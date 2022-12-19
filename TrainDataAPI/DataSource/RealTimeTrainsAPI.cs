@@ -77,8 +77,7 @@ namespace TrainDataAPI
                 IRestResponse response = client.Execute(request);
                 List<Departure> departures = DeserialiseDepartures(response.Content);
 
-                if (!string.IsNullOrEmpty(platform))
-	                departures = departures.Where(d => d.Platform == platform).ToList();
+                departures = FilterPlatforms(platform, departures);
 
 	            return departures.Take(count).ToList();
             }
@@ -86,6 +85,22 @@ namespace TrainDataAPI
             {
                 return new List<Departure>();
             }
+        }
+
+        private static List<Departure> FilterPlatforms(string platform, List<Departure> departures)
+        {
+            if (string.IsNullOrEmpty(platform))
+                return departures;
+            
+            if (platform.Contains(','))
+            {
+                string[] platforms = platform.Split(',');
+                departures = departures.Where(d => platforms.Contains(d.Platform)).ToList();
+            }
+            else
+                departures = departures.Where(d => d.Platform == platform).ToList();
+            
+            return departures;
         }
 
         private void AddCredendials(ref RestRequest request)

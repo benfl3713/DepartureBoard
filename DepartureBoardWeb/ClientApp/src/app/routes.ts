@@ -95,6 +95,11 @@ export const ROUTES: Route[] = [
     pathMatch: "full",
   },
   {
+    path: "custom-departures/singleboard/:station",
+    component: SingleBoard,
+    pathMatch: "full",
+  },
+  {
     path: "custom-departures/:station",
     component: BoardsComponent,
     pathMatch: "full",

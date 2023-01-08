@@ -17,6 +17,9 @@ import { StationLookupService } from "src/app/Services/station-lookup.service";
 import { Departure } from "src/app/models/departure.model";
 import { SingleBoardResponse } from "src/app/models/singleboard-response.model";
 import { environment } from "src/environments/environment";
+import { AngularFirestore } from "@angular/fire/firestore";
+import { AuthService } from "src/app/Services/auth.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-singleboard",
@@ -31,12 +34,14 @@ export class SingleBoard implements OnDestroy, OnInit {
   time = new Date();
   refresher;
   noBoardsDisplay: boolean = false;
+  isCustomData: boolean = false;
   @Input() showClock: boolean = true;
   @Input() useArrivals: boolean = false;
   @Input() showStationName = false;
   @Input() changeTitle = true;
   stationName;
   nextDepartures: Departure[] = [];
+  subscriptions: Subscription[] = [];
 
   //first
   firstTime: Date;
@@ -55,7 +60,9 @@ export class SingleBoard implements OnDestroy, OnInit {
     private router: Router,
     public googleAnalyticsEventsService: GoogleAnalyticsEventsService,
     private departureService: DepartureService,
-    private stationLookupService: StationLookupService
+    private stationLookupService: StationLookupService,
+    private auth: AuthService,
+    private afs: AngularFirestore
   ) {
     setInterval(() => {
       this.time = new Date();
@@ -69,6 +76,10 @@ export class SingleBoard implements OnDestroy, OnInit {
     ]?.segments;
     if (s && s[1].path && s[1].path.toLowerCase() === "arrivals") {
       this.useArrivals = true;
+    }
+
+    if (s && s[0].path && s[0].path.toLowerCase() == "custom-departures") {
+      this.isCustomData = true;
     }
 
     if (localStorage.getItem("settings_singleboard_showStationName")) {
@@ -119,23 +130,30 @@ export class SingleBoard implements OnDestroy, OnInit {
           " - Departure Board";
         }
 
-        this.stationLookupService
-          .GetStationNameFromCode(this.stationCode)
-          .subscribe((name) => {
-            if(this.changeTitle === true){
-              document.title =
-              name +
-              (this.useArrivals ? " - Arrivals" : " - Departures") +
-              " - Departure Board";
-            }
+        if (this.isCustomData == false) {
+          this.stationLookupService
+            .GetStationNameFromCode(this.stationCode)
+            .subscribe((name) => {
+              if(this.changeTitle === true){
+                document.title =
+                name +
+                (this.useArrivals ? " - Arrivals" : " - Departures") +
+                " - Departure Board";
+              }
 
-            this.stationName = name;
-            if (this.platform) {
-              this.stationName = `${name} (Platform ${this.platform})`;
-            }
-          });
-        this.GetDepartures();
-        this.refresher = setInterval(() => this.GetDepartures(), 10000);
+              this.stationName = name;
+              if (this.platform) {
+                this.stationName = `${name} (Platform ${this.platform})`;
+              }
+            });
+        }
+
+        if (!this.isCustomData) {
+          this.GetDepartures();
+          this.refresher = setInterval(() => this.GetDepartures(), 16000);
+        } else {
+          this.GetCustomData();
+        }
       });
     });
 
@@ -238,6 +256,7 @@ export class SingleBoard implements OnDestroy, OnInit {
 
   ngOnDestroy() {
     clearTimeout(this.refresher);
+    this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
   isNumber(value: string | number): boolean {
@@ -274,6 +293,89 @@ export class SingleBoard implements OnDestroy, OnInit {
     return input.replace(/\w\S*/g, function (txt) {
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
+  }
+
+  GetCustomData() {
+    this.subscriptions.push(
+      this.auth.user$.subscribe((user) => {
+        this.subscriptions.push(
+          this.afs
+            .collection(`customDepartures/${user.uid}/departures`)
+            .doc(this.stationCode)
+            .valueChanges()
+            .subscribe(
+              (departureData: any) => {
+                ToggleConfig.LoadingBar.next(false);
+                console.debug(departureData);
+                const data = departureData.jsonData;
+                this.noBoardsDisplay = !data;
+                this.stationName = data.stationName;
+                document.title =
+                  (data.stationName || this.stationCode) +
+                  " - Departures - Departure Board";
+
+                const departures: any[] = data.departures;
+                let validDepartures: any[] = new Array();
+                // Removes expired departures
+                if (departureData.hideExpired == true || false) {
+                  for (let i = 0; i < departures.length; i++) {
+                    if (
+                      Object(departures)[i]["expectedDeparture"] &&
+                      new Date(Object(departures)[i]["expectedDeparture"]) <
+                        new Date()
+                    ) {
+                      console.log(
+                        `Departure has already gone past date ${
+                          Object(departures)[i]["expectedDeparture"]
+                        } - ${<string>Object(departures)[i]["destination"]}`
+                      );
+                    } else if (
+                      Object(departures)[i]["aimedDeparture"] &&
+                      new Date(Object(departures)[i]["aimedDeparture"]) <
+                        new Date()
+                    ) {
+                      console.log(
+                        `Departure has already gone past date ${
+                          Object(departures)[i]["aimedDeparture"]
+                        } - ${<string>Object(departures)[i]["destination"]}`
+                      );
+                    } else {
+                      validDepartures.push(departures[i]);
+                    }
+                  }
+                } else {
+                  validDepartures = departures;
+                }
+
+                // Calculates the Departure Status's
+                validDepartures.map(d => {
+                  if (d.expectedDeparture) {
+                    d.status = new Date(d.expectedDeparture) > new Date(d.aimedDeparture)
+                      ? ServiceStatus.LATE
+                      : ServiceStatus.ONTIME;
+                  }
+                  else {
+                    d.status = ServiceStatus.ONTIME;
+                  }
+
+                  return d;
+                })
+
+                var toViewDepartures = validDepartures.slice(0, 3);
+
+                this.ProcessDepartures({
+                  departures: toViewDepartures,
+                  information: "Test Information"
+                });
+              },
+              (error) => {
+                ToggleConfig.LoadingBar.next(false);
+                console.log(error);
+              }
+            )
+        );
+      })
+    );
   }
 }
 

@@ -363,9 +363,14 @@ export class SingleBoard implements OnDestroy, OnInit {
 
                 var toViewDepartures = validDepartures.slice(0, 3);
 
+                let information = ""
+                if (toViewDepartures.length > 0){
+                  information = this.GetInformationLine(toViewDepartures[0])
+                }
+
                 this.ProcessDepartures({
                   departures: toViewDepartures,
-                  information: "Test Information"
+                  information: information
                 });
               },
               (error) => {
@@ -376,6 +381,16 @@ export class SingleBoard implements OnDestroy, OnInit {
         );
       })
     );
+  }
+
+  GetInformationLine(departure: Departure) {
+    let information = ""
+    departure.stops.forEach(s => {
+      if (information == "") information="Calling at "
+      information += `${s.stationName} (${this.datePipe.transform(s.aimedDeparture, "HH:mm")})       `
+    })
+
+    return information
   }
 }
 

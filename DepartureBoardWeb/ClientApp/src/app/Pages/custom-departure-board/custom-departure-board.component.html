@@ -13,7 +13,8 @@
                 <td>{{file.data().createdDate.seconds * 1000 | date:'dd/MM/yyyy'}}</td>
                 <td>{{file.data().departuresCount}}</td>
                 <td>
-                    <button class="orangeBtn" [routerLink]='["/custom-departures/singleboard/", file.id]' mat-button>View</button>
+                    <button class="orangeBtn" [routerLink]='["/custom-departures/", file.id]' mat-button style="margin-right: 10px;">View</button>
+                    <button class="orangeBtn" [routerLink]='["/custom-departures/singleboard/", file.id]' mat-button>Singleboard</button>
                     <button [routerLink]='["/custom-departures/edit/", file.id]' mat-button>Edit</button>
                     <button (click)="deleteDeparture(file.id)" mat-button>Delete</button>
                 </td>

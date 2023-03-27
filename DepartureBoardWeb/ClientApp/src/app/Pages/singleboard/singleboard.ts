@@ -121,6 +121,26 @@ export class SingleBoard implements OnDestroy, OnInit {
           this.showStationName = queryParams["showStationName"] == "true";
         }
 
+        let scrollSpeed =
+          localStorage.getItem("settings_singleboard_scrollspeed") ?? 300;
+
+        if (queryParams["scrollSpeed"]) {
+          scrollSpeed = +queryParams["scrollSpeed"];
+        }
+
+        this.marquee = new Marquee(
+          document.getElementById("singleboard-information"),
+          {
+            rate: -scrollSpeed,
+          }
+        );
+
+        this.marquee.onAllItemsRemoved(() => {
+          const $item = document.createElement("div");
+          $item.textContent = this.information;
+          this.marquee.appendItem($item);
+        });
+
         ToggleConfig.LoadingBar.next(true);
 
         if(this.changeTitle === true){
@@ -161,23 +181,6 @@ export class SingleBoard implements OnDestroy, OnInit {
       if (event instanceof NavigationStart) {
         clearTimeout(this.refresher);
       }
-    });
-
-
-    let scrollSpeed =
-      localStorage.getItem("settings_singleboard_scrollspeed") ?? 300;
-
-    this.marquee = new Marquee(
-      document.getElementById("singleboard-information"),
-      {
-        rate: -scrollSpeed,
-      }
-    );
-
-    this.marquee.onAllItemsRemoved(() => {
-      const $item = document.createElement("div");
-      $item.textContent = this.information;
-      this.marquee.appendItem($item);
     });
   }
 

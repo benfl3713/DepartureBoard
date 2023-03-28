@@ -19,7 +19,8 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "NODE_OPTIONS": "--openssl-legacy-provider"
       },
       "applicationUrl": "http://localhost:5005"
     },

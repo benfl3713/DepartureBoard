@@ -170,7 +170,7 @@ export class SingleBoard implements OnDestroy, OnInit {
 
         if (!this.isCustomData) {
           this.GetDepartures();
-          this.refresher = setInterval(() => this.GetDepartures(), 16000);
+          this.refresher = setInterval(() => this.GetDepartures(), 30000);
         } else {
           this.GetCustomData();
         }

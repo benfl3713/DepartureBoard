@@ -69,6 +69,7 @@ namespace TrainDataAPI.Services
 				{
 					LoadUKStations();
 					LoadDEStations();
+					LoadTflStations();
 				}
 				catch (Exception ex) { Console.WriteLine(ex.Message); }
 			}
@@ -142,6 +143,15 @@ namespace TrainDataAPI.Services
 			}
 		}
 
+		private void LoadTflStations()
+		{
+			if (string.IsNullOrEmpty(ConfigService.TflApiToken))
+				return;
+
+			TflTubeAPI tubeApi = new TflTubeAPI();
+			_stations.AddRange(tubeApi.GetAllStations());
+		}
+
 		private bool IsValidEntry(string name, string code)
 		{
 			switch (name)
@@ -183,12 +193,14 @@ namespace TrainDataAPI.Services
 			public string Code { get; set; }
 			public string Name { get; set; }
 			public string Country { get; set; }
+			public string DataSource { get; set; }
 
-			public Station(string code, string name, string country)
+			public Station(string code, string name, string country, string dataSource = null)
 			{
 				Code = code;
 				Name = name;
 				Country = country;
+				DataSource = dataSource;
 			}
 		}
 

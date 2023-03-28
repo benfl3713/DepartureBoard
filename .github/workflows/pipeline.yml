@@ -37,6 +37,7 @@ jobs:
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_OPTIONS: --openssl-legacy-provider
 
   Build_Docker_Image:
     name: Build Docker Image

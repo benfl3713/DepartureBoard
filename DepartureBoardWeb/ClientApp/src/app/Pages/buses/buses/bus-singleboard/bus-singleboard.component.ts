@@ -25,6 +25,7 @@ export class BusSingleboardComponent implements OnInit {
   }
 
   atco: string;
+  dataSource: string;
   noBoardsDisplay: boolean = false;
   stopName: string = "";
   showStopName: boolean =
@@ -34,6 +35,7 @@ export class BusSingleboardComponent implements OnInit {
 
   SetupBoard() {
     this.atco = this.route.snapshot.paramMap.get("atco");
+    this.dataSource = this.route.snapshot.queryParamMap.get("dataSource");
     setInterval(() => this.GetDepartures(), 30000);
     ToggleConfig.LoadingBar.next(true);
     this.GetDepartures();
@@ -41,7 +43,7 @@ export class BusSingleboardComponent implements OnInit {
 
   GetDepartures() {
     this.busDepartureService
-      .GetDepartures(this.atco)
+      .GetDepartures(this.atco, 4, this.dataSource)
       .pipe(tap(() => ToggleConfig.LoadingBar.next(false)))
       .pipe(
         tap((data) => {

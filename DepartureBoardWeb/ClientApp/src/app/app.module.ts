@@ -59,6 +59,7 @@ import { BlackSectionTitleComponent } from "./Components/black-section-title/bla
 import { BlackCardStyle2Component } from './Components/black-card-style2/black-card-style2.component';
 import { NavMenuMobileComponent } from './nav-menu/nav-menu-mobile/nav-menu-mobile.component';
 import { ContactUsComponent } from './Components/contact-us/contact-us.component';
+import { AnnouncementService } from "./Services/announcement.service";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo",
@@ -151,6 +152,7 @@ const firebaseConfig = {
     BusDepartureService,
     RouteTransformerDirective,
     BetaFeaturesGuard,
+    AnnouncementService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

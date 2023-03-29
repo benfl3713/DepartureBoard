@@ -112,14 +112,30 @@ export class VoxEngine {
     return !str || !str.trim();
   }
 
+  private async checkSoundsExists(ids: VoxKey[], settings: SpeechSettings) {
+    for (let i = 0; i < ids.length; i+=2) {
+      const r = await fetch(`${settings.voxPath}/${ids[i]}.mp3`)
+      if (r.status === 404){
+        return false
+      }
+    }
+
+    return true;
+  }
+
   /**
    * Begins loading and speaking a set of vox files. Stops any speech.
    *
    * @param ids List of vox ids to load as files, in speaking order
    * @param settings Voice settings to use
    */
-  public speak(ids: VoxKey[], settings: SpeechSettings): void {
+  public async speak(ids: VoxKey[], settings: SpeechSettings) {
     console.debug('VOX SPEAK:', ids, settings);
+
+    if (!(await this.checkSoundsExists(ids, settings))){
+      console.warn("Not all sounds recordings are available", ids)
+      return;
+    }
 
     // Set state
 

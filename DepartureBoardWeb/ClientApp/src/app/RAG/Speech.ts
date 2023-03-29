@@ -61,9 +61,7 @@ export class Speech {
     // VOX engine
     if      ( this.voxEngine) {
       this.speakVox(departure, settings);
-    } else if (window.speechSynthesis) {
-      this.speakBrowser({} as HTMLElement, settings);
- } else if (this.onstop) {
+    }  else if (this.onstop) {
       this.onstop();
  }
   }
@@ -103,73 +101,13 @@ export class Speech {
   }
 
   /**
-   * Converts the given phrase to text and speaks it via native browser voices.
-   *
-   * @param phrase Phrase elements to speak
-   * @param settings Settings to use for the voice
-   */
-  private speakBrowser(phrase: HTMLElement, settings: SpeechSettings): void {
-    // const voiceName = either(settings.voiceName, RAG.config.speechVoice);
-    // let voice     = this.browserVoices[voiceName];
-    //
-    // // Reset to first voice, if configured choice is missing
-    // if (!voice) {
-    //   const first = Object.keys(this.browserVoices)[0];
-    //   voice     = this.browserVoices[first];
-    // }
-    //
-    // // The phrase text is split into sentences, as queueing large sentences that last
-    // // many seconds can break some TTS engines and browsers.
-    // const text  = DOM.getCleanedVisibleText(phrase);
-    // const parts = text.split(/\.\s/i);
-    //
-    // parts.forEach( (segment, idx) => {
-    //   // Add missing full stop to each sentence except the last, which has it
-    //   if (idx < parts.length - 1) {
-    //     segment += '.';
-    //   }
-    //
-    //   const utterance = new SpeechSynthesisUtterance(segment);
-    //
-    //   utterance.voice  = voice;
-    //   utterance.volume = either(settings.volume, RAG.config.speechVol);
-    //   utterance.pitch  = either(settings.pitch,  RAG.config.speechPitch);
-    //   utterance.rate   = either(settings.rate,   RAG.config.speechRate);
-    //
-    //   window.speechSynthesis.speak(utterance);
-    // });
-    //
-    // // Fire immediately. I don't trust speech events to be reliable; see below.
-    // if (this.onspeak) {
-    //   this.onspeak();
-    // }
-    //
-    // // This checks for when the native engine has stopped speaking, and calls the
-    // // onstop event handler. I could use SpeechSynthesis.onend instead, but it was
-    // // found to be unreliable, so I have to poll the speaking property this way.
-    // clearInterval(this.stopTimer);
-    //
-    // this.stopTimer = setInterval(() => {
-    //   if (window.speechSynthesis.speaking) {
-    //     return;
-    //   }
-    //
-    //   clearInterval(this.stopTimer);
-    //
-    //   if (this.onstop) {
-    //     this.onstop();
-    //   }
-    // }, 100);
-  }
-
-  /**
    * Synthesizes voice by walking through the given phrase elements, resolving parts to
    * sound file IDs, and feeding the entire array to the vox engine.
    *
    * @param phrase Phrase elements to speak
    * @param settings Settings to use for the voice
    */
-  private speakVox(departure: Departure, settings: SpeechSettings): void {
+  private async speakVox(departure: Departure, settings: SpeechSettings) {
     // const resolver = new Resolver(phrase);
     const voxPath  = "";
 
@@ -197,16 +135,23 @@ export class Speech {
     };
 
 
-    const text: VoxKey[] = ['' +
+    let text: VoxKey[] = ['' +
     'phraseset.platform_wait_intro.2.0', 0.15,
       `number.${departure.platform}.mid`, 0.2,
       'phraseset.platform_wait_intro.2.2', 0.2,
       `number.${this.datePipe.transform(departure.aimedDeparture, 'H')}.begin`, 0.2,
       `number.${this.datePipe.transform(departure.aimedDeparture, 'm')}.mid`, 0.15,
-      `service.${Strings.filename(departure.operatorName)}.mid`, 0.15,
+];
+
+    const r = await fetch(`${settings.voxPath}/service.${Strings.filename(departure.operatorName)}.mid.mp3`)
+    if (r.status == 200){
+      text = [...text, `service.${Strings.filename(departure.operatorName)}.mid`, 0.15,]
+    }
+
+    text = [...text,
       'phrase.service_to.4', 0.2,
       `station.${departure.stationCode}.end`, 0.65,
-];
+    ]
 
     console.log(text);
 

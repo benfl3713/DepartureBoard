@@ -3,7 +3,7 @@ import { NgModule, APP_INITIALIZER } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HttpClient } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
-import { DatePipe } from "@angular/common";
+import { DatePipe, DecimalPipe } from "@angular/common";
 
 import { MaterialModule } from "./external/material.module";
 import { DeviceDetectorModule } from "ngx-device-detector";
@@ -139,6 +139,7 @@ const firebaseConfig = {
   ],
   providers: [
     DatePipe,
+    DecimalPipe,
     GoogleAnalyticsEventsService,
     {
       provide: APP_INITIALIZER,

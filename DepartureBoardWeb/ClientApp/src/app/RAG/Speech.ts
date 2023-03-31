@@ -3,7 +3,7 @@
 import {Departure, Dictionary} from "../models/departure.model";
 import {VoxEngine, VoxKey, Strings} from "./VoxEngine";
 import {SpeechSettings} from "./SpeechSettings";
-import {DatePipe} from "@angular/common";
+import {DatePipe, DecimalPipe} from "@angular/common";
 
 /** Manages speech synthesis using both native and custom engines */
 export class Speech {
@@ -33,7 +33,7 @@ export class Speech {
     return this.voxEngine !== undefined;
   }
 
-  public constructor(private datePipe: DatePipe) {
+  public constructor(private datePipe: DatePipe, private decimalPipe: DecimalPipe) {
     // Some browsers don't properly cancel speech on page close.
     // BUG: onpageshow and onpagehide not working on iOS 11
     window.onbeforeunload =
@@ -139,8 +139,8 @@ export class Speech {
     'phraseset.platform_wait_intro.2.0', 0.15,
       `number.${departure.platform}.mid`, 0.2,
       'phraseset.platform_wait_intro.2.2', 0.2,
-      `number.${this.datePipe.transform(departure.aimedDeparture, 'H')}.begin`, 0.2,
-      `number.${this.datePipe.transform(departure.aimedDeparture, 'm')}.mid`, 0.15,
+      `number.${this.decimalPipe.transform(this.datePipe.transform(departure.aimedDeparture, 'H'), "2.0")}.begin`, 0.2,
+      `number.${this.decimalPipe.transform(this.datePipe.transform(departure.aimedDeparture, 'm'), "2.0")}.mid`, 0.15,
 ];
 
     const r = await fetch(`${settings.voxPath}/service.${Strings.filename(departure.operatorName)}.mid.mp3`)

@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { Departure } from '../models/departure.model';
 import { ServiceStatus } from '../Pages/singleboard/singleboard';
@@ -9,7 +9,7 @@ import { StationLookupService } from './station-lookup.service';
   providedIn: 'root'
 })
 export class AnnouncementService {
-  constructor(private datePipe: DatePipe, private stationLookupService: StationLookupService) {}
+  constructor(private datePipe: DatePipe, private decimalPipe: DecimalPipe, private stationLookupService: StationLookupService) {}
 
   skippedArrivals = [];
 
@@ -54,7 +54,7 @@ export class AnnouncementService {
 
 
   private async Announce(data: Departure) {
-    const vox = new Speech(this.datePipe);
+    const vox = new Speech(this.datePipe, this.decimalPipe);
     console.log("speak");
     data.stationCode = await this.stationLookupService.GetStationCodeFromName(data.destination).toPromise();
     vox.speak(data, {});

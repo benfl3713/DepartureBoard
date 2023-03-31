@@ -9,11 +9,18 @@ import { StationLookupService } from './station-lookup.service';
   providedIn: 'root'
 })
 export class AnnouncementService {
-  constructor(private datePipe: DatePipe, private decimalPipe: DecimalPipe, private stationLookupService: StationLookupService) {}
+  constructor(private datePipe: DatePipe, private decimalPipe: DecimalPipe, private stationLookupService: StationLookupService) {
+    this.vox = new Speech(this.datePipe, this.decimalPipe);
+  }
 
   skippedArrivals = [];
+  readonly vox: Speech;
 
   AnnounceArrivals(data, previousData?) {
+    if (localStorage.getItem("settings_announcements_arrivals") !== "true"){
+      return;
+    }
+
     let hasSpoken = false;
 
     data.forEach(arrival => {
@@ -51,12 +58,42 @@ export class AnnouncementService {
     return `${dep.destination}_${dep.aimedDeparture}_${dep.operatorName}`
   }
 
+  startPeriodicAnnouncement() {
+    const inters = [];
+    const timeouts = [];
 
+    let cctvInterval = localStorage.getItem("settings_announcements_cctv_interval") ? +localStorage.getItem("settings_announcements_cctv_interval") : 20
+    cctvInterval = cctvInterval * 60 * 1000
+
+    let seeItInterval = localStorage.getItem("settings_announcements_seeItSayItSortIt_interval") ? +localStorage.getItem("settings_announcements_seeItSayItSortIt_interval") : 20
+    seeItInterval = seeItInterval * 60 * 1000
+
+    if (localStorage.getItem("settings_announcements_cctv") == "true") {
+      inters.push(setInterval(() => {
+        this.vox.playText(["phraseset.notices.4.2"])
+      }, cctvInterval));
+    }
+
+    if (localStorage.getItem("settings_announcements_seeItSayItSortIt") == "true") {
+      timeouts.push(setTimeout(() => {
+        inters.push(setInterval(() => {
+          this.vox.playText(["phraseset.notices.9.2"])
+        }, seeItInterval))
+      }, 300000))
+    }
+
+    return () => {
+      inters.forEach(i => clearInterval(i));
+      timeouts.forEach(t => clearTimeout(t));
+    }
+  }
 
   private async Announce(data: Departure) {
-    const vox = new Speech(this.datePipe, this.decimalPipe);
+    while (this.vox.isSpeaking) {
+
+    }
     console.log("speak");
     data.stationCode = await this.stationLookupService.GetStationCodeFromName(data.destination).toPromise();
-    vox.speak(data, {});
+    this.vox.speak(data, {});
   }
 }

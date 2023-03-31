@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../external/material.module';
+import { SettingsAnnouncementsComponent } from './settings-announcements.component';
 import { SettingsBusesComponent } from './settings-buses.component';
 import { SettingsDepartureadminComponent } from './settings-departureadmin.component';
 import { SettingsGeneralComponent } from './settings-general.component';
@@ -17,7 +18,8 @@ import { SettingsComponent } from "./settings.component";
     SettingsMainboardComponent,
     SettingsSingleboardComponent,
     SettingsDepartureadminComponent,
-    SettingsBusesComponent
+    SettingsBusesComponent,
+    SettingsAnnouncementsComponent
   ],
 	imports: [
     CommonModule,

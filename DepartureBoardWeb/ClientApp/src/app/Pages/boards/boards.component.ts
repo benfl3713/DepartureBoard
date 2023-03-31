@@ -49,6 +49,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
   Boards: ViewContainerRef;
   subscriptions: Subscription[] = [];
   isLoading = false;
+  announcementSub;
 
   constructor(
     private route: ActivatedRoute,
@@ -79,6 +80,8 @@ export class BoardsComponent implements OnInit, OnDestroy {
         clearTimeout(this.refresher);
       }
     });
+
+    this.announcementSub = this.announcement.startPeriodicAnnouncement();
   }
 
   SetupDisplay(queryParams) {
@@ -328,6 +331,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     clearTimeout(this.refresher);
     this.subscriptions.forEach((s) => s.unsubscribe());
+    this.announcementSub();
   }
 
   isNumber(value: string | number): boolean {

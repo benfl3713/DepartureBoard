@@ -172,4 +172,17 @@ export class Speech {
 
     this.voxEngine!.speak(text, settings);
   }
+
+  public playText(text: VoxKey[]) {
+    const settings = {
+      voxPath: 'https://roycurtis.github.io/RAG-VOX-Roy',
+      voxChime: 'chime.btm.wav',
+      voxReverb: 'ir.stalbans.wav',
+      rate: 1,
+      volume: 1
+    };
+
+
+    this.voxEngine!.speak(text, settings);
+  }
 }

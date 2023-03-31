@@ -100,6 +100,12 @@ export class Speech {
     window.speechSynthesis.getVoices().forEach(v => this.browserVoices[v.name] = v);
   }
 
+  private getNumberSoundName(number: string){
+    const fullNumber = this.decimalPipe.transform(number, "2.0")
+
+    return fullNumber == "00" ? "hundred" : fullNumber;
+  }
+
   /**
    * Synthesizes voice by walking through the given phrase elements, resolving parts to
    * sound file IDs, and feeding the entire array to the vox engine.
@@ -139,8 +145,8 @@ export class Speech {
     'phraseset.platform_wait_intro.2.0', 0.15,
       `number.${departure.platform}.mid`, 0.2,
       'phraseset.platform_wait_intro.2.2', 0.2,
-      `number.${this.decimalPipe.transform(this.datePipe.transform(departure.aimedDeparture, 'H'), "2.0")}.begin`, 0.2,
-      `number.${this.decimalPipe.transform(this.datePipe.transform(departure.aimedDeparture, 'm'), "2.0")}.mid`, 0.15,
+      `number.${this.getNumberSoundName(this.datePipe.transform(departure.aimedDeparture, 'H'))}.begin`, 0.2,
+      `number.${this.getNumberSoundName(this.datePipe.transform(departure.aimedDeparture, 'm'))}.mid`, 0.15,
 ];
 
     const r = await fetch(`${settings.voxPath}/service.${Strings.filename(departure.operatorName)}.mid.mp3`)

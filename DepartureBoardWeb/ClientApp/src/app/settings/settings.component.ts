@@ -53,6 +53,8 @@ export class SettingsComponent implements OnInit {
     announcements_seeItSayItSortIt: new FormControl(false),
     announcements_cctv_interval: new FormControl(20),
     announcements_seeItSayItSortIt_interval: new FormControl(20),
+    announcements_smoking: new FormControl(false),
+    announcements_smoking_interval: new FormControl(20)
   });
 
   Load() {
@@ -102,7 +104,8 @@ export class SettingsComponent implements OnInit {
       buses_showStopName: false,
       announcements_arrivals: false,
       announcements_cctv: false,
-      announcements_seeItSayItSortIt: false
+      announcements_seeItSayItSortIt: false,
+      announcements_smoking: false
     });
     this.Save(false);
     this.Load();

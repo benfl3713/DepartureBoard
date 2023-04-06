@@ -79,6 +79,39 @@ import { ControlContainer, FormGroup } from "@angular/forms";
           Reset
         </button>
       </div>
+      <br />
+      <mat-slide-toggle
+        [checked]="form.controls.announcements_smoking.value"
+        (change)="form.controls.announcements_smoking.setValue($event.checked)"
+        >No Smoking Announcement</mat-slide-toggle
+      >
+      <div class="row" *ngIf="form.controls.announcements_smoking.value">
+        <div class="col">
+          <label>Interval (Minutes)</label>
+          <mat-slider
+            #seeItScrollSpeed
+            min="1"
+            max="60"
+            step="1"
+            [value]="form.controls.announcements_smoking_interval.value"
+            color="primary"
+            thumbLabel
+            (change)="
+              form.controls.announcements_smoking_interval.setValue($event.value)
+            "
+          >
+          </mat-slider>
+          <mat-hint>{{ seeItScrollSpeed.value }}</mat-hint>
+        </div>
+        <button
+          mat-button
+          (click)="SetFormValue('announcements_smoking_interval', 20)"
+          style="margin-left: 20px"
+          class="btnOrange col-1"
+        >
+          Reset
+        </button>
+      </div>
       <br /><br />
     </form>
   `,

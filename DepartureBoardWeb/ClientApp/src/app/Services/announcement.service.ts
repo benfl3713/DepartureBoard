@@ -68,6 +68,9 @@ export class AnnouncementService {
     let seeItInterval = localStorage.getItem("settings_announcements_seeItSayItSortIt_interval") ? +localStorage.getItem("settings_announcements_seeItSayItSortIt_interval") : 20
     seeItInterval = seeItInterval * 60 * 1000
 
+    let smokingInterval = localStorage.getItem("settings_announcements_smoking_interval") ? +localStorage.getItem("settings_announcements_smoking_interval") : 20
+    smokingInterval = smokingInterval * 60 * 1000
+
     if (localStorage.getItem("settings_announcements_cctv") == "true") {
       inters.push(setInterval(() => {
         this.vox.playText(["phraseset.notices.4.2"])
@@ -80,6 +83,14 @@ export class AnnouncementService {
           this.vox.playText(["phraseset.notices.9.2"])
         }, seeItInterval))
       }, 300000))
+    }
+
+    if (localStorage.getItem("settings_announcements_smoking") == "true") {
+      timeouts.push(setTimeout(() => {
+        inters.push(setInterval(() => {
+          this.vox.playText(['phrase.attention_please.0', 0.65, 'phraseset.notices.3.0'])
+        }, smokingInterval))
+      }, 600000))
     }
 
     return () => {

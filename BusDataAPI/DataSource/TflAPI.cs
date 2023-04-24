@@ -15,8 +15,8 @@ namespace BusDataAPI.DataSource
 
         public List<BusDeparture> GetLiveDepartures(string atocCode)
         {
-            var request = new RestRequest($"StopPoint/{atocCode}", Method.GET);
-            IRestResponse response = SendRequest(request);
+            var request = new RestRequest($"StopPoint/{atocCode}");
+            RestResponse response = SendRequest(request);
             var naptanIds = GetAllNaptanIds(response);
 
             if (naptanIds == null)
@@ -32,7 +32,7 @@ namespace BusDataAPI.DataSource
             return busDepartures.OrderBy(d => d.AimedDeparture).ToList();
         }
 
-        private HashSet<string> GetAllNaptanIds(IRestResponse rawResponse)
+        private HashSet<string> GetAllNaptanIds(RestResponse rawResponse)
         {
             TflStopPointResponse response = JsonConvert.DeserializeObject<TflStopPointResponse>(rawResponse.Content);
             if (response?.LineGroup == null)
@@ -54,8 +54,8 @@ namespace BusDataAPI.DataSource
         private List<BusDeparture> GetDeparturesForNaptanIds(string naptanId)
         {
             List<BusDeparture> busDepartures = new List<BusDeparture>();
-            var request = new RestRequest($"StopPoint/{naptanId}/Arrivals", Method.GET);
-            IRestResponse response = SendRequest(request);
+            var request = new RestRequest($"StopPoint/{naptanId}/Arrivals");
+            RestResponse response = SendRequest(request);
             if (response == null || !response.IsSuccessful)
                 return new List<BusDeparture>();
 
@@ -75,7 +75,7 @@ namespace BusDataAPI.DataSource
             return busDepartures;
         }
 
-        private IRestResponse SendRequest(RestRequest request)
+        private RestResponse SendRequest(RestRequest request)
         {
             request.AddQueryParameter("app_key", AppKey);
             return _client.Execute(request);

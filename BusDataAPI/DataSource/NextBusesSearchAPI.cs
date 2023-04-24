@@ -10,8 +10,8 @@ namespace BusDataAPI.DataSource
 		public List<BusDeparture> GetLiveDepartures(string atcoCode)
 		{
 			var client = new RestClient($"http://nextbuses.mobi/WebView/BusStopSearch/BusStopSearchResults/{atcoCode}");
-			var request = new RestRequest(Method.GET);
-			IRestResponse response = client.Execute(request);
+			var request = new RestRequest();
+			RestResponse response = client.Execute(request);
 			return ParseHtmlPage(response.Content);
 		}
 

@@ -69,7 +69,6 @@ namespace TrainDataAPI.Services
 				{
 					LoadUKStations();
 					LoadDEStations();
-					LoadTflStations();
 				}
 				catch (Exception ex) { Console.WriteLine(ex.Message); }
 			}
@@ -79,7 +78,7 @@ namespace TrainDataAPI.Services
 		{
 			string token = GetSecretToken();
 			var client = new RestClient("https://opendata.nationalrail.co.uk/api/staticfeeds/4.0/stations");
-			var request = new RestRequest(Method.GET);
+			var request = new RestRequest();
 			request.Timeout = 13000;
 			request.AddHeader("X-Auth-Token", token);
 			var response = client.Execute(request);
@@ -130,9 +129,9 @@ namespace TrainDataAPI.Services
 				return;
 
 			var client = new RestClient("https://api.deutschebahn.com/stada/v2/stations");
-			var request = new RestRequest(Method.GET);
+			var request = new RestRequest();
 			request.AddHeader("Authorization", $"Bearer {ConfigService.DeutscheBahnToken}");
-			IRestResponse response = client.Execute(request);
+			RestResponse response = client.Execute(request);
 			DBStationsResponse dbStationsResponse = JsonConvert.DeserializeObject<DBStationsResponse>(response.Content);
 			foreach (DBStationsResponse.DBStation dbStation in dbStationsResponse.result)
 			{
@@ -141,15 +140,6 @@ namespace TrainDataAPI.Services
 
 				_stations.Add(new Station(dbStation.evaNumbers.First().number, dbStation.name, "DE"));
 			}
-		}
-
-		private void LoadTflStations()
-		{
-			if (string.IsNullOrEmpty(ConfigService.TflApiToken))
-				return;
-
-			TflTubeAPI tubeApi = new TflTubeAPI();
-			_stations.AddRange(tubeApi.GetAllStations());
 		}
 
 		private bool IsValidEntry(string name, string code)
@@ -171,8 +161,8 @@ namespace TrainDataAPI.Services
 
 		private string GetSecretToken()
 		{
-			var client = new RestClient("https://opendata.nationalrail.co.uk/authenticate");
-			var request = new RestRequest(Method.POST);
+			var client = new RestClient();
+			var request = new RestRequest("https://opendata.nationalrail.co.uk/authenticate", Method.Post);
 			var body = new
 			{
 				username = ConfigService.NationalRail_Username,
@@ -193,14 +183,12 @@ namespace TrainDataAPI.Services
 			public string Code { get; set; }
 			public string Name { get; set; }
 			public string Country { get; set; }
-			public string DataSource { get; set; }
 
-			public Station(string code, string name, string country, string dataSource = null)
+			public Station(string code, string name, string country)
 			{
 				Code = code;
 				Name = name;
 				Country = country;
-				DataSource = dataSource;
 			}
 		}
 

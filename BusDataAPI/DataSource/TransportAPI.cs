@@ -12,9 +12,9 @@ namespace BusDataAPI.DataSource
 		public List<BusDeparture> GetLiveDepartures(string atcoCode)
 		{
 			var client = new RestClient($"http://transportapi.com/v3/uk/bus/stop/{atcoCode}/live.json");
-			var request = new RestRequest(Method.GET);
+			var request = new RestRequest();
 			AddCredentials(ref request);
-			IRestResponse response = client.Execute(request);
+			RestResponse response = client.Execute(request);
 			return DeserialiseBusDeparture(response.Content);
 		}
 

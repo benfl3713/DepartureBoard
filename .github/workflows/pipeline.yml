@@ -28,8 +28,9 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
+          install-command: npm install
           build: npm run ngcc
-          start: npm start
+          start: export NODE_OPTIONS=--openssl-legacy-provider && npm start
           wait-on: 'http://localhost:4200'
           browser: chrome
           record: true

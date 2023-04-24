@@ -11,7 +11,7 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '3.1.x'
+          dotnet-version: '6.0.x'
       - name: Build Departure Board with dotnet
         run: dotnet build --configuration Release
       - name: Run Departure Board Unit Tests
@@ -97,4 +97,4 @@ jobs:
           zip_file: ./DepartureBoardWeb/Lambda_deploy/lambda.zip
           memory_size: 512
           handler: DepartureBoardWeb::DepartureBoardWeb.LambdaEntryPoint::FunctionHandlerAsync
-          runtime: dotnetcore3.1
+          runtime: dotnet6

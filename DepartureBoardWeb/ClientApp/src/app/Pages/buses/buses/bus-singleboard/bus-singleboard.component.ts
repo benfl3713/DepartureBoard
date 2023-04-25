@@ -89,7 +89,7 @@ export class BusSingleboardComponent implements OnInit {
     Central: '#E32017',
     Circle: '#FFD300',
     District: '#00782A',
-    Elizabeth: '#6950a1',
+    "Elizabeth line": '#6950a1',
     "Hammersmith & City": '#F3A9BB',
     Jubilee: '#A0A5A9',
     Metropolitan: '#9B0056',

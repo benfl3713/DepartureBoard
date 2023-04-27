@@ -64,6 +64,7 @@ div .bottom {
   .board {
     width: 100vw !important;
     height: 100vh !important;
+    margin-bottom: 100px;
   }
 
   .stops {

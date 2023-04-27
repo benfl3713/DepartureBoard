@@ -13,7 +13,7 @@ namespace BusDataAPI.DataSource
         {
             List<BusDeparture> departures = new List<BusDeparture>();
             var client = new RestClient(FirstBusApiUrl);
-            var request = new RestRequest(Method.GET);
+            var request = new RestRequest();
             request.AddQueryParameter("stop", code);
             request.Timeout = 15000;
 

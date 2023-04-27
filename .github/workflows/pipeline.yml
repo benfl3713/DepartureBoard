@@ -11,7 +11,7 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '3.1.x'
+          dotnet-version: '6.0.x'
       - name: Build Departure Board with dotnet
         run: dotnet build --configuration Release
       - name: Run Departure Board Unit Tests
@@ -28,8 +28,9 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
+          install-command: npm install
           build: npm run ngcc
-          start: npm start
+          start: export NODE_OPTIONS=--openssl-legacy-provider && npm start
           wait-on: 'http://localhost:4200'
           browser: chrome
           record: true
@@ -97,4 +98,4 @@ jobs:
           zip_file: ./DepartureBoardWeb/Lambda_deploy/lambda.zip
           memory_size: 512
           handler: DepartureBoardWeb::DepartureBoardWeb.LambdaEntryPoint::FunctionHandlerAsync
-          runtime: dotnetcore3.1
+          runtime: dotnet6

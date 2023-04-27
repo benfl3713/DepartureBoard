@@ -46,11 +46,11 @@ namespace TrainDataAPI
         {
             try
             {
-                var client = new RestClient(url);
-                var request = new RestRequest(Method.GET);
+                var client = new RestClient();
+                var request = new RestRequest(url);
                 request.Timeout = 15000;
                 AddCredendials(ref request);
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 return DeserialiseStationStops(response.Content);
             }
             catch
@@ -70,11 +70,11 @@ namespace TrainDataAPI
                 
                 if (getArrivals)
                     url += "/arrivals";
-                var client = new RestClient(url);
-                var request = new RestRequest(Method.GET);
+                var client = new RestClient();
+                var request = new RestRequest(url);
                 request.Timeout = 15000;
                 AddCredendials(ref request);
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 List<Departure> departures = DeserialiseDepartures(response.Content);
 
                 departures = FilterPlatforms(platform, departures);

@@ -172,10 +172,8 @@ namespace DepartureBoardCore
             catch(Exception e){
                 CheckEnviornmentVariableConfig();
                 if (_realTimeTrainsToken == "[INSERT_REALTIMETRAINS_TOKEN_HERE]" && e.Message == errorMessage)
-                    throw e;
-                return;
+                    throw;
             }
-
         }
 
         private static void CheckEnviornmentVariableConfig()

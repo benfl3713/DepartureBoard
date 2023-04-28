@@ -3,7 +3,6 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl } from "@angular/forms";
 import { ThemeService } from "../Services/ThemeService";
 import { GoogleAnalyticsEventsService } from "../Services/google.analytics";
-import { NotifierService } from "angular-notifier";
 import { GlobalEvents } from "../GlobalEvents";
 import { ActivatedRoute } from "@angular/router";
 import { of } from 'rxjs';
@@ -19,7 +18,6 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     public googleAnalyticsEventsService: GoogleAnalyticsEventsService,
-    private notifierService: NotifierService,
     private route: ActivatedRoute
   ) {
     document.title = "Settings - Departure Board";
@@ -74,7 +72,7 @@ export class SettingsComponent implements OnInit {
         "DataSource",
         localStorage.getItem("settings_general_dataSource")
       );
-      this.notifierService.notify("success", "Settings - Saved Successfully");
+      // this.notifierService.notify("success", "Settings - Saved Successfully");
     }
     GlobalEvents.SettingsChanged.emit();
   }

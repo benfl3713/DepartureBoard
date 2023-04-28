@@ -21,33 +21,33 @@ import { ControlContainer, FormGroup } from "@angular/forms";
         "
         >Alternate Second Row</mat-slide-toggle
       ><br />
-      <div class="row">
-        <div class="col">
-          <label>Scroll Speed</label>
-          <mat-slider
-            #singleboardScrollSpeed
-            min="0"
-            max="500"
-            step="50"
-            [value]="form.controls.singleboard_scrollspeed.value"
-            color="primary"
-            thumbLabel
-            (change)="
-              form.controls.singleboard_scrollspeed.setValue($event.value)
-            "
-          >
-          </mat-slider>
-          <mat-hint>{{ singleboardScrollSpeed.value }}</mat-hint>
-        </div>
-        <button
-          mat-button
-          (click)="SetFormValue('singleboard_scrollspeed', 300)"
-          style="margin-left: 20px"
-          class="btnOrange col-1"
-        >
-          Reset
-        </button>
-      </div>
+<!--      <div class="row">-->
+<!--        <div class="col">-->
+<!--          <label>Scroll Speed</label>-->
+<!--          <mat-slider-->
+<!--            #singleboardScrollSpeed-->
+<!--            min="0"-->
+<!--            max="500"-->
+<!--            step="50"-->
+<!--            [value]="form.controls.singleboard_scrollspeed.value"-->
+<!--            color="primary"-->
+<!--            thumbLabel-->
+<!--            (change)="-->
+<!--              form.controls.singleboard_scrollspeed.setValue($event.value)-->
+<!--            "-->
+<!--          >-->
+<!--          </mat-slider>-->
+<!--          <mat-hint>{{ singleboardScrollSpeed.value }}</mat-hint>-->
+<!--        </div>-->
+<!--        <button-->
+<!--          mat-button-->
+<!--          (click)="SetFormValue('singleboard_scrollspeed', 300)"-->
+<!--          style="margin-left: 20px"-->
+<!--          class="btnOrange col-1"-->
+<!--        >-->
+<!--          Reset-->
+<!--        </button>-->
+<!--      </div>-->
       <br />
     </form>
   `,

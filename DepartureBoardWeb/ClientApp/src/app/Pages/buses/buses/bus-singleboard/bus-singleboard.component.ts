@@ -3,8 +3,6 @@ import {BusDepartureService} from "src/app/Services/bus-departure.service";
 import {ActivatedRoute} from "@angular/router";
 import {ToggleConfig} from "src/app/ToggleConfig";
 import {tap, catchError} from "rxjs/operators";
-import {NotifierService} from "angular-notifier";
-import {of} from "rxjs";
 
 @Component({
   selector: "app-bus-singleboard",
@@ -14,8 +12,7 @@ import {of} from "rxjs";
 export class BusSingleboardComponent implements OnInit {
   constructor(
     private busDepartureService: BusDepartureService,
-    private route: ActivatedRoute,
-    private notifierService: NotifierService
+    private route: ActivatedRoute
   ) {
     route.params.subscribe((par) => {
       route.queryParams.subscribe((qur) => {
@@ -75,7 +72,7 @@ export class BusSingleboardComponent implements OnInit {
   }
 
   GetLineColour(departure: any) {
-    if (this.dataSource !== "TFLTUBE") return;
+    if (this.dataSource !== "TFLTUBE"){ return {}; }
 
     if (this.tubeColours[departure.line]) {
       return {'color': this.tubeColours[departure.line]}

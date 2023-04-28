@@ -17,7 +17,7 @@ import { StationLookupService } from "src/app/Services/station-lookup.service";
 import { Departure } from "src/app/models/departure.model";
 import { SingleBoardResponse } from "src/app/models/singleboard-response.model";
 import { environment } from "src/environments/environment";
-import { AngularFirestore } from "@angular/fire/firestore";
+import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { AuthService } from "src/app/Services/auth.service";
 import { Subscription } from "rxjs";
 

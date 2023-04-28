@@ -6,14 +6,11 @@ import { RouterModule } from "@angular/router";
 import { DatePipe } from "@angular/common";
 
 import { MaterialModule } from "./external/material.module";
-import { DeviceDetectorModule } from "ngx-device-detector";
 import { CookieService } from "ngx-cookie-service";
-import { AngularFireModule } from "@angular/fire";
-import { AngularFirestoreModule } from "@angular/fire/firestore";
-import { AngularFireStorageModule } from "@angular/fire/storage";
-import { AngularFireAuthModule } from "@angular/fire/auth";
-import { FlexLayoutModule } from "@angular/flex-layout";
-import { NotifierModule } from "angular-notifier";
+import { AngularFireModule } from "@angular/fire/compat";
+import { AngularFirestoreModule } from "@angular/fire/compat/firestore";
+import { AngularFireStorageModule } from "@angular/fire/compat/storage";
+import { AngularFireAuthModule } from "@angular/fire/compat/auth";
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 import { AppComponent } from "./app.component";
@@ -36,8 +33,6 @@ import { AddCustomDepartureComponent } from "./Pages/custom-departure-board/add-
 import { AboutCustomDepartureComponent } from "./Pages/custom-departure-board/about-custom-departure/about-custom-departure.component";
 import { DepartureService } from "./Services/departure.service";
 import { StationLookupService } from "./Services/station-lookup.service";
-import { ServiceWorkerModule } from "@angular/service-worker";
-import { environment } from "../environments/environment";
 import { AdminBoardService } from "./Services/admin-board.service";
 import { ComingSoonWidgetComponent } from "./widgets/coming-soon/coming-soon.component";
 import { AboutDepartureboardAdminComponent } from "./Pages/about/about-departureboard-admin/about-departureboard-admin.component";
@@ -51,7 +46,6 @@ import {
   EditCustomDepartureComponent,
 } from "./Components/edit-custom-departure/edit-custom-departure.component";
 import { SplashScreenComponent } from "./Components/splash-screen/splash-screen.component";
-import { FeaturesComponent } from './widgets/features/features.component';
 import { ROUTES } from "./routes";
 import { BoardSkeletonComponent } from './Components/board-skeleton/board-skeleton.component';
 import { BlackCardStyle1Component } from "./Components/cards/black-card-style1/black-card-style1.component";
@@ -93,7 +87,6 @@ const firebaseConfig = {
     EditCustomDepartureComponent,
     DepartureStopDialog,
     SplashScreenComponent,
-    FeaturesComponent,
     BoardSkeletonComponent,
     BlackCardStyle1Component,
     BlackSectionTitleComponent,
@@ -111,30 +104,28 @@ const firebaseConfig = {
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
-    FlexLayoutModule,
     SettingsModule,
     NgxSkeletonLoaderModule,
-    NotifierModule.withConfig({
-      position: {
-        horizontal: {
-          position: "right",
-        },
-        vertical: {
-          position: "top",
-          distance: 40,
-        },
-      },
-      behaviour: {
-        autoHide: 3500,
-      },
-    }),
-    RouterModule.forRoot(ROUTES, { relativeLinkResolution: 'legacy', anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' }),
+    // NotifierModule.withConfig({
+    //   position: {
+    //     horizontal: {
+    //       position: "right",
+    //     },
+    //     vertical: {
+    //       position: "top",
+    //       distance: 40,
+    //     },
+    //   },
+    //   behaviour: {
+    //     autoHide: 3500,
+    //   },
+    // }),
+    RouterModule.forRoot(ROUTES, { anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' }),
     BrowserAnimationsModule,
-    DeviceDetectorModule.forRoot(),
-    ServiceWorkerModule.register("ngsw-worker.js", {
-      enabled: environment.enablePWA,
-      registrationStrategy: "registerImmediately",
-    }),
+    // ServiceWorkerModule.register("ngsw-worker.js", {
+    //   enabled: environment.enablePWA,
+    //   registrationStrategy: "registerImmediately",
+    // }),
   ],
   providers: [
     DatePipe,

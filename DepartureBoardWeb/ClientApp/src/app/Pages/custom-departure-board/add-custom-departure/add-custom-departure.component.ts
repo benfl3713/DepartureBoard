@@ -1,16 +1,13 @@
 import { Component } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import * as Ajv from "ajv";
-import { AngularFirestore } from "@angular/fire/firestore";
+import Ajv from "ajv";
+import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { AuthService } from "src/app/Services/auth.service";
 import { Router, ActivatedRoute } from "@angular/router";
-import { NotifierService } from "angular-notifier";
 import { ToggleConfig } from "src/app/ToggleConfig";
 import { GoogleAnalyticsEventsService } from "src/app/Services/google.analytics";
 import { DomSanitizer } from "@angular/platform-browser";
 import { CustomDeparture } from "src/app/models/custom-departure.model";
-import { debounceTime, map, startWith } from "rxjs/operators";
-import { of } from "rxjs";
 
 @Component({
   selector: "app-add-custom-departure",
@@ -35,7 +32,6 @@ export class AddCustomDepartureComponent {
     private afs: AngularFirestore,
     public auth: AuthService,
     private router: Router,
-    private notifierService: NotifierService,
     private route: ActivatedRoute,
     public googleAnalyticsEventsService: GoogleAnalyticsEventsService,
     private sanitizer: DomSanitizer
@@ -46,10 +42,10 @@ export class AddCustomDepartureComponent {
         ToggleConfig.LoadingBar.next(true);
         this.auth.user$.subscribe((user) => {
           if (!user) {
-            this.notifierService.notify(
-              "error",
-              "You must be logged in to use this"
-            );
+            // this.notifierService.notify(
+            //   "error",
+            //   "You must be logged in to use this"
+            // );
             return;
           }
           this.afs
@@ -63,10 +59,10 @@ export class AddCustomDepartureComponent {
                   this.oldId = id;
                   this.addForm.controls["name"].setValue(id);
                   this.addForm.controls["hideExpired"].setValue(
-                    result.data().hideExpired
+                    result.data()["hideExpired"]
                   );
-                  var theJSON = JSON.stringify(result.data().jsonData);
-                  this.data = result.data().jsonData;
+                  var theJSON = JSON.stringify(result.data()["jsonData"]);
+                  this.data = result.data()["jsonData"];
                   var uri = this.sanitizer.bypassSecurityTrustUrl(
                     "data:text/json;charset=UTF-8," +
                       encodeURIComponent(theJSON)
@@ -115,13 +111,13 @@ export class AddCustomDepartureComponent {
 
   Validate(showError: boolean = true): boolean {
     console.log("Validate");
-    var ajv = new Ajv({ schemaId: "auto" });
+    var ajv = new Ajv();
     var validate = ajv.compile(require("./departure.schema.json"));
     var valid = validate(this.data);
     this.error = ajv.errorsText(validate.errors);
     if (valid == false) {
       if (showError == true) {
-        this.notifierService.notify("error", "Cannot Save: Invalid Data");
+        // this.notifierService.notify("error", "Cannot Save: Invalid Data");
         this.googleAnalyticsEventsService.emitEvent(
           "CustomDepartures",
           "InvalidFile"
@@ -132,7 +128,7 @@ export class AddCustomDepartureComponent {
 
     if (showError == true) {
       console.log("Schema is Valid");
-      this.notifierService.notify("default", "Schema is Valid");
+      // this.notifierService.notify("default", "Schema is Valid");
     }
 
     return true;
@@ -156,7 +152,7 @@ export class AddCustomDepartureComponent {
       };
       this.auth.user$.subscribe((user) => {
         if (!user) {
-          this.notifierService.notify("error", "You must be logged in to save");
+          // this.notifierService.notify("error", "You must be logged in to save");
           return;
         }
         if (this.isEdit && this.oldId != this.addForm.controls["name"].value) {
@@ -183,7 +179,7 @@ export class AddCustomDepartureComponent {
       .collection(`customDepartures/${user.uid}/departures`)
       .doc(this.addForm.controls["name"].value)
       .set(data, this.isEdit == true ? { merge: true } : undefined);
-    this.notifierService.notify("success", "Saved Successfully");
+    // this.notifierService.notify("success", "Saved Successfully");
     this.googleAnalyticsEventsService.emitEvent("CustomDepartures", "Saved");
     this.router.navigate(["custom-departures"]);
   }

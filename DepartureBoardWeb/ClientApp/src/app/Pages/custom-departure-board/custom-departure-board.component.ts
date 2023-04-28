@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { AuthService } from "src/app/Services/auth.service";
 import { ToggleConfig } from "src/app/ToggleConfig";
+import {NotifierService} from "../../Services/notifier.service";
 
 @Component({
   selector: "app-custom-departure-board",
@@ -11,6 +12,7 @@ import { ToggleConfig } from "src/app/ToggleConfig";
 export class CustomDepartureBoardComponent implements OnInit {
   departureFiles;
   constructor(
+    private notifierService: NotifierService,
     private afs: AngularFirestore,
     public auth: AuthService
   ) {
@@ -22,10 +24,10 @@ export class CustomDepartureBoardComponent implements OnInit {
     this.auth.user$.subscribe(
       (user) => {
         if (!user) {
-          // this.notifierService.notify(
-          //   "error",
-          //   "You must be logged in to use this"
-          // );
+          this.notifierService.notify(
+            "error",
+            "You must be logged in to use this"
+          );
           ToggleConfig.LoadingBar.next(false);
           return;
         }
@@ -52,7 +54,7 @@ export class CustomDepartureBoardComponent implements OnInit {
         .doc(id)
         .delete()
         .then(() => {
-          // this.notifierService.notify("success", "Deleted Successfully");
+          this.notifierService.notify("success", "Deleted Successfully");
           this.ngOnInit();
         });
     });

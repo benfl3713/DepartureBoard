@@ -34,6 +34,7 @@
             "styles": [
               "src/default.theme.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/sweetalert2/src/sweetalert2.scss",
               "src/styles.css",
               "src/style.variables.css"
             ],

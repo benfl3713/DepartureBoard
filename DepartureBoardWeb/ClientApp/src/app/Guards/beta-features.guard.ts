@@ -8,12 +8,13 @@ import {
 } from "@angular/router";
 // import { NotifierService } from "angular-notifier";
 import { Observable } from "rxjs";
+import {NotifierService} from "../Services/notifier.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class BetaFeaturesGuard implements CanActivate, CanActivateChild {
-  constructor() {}
+  constructor(private notifierService: NotifierService) {}
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
@@ -25,7 +26,7 @@ export class BetaFeaturesGuard implements CanActivate, CanActivateChild {
     const allowed =
       localStorage.getItem("settings_general_betaFeatures") === "true";
     if (allowed == false) {
-      // this.notifierService.notify("error", "Blocked - This is a beta feature");
+      this.notifierService.notify("error", "Blocked - This is a beta feature");
     }
     return allowed;
   }

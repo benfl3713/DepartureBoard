@@ -8,6 +8,7 @@ import { ToggleConfig } from "src/app/ToggleConfig";
 import { GoogleAnalyticsEventsService } from "src/app/Services/google.analytics";
 import { DomSanitizer } from "@angular/platform-browser";
 import { CustomDeparture } from "src/app/models/custom-departure.model";
+import {NotifierService} from "../../../Services/notifier.service";
 
 @Component({
   selector: "app-add-custom-departure",
@@ -34,7 +35,8 @@ export class AddCustomDepartureComponent {
     private router: Router,
     private route: ActivatedRoute,
     public googleAnalyticsEventsService: GoogleAnalyticsEventsService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private notifierService: NotifierService
   ) {
     route.params.subscribe(() => {
       var id = this.route.snapshot.paramMap.get("id");
@@ -42,10 +44,10 @@ export class AddCustomDepartureComponent {
         ToggleConfig.LoadingBar.next(true);
         this.auth.user$.subscribe((user) => {
           if (!user) {
-            // this.notifierService.notify(
-            //   "error",
-            //   "You must be logged in to use this"
-            // );
+            this.notifierService.notify(
+              "error",
+              "You must be logged in to use this"
+            );
             return;
           }
           this.afs
@@ -117,7 +119,7 @@ export class AddCustomDepartureComponent {
     this.error = ajv.errorsText(validate.errors);
     if (valid == false) {
       if (showError == true) {
-        // this.notifierService.notify("error", "Cannot Save: Invalid Data");
+        this.notifierService.notify("error", "Cannot Save: Invalid Data");
         this.googleAnalyticsEventsService.emitEvent(
           "CustomDepartures",
           "InvalidFile"
@@ -128,7 +130,6 @@ export class AddCustomDepartureComponent {
 
     if (showError == true) {
       console.log("Schema is Valid");
-      // this.notifierService.notify("default", "Schema is Valid");
     }
 
     return true;
@@ -152,7 +153,7 @@ export class AddCustomDepartureComponent {
       };
       this.auth.user$.subscribe((user) => {
         if (!user) {
-          // this.notifierService.notify("error", "You must be logged in to save");
+          this.notifierService.notify("error", "You must be logged in to save");
           return;
         }
         if (this.isEdit && this.oldId != this.addForm.controls["name"].value) {
@@ -179,7 +180,7 @@ export class AddCustomDepartureComponent {
       .collection(`customDepartures/${user.uid}/departures`)
       .doc(this.addForm.controls["name"].value)
       .set(data, this.isEdit == true ? { merge: true } : undefined);
-    // this.notifierService.notify("success", "Saved Successfully");
+    this.notifierService.notify("success", "Saved Successfully");
     this.googleAnalyticsEventsService.emitEvent("CustomDepartures", "Saved");
     this.router.navigate(["custom-departures"]);
   }

@@ -6,6 +6,7 @@ import { GoogleAnalyticsEventsService } from "../Services/google.analytics";
 import { GlobalEvents } from "../GlobalEvents";
 import { ActivatedRoute } from "@angular/router";
 import { of } from 'rxjs';
+import {NotifierService} from "../Services/notifier.service";
 
 @Component({
   selector: "app-component-settings",
@@ -18,7 +19,8 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     public googleAnalyticsEventsService: GoogleAnalyticsEventsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private notifierService: NotifierService
   ) {
     document.title = "Settings - Departure Board";
   }
@@ -72,7 +74,7 @@ export class SettingsComponent implements OnInit {
         "DataSource",
         localStorage.getItem("settings_general_dataSource")
       );
-      // this.notifierService.notify("success", "Settings - Saved Successfully");
+      this.notifierService.notify("success", "Settings - Saved Successfully");
     }
     GlobalEvents.SettingsChanged.emit();
   }

@@ -1,7 +1,7 @@
 export interface User {
   uid: string;
   email: string;
-  photURL?: string;
+  photoURL?: string;
   displayName?: string;
   lastUpdated?: Date;
 }

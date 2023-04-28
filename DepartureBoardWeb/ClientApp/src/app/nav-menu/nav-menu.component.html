@@ -114,7 +114,7 @@
                   (click)="auth.signOut()"
                   *ngIf="auth.user$ | async as user; else guest"
                 >
-                  <img [src]="user.photURL" height="20" />
+                  <img [src]="user.photoURL" height="20" />
                   Logout
                 </a>
                 <ng-template #guest>

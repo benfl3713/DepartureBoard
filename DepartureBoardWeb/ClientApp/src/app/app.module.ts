@@ -106,20 +106,6 @@ const firebaseConfig = {
     AngularFireStorageModule,
     SettingsModule,
     NgxSkeletonLoaderModule,
-    // NotifierModule.withConfig({
-    //   position: {
-    //     horizontal: {
-    //       position: "right",
-    //     },
-    //     vertical: {
-    //       position: "top",
-    //       distance: 40,
-    //     },
-    //   },
-    //   behaviour: {
-    //     autoHide: 3500,
-    //   },
-    // }),
     RouterModule.forRoot(ROUTES, { anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' }),
     BrowserAnimationsModule,
     // ServiceWorkerModule.register("ngsw-worker.js", {

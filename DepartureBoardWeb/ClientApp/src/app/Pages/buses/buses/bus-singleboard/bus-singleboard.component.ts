@@ -27,7 +27,7 @@ export class BusSingleboardComponent implements OnInit {
   noBoardsDisplay: boolean = false;
   stopName: string = "";
   showStopName: boolean =
-    localStorage.getItem("settings_buses_showStopName") == "true" || false;
+    localStorage.getItem("settings_buses_showStopName") == "true" || true;
 
   ngOnInit() {
   }

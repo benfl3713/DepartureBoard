@@ -46,7 +46,7 @@ export class SettingsComponent implements OnInit {
     departureadmin_uid: new FormControl(""),
     departureadmin_enabled: new FormControl(false),
 
-    buses_showStopName: new FormControl(false),
+    buses_showStopName: new FormControl(true),
   });
 
   Load() {
@@ -93,7 +93,7 @@ export class SettingsComponent implements OnInit {
       singleboard_scrollspeed: 300,
       departureadmin_uid: "",
       departureadmin_enabled: false,
-      buses_showStopName: false,
+      buses_showStopName: true,
     });
     this.Save(false);
     this.Load();

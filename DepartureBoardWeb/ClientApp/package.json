@@ -5,6 +5,7 @@
     "ng": "ng",
     "ngcc": "ngcc",
     "start": "echo Starting... && ng serve",
+    "start:prod": "ng serve --configuration production",
     "build": "ng build",
     "build:ssr": "ng run DepartureBoardWeb:server:dev",
     "build:prod": "ng build --configuration production",

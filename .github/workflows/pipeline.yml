@@ -31,11 +31,12 @@ jobs:
           install-command: npm install
           build: npm run ngcc
           start: npm run start:prod
-          wait-on: 'http://localhost:4200'
+          wait-on: 'http://127.0.0.1:4200'
           wait-on-timeout: 180
           browser: chrome
           record: true
           working-directory: ./DepartureBoardWeb/ClientApp
+          node-version: '18'
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

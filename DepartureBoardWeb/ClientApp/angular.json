@@ -122,6 +122,9 @@
           "configurations": {
             "production": {
               "browserTarget": "DepartureBoardWeb:build:production"
+            },
+            "aws-production": {
+              "browserTarget": "DepartureBoardWeb:build:aws-production"
             }
           }
         },

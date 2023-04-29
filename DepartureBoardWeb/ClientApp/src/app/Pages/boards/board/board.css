@@ -1,5 +1,5 @@
 .board {
-  width: 300px;
+  width: 280px;
   padding: 10px;
   height: 450px;
   padding: 0;
@@ -59,16 +59,16 @@ div .bottom {
   }
 }
 
+.stops {
+  width: 100%;
+}
+
 /* Fill full screen with each board when in portrait mode */
 @media screen and (orientation:portrait) {
   .board {
     width: 100vw !important;
     height: 100vh !important;
     margin-bottom: 100px;
-  }
-
-  .stops {
-    width: 100%;
   }
 
   .stop, .stopname, .destination, .operator {

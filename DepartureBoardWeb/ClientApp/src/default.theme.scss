@@ -21,7 +21,7 @@ $departureboard-dark-theme: mat.define-dark-theme((
 ));
 
 
-$background-color: var(--background-colour, #000000);
+$background-color: #000000;
 $departureboard-dark-theme-color: map-get($departureboard-dark-theme, color);
 $color-background-palette: map-get($departureboard-dark-theme-color, background);
 $color-background-palette: map-merge($color-background-palette, (background: $background-color));

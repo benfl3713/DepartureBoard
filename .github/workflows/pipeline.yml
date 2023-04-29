@@ -32,6 +32,7 @@ jobs:
           build: npm run ngcc
           start: npm run start:prod
           wait-on: 'http://localhost:4200'
+          wait-on-timeout: 180
           browser: chrome
           record: true
           working-directory: ./DepartureBoardWeb/ClientApp

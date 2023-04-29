@@ -1,11 +1,11 @@
-import { switchMap } from 'rxjs/operators';
-import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormControl } from "@angular/forms";
-import { ThemeService } from "../Services/ThemeService";
-import { GoogleAnalyticsEventsService } from "../Services/google.analytics";
-import { GlobalEvents } from "../GlobalEvents";
-import { ActivatedRoute } from "@angular/router";
-import { of } from 'rxjs';
+import {switchMap} from 'rxjs/operators';
+import {Component, OnInit} from "@angular/core";
+import {FormGroup, FormControl} from "@angular/forms";
+import {ThemeService} from "../Services/ThemeService";
+import {GoogleAnalyticsEventsService} from "../Services/google.analytics";
+import {GlobalEvents} from "../GlobalEvents";
+import {ActivatedRoute, Router} from "@angular/router";
+import {of} from 'rxjs';
 import {NotifierService} from "../Services/notifier.service";
 
 @Component({
@@ -16,14 +16,18 @@ import {NotifierService} from "../Services/notifier.service";
 export class SettingsComponent implements OnInit {
   settingsType: string = "general";
   betaProgram: boolean = localStorage.getItem("beta_program") === "true";
+  previousPageUrl?: string;
 
   constructor(
     public googleAnalyticsEventsService: GoogleAnalyticsEventsService,
     private route: ActivatedRoute,
+    private router: Router,
     private notifierService: NotifierService
   ) {
     document.title = "Settings - Departure Board";
+    this.previousPageUrl = this.router.getCurrentNavigation().previousNavigation?.finalUrl.toString();
   }
+
   ngOnInit(): void {
     this.Load();
     this.CheckUrlRoute();
@@ -100,7 +104,7 @@ export class SettingsComponent implements OnInit {
     this.googleAnalyticsEventsService.emitEvent("Settings", "ResetAll");
   }
 
-  CheckUrlRoute(){
+  CheckUrlRoute() {
     this.route.url.pipe(switchMap(() => this.route.firstChild?.paramMap ?? of(null))).subscribe(u => {
       if (!u || !u.has("type")) return;
 
@@ -123,5 +127,9 @@ export class SettingsComponent implements OnInit {
           break;
       }
     });
+  }
+
+  goBack() {
+    this.router.navigateByUrl(this.previousPageUrl);
   }
 }

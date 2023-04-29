@@ -13,6 +13,11 @@
 }
 .row {
   color: var(--mainColour);
+  overflow: hidden;
+}
+
+#back-button {
+  position: absolute;
 }
 
 /* input color class */

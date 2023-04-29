@@ -30,7 +30,7 @@ jobs:
         with:
           install-command: npm install
           build: npm run ngcc
-          start: npm start:prod
+          start: npm run start:prod
           wait-on: 'http://localhost:4200'
           browser: chrome
           record: true

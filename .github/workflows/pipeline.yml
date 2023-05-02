@@ -30,11 +30,11 @@ jobs:
         with:
           install-command: npm install
           build: npm run ngcc
-          start: export NODE_OPTIONS=--openssl-legacy-provider && npm start
-          wait-on: 'http://localhost:4200'
+          start: npm run start:for-cypress
+          wait-on: 'http://127.0.0.1:4200'
           browser: chrome
-          record: true
           working-directory: ./DepartureBoardWeb/ClientApp
+          node-version: '18'
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

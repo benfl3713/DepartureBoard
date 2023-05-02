@@ -13,7 +13,7 @@ import {
 import { ToggleConfig } from "./ToggleConfig";
 import { Config } from "./Services/Config";
 import { ThemeService } from "./Services/ThemeService";
-import { SwUpdate } from "@angular/service-worker";
+// import { SwUpdate } from "@angular/service-worker";
 import { AdminBoardService } from "./Services/admin-board.service";
 import { GlobalEvents } from "./GlobalEvents";
 import { CookieService } from "ngx-cookie-service";
@@ -38,7 +38,7 @@ export class AppComponent implements AfterViewChecked {
 
   constructor(
     private router: Router,
-    private updates: SwUpdate,
+    // private updates: SwUpdate,
     adminBoardService: AdminBoardService,
     route: ActivatedRoute,
     cookieService: CookieService,
@@ -96,9 +96,9 @@ export class AppComponent implements AfterViewChecked {
       this.PingApiService();
     }
 
-    this.CheckForUpdate();
+    //this.CheckForUpdate();
     //Checks for update 30 minutes
-    setInterval(() => this.CheckForUpdate(), 1800000);
+    //setInterval(() => this.CheckForUpdate(), 1800000);
 
     //Setup Admin Board Service
     adminBoardService.startListening(this.router);
@@ -118,9 +118,9 @@ export class AppComponent implements AfterViewChecked {
   CheckForUpdate() {
     this.CheckAndRemoveServiceWorkerIfDisabled();
 
-    this.updates.available.subscribe(() => {
-      this.updates.activateUpdate().then(() => document.location.reload());
-    });
+    // this.updates.available.subscribe(() => {
+    //   this.updates.activateUpdate().then(() => document.location.reload());
+    // });
   }
 
   CheckAndRemoveServiceWorkerIfDisabled() {

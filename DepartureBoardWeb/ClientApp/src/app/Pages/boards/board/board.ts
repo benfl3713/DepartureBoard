@@ -77,7 +77,7 @@ export class Board {
     this.Pager();
   }
 
-  FilterPlatform(platform: number) {
+  FilterPlatform(platform: string) {
     if (platform) {
       const queryParams: Params = { platform };
       this.router.navigate([], {

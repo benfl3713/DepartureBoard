@@ -24,19 +24,17 @@ import { ControlContainer, FormGroup } from "@angular/forms";
       <div class="row">
         <div class="col">
           <label>Scroll Speed</label>
-          <mat-slider
+          <input type="range"
             #singleboardScrollSpeed
             min="0"
             max="500"
             step="50"
             [value]="form.controls.singleboard_scrollspeed.value"
             color="primary"
-            thumbLabel
             (change)="
-              form.controls.singleboard_scrollspeed.setValue($event.value)
+              form.controls.singleboard_scrollspeed.setValue($event.target['value'])
             "
-          >
-          </mat-slider>
+          />
           <mat-hint>{{ singleboardScrollSpeed.value }}</mat-hint>
         </div>
         <button

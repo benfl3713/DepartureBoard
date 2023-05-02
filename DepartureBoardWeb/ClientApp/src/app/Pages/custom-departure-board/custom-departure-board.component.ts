@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { AngularFirestore } from "@angular/fire/firestore";
+import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { AuthService } from "src/app/Services/auth.service";
-import { NotifierService } from "angular-notifier";
 import { ToggleConfig } from "src/app/ToggleConfig";
+import {NotifierService} from "../../Services/notifier.service";
 
 @Component({
   selector: "app-custom-departure-board",
@@ -12,9 +12,9 @@ import { ToggleConfig } from "src/app/ToggleConfig";
 export class CustomDepartureBoardComponent implements OnInit {
   departureFiles;
   constructor(
+    private notifierService: NotifierService,
     private afs: AngularFirestore,
-    public auth: AuthService,
-    private notifierService: NotifierService
+    public auth: AuthService
   ) {
     document.title = "Custom Departures - Departure Board";
     ToggleConfig.LoadingBar.next(true);

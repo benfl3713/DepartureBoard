@@ -114,11 +114,11 @@ export const ROUTES: Route[] = [
     loadChildren: () =>
       import("./Pages/buses/buses/buses.module").then((m) => m.BusesModule),
   },
-  {
-    path: "germany",
-    loadChildren: () =>
-      import("./Pages/germany/germany.module").then((m) => m.GermanyModule),
-  },
+  // {
+  //   path: "germany",
+  //   loadChildren: () =>
+  //     import("./Pages/germany/germany.module").then((m) => m.GermanyModule),
+  // },
   { path: ":station", component: BoardsComponent, pathMatch: "full" },
   {
       path: ":station/:displays",
@@ -135,10 +135,10 @@ export const ROUTES: Route[] = [
     component: BoardsComponent,
     pathMatch: "full",
   },
-  {
-    path: "germany",
-    loadChildren: () =>
-      import("./Pages/germany/germany.module").then((m) => m.GermanyModule),
-  },
+  // {
+  //   path: "germany",
+  //   loadChildren: () =>
+  //     import("./Pages/germany/germany.module").then((m) => m.GermanyModule),
+  // },
   { path: "**", redirectTo: "" },
 ];

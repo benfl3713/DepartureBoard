@@ -6,8 +6,9 @@ import {
   RouterStateSnapshot,
   UrlTree,
 } from "@angular/router";
-import { NotifierService } from "angular-notifier";
+// import { NotifierService } from "angular-notifier";
 import { Observable } from "rxjs";
+import {NotifierService} from "../Services/notifier.service";
 
 @Injectable({
   providedIn: "root",

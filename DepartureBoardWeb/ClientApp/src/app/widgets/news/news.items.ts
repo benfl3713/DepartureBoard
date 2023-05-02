@@ -1,8 +1,8 @@
 export const NewsItems: NewsItem[] = [
   {
-    title: 'New UI Project',
+    title: 'New Framework Version',
     content:
-      "Brand new redesigned UI being introduced into the application. Starting with this home page"
+      "Big Framework Version Update with increased performance. Please contact us if you see any issues"
   },
   {
     title: "New Documentation Website",
@@ -12,9 +12,9 @@ export const NewsItems: NewsItem[] = [
     titleLink: 'https://docs.leddepartureboard.com'
   },
   {
-    title: "Serverless Design",
+    title: "🚄 Coming Soon: Tube Trains",
     content:
-      "The production website has been moved to a new serverless deployment. Please let me know if you have any issues",
+      "TFL Tube Departures are coming soon!!!",
   },
 ];
 

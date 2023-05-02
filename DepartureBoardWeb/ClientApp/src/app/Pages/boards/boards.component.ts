@@ -18,7 +18,7 @@ import { Board } from "./board/board";
 import { ToggleConfig } from "../../ToggleConfig";
 import { GoogleAnalyticsEventsService } from "../../Services/google.analytics";
 import { AuthService } from "src/app/Services/auth.service";
-import { AngularFirestore } from "@angular/fire/firestore";
+import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { DepartureService } from "src/app/Services/departure.service";
 import { StationLookupService } from "src/app/Services/station-lookup.service";
 import { Departure } from "src/app/models/departure.model";

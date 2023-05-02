@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { AngularFirestore } from "@angular/fire/firestore";
+import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { AuthService } from "./auth.service";
 import { Router, Params } from "@angular/router";
 import { Subscription, Observable } from "rxjs";

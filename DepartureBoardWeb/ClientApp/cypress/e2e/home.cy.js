@@ -15,7 +15,7 @@ describe('Home Page Tests', () => {
   })
 
   it('Search and Navigate to EUS. Should hide navbar after 3 seconds', () => {
-    cy.get('[data-placeholder="Station Name"]')
+    cy.get('[placeholder="Station Name"]')
       .focus()
       .type("Euston")
 

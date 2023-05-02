@@ -69,6 +69,7 @@ div .bottom {
     width: 100vw !important;
     height: 100vh !important;
     margin-bottom: 100px;
+    max-width: calc(100% - 10px);
   }
 
   .stop, .stopname, .destination, .operator {

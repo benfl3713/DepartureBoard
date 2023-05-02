@@ -29,6 +29,11 @@
                 "glob": "_redirects",
                 "input": "src",
                 "output": "/"
+              },
+              {
+                "glob": "assetlinks.json",
+                "input": "src/assets",
+                "output": ".well-known"
               }
             ],
             "styles": [

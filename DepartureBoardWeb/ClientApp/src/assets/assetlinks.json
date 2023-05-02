@@ -1,0 +1,11 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.leddepartureboard.www.twa",
+      "sha256_cert_fingerprints":
+        ["AA:18:85:65:3D:40:E0:A3:FF:79:C3:C9:1C:EF:4A:4A:F1:0D:10:65:45:16:8E:06:15:88:00:C9:6E:6D:07:B6"]
+    }
+  }
+]

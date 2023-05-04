@@ -20,6 +20,7 @@ import { environment } from "src/environments/environment";
 import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { AuthService } from "src/app/Services/auth.service";
 import { Subscription } from "rxjs";
+import {AnnouncementService} from "src/app/Services/announcement.service";
 
 @Component({
   selector: "app-singleboard",
@@ -42,6 +43,7 @@ export class SingleBoard implements OnDestroy, OnInit {
   stationName;
   nextDepartures: Departure[] = [];
   subscriptions: Subscription[] = [];
+  announcementSub;
 
   //first
   firstTime: Date;
@@ -62,7 +64,8 @@ export class SingleBoard implements OnDestroy, OnInit {
     private departureService: DepartureService,
     private stationLookupService: StationLookupService,
     private auth: AuthService,
-    private afs: AngularFirestore
+    private afs: AngularFirestore,
+    private announcement: AnnouncementService
   ) {
     setInterval(() => {
       this.time = new Date();
@@ -182,6 +185,8 @@ export class SingleBoard implements OnDestroy, OnInit {
         clearTimeout(this.refresher);
       }
     });
+
+    this.announcementSub = this.announcement.startPeriodicAnnouncement();
   }
 
   GetDepartures() {

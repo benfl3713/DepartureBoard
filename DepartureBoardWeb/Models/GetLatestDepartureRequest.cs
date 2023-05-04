@@ -12,6 +12,7 @@ namespace DepartureBoardWeb.Models
         public string platform { get; set; }
         public string dataSource { get; set; }
         public bool includeNonPassengerServices { get; set; }
+        public bool includeStopData { get; set; } = true;
         public string toCrsCode { get; set; }
 
         public GetLatestDepartureRequest()

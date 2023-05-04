@@ -8,6 +8,8 @@ import { ControlContainer, FormGroup } from "@angular/forms";
     <form [formGroup]="form">
       <h1 class="led">Announcements</h1>
       <p>The following feature's enable different voice announcements when on a departure board</p>
+      <p>Note these are all beta features that may contain bugs.</p>
+      <p style="color: lawngreen">To stop your browser auto muting this website, it is recommended to go into site settings and set <strong>"Sound"</strong> to <strong>"Allow"</strong></p>
       <mat-slide-toggle
         [checked]="form.controls.announcements_arrivals.value"
         (change)="form.controls.announcements_arrivals.setValue($event.checked)"
@@ -23,7 +25,7 @@ import { ControlContainer, FormGroup } from "@angular/forms";
       <div class="row" *ngIf="form.controls.announcements_cctv.value">
         <div class="col">
           <label>Interval (Minutes)</label>
-          <mat-slider
+          <input type="range"
             #cctvScrollSpeed
             min="1"
             max="60"
@@ -32,10 +34,9 @@ import { ControlContainer, FormGroup } from "@angular/forms";
             color="primary"
             thumbLabel
             (change)="
-              form.controls.announcements_cctv_interval.setValue($event.value)
+              form.controls.announcements_cctv_interval.setValue($event.target['value'])
             "
-          >
-          </mat-slider>
+          />
           <mat-hint>{{ cctvScrollSpeed.value }}</mat-hint>
         </div>
         <button
@@ -55,7 +56,7 @@ import { ControlContainer, FormGroup } from "@angular/forms";
       <div class="row" *ngIf="form.controls.announcements_seeItSayItSortIt.value">
         <div class="col">
           <label>Interval (Minutes)</label>
-          <mat-slider
+          <input type="range"
             #seeItScrollSpeed
             min="1"
             max="60"
@@ -64,10 +65,9 @@ import { ControlContainer, FormGroup } from "@angular/forms";
             color="primary"
             thumbLabel
             (change)="
-              form.controls.announcements_seeItSayItSortIt_interval.setValue($event.value)
+              form.controls.announcements_seeItSayItSortIt_interval.setValue($event.target['value'])
             "
-          >
-          </mat-slider>
+          />
           <mat-hint>{{ seeItScrollSpeed.value }}</mat-hint>
         </div>
         <button
@@ -88,7 +88,7 @@ import { ControlContainer, FormGroup } from "@angular/forms";
       <div class="row" *ngIf="form.controls.announcements_smoking.value">
         <div class="col">
           <label>Interval (Minutes)</label>
-          <mat-slider
+          <input type="range"
             #seeItScrollSpeed
             min="1"
             max="60"
@@ -97,10 +97,9 @@ import { ControlContainer, FormGroup } from "@angular/forms";
             color="primary"
             thumbLabel
             (change)="
-              form.controls.announcements_smoking_interval.setValue($event.value)
+              form.controls.announcements_smoking_interval.setValue($event.target['value'])
             "
-          >
-          </mat-slider>
+          />
           <mat-hint>{{ seeItScrollSpeed.value }}</mat-hint>
         </div>
         <button

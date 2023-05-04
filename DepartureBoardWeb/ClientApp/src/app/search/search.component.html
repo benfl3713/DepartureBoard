@@ -6,7 +6,7 @@
     <mat-form-field id="search-box">
       <mat-icon matIconPrefix style="padding-bottom: 30px">search</mat-icon>
       <mat-label>Station Name</mat-label>
-      <input type="text" placeholder="Ex. Euston" aria-label="station name" matInput [formControl]="searchBox"
+      <input id="search-input-box" type="text" placeholder="Ex. Euston" aria-label="station name" matInput [formControl]="searchBox"
         [matAutocomplete]="auto" (keyup)="keyPressed()" />
       <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="stationDisplay">
         <mat-option *ngFor="let station of filteredOptions" [value]="station">

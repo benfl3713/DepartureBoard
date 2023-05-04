@@ -2,7 +2,7 @@ describe('Home Page Tests', () => {
   beforeEach(() => cy.visit('/'))
 
   it('Visits the Home Page', () => {
-    cy.get('h1').should('have.text', " Led Departure Board ")
+    cy.get('#home-title').should('have.text', " Led Departure Board ")
   })
 
   it('Clicks Find your station', () => {
@@ -15,7 +15,7 @@ describe('Home Page Tests', () => {
   })
 
   it('Search and Navigate to EUS. Should hide navbar after 3 seconds', () => {
-    cy.get('[placeholder="Station Name"]')
+    cy.get('#search-input-box')
       .focus()
       .type("Euston")
 

@@ -133,6 +133,6 @@
 </header>
 <!--=================================
       Header -->
-<div [ngClass]="{ main: showHome }" style="overflow-x: hidden; padding-left: 10px">
+<div [ngClass]="{ 'main-margin': showHome && includeTopMargin }" style="overflow-x: hidden;">
   <router-outlet></router-outlet>
 </div>

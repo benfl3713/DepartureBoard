@@ -1,16 +1,15 @@
-import { Component, OnInit, HostListener, ViewChild } from "@angular/core";
+import { Component, HostListener } from "@angular/core";
 import {
   Router,
   NavigationEnd,
   ActivatedRoute,
   NavigationStart,
   RouteConfigLoadStart,
-  RouteConfigLoadEnd,
+  RouteConfigLoadEnd, ActivationStart,
 } from "@angular/router";
 import { DeviceDetectorService } from "ngx-device-detector";
 import { AuthService } from "../Services/auth.service";
 import { ToggleConfig } from "../ToggleConfig";
-import { MatSidenav } from "@angular/material/sidenav";
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 import { map, shareReplay } from "rxjs/operators";
 import { Observable } from "rxjs";
@@ -23,6 +22,7 @@ import {navItemList} from "./menu-items"
 })
 export class NavMenuComponent {
   showHome: boolean = true;
+  includeTopMargin: boolean = true;
   navItemList = navItemList;
   isBetaEnabled = localStorage.getItem("settings_general_betaFeatures") === "true";
   showMobileMenu: boolean = false;
@@ -79,6 +79,11 @@ export class NavMenuComponent {
       if (event instanceof NavigationStart) {
         ToggleConfig.LoadingBar.next(false);
       }
+
+      if (event instanceof ActivationStart) {
+        this.includeTopMargin = event.snapshot.data.includeTopMargin ?? true;
+      }
+
       if (event instanceof RouteConfigLoadStart) {
         ToggleConfig.LoadingBar.next(true);
       } else if (event instanceof RouteConfigLoadEnd) {

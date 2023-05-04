@@ -3,7 +3,7 @@ import { NgModule, APP_INITIALIZER } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HttpClient } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
-import { DatePipe } from "@angular/common";
+import { DatePipe, DecimalPipe } from "@angular/common";
 
 import { MaterialModule } from "./external/material.module";
 import { CookieService } from "ngx-cookie-service";
@@ -53,6 +53,7 @@ import { BlackSectionTitleComponent } from "./Components/black-section-title/bla
 import { BlackCardStyle2Component } from './Components/black-card-style2/black-card-style2.component';
 import { NavMenuMobileComponent } from './nav-menu/nav-menu-mobile/nav-menu-mobile.component';
 import { ContactUsComponent } from './Components/contact-us/contact-us.component';
+import { AnnouncementService } from "./Services/announcement.service";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo",
@@ -115,6 +116,7 @@ const firebaseConfig = {
   ],
   providers: [
     DatePipe,
+    DecimalPipe,
     GoogleAnalyticsEventsService,
     {
       provide: APP_INITIALIZER,
@@ -128,6 +130,7 @@ const firebaseConfig = {
     BusDepartureService,
     RouteTransformerDirective,
     BetaFeaturesGuard,
+    AnnouncementService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

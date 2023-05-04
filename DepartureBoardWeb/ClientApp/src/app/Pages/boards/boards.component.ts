@@ -23,6 +23,8 @@ import { DepartureService } from "src/app/Services/departure.service";
 import { StationLookupService } from "src/app/Services/station-lookup.service";
 import { Departure } from "src/app/models/departure.model";
 import { Subscription } from "rxjs";
+import {ServiceStatus} from "../singleboard/singleboard";
+import { AnnouncementService } from "src/app/Services/announcement.service";
 
 @Component({
   selector: "app-boards",
@@ -47,6 +49,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
   Boards: ViewContainerRef;
   subscriptions: Subscription[] = [];
   isLoading = false;
+  announcementSub;
 
   constructor(
     private route: ActivatedRoute,
@@ -56,7 +59,8 @@ export class BoardsComponent implements OnInit, OnDestroy {
     private auth: AuthService,
     private afs: AngularFirestore,
     private departureService: DepartureService,
-    private stationLookupService: StationLookupService
+    private stationLookupService: StationLookupService,
+    private announcement: AnnouncementService
   ) {
     setInterval(() => {
       this.time = new Date();
@@ -76,6 +80,8 @@ export class BoardsComponent implements OnInit, OnDestroy {
         clearTimeout(this.refresher);
       }
     });
+
+    this.announcementSub = this.announcement.startPeriodicAnnouncement();
   }
 
   SetupDisplay(queryParams) {
@@ -213,7 +219,9 @@ export class BoardsComponent implements OnInit, OnDestroy {
         console.log(e);
       }
     }
-    this.previousData = data;
+
+    this.announcement.AnnounceArrivals(data, this.previousData);
+    this.previousData = data
   }
 
   GetCustomData() {
@@ -323,6 +331,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     clearTimeout(this.refresher);
     this.subscriptions.forEach((s) => s.unsubscribe());
+    this.announcementSub();
   }
 
   isNumber(value: string | number): boolean {

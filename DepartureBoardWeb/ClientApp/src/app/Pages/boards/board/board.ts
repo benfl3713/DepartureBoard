@@ -132,7 +132,8 @@ export class Board {
   }
 
   calculateStatus(data: Departure): ServiceStatus {
-    if (data.expectedDeparture) {
+    // @ts-ignore
+    if (data.expectedDeparture && data.expectedDeparture != '0001-01-01T00:00:00') {
       return data.expectedDeparture.valueOf() > data.aimedDeparture.valueOf()
         ? ServiceStatus.LATE
         : ServiceStatus.ONTIME;

@@ -22,6 +22,10 @@
           Buses
           <span style="margin-left: 15px" class="badge badge-pill badge-primary">Beta</span>
         </button>
+        <button mat-list-item [routerLink]="['/settings/announcements']" class="orange">
+          Announcements
+          <span style="margin-left: 15px" class="badge badge-pill badge-primary">Beta</span>
+        </button>
       </mat-action-list>
     </mat-list>
   </div>
@@ -41,6 +45,9 @@
     </div>
     <div id="settings-buses" *ngIf="settingsType == 'buses'">
       <app-settings-buses [formGroup]="settingsForm"></app-settings-buses>
+    </div>
+    <div id="settings-announcements" *ngIf="settingsType == 'announcements'">
+      <app-settings-announcements [formGroup]="settingsForm"></app-settings-announcements>
     </div>
 
     <button mat-raised-button id="btnSave" class="btnGreen" type="submit" style="margin-right: 5px">

@@ -51,6 +51,14 @@ export class SettingsComponent implements OnInit {
     departureadmin_enabled: new FormControl(false),
 
     buses_showStopName: new FormControl(true),
+
+    announcements_arrivals: new FormControl(false),
+    announcements_cctv: new FormControl(false),
+    announcements_seeItSayItSortIt: new FormControl(false),
+    announcements_cctv_interval: new FormControl(20),
+    announcements_seeItSayItSortIt_interval: new FormControl(20),
+    announcements_smoking: new FormControl(false),
+    announcements_smoking_interval: new FormControl(20)
   });
 
   Load() {
@@ -98,6 +106,10 @@ export class SettingsComponent implements OnInit {
       departureadmin_uid: "",
       departureadmin_enabled: false,
       buses_showStopName: true,
+      announcements_arrivals: false,
+      announcements_cctv: false,
+      announcements_seeItSayItSortIt: false,
+      announcements_smoking: false
     });
     this.Save(false);
     this.Load();
@@ -124,6 +136,9 @@ export class SettingsComponent implements OnInit {
           break;
         case "buses":
           this.settingsType = "buses";
+          break;
+        case "announcements":
+          this.settingsType = "announcements";
           break;
       }
     });

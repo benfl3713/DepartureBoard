@@ -54,6 +54,7 @@ import { BlackCardStyle2Component } from './Components/black-card-style2/black-c
 import { NavMenuMobileComponent } from './nav-menu/nav-menu-mobile/nav-menu-mobile.component';
 import { ContactUsComponent } from './Components/contact-us/contact-us.component';
 import { AnnouncementService } from "./Services/announcement.service";
+import { SearchPageComponent } from './Components/search-page/search-page.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo",
@@ -93,7 +94,8 @@ const firebaseConfig = {
     BlackSectionTitleComponent,
     BlackCardStyle2Component,
     NavMenuMobileComponent,
-    ContactUsComponent
+    ContactUsComponent,
+    SearchPageComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),

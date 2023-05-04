@@ -6,7 +6,7 @@
   border: 2px solid var(--mainColour);
   border-radius: 8px;
   color: var(--mainColour);
-  padding: 10px;
+  padding: 20px;
   margin-top: 5px;
 }
 #btnSearch {

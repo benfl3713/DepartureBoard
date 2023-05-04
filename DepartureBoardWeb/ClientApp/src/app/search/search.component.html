@@ -1,10 +1,12 @@
 <div class="container">
-  <h2 id="search-title" class="led-bold centre-text clickable" style="padding-left: 10px" [routerLink]="['/search']">
+  <h1 id="search-title" class="led centre-text clickable" style="padding-left: 10px" [routerLink]="['/search']">
     Search
-  </h2>
+  </h1>
   <form class="example-form">
     <mat-form-field id="search-box">
-      <input type="text" placeholder="Station Name" aria-label="station name" matInput [formControl]="searchBox"
+      <mat-icon matIconPrefix style="padding-bottom: 30px">search</mat-icon>
+      <mat-label>Station Name</mat-label>
+      <input type="text" placeholder="Ex. Euston" aria-label="station name" matInput [formControl]="searchBox"
         [matAutocomplete]="auto" (keyup)="keyPressed()" />
       <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="stationDisplay">
         <mat-option *ngFor="let station of filteredOptions" [value]="station">

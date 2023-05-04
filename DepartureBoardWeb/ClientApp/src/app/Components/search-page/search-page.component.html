@@ -1,0 +1,35 @@
+<div class="container-fluid">
+  <form class="container">
+    <h1 style="text-align: center">Search <span style="margin-left: 15px; font-size: 15px" class="badge badge-pill badge-primary">Beta</span></h1>
+    <mat-form-field id="search-box">
+      <mat-icon matIconPrefix style="padding-bottom: 30px">search</mat-icon>
+      <mat-label>Station Name</mat-label>
+      <input type="text" placeholder="Ex. Euston" aria-label="station name" matInput [formControl]="searchBox" (keyup)="keyPressed()" />
+    </mat-form-field>
+  </form>
+
+  <div class="station-results">
+    <mat-card *ngFor="let station of filteredOptions">
+      <mat-card-header>
+        <mat-card-title class="led" style="font-size: 32px">{{station.name}}</mat-card-title>
+
+      </mat-card-header>
+      <mat-card-content>
+        <div *ngIf="station.nextDeparture | async as nextDeparture; else loading">
+          <p>Next Departure: <span class="led">{{nextDeparture.aimedDeparture | date: 'HH:mm'}} - {{nextDeparture.destination}}</span></p>
+        </div>
+        <ng-template #loading>
+          <p style="min-width: 15em">Next Departure: <span>Loading...</span></p>
+        </ng-template>
+
+        <mat-divider></mat-divider>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-flat-button color="primary" [routerLink]='["/", station.code]'>Mainboard</button>
+        <button mat-button [routerLink]='["/singleboard", station.code]'>Singleboard</button>
+      </mat-card-actions>
+    </mat-card>
+
+    <h1 *ngIf="showNothingFound" class="led">No Departures Found</h1>
+  </div>
+</div>

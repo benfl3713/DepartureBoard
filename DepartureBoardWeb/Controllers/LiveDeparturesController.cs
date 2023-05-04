@@ -89,12 +89,16 @@ namespace DepartureBoardWeb.Controllers
                 return new List<Departure>();
 
             departures = departures.Take(count).ToList();
-            departures.AsParallel().ForAll(d => d.LoadStops(liveDeparturesRequest));
-            foreach (Departure departure in departures)
+
+            if (request.includeStopData)
             {
-                if (departure.FromDataSouce == typeof(RealTimeTrainsAPI))
-                    departure.StopsAsOfDepartureStation();
-                departure.FromDataSouce = null;
+                departures.AsParallel().ForAll(d => d.LoadStops(liveDeparturesRequest));
+                foreach (Departure departure in departures)
+                {
+                    if (departure.FromDataSouce == typeof(RealTimeTrainsAPI))
+                        departure.StopsAsOfDepartureStation();
+                    departure.FromDataSouce = null;
+                }
             }
 
             return departures;

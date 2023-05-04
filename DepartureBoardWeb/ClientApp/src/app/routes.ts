@@ -11,10 +11,13 @@ import { HomeComponent } from "./Pages/home/home.component";
 import { SingleBoard } from "./Pages/singleboard/singleboard";
 import { SearchComponent } from "./search/search.component";
 import { SettingsComponent } from "./settings/settings.component";
+import {SearchPageComponent} from "./Components/search-page/search-page.component";
+
+const betaEnabled = localStorage.getItem("settings_general_betaFeatures") == "true";
 
 export const ROUTES: Route[] = [
   { path: "", component: HomeComponent, pathMatch: "full", data: {includeTopMargin: false} },
-  { path: "search", component: SearchComponent, pathMatch: "full" },
+  { path: "search", component: betaEnabled ? SearchPageComponent : SearchComponent, pathMatch: "full" },
   { path: "contact", component: ContactUsComponent, pathMatch: "full" },
   { path: "examples", component: ExamplesComponent, pathMatch: "full" },
   {

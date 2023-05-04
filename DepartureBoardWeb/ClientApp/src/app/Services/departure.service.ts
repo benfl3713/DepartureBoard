@@ -17,7 +17,8 @@ export class DepartureService {
     useArrivals: boolean,
     platform: string = null,
     dataSource: string = null,
-    toCrsCode: string = null
+    toCrsCode: string = null,
+    includeStopData: boolean = null
   ): Observable<Departure[]> {
     const params: any = {
       stationCode,
@@ -35,6 +36,10 @@ export class DepartureService {
     }
     if (toCrsCode){
       params.toCrsCode = toCrsCode;
+    }
+
+    if (includeStopData) {
+      params.includeStopData = includeStopData;
     }
 
     if (localStorage.getItem("settings_general_includeNonPassengerServices") === "true") {

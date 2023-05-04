@@ -13,7 +13,7 @@ import { SearchComponent } from "./search/search.component";
 import { SettingsComponent } from "./settings/settings.component";
 
 export const ROUTES: Route[] = [
-  { path: "", component: HomeComponent, pathMatch: "full" },
+  { path: "", component: HomeComponent, pathMatch: "full", data: {includeTopMargin: false} },
   { path: "search", component: SearchComponent, pathMatch: "full" },
   { path: "contact", component: ContactUsComponent, pathMatch: "full" },
   { path: "examples", component: ExamplesComponent, pathMatch: "full" },

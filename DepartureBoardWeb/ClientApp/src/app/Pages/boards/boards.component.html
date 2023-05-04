@@ -1,21 +1,24 @@
-<h1 class="led centre-text" *ngIf="showStationName">{{ stationName }}</h1>
-<table>
-  <tr class="row">
-    <template #Boards></template>
-  </tr>
-</table>
+<div class="boards">
+  <h1 class="led centre-text" *ngIf="showStationName">{{ stationName }}</h1>
+  <table>
+    <tr class="row">
+      <template #Boards></template>
+    </tr>
+  </table>
 
-<table *ngIf="isLoading">
-  <tr class="row">
-    <div *ngFor="let i of ' '.repeat(displays).split('')">
-      <app-board-skeleton></app-board-skeleton>
-    </div>
-  </tr>
-</table>
+  <table *ngIf="isLoading">
+    <tr class="row">
+      <div *ngFor="let i of ' '.repeat(displays).split('')">
+        <app-board-skeleton></app-board-skeleton>
+      </div>
+    </tr>
+  </table>
 
-<h1 class="led centre-text" *ngIf="noBoardsDisplay">
-  No Departures Found for {{ stationName || stationCode }}
-</h1>
-<h1 class="led-bold time clickable" [routerLink]="['/']" *ngIf="showClock">
-  {{ time | date: "HH:mm:ss" }}
-</h1>
+  <h1 class="led centre-text" *ngIf="noBoardsDisplay">
+    No Departures Found for {{ stationName || stationCode }}
+  </h1>
+  <h1 class="led-bold time clickable" [routerLink]="['/']" *ngIf="showClock">
+    {{ time | date: "HH:mm:ss" }}
+  </h1>
+
+</div>

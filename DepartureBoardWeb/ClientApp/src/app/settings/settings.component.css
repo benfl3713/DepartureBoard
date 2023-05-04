@@ -13,6 +13,11 @@
 }
 .row {
   color: var(--mainColour);
+  overflow: hidden;
+}
+
+#back-button {
+  position: absolute;
 }
 
 /* input color class */
@@ -39,12 +44,12 @@
   color: black;
 }
 .btnGreen {
-  color: black;
-  background-color: #00ab39;
+  color: black !important;
+  background-color: #00ab39 !important;
 }
 .btnRed {
-  background-color: #cf0000;
-  color: black;
+  background-color: #cf0000 !important;
+  color: black !important;
 }
 label{
     padding-right: 20px;

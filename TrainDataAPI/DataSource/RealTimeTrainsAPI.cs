@@ -46,11 +46,11 @@ namespace TrainDataAPI
         {
             try
             {
-                var client = new RestClient(url);
-                var request = new RestRequest(Method.GET);
+                var client = new RestClient();
+                var request = new RestRequest(url);
                 request.Timeout = 15000;
                 AddCredendials(ref request);
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 return DeserialiseStationStops(response.Content);
             }
             catch
@@ -70,15 +70,14 @@ namespace TrainDataAPI
                 
                 if (getArrivals)
                     url += "/arrivals";
-                var client = new RestClient(url);
-                var request = new RestRequest(Method.GET);
+                var client = new RestClient();
+                var request = new RestRequest(url);
                 request.Timeout = 15000;
                 AddCredendials(ref request);
-                IRestResponse response = client.Execute(request);
+                RestResponse response = client.Execute(request);
                 List<Departure> departures = DeserialiseDepartures(response.Content);
 
-                if (!string.IsNullOrEmpty(platform))
-	                departures = departures.Where(d => d.Platform == platform).ToList();
+                departures = FilterPlatforms(platform, departures);
 
 	            return departures.Take(count).ToList();
             }
@@ -86,6 +85,22 @@ namespace TrainDataAPI
             {
                 return new List<Departure>();
             }
+        }
+
+        private static List<Departure> FilterPlatforms(string platform, List<Departure> departures)
+        {
+            if (string.IsNullOrEmpty(platform))
+                return departures;
+            
+            if (platform.Contains(','))
+            {
+                string[] platforms = platform.Split(',');
+                departures = departures.Where(d => platforms.Contains(d.Platform)).ToList();
+            }
+            else
+                departures = departures.Where(d => d.Platform == platform).ToList();
+            
+            return departures;
         }
 
         private void AddCredendials(ref RestRequest request)

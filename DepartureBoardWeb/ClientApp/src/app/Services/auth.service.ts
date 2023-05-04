@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { User } from './user.model';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { auth } from 'firebase/app';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import app from 'firebase/compat/app';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,7 @@ export class AuthService {
   }
 
   async googleSignin() {
-    const provider = new auth.GoogleAuthProvider();
+    const provider = new app.auth.GoogleAuthProvider();
     const credential = await this.afAuth.signInWithPopup(provider);
     return this.updateUserData(credential.user);
   }

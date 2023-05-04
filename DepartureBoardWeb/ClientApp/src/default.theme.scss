@@ -1,5 +1,5 @@
-@use '~@angular/material' as mat;
-@import '~@angular/material/theming';
+@use '@angular/material' as mat;
+@import '@angular/material/theming';
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -7,17 +7,35 @@
 // **Be sure that you only ever include this mixin once!**
 @include mat.core();
 
-
 //Dark theme
 $departureboard-dark-primary: mat.define-palette(mat.$orange-palette);
 $departureboard-dark-accent: mat.define-palette(mat.$blue-palette);
 $departureboard-dark-warn: mat.define-palette(mat.$red-palette);
-$departureboard-dark-theme: mat.define-dark-theme($departureboard-dark-primary, $departureboard-dark-accent, $departureboard-dark-warn);
 
-$departureboard-dark-background-colour: #000000;
-$departureboard-dark-background: map-get($departureboard-dark-theme, background);
-$departureboard-dark-background: map_merge($departureboard-dark-background, (background: $departureboard-dark-background-colour));
-$departureboard-dark-theme: map_merge($departureboard-dark-theme, (background: $departureboard-dark-background));
+$departureboard-dark-theme: mat.define-dark-theme((
+  color: (
+    primary: $departureboard-dark-primary,
+    accent: $departureboard-dark-accent,
+    warn: $departureboard-dark-warn,
+  )
+));
+
+
+$background-color: #000000;
+$departureboard-dark-theme-color: map-get($departureboard-dark-theme, color);
+$color-background-palette: map-get($departureboard-dark-theme-color, background);
+$color-background-palette: map-merge($color-background-palette, (background: $background-color));
+$color-background-palette: map-merge($color-background-palette, (raised-button: $background-color));
+
+// Replace the background in the background palette.
+$background-palette: map-get($departureboard-dark-theme, background);
+$background-palette: map-merge($background-palette, (background: $background-color));
+$background-palette: map-merge($background-palette, (raised-button: $background-color));
+
+// Merge the changes into a new theme.
+$modified-theme-color: map-merge($departureboard-dark-theme-color, (background: $color-background-palette));
+$modified-theme: map-merge($departureboard-dark-theme, (color: $modified-theme-color));
+$modified-theme: map-merge($modified-theme, (background: $background-palette));
 
 // Include the default theme styles.
-@include mat.all-component-themes($departureboard-dark-theme);
+@include mat.all-component-themes($modified-theme);

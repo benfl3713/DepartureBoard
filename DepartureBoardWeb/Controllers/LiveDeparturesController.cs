@@ -64,7 +64,7 @@ namespace DepartureBoardWeb.Controllers
 	        {
 		        "NATIONALRAIL" => new NationalRailAPI(),
 		        "DEUTSCHEBAHN" => new DeutscheBahnAPI(),
-		        _ => new RealTimeTrainsAPI()
+                _ => new RealTimeTrainsAPI()
 	        };
         }
 

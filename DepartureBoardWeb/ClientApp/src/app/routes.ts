@@ -13,7 +13,7 @@ import { SearchComponent } from "./search/search.component";
 import { SettingsComponent } from "./settings/settings.component";
 
 export const ROUTES: Route[] = [
-  { path: "", component: HomeComponent, pathMatch: "full" },
+  { path: "", component: HomeComponent, pathMatch: "full", data: {includeTopMargin: false} },
   { path: "search", component: SearchComponent, pathMatch: "full" },
   { path: "contact", component: ContactUsComponent, pathMatch: "full" },
   { path: "examples", component: ExamplesComponent, pathMatch: "full" },
@@ -95,6 +95,11 @@ export const ROUTES: Route[] = [
     pathMatch: "full",
   },
   {
+    path: "custom-departures/singleboard/:station",
+    component: SingleBoard,
+    pathMatch: "full",
+  },
+  {
     path: "custom-departures/:station",
     component: BoardsComponent,
     pathMatch: "full",
@@ -109,11 +114,11 @@ export const ROUTES: Route[] = [
     loadChildren: () =>
       import("./Pages/buses/buses/buses.module").then((m) => m.BusesModule),
   },
-  {
-    path: "germany",
-    loadChildren: () =>
-      import("./Pages/germany/germany.module").then((m) => m.GermanyModule),
-  },
+  // {
+  //   path: "germany",
+  //   loadChildren: () =>
+  //     import("./Pages/germany/germany.module").then((m) => m.GermanyModule),
+  // },
   { path: ":station", component: BoardsComponent, pathMatch: "full" },
   {
       path: ":station/:displays",
@@ -130,10 +135,10 @@ export const ROUTES: Route[] = [
     component: BoardsComponent,
     pathMatch: "full",
   },
-  {
-    path: "germany",
-    loadChildren: () =>
-      import("./Pages/germany/germany.module").then((m) => m.GermanyModule),
-  },
+  // {
+  //   path: "germany",
+  //   loadChildren: () =>
+  //     import("./Pages/germany/germany.module").then((m) => m.GermanyModule),
+  // },
   { path: "**", redirectTo: "" },
 ];

@@ -78,7 +78,7 @@ namespace TrainDataAPI.Services
 		{
 			string token = GetSecretToken();
 			var client = new RestClient("https://opendata.nationalrail.co.uk/api/staticfeeds/4.0/stations");
-			var request = new RestRequest(Method.GET);
+			var request = new RestRequest();
 			request.Timeout = 13000;
 			request.AddHeader("X-Auth-Token", token);
 			var response = client.Execute(request);
@@ -129,9 +129,9 @@ namespace TrainDataAPI.Services
 				return;
 
 			var client = new RestClient("https://api.deutschebahn.com/stada/v2/stations");
-			var request = new RestRequest(Method.GET);
+			var request = new RestRequest();
 			request.AddHeader("Authorization", $"Bearer {ConfigService.DeutscheBahnToken}");
-			IRestResponse response = client.Execute(request);
+			RestResponse response = client.Execute(request);
 			DBStationsResponse dbStationsResponse = JsonConvert.DeserializeObject<DBStationsResponse>(response.Content);
 			foreach (DBStationsResponse.DBStation dbStation in dbStationsResponse.result)
 			{
@@ -161,8 +161,8 @@ namespace TrainDataAPI.Services
 
 		private string GetSecretToken()
 		{
-			var client = new RestClient("https://opendata.nationalrail.co.uk/authenticate");
-			var request = new RestRequest(Method.POST);
+			var client = new RestClient();
+			var request = new RestRequest("https://opendata.nationalrail.co.uk/authenticate", Method.Post);
 			var body = new
 			{
 				username = ConfigService.NationalRail_Username,

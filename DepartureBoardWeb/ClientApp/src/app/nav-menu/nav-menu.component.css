@@ -7,15 +7,15 @@
   top: 0;
   left: 0;
   z-index: 99;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
-.main {
+.main-margin {
   margin-top: 110px;
 }
 
 .navbar-toggler {
-  background-color: rgba(0, 0, 0, 0.8) !important;
+  background-color: rgba(0, 0, 0, 0.3) !important;
   border: 0 !important;
   color: #fff !important
 }

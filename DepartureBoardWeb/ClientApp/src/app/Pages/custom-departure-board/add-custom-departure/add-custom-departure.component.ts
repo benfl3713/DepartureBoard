@@ -1,16 +1,14 @@
 import { Component } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import * as Ajv from "ajv";
-import { AngularFirestore } from "@angular/fire/firestore";
+import Ajv from "ajv";
+import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { AuthService } from "src/app/Services/auth.service";
 import { Router, ActivatedRoute } from "@angular/router";
-import { NotifierService } from "angular-notifier";
 import { ToggleConfig } from "src/app/ToggleConfig";
 import { GoogleAnalyticsEventsService } from "src/app/Services/google.analytics";
 import { DomSanitizer } from "@angular/platform-browser";
 import { CustomDeparture } from "src/app/models/custom-departure.model";
-import { debounceTime, map, startWith } from "rxjs/operators";
-import { of } from "rxjs";
+import {NotifierService} from "../../../Services/notifier.service";
 
 @Component({
   selector: "app-add-custom-departure",
@@ -35,10 +33,10 @@ export class AddCustomDepartureComponent {
     private afs: AngularFirestore,
     public auth: AuthService,
     private router: Router,
-    private notifierService: NotifierService,
     private route: ActivatedRoute,
     public googleAnalyticsEventsService: GoogleAnalyticsEventsService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private notifierService: NotifierService
   ) {
     route.params.subscribe(() => {
       var id = this.route.snapshot.paramMap.get("id");
@@ -63,10 +61,10 @@ export class AddCustomDepartureComponent {
                   this.oldId = id;
                   this.addForm.controls["name"].setValue(id);
                   this.addForm.controls["hideExpired"].setValue(
-                    result.data().hideExpired
+                    result.data()["hideExpired"]
                   );
-                  var theJSON = JSON.stringify(result.data().jsonData);
-                  this.data = result.data().jsonData;
+                  var theJSON = JSON.stringify(result.data()["jsonData"]);
+                  this.data = result.data()["jsonData"];
                   var uri = this.sanitizer.bypassSecurityTrustUrl(
                     "data:text/json;charset=UTF-8," +
                       encodeURIComponent(theJSON)
@@ -115,7 +113,7 @@ export class AddCustomDepartureComponent {
 
   Validate(showError: boolean = true): boolean {
     console.log("Validate");
-    var ajv = new Ajv({ schemaId: "auto" });
+    var ajv = new Ajv();
     var validate = ajv.compile(require("./departure.schema.json"));
     var valid = validate(this.data);
     this.error = ajv.errorsText(validate.errors);
@@ -132,7 +130,6 @@ export class AddCustomDepartureComponent {
 
     if (showError == true) {
       console.log("Schema is Valid");
-      this.notifierService.notify("default", "Schema is Valid");
     }
 
     return true;

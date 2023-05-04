@@ -1,9 +1,8 @@
 mat-expansion-panel mat-form-field {
   width: 100%;
-  height: 50px;
+  height: 90px;
 }
 
 .right-button {
-  position: absolute;
-  right: 0;
+  float: right;
 }

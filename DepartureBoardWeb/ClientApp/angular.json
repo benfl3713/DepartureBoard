@@ -19,7 +19,7 @@
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.app.json",
+            "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/assets",
               "src/manifest.webmanifest",
@@ -29,20 +29,19 @@
                 "glob": "_redirects",
                 "input": "src",
                 "output": "/"
+              },
+              {
+                "glob": "assetlinks.json",
+                "input": "src/assets",
+                "output": ".well-known"
               }
             ],
             "styles": [
               "src/default.theme.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/sweetalert2/src/sweetalert2.scss",
               "src/styles.css",
-              "src/style.variables.css",
-              "./node_modules/angular-notifier/styles/core.css",
-              "./node_modules/angular-notifier/styles/themes/theme-material.css",
-              "./node_modules/angular-notifier/styles/types/type-default.css",
-              "./node_modules/angular-notifier/styles/types/type-error.css",
-              "./node_modules/angular-notifier/styles/types/type-info.css",
-              "./node_modules/angular-notifier/styles/types/type-success.css",
-              "./node_modules/angular-notifier/styles/types/type-warning.css"
+              "src/style.variables.css"
             ],
             "scripts": [
               "./node_modules/@popperjs/core/dist/umd/popper-lite.js",
@@ -84,7 +83,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "serviceWorker": true,
+              "serviceWorker": false,
               "ngswConfigPath": "ngsw-config.json"
             },
             "aws-production": {
@@ -114,7 +113,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "serviceWorker": true,
+              "serviceWorker": false,
               "ngswConfigPath": "ngsw-config.json"
             }
           },
@@ -128,6 +127,9 @@
           "configurations": {
             "production": {
               "browserTarget": "DepartureBoardWeb:build:production"
+            },
+            "aws-production": {
+              "browserTarget": "DepartureBoardWeb:build:aws-production"
             }
           }
         },
@@ -141,7 +143,6 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
@@ -155,7 +156,7 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["src/tsconfig.app.json", "src/tsconfig.spec.json"],
+            "tsConfig": ["tsconfig.app.json", "tsconfig.spec.json"],
             "exclude": ["**/node_modules/**"]
           }
         },

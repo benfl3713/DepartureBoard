@@ -15,6 +15,10 @@
   margin-top: 5px;
 }
 
+#search-box {
+  height: 90px;
+}
+
 form,
 mat-form-field,
 button {

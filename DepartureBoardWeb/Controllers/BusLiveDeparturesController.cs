@@ -44,8 +44,8 @@ namespace DepartureBoardWeb.Controllers
             return dataSource switch
             {
                 "FIRST" => new FirstBusApi(),
-                "TFLTUBE" => new TflTubeAPI(),
-                _ => new TflAPI()
+                "TFL_ALL" => new TflAllStopsAPI(),
+                _ => new TflApi()
             };
         }
     }

@@ -12,6 +12,12 @@ import { ControlContainer, FormGroup } from "@angular/forms";
         (change)="form.controls.buses_showStopName.setValue($event.checked)"
         >Show Stop Name</mat-slide-toggle
       >
+      <br />
+      <mat-slide-toggle
+        [checked]="form.controls.buses_includeBothDirection.value"
+        (change)="form.controls.buses_includeBothDirection.setValue($event.checked)"
+      >TFL Include Both Direction Stops</mat-slide-toggle
+      >
       <br /><br />
     </form>
   `,

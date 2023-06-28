@@ -51,6 +51,7 @@ export class SettingsComponent implements OnInit {
     departureadmin_enabled: new FormControl(false),
 
     buses_showStopName: new FormControl(true),
+    buses_includeBothDirection: new FormControl(false),
 
     announcements_arrivals: new FormControl(false),
     announcements_cctv: new FormControl(false),
@@ -106,6 +107,7 @@ export class SettingsComponent implements OnInit {
       departureadmin_uid: "",
       departureadmin_enabled: false,
       buses_showStopName: true,
+      buses_includeBothDirection: false,
       announcements_arrivals: false,
       announcements_cctv: false,
       announcements_seeItSayItSortIt: false,

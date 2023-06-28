@@ -28,6 +28,7 @@ export class BusSingleboardComponent implements OnInit {
   stopName: string = "";
   showStopName: boolean =
     localStorage.getItem("settings_buses_showStopName") == "true" || true;
+  includeBothDirection: boolean = localStorage.getItem("settings_buses_includeBothDirection") == "true" || false;
 
   ngOnInit() {
   }
@@ -36,6 +37,11 @@ export class BusSingleboardComponent implements OnInit {
     this.atco = params.atco;
     this.dataSource = queryParams.datasource;
     this.count = queryParams.count ?? this.count;
+
+    if ((this.dataSource === "TFL" || !this.dataSource) && this.includeBothDirection) {
+      this.dataSource = "TFL_ALL";
+    }
+
     setInterval(() => this.GetDepartures(), 30000);
     ToggleConfig.LoadingBar.next(true);
     this.GetDepartures();
@@ -72,7 +78,9 @@ export class BusSingleboardComponent implements OnInit {
   }
 
   GetLineColour(departure: any) {
-    if (this.dataSource !== "TFLTUBE"){ return {}; }
+    if (this.dataSource !== "TFLTUBE") {
+      return {};
+    }
 
     if (this.tubeColours[departure.line]) {
       return {'color': this.tubeColours[departure.line]}

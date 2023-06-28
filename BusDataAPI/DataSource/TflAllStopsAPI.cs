@@ -8,7 +8,7 @@ using RestSharp;
 namespace BusDataAPI.DataSource
 {
 
-    public class TflAPI : IBusDatasource
+    public class TflAllStopsAPI : IBusDatasource
     {
         private readonly RestClient _client = new RestClient("https://api.tfl.gov.uk");
         private static string AppKey => ConfigService.TflApiToken;

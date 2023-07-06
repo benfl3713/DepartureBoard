@@ -113,6 +113,26 @@ export const ROUTES: Route[] = [
     pathMatch: "full",
   },
   {
+    path: "modern/arrivals/:station",
+    component: BoardsComponent,
+    pathMatch: "full",
+  },
+  {
+    path: "modern/arrivals/:station/:displays",
+    component: BoardsComponent,
+    pathMatch: "full",
+  },
+  {
+    path: "modern/:station",
+    component: BoardsComponent,
+    pathMatch: "full",
+  },
+  {
+    path: "modern/:station/:displays",
+    component: BoardsComponent,
+    pathMatch: "full",
+  },
+  {
     path: "buses",
     loadChildren: () =>
       import("./Pages/buses/buses/buses.module").then((m) => m.BusesModule),

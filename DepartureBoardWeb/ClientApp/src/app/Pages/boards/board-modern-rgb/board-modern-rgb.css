@@ -1,0 +1,30 @@
+﻿.board {
+  width: 300px;
+  height: 500px;
+  padding: 0;
+  padding-left: 5px;
+  font-family: 'Railway', sans-serif;
+  margin: 0;
+}
+
+.top-card-section {
+  height: 135px;
+  padding: 6px;
+  width: 100%;
+}
+
+.top-card-arrived {
+  background-color: #00ab39;
+}
+
+.top-card-normal {
+  background-color: #008cff;
+}
+
+.top-card-late {
+  background-color: #dd42f5;
+}
+
+.top-card-cancelled {
+  background-color: #d21010;
+}

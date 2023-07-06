@@ -40,6 +40,7 @@ export class Board {
   public information: string;
   useArrivals: boolean = false;
 
+  AmountPerPage = 9
   CurrentPage: number = 0;
   TotalPages: number = 0;
 
@@ -52,8 +53,8 @@ export class Board {
     } else {
       this.CurrentPage = 1;
     }
-    const start = (this.CurrentPage - 1) * 9;
-    this.DisplayedStops = this.Stops.slice(start, start + 9);
+    const start = (this.CurrentPage - 1) * this.AmountPerPage;
+    this.DisplayedStops = this.Stops.slice(start, start + this.AmountPerPage);
   }
 
   InformationPager() {
@@ -73,7 +74,7 @@ export class Board {
     for (let i = 0; i < data.length; i += 1) {
       this.Stops.push(new Stop(data[i].stationName, data[i].aimedDeparture));
     }
-    this.TotalPages = Math.ceil(this.Stops.length / 9);
+    this.TotalPages = Math.ceil(this.Stops.length / this.AmountPerPage);
     this.Pager();
   }
 

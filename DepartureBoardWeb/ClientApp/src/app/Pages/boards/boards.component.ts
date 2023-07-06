@@ -25,6 +25,7 @@ import { Departure } from "src/app/models/departure.model";
 import { Subscription } from "rxjs";
 import {ServiceStatus} from "../singleboard/singleboard";
 import { AnnouncementService } from "src/app/Services/announcement.service";
+import {BoardModernRgb} from "./board-modern-rgb/board-modern-rgb";
 
 @Component({
   selector: "app-boards",
@@ -35,6 +36,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
   time = new Date();
   refresher;
   noBoardsDisplay: boolean = false;
+  useModernBoard: boolean = false;
   useArrivals: boolean = false;
   isCustomData: boolean = false;
   showClock: boolean = true;
@@ -94,6 +96,13 @@ export class BoardsComponent implements OnInit, OnDestroy {
 
     if (s && s[0].path && s[0].path.toLowerCase() == "custom-departures") {
       this.isCustomData = true;
+    }
+
+    if (s && s[0].path && s[0].path.toLowerCase() == "modern") {
+      this.useModernBoard = true;
+      if (s && s[1].path && s[1].path.toLowerCase() == "arrivals") {
+        this.useArrivals = true;
+      }
     }
 
     this.stationCode = this.route.snapshot.paramMap.get("station") ?? this.stationCode;
@@ -212,7 +221,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
 
     for (let i = 0; i < data.length; i += 1) {
       try {
-        const factory = this.resolver.resolveComponentFactory(Board);
+        const factory = this.resolver.resolveComponentFactory(this.useModernBoard ? BoardModernRgb : Board);
         const componentRef = this.Boards.createComponent(factory);
         componentRef.instance.Initilize(data[i]);
       } catch (e) {

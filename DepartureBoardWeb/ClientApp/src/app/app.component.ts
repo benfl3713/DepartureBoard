@@ -28,6 +28,7 @@ import { environment } from "src/environments/environment";
     "./fonts/ledfont/stylesheet.css",
     "./fonts/ledfont2/stylesheet.css",
     "./fonts/ledfont3/stylesheet.css",
+    "./fonts/railway/stylesheet.css",
   ],
 })
 export class AppComponent implements AfterViewChecked {

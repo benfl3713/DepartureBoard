@@ -55,6 +55,7 @@ import { NavMenuMobileComponent } from './nav-menu/nav-menu-mobile/nav-menu-mobi
 import { ContactUsComponent } from './Components/contact-us/contact-us.component';
 import { AnnouncementService } from "./Services/announcement.service";
 import { SearchPageComponent } from './Components/search-page/search-page.component';
+import {BoardModernRgb} from "./Pages/boards/board-modern-rgb/board-modern-rgb";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo",
@@ -75,6 +76,7 @@ const firebaseConfig = {
     SingleBoard,
     ExamplesComponent,
     Board,
+    BoardModernRgb,
     SearchComponent,
     NewsWidgetComponent,
     FooterComponent,

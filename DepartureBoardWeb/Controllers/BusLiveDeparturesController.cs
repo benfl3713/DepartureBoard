@@ -45,6 +45,7 @@ namespace DepartureBoardWeb.Controllers
             {
                 "FIRST" => new FirstBusApi(),
                 "TFL_ALL" => new TflAllStopsAPI(),
+                "READING" => new ReadingApi(),
                 _ => new TflApi()
             };
         }

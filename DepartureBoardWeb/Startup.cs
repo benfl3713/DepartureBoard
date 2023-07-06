@@ -1,3 +1,4 @@
+using BusDataAPI.DataSource;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -46,6 +47,10 @@ namespace DepartureBoardWeb
 
 			services.AddControllersWithViews();
 			services.AddSingleton<IStationLookup>(new StationLookup());
+
+#pragma warning disable CS4014
+			ReadingApi.Initialise();
+#pragma warning restore CS4014
 
 			if (!IsLambda)
 			{

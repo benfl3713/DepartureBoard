@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {BusDepartureService} from "src/app/Services/bus-departure.service";
 import {ActivatedRoute} from "@angular/router";
 import {ToggleConfig} from "src/app/ToggleConfig";
@@ -9,7 +9,7 @@ import {tap, catchError} from "rxjs/operators";
   templateUrl: "./bus-singleboard.component.html",
   styleUrls: ["./bus-singleboard.component.css"],
 })
-export class BusSingleboardComponent implements OnInit {
+export class BusSingleboardComponent implements OnDestroy {
   constructor(
     private busDepartureService: BusDepartureService,
     private route: ActivatedRoute
@@ -21,6 +21,7 @@ export class BusSingleboardComponent implements OnInit {
     });
   }
 
+  interval;
   atco: string;
   dataSource: string;
   count: number = 4;
@@ -30,7 +31,8 @@ export class BusSingleboardComponent implements OnInit {
     localStorage.getItem("settings_buses_showStopName") == "true" || true;
   includeBothDirection: boolean = localStorage.getItem("settings_buses_includeBothDirection") == "true" || false;
 
-  ngOnInit() {
+  ngOnDestroy() {
+    clearInterval(this.interval);
   }
 
   SetupBoard(params, queryParams) {
@@ -42,7 +44,7 @@ export class BusSingleboardComponent implements OnInit {
       this.dataSource = "TFL_ALL";
     }
 
-    setInterval(() => this.GetDepartures(), 30000);
+    this.interval = setInterval(() => this.GetDepartures(), 30000);
     ToggleConfig.LoadingBar.next(true);
     this.GetDepartures();
   }

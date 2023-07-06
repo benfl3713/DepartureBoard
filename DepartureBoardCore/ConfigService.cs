@@ -125,6 +125,16 @@ namespace DepartureBoardCore
             }
         }
 
+        public static string ReadingApiToken
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_readingApiToken))
+                    LoadConfig();
+                return _readingApiToken;
+            }
+        }
+
         #endregion
 
         private static string _realTimeTrainsToken;
@@ -139,6 +149,7 @@ namespace DepartureBoardCore
         private static string _deutscheBahnToken;
         private static int? _prometheusPort;
         private static string _tflApiToken;
+        private static string _readingApiToken;
 
         private static void LoadConfig()
         {
@@ -160,6 +171,7 @@ namespace DepartureBoardCore
                 _transportApi_app_key = rootElement.Element("TransportAPI")?.Element("app_key")?.Value;
                 _deutscheBahnToken = rootElement.Element("DeutscheBahnToken")?.Value;
                 _tflApiToken = rootElement.Element("TflApiToken")?.Value;
+                _readingApiToken = rootElement.Element("ReadingApiToken")?.Value;
                 if (!string.IsNullOrEmpty(rootElement.Element("PrometheusPort")?.Value) && int.TryParse(rootElement.Element("PrometheusPort")?.Value, out int port))
                     _prometheusPort = port;
                 if (_realTimeTrainsToken == "[INSERT_REALTIMETRAINS_TOKEN_HERE]"){
@@ -204,6 +216,9 @@ namespace DepartureBoardCore
 
                 if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TflApiToken")))
                     _tflApiToken = Environment.GetEnvironmentVariable("TflApiToken");
+
+                if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ReadingApiToken")))
+                    _readingApiToken = Environment.GetEnvironmentVariable("ReadingApiToken");
 
                 if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("PrometheusPort")) && int.TryParse(Environment.GetEnvironmentVariable("PrometheusPort"), out int port))
                     _prometheusPort = port;

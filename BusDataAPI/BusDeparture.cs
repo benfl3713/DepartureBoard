@@ -14,7 +14,7 @@ namespace BusDataAPI
         public DateTime? ExpectedDeparture { get; set; }
         public bool IsCancelled { get; set; } = false;
 
-		public BusDeparture(string line, string destination, string stopName, string operatorCode, string operatorName, DateTime? aimedDeparture, DateTime expectedDeparture)
+		public BusDeparture(string line, string destination, string stopName, string operatorCode, string operatorName, DateTime? aimedDeparture, DateTime? expectedDeparture)
 		{
             LastUpdated = DateTime.Now;
             Line = line;

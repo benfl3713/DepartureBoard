@@ -30,6 +30,10 @@ namespace BusDataAPI.DataSource
                         due.AddHours(int.Parse(time.Due.Split(':')[0]));
                         due.AddMinutes(int.Parse(time.Due.Split(':')[1]));
                     }
+                    else if (time.Due == "Due now")
+                    {
+                        due = DateTime.Now;
+                    }
                     else
                     {
                         int minsDue = int.Parse(time.Due.Split(' ')[0]);

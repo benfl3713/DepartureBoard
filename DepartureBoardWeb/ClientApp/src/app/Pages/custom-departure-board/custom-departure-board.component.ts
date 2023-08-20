@@ -48,6 +48,9 @@ export class CustomDepartureBoardComponent implements OnInit {
   }
 
   deleteDeparture(id: string) {
+    if (!confirm("Are you sure you want to delete this custom departure? (This cannot be undone)")) {
+      return;
+    }
     this.auth.user$.subscribe((user) => {
       this.afs
         .collection(`customDepartures/${user.uid}/departures`)

@@ -72,6 +72,10 @@ export class EditCustomDepartureComponent implements OnInit, DoCheck {
   }
 
   removeDeparture(index: number) {
+    if (!confirm("Are you sure you want to delete this departure? (This cannot be undone)")) {
+      return;
+    }
+
     this.data.departures.splice(index, 1);
     this.changedData();
   }

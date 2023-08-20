@@ -56,6 +56,7 @@ import { ContactUsComponent } from './Components/contact-us/contact-us.component
 import { AnnouncementService } from "./Services/announcement.service";
 import { SearchPageComponent } from './Components/search-page/search-page.component';
 import {BoardModernRgb} from "./Pages/boards/board-modern-rgb/board-modern-rgb";
+import { LoginComponent } from './Pages/login/login.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo",
@@ -97,7 +98,8 @@ const firebaseConfig = {
     BlackCardStyle2Component,
     NavMenuMobileComponent,
     ContactUsComponent,
-    SearchPageComponent
+    SearchPageComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),

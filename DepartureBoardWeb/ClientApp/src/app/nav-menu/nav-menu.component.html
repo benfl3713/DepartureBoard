@@ -118,7 +118,7 @@
                   Logout
                 </a>
                 <ng-template #guest>
-                  <a class="nav-link clickable" (click)="auth.googleSignin()">
+                  <a class="nav-link clickable" [routerLink]="['/login']">
                     Login
                   </a>
                 </ng-template>

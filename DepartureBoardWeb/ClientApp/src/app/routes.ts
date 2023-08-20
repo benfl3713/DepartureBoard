@@ -12,6 +12,7 @@ import { SingleBoard } from "./Pages/singleboard/singleboard";
 import { SearchComponent } from "./search/search.component";
 import { SettingsComponent } from "./settings/settings.component";
 import {SearchPageComponent} from "./Components/search-page/search-page.component";
+import { LoginComponent } from "./Pages/login/login.component";
 
 const betaEnabled = localStorage.getItem("settings_general_betaFeatures") == "true";
 
@@ -20,6 +21,7 @@ export const ROUTES: Route[] = [
   { path: "search", component: betaEnabled ? SearchPageComponent : SearchComponent, pathMatch: "full" },
   { path: "contact", component: ContactUsComponent, pathMatch: "full" },
   { path: "examples", component: ExamplesComponent, pathMatch: "full" },
+  { path: "login", component: LoginComponent, pathMatch: "full" },
   {
     path: "settings",
     component: SettingsComponent,

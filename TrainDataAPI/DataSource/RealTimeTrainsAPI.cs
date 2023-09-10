@@ -76,6 +76,9 @@ namespace TrainDataAPI
                 AddCredendials(ref request);
                 RestResponse response = client.Execute(request);
                 List<Departure> departures = DeserialiseDepartures(response.Content);
+                
+                if (stationCode == "PAD")
+                    departures.ForEach(d => d.StationCode = stationCode);
 
                 departures = FilterPlatforms(platform, departures);
 

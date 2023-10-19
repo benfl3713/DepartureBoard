@@ -29,6 +29,7 @@ import { environment } from "src/environments/environment";
     "./fonts/ledfont2/stylesheet.css",
     "./fonts/ledfont3/stylesheet.css",
     "./fonts/railway/stylesheet.css",
+    "./fonts/LondonUnderground/stylesheet.css",
   ],
 })
 export class AppComponent implements AfterViewChecked {

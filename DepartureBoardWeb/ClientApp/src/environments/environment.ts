@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: "http://localhost:5005",
+  apiBaseUrl: "https://api.leddepartureboard.com",
   enablePWA: false
 };
 

@@ -6,13 +6,11 @@
     {{ stopName }}
   </h1>
   <div class="row" *ngFor="let departure of departures; index as i">
-    <span class="led col-md-1 col-sm-1">{{ i + 1 }}</span>
-<!--    <span class="led col-md-2 col-sm-12" style="overflow: hidden;" [ngStyle]="GetLineColour(departure)">{{ departure.line }}</span>-->
-    <span class="led col-md-9">
+    <span class="led col-lg-1 col-1">{{ i + 1 }}</span>
+    <span class="led col">
       {{ departure.destination }}
     </span>
-    <span class="led col-md-2 col-sm-2 status">
-<!--      {{ CalculateStatus(departure) }}-->
+    <span class="led col-lg-2 col-md-3 col-4 status">
       {{departure.status}}
     </span>
   </div>

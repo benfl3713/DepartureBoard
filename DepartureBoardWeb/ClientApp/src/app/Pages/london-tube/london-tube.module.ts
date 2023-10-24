@@ -5,6 +5,7 @@ import { LondonTubeSingleboardComponent } from './london-tube-singleboard/london
 
 const routes: Routes = [
   { path: ":station", component: LondonTubeSingleboardComponent },
+  { path: ":station/:count", component: LondonTubeSingleboardComponent },
 ];
 
 @NgModule({

@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using BusDataAPI;
-using BusDataAPI.DataSource;
+using DepartureBoardCore.DataSource;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using TrainDataAPI.Tube;
+using TrainDataAPI.Tube.DataSource;
 
 namespace DepartureBoardWeb.Controllers;
 
@@ -20,7 +21,7 @@ public class TubeDeparturesController : Controller
     }
 
     [HttpGet]
-    public List<BusDeparture> GetTubeLiveDepartures(string code, int? count)
+    public List<TubeDeparture> GetTubeLiveDepartures(string code, int? count)
     {
         var cacheEntry = _cache.GetOrCreate($"{code}_{count}", entry =>
         {
@@ -30,32 +31,58 @@ public class TubeDeparturesController : Controller
         return cacheEntry;
     }
 
-    private List<BusDeparture> GetTubeDepartures(string code, int? count)
+    private List<TubeDeparture> GetTubeDepartures(string code, int? count)
     {
-        TflApi api = new TflApi();
+        TubeTflApi api = new TubeTflApi();
         var departures = api.GetLiveDepartures(code);
         if (count.HasValue)
             departures = departures.Take(count.Value).ToList();
         
-        foreach (BusDeparture busDeparture in departures)
+        foreach (TubeDeparture tubeDeparture in departures)
         {
-            if (busDeparture.Destination.Contains(" Underground Station"))
-                busDeparture.Destination = busDeparture.Destination.Replace(" Underground Station", "");
+            if (tubeDeparture.Destination.Contains(" Underground Station"))
+                tubeDeparture.Destination = tubeDeparture.Destination.Replace(" Underground Station", "");
         }
         
         return departures;
     }
+    
+    [HttpGet("station/{code}")]
+    public TubeStationInfo GetTubeStation(string code)
+    {
+        var stopPoint = _cache.GetOrCreate($"tube_stations_{code}", entry =>
+        {
+            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(3);
+            TubeTflApi api = new TubeTflApi();
+            return api.GetStation(code);
+        });
+        
+        return new TubeStationInfo(code, stopPoint);
+    }
+    
 
     [HttpGet("search")]
-    public List<TflApi.StopPoint> Search(string query)
+    public List<TflBase.StopPoint> Search(string query)
     {
         var stations = _cache.GetOrCreate("tube_stations", entry =>
         {
             entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(3);
-            TflApi api = new TflApi();
+            TubeTflApi api = new TubeTflApi();
             return api.GetAllStations();
         });
 
         return stations;
+    }
+}
+
+public class TubeStationInfo
+{
+    public string Code { get; set; }
+    public string Name { get; set; }
+    
+    public TubeStationInfo(string code, TflBase.StopPoint stopPoint)
+    {
+        Code = code;
+        Name = stopPoint.CommonName.Replace(" Underground Station", "");
     }
 }

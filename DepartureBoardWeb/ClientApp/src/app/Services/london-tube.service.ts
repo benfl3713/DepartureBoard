@@ -20,4 +20,14 @@ export class LondonTubeService {
       params: params,
     });
   }
+
+  getStationInfo(stopCode: string): Observable<StationInfo> {
+    return this.http.get<StationInfo>(environment.apiBaseUrl + `/api/TubeDepartures/station/${stopCode}`);
+  }
+
+}
+
+export interface StationInfo {
+  name: string;
+  code: string;
 }

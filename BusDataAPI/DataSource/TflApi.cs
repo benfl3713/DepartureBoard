@@ -25,33 +25,41 @@ namespace BusDataAPI.DataSource
             var arrivals = JsonConvert.DeserializeObject<List<TflArrival>>(response.Content);
 
             return arrivals
-                .Select(a => new BusDeparture(a.LineName, a.DestinationName, a.StationName, "TFL", "Transport for London", a.ExpectedArrival, a.ExpectedArrival))
+                .Select(a => new BusDeparture(
+                    a.LineName, 
+                    a.DestinationName, 
+                    a.StationName, 
+                    "TFL", 
+                    "Transport for London", 
+                    a.ExpectedArrival, 
+                    a.ExpectedArrival, 
+                    a.PlatformName,
+                    GetConvertedTimeToStation(a.TimeToStation)
+                    )
+                )
+                .Where(a => !string.IsNullOrEmpty(a.Destination))
                 .OrderBy(a => a.AimedDeparture)
                 .ToList();
         }
 
-        // public List<StationLookup.Station> GetAllStations()
-        // {
-        //     var request = new RestRequest($"StopPoint/mode/tube", Method.Get);
-        //     RestResponse response = SendRequest(request);
-        //
-        //     var stations = JsonConvert.DeserializeObject<TflStopPointResponse>(response.Content);
-        //
-        //     return stations.StopPoints.
-        //         Select(s => new StationLookup.Station(s.StationNaptan ?? s.NaptanId, s.CommonName, "GB", DataSourceId))
-        //         .Distinct(new StationDeduplicator())
-        //         .ToList();
-        // }
+        private int? GetConvertedTimeToStation(int? timeInSeconds)
+        {
+            if (!timeInSeconds.HasValue)
+                return null;
 
-        // private class StationDeduplicator : IEqualityComparer<StationLookup.Station>
-        // {
-        //     public bool Equals(StationLookup.Station x, StationLookup.Station y)
-        //     {
-        //         return x?.Code == y?.Code;
-        //     }
-        //
-        //     public int GetHashCode(StationLookup.Station obj) => obj.Code.GetHashCode();
-        // }
+            return Convert.ToInt32(Math.Ceiling(timeInSeconds.Value / 60m));
+        }
+
+        public List<StopPoint> GetAllStations()
+        {
+            var request = new RestRequest($"StopPoint/mode/tube", Method.Get);
+            RestResponse response = SendRequest(request);
+        
+            var stations = JsonConvert.DeserializeObject<TflStopPointResponse>(response.Content);
+        
+            return stations.StopPoints
+                .ToList();
+        }
 
         private RestResponse SendRequest(RestRequest request)
         {
@@ -69,6 +77,8 @@ namespace BusDataAPI.DataSource
             public string NaptanId { get; set; }
             public string StationNaptan { get; set; }
             public string CommonName { get; set; }
+            public string PlatformName { get; set; }
+            public List<dynamic> Lines { get; set; }
         }
 
         public class TflArrival
@@ -78,6 +88,7 @@ namespace BusDataAPI.DataSource
             public string DestinationName { get; set; }
             public DateTime ExpectedArrival { get; set; }
             public string PlatformName { get; set; }
+            public int? TimeToStation { get; set; }
         }
     }
 }

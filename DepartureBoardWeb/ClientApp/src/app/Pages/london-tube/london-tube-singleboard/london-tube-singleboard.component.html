@@ -1,17 +1,36 @@
-<h1 class="led centre-text" *ngIf="noBoardsDisplay">
-  No Departures Found for *****blah*****
+<h1 class="led centre-text" *ngIf="departures?.length === 0">
+  No Departures Found for {{stopName}}
 </h1>
 <div class="singleboard">
   <h1 id="title" class="led centre-text" *ngIf="showStopName">
     {{ stopName }}
   </h1>
-  <div class="row" *ngFor="let departure of departures; index as i">
-    <span class="led col-lg-1 col-1">{{ i + 1 }}</span>
+
+  <div class="row" *ngIf="firstDeparture">
+    <span class="led col-lg-1 col-1">1</span>
+    <span class="led col">
+      {{ firstDeparture.destination }}
+    </span>
+    <span class="led col-lg-2 col-md-3 col-4 status">
+      {{firstDeparture.timeToStation}} mins
+    </span>
+  </div>
+
+<!--  <div class="row">-->
+<!--    <div-->
+<!--      id="singleboard-information"-->
+<!--      class="led info col-12"-->
+<!--      style="height: 48px"-->
+<!--    ></div>-->
+<!--  </div>-->
+
+  <div class="row" *ngFor="let departure of otherDepartures; index as i">
+    <span class="led col-lg-1 col-1">{{i + 2}}</span>
     <span class="led col">
       {{ departure.destination }}
     </span>
     <span class="led col-lg-2 col-md-3 col-4 status">
-      {{departure.status}}
+      {{departure.timeToStation}} mins
     </span>
   </div>
 

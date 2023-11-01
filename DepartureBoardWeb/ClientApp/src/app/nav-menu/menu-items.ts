@@ -10,6 +10,7 @@ export const navItemList: any = [
   { href: '', title: 'Boards', is_link: false, children: true, icon: "fas fa-chalkboard", child: [
     { href: '/custom-departures', title: 'Custom Departures', is_link: true, icon: "fas fa-chalkboard" },
     { href: '/buses', title: 'Buses', is_link: true, icon: "fas fa-bus", isBeta: true },
+      {href: '/london-tube/search', title: 'London Tube', is_link: true, icon: "fas fa-subway", isBeta: true},
   ] },
   { href: '', title: 'Learn', is_link: false, children: true, icon: "fas fa-graduation-cap", child: [
     { href: '/about', title: 'About', is_link: true, icon: "fas fa-info" },

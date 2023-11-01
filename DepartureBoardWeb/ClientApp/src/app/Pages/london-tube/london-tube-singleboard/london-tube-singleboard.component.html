@@ -1,8 +1,9 @@
 <div class="singleboard-container">
-  <h1 class="led centre-text" *ngIf="departures?.length === 0 || noBoardsDisplay">
-    No Departures Found for {{stopName}}
-  </h1>
   <div class="singleboard">
+    <h1 class="led centre-text" *ngIf="departures?.length === 0 || noBoardsDisplay">
+      No Departures Found for {{stopName}}
+    </h1>
+
     <h1 id="title" class="led centre-text" *ngIf="showStopName">
       {{ stopName }}
     </h1>
@@ -17,23 +18,36 @@
       </span>
     </div>
 
-    <!--  <div class="row">-->
-    <!--    <div-->
-    <!--      id="singleboard-information"-->
-    <!--      class="led info col-12"-->
-    <!--      style="height: 48px"-->
-    <!--    ></div>-->
-    <!--  </div>-->
+<!--      <div class="row">-->
+<!--        <div-->
+<!--          id="singleboard-information"-->
+<!--          class="led info col-12"-->
+<!--          style="height: 48px"-->
+<!--        ></div>-->
+<!--      </div>-->
 
-    <div class="row" *ngFor="let departure of otherDepartures; index as i">
-      <span class="led col-auto">{{i + 2}}</span>
+    <div class="row" *ngIf="secondDeparture">
+      <span class="led col-auto">2</span>
       <span class="led col">
-        {{ departure.destination }}
+        {{ secondDeparture.destination }}
       </span>
       <span class="led col-auto">
-        {{departure.status}}
+        {{secondDeparture.status}}
       </span>
     </div>
+
+<!--    <div class="row" *ngFor="let departure of otherDepartures; index as i">-->
+<!--&lt;!&ndash;      [ngStyle]="GetLineColour(departure)"&ndash;&gt;-->
+<!--      <span class="led col-auto" >{{i + 2}}</span>-->
+<!--      <span class="led col">-->
+<!--        {{ departure.destination }}-->
+<!--      </span>-->
+<!--      <span class="led col-auto">-->
+<!--        {{departure.status}}-->
+<!--      </span>-->
+<!--    </div>-->
+
+    <app-tube-departure-scroller [departures]="otherDepartures" [startingNumber]="3"></app-tube-departure-scroller>
 
     <h1 class="led time clickable" [routerLink]='["/"]' *ngIf="showClock">
       {{ time | date: 'HH:mm:ss' }}

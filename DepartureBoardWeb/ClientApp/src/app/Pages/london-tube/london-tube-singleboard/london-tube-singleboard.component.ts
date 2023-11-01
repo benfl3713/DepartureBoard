@@ -16,6 +16,8 @@ export class LondonTubeSingleboardComponent implements OnInit, OnDestroy {
 
   departures?: any[];
   stationCode: string;
+  line?: string;
+  direction?: string;
 
   noBoardsDisplay: boolean;
   departureCount: number = 4;
@@ -39,9 +41,8 @@ export class LondonTubeSingleboardComponent implements OnInit, OnDestroy {
         return;
       }
 
-      if (params.has('count')) {
-        this.departureCount = parseInt(params.get('count'));
-      }
+      this.line = params.get('line');
+      this.direction = params.get('direction');
 
       this.setStationInfo();
       this.getDepartures();
@@ -63,7 +64,7 @@ export class LondonTubeSingleboardComponent implements OnInit, OnDestroy {
     // });
     //
     // this.marquee.appendItem("Calling at Bob");
-    //
+
   }
 
   ngOnDestroy(): void {
@@ -72,7 +73,7 @@ export class LondonTubeSingleboardComponent implements OnInit, OnDestroy {
   }
 
   getDepartures() {
-    this.tubeService.getDepartures(this.stationCode, this.departureCount).subscribe({
+    this.tubeService.getDepartures(this.stationCode, this.departureCount, this.line, this.direction).subscribe({
       next: (dep) => {
         this.departures = (dep as any[]).map(d => ({
           ...d,
@@ -112,11 +113,45 @@ export class LondonTubeSingleboardComponent implements OnInit, OnDestroy {
     return this.departures[0];
   }
 
-  get otherDepartures() {
+  get secondDeparture() {
     if (!this.departures || this.departures.length < 2) {
+      return null;
+    }
+
+    return this.departures[1];
+  }
+
+  get otherDepartures() {
+    if (!this.departures || this.departures.length < 3) {
       return [];
     }
 
-    return this.departures.slice(1);
+    return this.departures.slice(2);
+  }
+
+  GetLineColour(departure: any) {
+    if (this.tubeColours[departure.lineId]) {
+      return {'color': this.tubeColours[departure.lineId]}
+    }
+
+    return {};
+  }
+
+  tubeColours = {
+    bakerloo: '#B36305',
+    central: '#E32017',
+    circle: '#FFD300',
+    district: '#00782A',
+    "elizabeth-line": '#6950a1',
+    "hammersmith-city": '#F3A9BB',
+    jubilee: '#A0A5A9',
+    metropolitan: '#9B0056',
+    piccadilly: '#003688',
+    victoria: '#0098D4',
+    "waterloo-City": '#95CDBA',
+    DLR: '#00A4A7',
+    "london-overground": '#EE7C0E',
+    "london-trams": '#84B817',
+    "emirates-cable-car": '#E21836'
   }
 }

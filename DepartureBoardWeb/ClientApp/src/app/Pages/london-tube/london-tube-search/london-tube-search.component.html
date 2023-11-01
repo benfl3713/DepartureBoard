@@ -1,0 +1,42 @@
+<div class="container">
+  <h1 id="search-title" class="led centre-text clickable" style="padding-left: 10px" [routerLink]="['/search']">
+    Tube Search
+  </h1>
+  <form class="example-form">
+    <mat-form-field id="search-box">
+      <mat-icon matIconPrefix style="padding-bottom: 30px">search</mat-icon>
+      <mat-label>Station Name</mat-label>
+      <input id="search-input-box" type="text" placeholder="Ex. Baker" aria-label="station name" matInput
+             [formControl]="searchBox"
+             [matAutocomplete]="auto" (keyup)="keyPressed()" />
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="stationDisplay">
+        <mat-option *ngFor="let station of filteredOptions" [value]="station">
+          {{ station.name }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <div class="options" *ngIf="showSubSearchParams">
+      <mat-label>Optional filters</mat-label>
+      <mat-form-field>
+        <mat-label>Line</mat-label>
+        <mat-select [formControl]="lineFilter">
+          <mat-option *ngFor="let line of stationInfo?.lines" [value]="line">
+            {{line.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+<!--      <mat-form-field>-->
+<!--        <mat-label>Direction</mat-label>-->
+<!--        <mat-select>-->
+<!--          <mat-option *ngFor="let line of stationInfo?.lines" [value]="line">-->
+<!--            {{line.name}}-->
+<!--          </mat-option>-->
+<!--        </mat-select>-->
+<!--      </mat-form-field>-->
+    </div>
+
+    <button mat-button id="btnSearch" (click)="Search()">Search</button>
+  </form>
+</div>

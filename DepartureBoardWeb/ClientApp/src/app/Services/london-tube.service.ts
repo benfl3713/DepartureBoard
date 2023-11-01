@@ -10,13 +10,31 @@ export class LondonTubeService {
 
   constructor(private http: HttpClient) {}
 
-  getDepartures(stopCode: string, count: number = 4): Observable<object[]> {
+  getDepartures(stopCode: string, count: number = 4, line?: string, direction?: string): Observable<object[]> {
     const url = "/api/TubeDepartures";
 
     let params = new HttpParams().append("code", stopCode);
     params = params.append("count", count.toString());
 
+    if (line) {
+      params = params.append("line", line);
+    }
+
+    if (direction) {
+      params = params.append("direction", direction);
+    }
+
     return this.http.get<object[]>(environment.apiBaseUrl + url, {
+      params: params,
+    });
+  }
+
+  search(query: string) {
+    const url = "/api/TubeDepartures/search";
+
+    let params = new HttpParams().append("query", query);
+
+    return this.http.get<any[]>(environment.apiBaseUrl + url, {
       params: params,
     });
   }

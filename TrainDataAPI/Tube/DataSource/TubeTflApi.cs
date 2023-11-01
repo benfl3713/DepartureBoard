@@ -22,7 +22,7 @@ public class TubeTflApi : TflBase
 
         return arrivals
             .Select(a => new TubeDeparture(
-                    a.LineName,
+                    a.LineId,
                     a.PlatformName,
                     a.DestinationName,
                     a.StationName,
@@ -36,12 +36,23 @@ public class TubeTflApi : TflBase
             .ToList();
     }
 
-    public List<StopPoint> GetAllStations()
-    {
-        var stations = GetAllPlatforms();
+    // public List<StopPoint> GetAllStations()
+    // {
+    //     var stations = GetAllPlatforms();
+    //
+    //     return stations
+    //         .ToList();
+    // }
 
-        return stations
-            .ToList();
+    public List<StopPointSearchResult.StopPointSearchMatch> SearchStations(string query)
+    {
+        var request = new RestRequest("StopPoint/Search");
+        request.AddQueryParameter("query", query);
+        request.AddQueryParameter("modes", "tube");
+        RestResponse response = SendRequest(request);
+        
+        var stations = JsonSerializer.Deserialize<StopPointSearchResult>(response.Content, SerializerOptions);
+        return stations.Matches;
     }
 
     public StopPoint GetStation(string code)
@@ -53,15 +64,26 @@ public class TubeTflApi : TflBase
         return JsonSerializer.Deserialize<StopPoint>(response.Content, SerializerOptions);
     }
 
-    private List<StopPoint> GetAllPlatforms()
-    {
-        var request = new RestRequest($"StopPoint/type/NaptanMetroPlatform", Method.Get);
-        RestResponse response = SendRequest(request);
-        
-        var stations = JsonSerializer.Deserialize<List<StopPoint>>(response.Content, SerializerOptions);
+    // private List<StopPoint> GetAllPlatforms()
+    // {
+    //     var request = new RestRequest($"StopPoint/type/NaptanMetroPlatform", Method.Get);
+    //     RestResponse response = SendRequest(request);
+    //     
+    //     var stations = JsonSerializer.Deserialize<List<StopPoint>>(response.Content, SerializerOptions);
+    //
+    //     return stations
+    //         .Where(s => s.Modes?.Contains("tube") ?? false)
+    //         .ToList();
+    // }
 
-        return stations
-            .Where(s => s.Modes?.Contains("tube") ?? false)
-            .ToList();
+    public class StopPointSearchResult
+    {
+        public List<StopPointSearchMatch> Matches { get; set; } = new List<StopPointSearchMatch>();
+
+        public class StopPointSearchMatch
+        {
+            public string Id { get; set; }
+            public string Name { get; set; }
+        }
     }
 }

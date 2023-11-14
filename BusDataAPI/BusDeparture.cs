@@ -12,9 +12,11 @@ namespace BusDataAPI
         public string OperatorCode { get; set; }
         public DateTime? AimedDeparture { get; set; }
         public DateTime? ExpectedDeparture { get; set; }
+        public int TimeToStation { get; set; }
+        public string Platform { get; set; }
         public bool IsCancelled { get; set; } = false;
 
-		public BusDeparture(string line, string destination, string stopName, string operatorCode, string operatorName, DateTime? aimedDeparture, DateTime? expectedDeparture)
+		public BusDeparture(string line, string destination, string stopName, string operatorCode, string operatorName, DateTime? aimedDeparture, DateTime? expectedDeparture, string platform = null, int? timeToStation = null)
 		{
             LastUpdated = DateTime.Now;
             Line = line;
@@ -24,6 +26,8 @@ namespace BusDataAPI
             OperatorName = operatorName;
             AimedDeparture = aimedDeparture;
             ExpectedDeparture = expectedDeparture;
+            Platform = platform;
+            TimeToStation = timeToStation ?? TimeSpan.FromTicks((expectedDeparture ?? DateTime.Now).Ticks - DateTime.Now.Ticks).Minutes;
 		}
     }
 }

@@ -1,0 +1,143 @@
+{
+	"definitions": {},
+	"$schema": "http://json-schema.org/draft-07/schema#", 
+	"$id": "https://example.com/departure.schema.json", 
+	"title": "Root", 
+	"type": "object",
+	"required": [
+		"stationName",
+		"departures"
+	],
+	"properties": {
+		"stationName": {
+			"$id": "#root/stationName", 
+			"title": "Stationname", 
+			"type": "string",
+			"default": "",
+			"examples": [
+				"Example Station"
+			],
+			"pattern": "^.*$"
+		},
+		"departures": {
+			"$id": "#root/departures", 
+			"title": "Departures", 
+			"type": "array",
+			"default": [],
+			"items":{
+				"$id": "#root/departures/items", 
+				"title": "Items", 
+				"type": "object",
+				"required": [
+					"platform",
+					"destination",
+					"operatorName",
+					"aimedDeparture",
+					"status",
+					"stops"
+				],
+				"properties": {
+					"platform": {
+						"$id": "#root/departures/items/platform", 
+						"title": "Platform", 
+						"type": "string",
+						"default": "",
+						"examples": [
+							"1"
+						],
+						"pattern": "^.*$"
+					},
+					"destination": {
+						"$id": "#root/departures/items/destination", 
+						"title": "Destination", 
+						"type": "string",
+						"default": "",
+						"examples": [
+							"London Euston"
+						],
+						"pattern": "^.*$"
+					},
+					"operatorName": {
+						"$id": "#root/departures/items/operatorName", 
+						"title": "Operatorname", 
+						"type": "string",
+						"default": "",
+						"examples": [
+							"Avanti West Coast"
+						],
+						"pattern": "^.*$"
+					},
+					"aimedDeparture": {
+						"$id": "#root/departures/items/aimedDeparture", 
+						"title": "Aimeddeparture", 
+						"type": "string",
+						"default": "",
+						"examples": [
+							"2020-05-15T21:23:00"
+						],
+						"pattern": "^.*$"
+					},
+					"expectedDeparture": {
+						"$id": "#root/departures/items/expectedDeparture", 
+						"title": "Expecteddeparture", 
+						"type": "string",
+						"default": "",
+						"examples": [
+							"2020-05-15T21:23:00"
+						],
+						"pattern": "^.*$"
+					},
+					"status": {
+						"$id": "#root/departures/items/status", 
+						"title": "Status", 
+						"type": "string",
+						"default": "",
+						"examples": [
+							"0"
+						],
+						"pattern": "^.*$"
+					},
+					"stops": {
+						"$id": "#root/departures/items/stops", 
+						"title": "Stops", 
+						"type": "array",
+						"default": [],
+						"items":{
+							"$id": "#root/departures/items/stops/items", 
+							"title": "Items", 
+							"type": "object",
+							"required": [
+								"stationName",
+								"aimedDeparture"
+							],
+							"properties": {
+								"stationName": {
+									"$id": "#root/departures/items/stops/items/stationName", 
+									"title": "Stationname", 
+									"type": "string",
+									"default": "",
+									"examples": [
+										"Rugby"
+									],
+									"pattern": "^.*$"
+								},
+								"aimedDeparture": {
+									"$id": "#root/departures/items/stops/items/aimedDeparture", 
+									"title": "Aimeddeparture", 
+									"type": "string",
+									"default": "",
+									"examples": [
+										"2020-05-15T21:32:00"
+									],
+									"pattern": "^.*$"
+								}
+							}
+						}
+
+					}
+				}
+			}
+
+		}
+	}
+}

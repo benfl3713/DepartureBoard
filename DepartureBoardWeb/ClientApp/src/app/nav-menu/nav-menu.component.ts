@@ -38,6 +38,7 @@ export class NavMenuComponent {
     "/settings/singleboard",
     "/settings/departureadmin",
     "/settings/buses",
+    "/settings/announcements",
     "/custom-departures",
     "/custom-departures/add",
     "/custom-departures/edit",
@@ -45,6 +46,8 @@ export class NavMenuComponent {
     "/about/custom-departures",
     "/about/departureboard-admin",
     "/buses",
+    "/london-tube",
+    "/london-tube/search"
   ];
 
   constructor(

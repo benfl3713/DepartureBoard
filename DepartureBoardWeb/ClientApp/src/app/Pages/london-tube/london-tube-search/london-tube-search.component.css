@@ -1,0 +1,46 @@
+#search-title {
+  padding-bottom: 10px;
+}
+
+.container {
+  border: 2px solid var(--mainColour);
+  border-radius: 8px;
+  color: var(--mainColour);
+  padding: 20px;
+  margin-top: 5px;
+}
+
+#btnSearch {
+  background-color: var(--mainColour);
+  color: black;
+  margin-top: 5px;
+}
+
+#search-box {
+  height: 90px;
+}
+
+form,
+mat-form-field,
+button {
+  width: 100%;
+}
+
+/* input color class */
+::ng-deep input.mat-input-element {
+  color: var(--mainColour);
+}
+
+/* Change label color on focused */
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: var(--mainColour) !important;
+}
+
+/* underline border color on focused */
+::ng-deep .mat-focused .mat-form-field-underline .mat-form-field-ripple {
+  background-color: var(--mainColour) !important;
+}
+
+.options mat-checkbox {
+  padding-right: 10px;
+}

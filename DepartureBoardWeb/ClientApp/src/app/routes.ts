@@ -139,6 +139,11 @@ export const ROUTES: Route[] = [
     loadChildren: () =>
       import("./Pages/buses/buses/buses.module").then((m) => m.BusesModule),
   },
+  {
+    path: "london-tube",
+    loadChildren: () =>
+      import("./Pages/london-tube/london-tube.module").then((m) => m.LondonTubeModule),
+  },
   // {
   //   path: "germany",
   //   loadChildren: () =>

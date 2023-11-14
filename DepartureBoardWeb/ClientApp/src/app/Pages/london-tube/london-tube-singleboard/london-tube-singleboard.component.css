@@ -1,0 +1,43 @@
+.singleboard {
+  padding-top: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
+  width: 100%;
+}
+
+.singleboard-container {
+  display: flex;
+  align-items: center;
+}
+
+.led {
+  font-family: "LondonUnderground-Regular", Arial, sans-serif;
+}
+
+span {
+  font-size: 32px;
+}
+
+@media screen and (max-width: 576px) {
+  span {
+    font-size: 24px;
+  }
+
+  .row {
+    margin-bottom: 15px;
+  }
+}
+
+@media screen and (min-height: 900px) {
+  .singleboard-container {
+    height: 100vh;
+  }
+
+  .singleboard {
+    padding-top: 20px;
+  }
+}
+
+.time {
+  font-size: 34px;
+}

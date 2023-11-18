@@ -1,3 +1,7 @@
 .tui-island__title, .tui-island__paragraph {
   text-align: center;
 }
+
+a {
+  color: #ff9729
+}

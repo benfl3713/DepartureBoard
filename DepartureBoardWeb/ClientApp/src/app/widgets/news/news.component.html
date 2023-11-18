@@ -1,43 +1,10 @@
-<!-- <div
-  fxLayout="row"
-  fxLayout.xs="column"
-  fxLayoutGap="30px"
-  fxLayoutAlign="center"
->
-  <tui-island *ngFor="let news of newsItems" fxFlex="25%" tuiMode="onDark">
-    <h3 class="tui-island__title">{{ news.title }}</h3>
-    <p
-      class="tui-island__paragraph"
-      [innerHtml]="news.content"
-      routeTransformer
-    ></p>
-    <p
-      class="tui-island__paragraph tui-island__paragraph_link"
-      *ngIf="news.titleLink"
-    >
-      <a
-          tuiButton
-          type="button"
-          class="tui-island__footer-button"
-          appearance="flat"
-          size="s"
-          [href]="news.titleLink"
-          target="_blank"
-      >
-        More Info
-      </a>
-    </p>
-  </tui-island>
-</div> -->
-
-
 <div class="row">
   <div class="col-lg-4" *ngFor="let news of newsItems; let i = index" >
     <div [ngClass]="'iq-work wow fadeInUp'" data-wow-duration="0.5s">
       <app-black-card-style1>
         <div cardNumber>{{i + 1 | number: '2.0'}}</div>
         <div cardContent>
-          <i class="flaticon-responsive flaticon mb-3"></i>
+          <i class="fas fa-subway fa-lg mb-3"></i>
           <h4 class=" iq-fw-8">{{news.title}}</h4>
           <p class="mt-3 mb-0" [innerHtml]="news.content" routeTransformer></p>
         </div>

@@ -8,9 +8,9 @@
           <h1 id="home-title" class="slider-title led-font" style="font-size: 3.3em">
             Led Departure Board
           </h1>
-          <p class="slider-description mt-5">
+          <p class="slider-description mt-5" style="max-width: 800px">
             A webapp designed to re-create the platform led signs you get at
-            British and German train stations.<br />
+            British train stations and London underground stations.
             The data is collected live from multiple datasource's and displayed
             in multiple custom built panels.
           </p>
@@ -56,21 +56,6 @@
     </div>
   </div>
 
-  <section class="container" id="search">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-12" #searchView>
-          <app-black-section-title
-            title="Search"
-            subtitle="Find your Station"
-            icon="fas fa-search"
-          ></app-black-section-title>
-        </div>
-      </div>
-      <app-components-search id="search"></app-components-search>
-    </div>
-  </section>
-
   <section class="iq-how-work pt-0" id="news">
     <div class="container">
       <div class="row">
@@ -83,6 +68,21 @@
         </div>
       </div>
       <app-components-widgets-news></app-components-widgets-news>
+    </div>
+  </section>
+
+  <section class="container" id="search">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12" #searchView>
+          <app-black-section-title
+            title="Search"
+            subtitle="Find your Station"
+            icon="fas fa-search"
+          ></app-black-section-title>
+        </div>
+      </div>
+      <app-components-search id="search"></app-components-search>
     </div>
   </section>
 

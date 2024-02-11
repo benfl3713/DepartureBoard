@@ -26,6 +26,7 @@ RUN echo "<Config><RealTimeTrainsToken>$RTT_Token</RealTimeTrainsToken></Config>
 
 # Generate runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
-COPY --from=build-env /app/DepartureBoardWeb/deploy .
+WORKDIR /app
+COPY --from=build-env /app/DepartureBoardWeb/deploy /app
 EXPOSE 80
 ENTRYPOINT ["dotnet", "DepartureBoardWeb.dll"]

@@ -41,6 +41,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
   isCustomData: boolean = false;
   showClock: boolean = true;
   showStationName: boolean = false;
+  boardsCenter: boolean = false;
   stationName;
   toCrsCode;
   previousData;
@@ -117,6 +118,13 @@ export class BoardsComponent implements OnInit, OnDestroy {
 
     if (queryParams["showStationName"]) {
       this.showStationName = queryParams["showStationName"] == "true";
+    }
+
+    if (localStorage.getItem("settings_mainboard_boardsCenter")) {
+      this.boardsCenter =
+        localStorage
+          .getItem("settings_mainboard_boardsCenter")
+          .toLowerCase() == "true";
     }
 
     if (this.isNumber(this.route.snapshot.paramMap.get("displays"))) {

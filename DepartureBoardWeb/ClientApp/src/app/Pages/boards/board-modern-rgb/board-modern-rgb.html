@@ -1,32 +1,34 @@
 ﻿<div class="board col">
-  <div class="board-row">
-    <div class="top-card-section"
-         [ngClass]="{ 'top-card-normal': Status=='On Time', 'top-card-late': Status?.includes('Exp'), 'top-card-arrived': Status=='Arrived', 'top-card-cancelled': Status=='Cancelled'}">
-      <h5 style="margin-bottom: 0">{{DepartureTime | date: 'HH:mm'}}</h5>
-      <h4
-        class="clickable"
-      >
-        {{Destination}}
-      </h4>
+  <div class="top-card-section"
+       [ngClass]="{ 'top-card-normal': Status=='On Time', 'top-card-late': Status?.includes('Exp'), 'top-card-arrived': Status=='Arrived', 'top-card-cancelled': Status=='Cancelled'}">
+    <h5 class="inline-row" style="right: 5px;position:absolute;">{{Status}}</h5>
+    <h5 style="margin-bottom: 0">{{DepartureTime | date: 'HH:mm'}}</h5>
+    <h3
+      style="margin-bottom: 0; white-space: nowrap; text-overflow: ellipsis;"
+      class="clickable"
+    >
+      {{Destination}}
+    </h3>
 
-      <h6>Platform</h6>
-      <h3 class="inline-row">{{Platform}}</h3>
-    </div>
-    <table class="stops">
-      <tr class="board-row">
-        <td class="inline-row stop" style="color:#ffd128">Calling at:</td>
-        <td class="inline-row status stop">{{CurrentPage}}/{{TotalPages}}</td>
-      </tr>
-      <tr class="board-row stop-row" *ngFor="let stop of DisplayedStops">
-        <td class="inline-row stopname-cell stopname clickable stop" (click)="ChangeStation(stop.StationName)">
-          {{stop.StationName}}
-        </td>
-        <td class="inline-row status stop stop-time">
-          {{stop.Time | date: 'HH:mm'}}
-        </td>
-      </tr>
-    </table>
-    <div class="board-row bottom" style="background-color: #6e766f; padding: 2px; width: 100%">
-      <div class="operator" [innerHtml]="information"></div>
-    </div>
+    <h6 style="margin-bottom: 0">Platform</h6>
+    <h1 style="margin-top: 0" class="inline-row clickable" (click)="FilterPlatform(Platform)">{{Platform}}</h1>
   </div>
+  <table class="stops">
+    <tr class="board-row">
+      <td class="inline-row stop" style="color:#ffd128">Calling at:</td>
+      <td class="inline-row status stop">{{CurrentPage}}/{{TotalPages}}</td>
+    </tr>
+    <tr class="board-row stop-row" *ngFor="let stop of DisplayedStops">
+      <td class="inline-row stopname-cell stopname clickable stop" (click)="ChangeStation(stop.StationName)">
+        {{stop.StationName}}
+      </td>
+      <td class="inline-row status stop stop-time">
+        {{stop.Time | date: 'HH:mm'}}
+      </td>
+    </tr>
+  </table>
+  <canvas class="carImage" #carImage height="20px" width="300px"></canvas>
+  <div class="board-row bottom" style="background-color: #6e766f; padding: 2px; width: 100%">
+    <div class="operator" [innerHtml]="information"></div>
+  </div>
+</div>

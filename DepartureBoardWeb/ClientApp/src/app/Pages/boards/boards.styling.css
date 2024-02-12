@@ -1,3 +1,9 @@
 .boards {
-  padding-left: 10px
+  padding-left: 10px;
+  margin: auto!important;
+}
+
+.boards-center {
+  display: flex;
+  justify-content: center;
 }

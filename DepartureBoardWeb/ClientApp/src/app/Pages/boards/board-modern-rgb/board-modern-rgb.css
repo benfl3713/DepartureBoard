@@ -1,11 +1,19 @@
 ﻿.board {
   width: 300px;
-  height: 500px;
+  height: 510px;
   padding: 0;
   padding-left: 5px;
-  font-family: 'Railway', sans-serif;
+  font-family: ellipsis-font, Railway, sans-serif;
   margin: 0;
 }
+
+@font-face {
+  font-family: 'ellipsis-font';
+  src: url('../../../fonts/ledfont3/DotMatrix.woff') format('woff');
+  font-style: normal;
+  unicode-range: U+2026;
+}
+
 
 .top-card-section {
   height: 135px;
@@ -27,4 +35,10 @@
 
 .top-card-cancelled {
   background-color: #d21010;
+}
+
+.carImage {
+  position: absolute;
+  bottom: 40px;
+  font-size: 18px;
 }

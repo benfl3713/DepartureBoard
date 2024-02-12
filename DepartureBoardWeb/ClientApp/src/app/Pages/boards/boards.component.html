@@ -1,18 +1,18 @@
 <div class="boards">
   <h1 class="led centre-text" *ngIf="showStationName">{{ stationName }}</h1>
-  <table>
-    <tr class="row">
+  <div [ngClass]="{'boards-center': boardsCenter}">
+    <div class="row">
       <template #Boards></template>
-    </tr>
-  </table>
+    </div>
+  </div>
 
-  <table *ngIf="isLoading">
-    <tr class="row">
+  <div *ngIf="isLoading">
+    <div class="row" [ngClass]="{'boards-center': boardsCenter}">
       <div *ngFor="let i of ' '.repeat(displays).split('')">
         <app-board-skeleton></app-board-skeleton>
       </div>
-    </tr>
-  </table>
+    </div>
+  </div>
 
   <h1 class="led centre-text" *ngIf="noBoardsDisplay">
     No Departures Found for {{ stationName || stationCode }}

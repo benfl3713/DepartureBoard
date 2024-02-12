@@ -36,6 +36,7 @@ export class SettingsComponent implements OnInit {
   settingsForm = new FormGroup({
     mainboard_count: new FormControl("6"),
     mainboard_showStationName: new FormControl(false),
+    mainboard_boardsCenter: new FormControl(false),
 
     general_mainColour: new FormControl("#ff9729"),
     general_backgroundColour: new FormControl("black"),
@@ -96,6 +97,7 @@ export class SettingsComponent implements OnInit {
     this.settingsForm.reset({
       mainboard_count: "6",
       mainboard_showStationName: false,
+      mainboard_boardsCenter: false,
       general_mainColour: "#ff9729",
       general_backgroundColour: "black",
       general_dataSource: "REALTIMETRAINS",

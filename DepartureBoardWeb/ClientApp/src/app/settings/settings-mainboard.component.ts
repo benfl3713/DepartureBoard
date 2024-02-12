@@ -33,6 +33,14 @@ import { ControlContainer, FormGroup } from "@angular/forms";
         >Show Station Name</mat-slide-toggle
       >
       <br />
+      <mat-slide-toggle
+        [checked]="form.controls.mainboard_boardsCenter.value"
+        (change)="
+          form.controls.mainboard_boardsCenter.setValue($event.checked)
+        "
+      >Show boards in the center of screen</mat-slide-toggle
+      >
+      <br />
     </form>
   `,
 })

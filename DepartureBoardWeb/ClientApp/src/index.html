@@ -59,9 +59,17 @@
       "ga"
     );
   </script>
-  <!--Start Cookie Script-->
-  <script defer type="text/javascript" charset="UTF-8"
-    src="//cookie-script.com/s/c7ef430072f63af9e12f02467db17d57.js"></script>
+
+  <script>
+    const url = window.location.href;
+    if (!url.includes('acceptCookies')) {
+      const cookieScript = document.createElement('script');
+      cookieScript.src = '//cookie-script.com/s/c7ef430072f63af9e12f02467db17d57.js';
+      cookieScript.type = 'text/javascript';
+      cookieScript.charset = 'UTF-8';
+      document.head.appendChild(cookieScript);
+    }
+  </script>
   <!--End Cookie Script-->
 
   <noscript style="color: #ff9729; padding-top: 100px;">Please enable JavaScript to continue using this

@@ -21,6 +21,7 @@ import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { AuthService } from "src/app/Services/auth.service";
 import { Subscription } from "rxjs";
 import {AnnouncementService} from "src/app/Services/announcement.service";
+import {ConfigService} from "../../Services/config.service";
 
 @Component({
   selector: "app-singleboard",
@@ -65,7 +66,8 @@ export class SingleBoard implements OnDestroy, OnInit {
     private stationLookupService: StationLookupService,
     private auth: AuthService,
     private afs: AngularFirestore,
-    private announcement: AnnouncementService
+    private announcement: AnnouncementService,
+    private configService: ConfigService
   ) {
     setInterval(() => {
       this.time = new Date();
@@ -85,16 +87,16 @@ export class SingleBoard implements OnDestroy, OnInit {
       this.isCustomData = true;
     }
 
-    if (localStorage.getItem("settings_singleboard_showStationName")) {
+    if (this.configService.getItem("settings_singleboard_showStationName")) {
       this.showStationName =
-        localStorage
+        this.configService
           .getItem("settings_singleboard_showStationName")
           .toLowerCase() == "true";
     }
 
-    if (localStorage.getItem("settings_singleboard_alternateSecondRow")) {
+    if (this.configService.getItem("settings_singleboard_alternateSecondRow")) {
       this.alternateSecondRow =
-        localStorage
+        this.configService
           .getItem("settings_singleboard_alternateSecondRow")
           .toLowerCase() == "true";
     }
@@ -125,7 +127,7 @@ export class SingleBoard implements OnDestroy, OnInit {
         }
 
         let scrollSpeed =
-          localStorage.getItem("settings_singleboard_scrollspeed") ?? 300;
+          this.configService.getItem("settings_singleboard_scrollspeed") ?? 300;
 
         if (queryParams["scrollSpeed"]) {
           scrollSpeed = +queryParams["scrollSpeed"];

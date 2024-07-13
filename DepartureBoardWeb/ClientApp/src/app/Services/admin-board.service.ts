@@ -3,20 +3,21 @@ import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { AuthService } from "./auth.service";
 import { Router, Params } from "@angular/router";
 import { Subscription, Observable } from "rxjs";
+import {ConfigService} from "./config.service";
 
 @Injectable({
   providedIn: "root",
   deps: [Router],
 })
 export class AdminBoardService {
-  constructor(private afs: AngularFirestore, public auth: AuthService) {}
+  constructor(private afs: AngularFirestore, public auth: AuthService, private configService: ConfigService) {}
 
   listener: Subscription;
   groupListener: Subscription;
   userListener: Subscription;
 
   startListening(router: Router) {
-    if (!(localStorage.getItem("settings_departureadmin_enabled") == "true")) {
+    if (!(this.configService.getItem("settings_departureadmin_enabled") == "true")) {
       return;
     }
 
@@ -27,7 +28,7 @@ export class AdminBoardService {
           this.listener.unsubscribe();
         }
 
-        const uid = localStorage.getItem("settings_departureadmin_uid");
+        const uid = this.configService.getItem("settings_departureadmin_uid");
         if (!user || !uid) {
           return; //User not logged in
         }

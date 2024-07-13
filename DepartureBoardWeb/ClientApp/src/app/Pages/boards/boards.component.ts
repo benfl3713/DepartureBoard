@@ -26,6 +26,7 @@ import { Subscription } from "rxjs";
 import {ServiceStatus} from "../singleboard/singleboard";
 import { AnnouncementService } from "src/app/Services/announcement.service";
 import {BoardModernRgb} from "./board-modern-rgb/board-modern-rgb";
+import {ConfigService} from "../../Services/config.service";
 
 @Component({
   selector: "app-boards",
@@ -62,7 +63,8 @@ export class BoardsComponent implements OnInit, OnDestroy {
     private afs: AngularFirestore,
     private departureService: DepartureService,
     private stationLookupService: StationLookupService,
-    private announcement: AnnouncementService
+    private announcement: AnnouncementService,
+    private configService: ConfigService
   ) {
     setInterval(() => {
       this.time = new Date();
@@ -108,9 +110,9 @@ export class BoardsComponent implements OnInit, OnDestroy {
     this.stationCode = this.route.snapshot.paramMap.get("station") ?? this.stationCode;
     this.toCrsCode = this.route.snapshot.paramMap.get("toCrsCode");
 
-    if (localStorage.getItem("settings_mainboard_showStationName")) {
+    if (this.configService.getItem("settings_mainboard_showStationName")) {
       this.showStationName =
-        localStorage
+        this.configService
           .getItem("settings_mainboard_showStationName")
           .toLowerCase() == "true";
     }
@@ -123,7 +125,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
       this.displays = Number(this.route.snapshot.paramMap.get("displays"));
     } else {
       this.displays = Number(
-        localStorage.getItem("settings_mainboard_count") || this.displays
+        this.configService.getItem("settings_mainboard_count") || this.displays
       );
     }
 

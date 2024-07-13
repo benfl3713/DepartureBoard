@@ -9,6 +9,7 @@ import { Departure } from "src/app/models/departure.model";
 import { Router, Params } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "src/environments/environment";
+import {ConfigService} from "../../Services/config.service";
 
 @Component({
   selector: "app-departure-scroller",
@@ -26,14 +27,14 @@ export class DepartureScrollerComponent implements OnInit, OnChanges {
   currentPlatform;
   currentDestination;
   currentStatus;
-  constructor(private router: Router, private http: HttpClient) {
+  constructor(private router: Router, private http: HttpClient, private configService: ConfigService) {
     if (this.enableScoll == true) {
       this.timer = setInterval(() => this.changeDeparture(), 15000);
     }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (localStorage.getItem("debug") === "true") {
+    if (this.configService.getItem("debug") === "true") {
       console.log(
         !this.arraysAreEqual(
           changes.departures.currentValue,
@@ -49,7 +50,7 @@ export class DepartureScrollerComponent implements OnInit, OnChanges {
         changes.departures.previousValue
       )
     ) {
-      if (localStorage.getItem("debug") === "true") {
+      if (this.configService.getItem("debug") === "true") {
         console.log("Reset Scroller");
       }
       this.index = 0;

@@ -4,12 +4,13 @@ import { Departure } from '../models/departure.model';
 import { ServiceStatus } from '../Pages/singleboard/singleboard';
 import { Speech } from '../RAG/Speech';
 import { StationLookupService } from './station-lookup.service';
+import {ConfigService} from "./config.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnnouncementService {
-  constructor(private datePipe: DatePipe, private decimalPipe: DecimalPipe, private stationLookupService: StationLookupService) {
+  constructor(private datePipe: DatePipe, private decimalPipe: DecimalPipe, private stationLookupService: StationLookupService, private configService: ConfigService) {
     this.vox = new Speech(this.datePipe, this.decimalPipe);
   }
 
@@ -17,7 +18,7 @@ export class AnnouncementService {
   readonly vox: Speech;
 
   AnnounceArrivals(data, previousData?) {
-    if (localStorage.getItem("settings_announcements_arrivals") !== "true"){
+    if (this.configService.getItem("settings_announcements_arrivals") !== "true"){
       return;
     }
 
@@ -62,22 +63,22 @@ export class AnnouncementService {
     const inters = [];
     const timeouts = [];
 
-    let cctvInterval = localStorage.getItem("settings_announcements_cctv_interval") ? +localStorage.getItem("settings_announcements_cctv_interval") : 20
+    let cctvInterval = this.configService.getItem("settings_announcements_cctv_interval") ? +this.configService.getItem("settings_announcements_cctv_interval") : 20
     cctvInterval = cctvInterval * 60 * 1000
 
-    let seeItInterval = localStorage.getItem("settings_announcements_seeItSayItSortIt_interval") ? +localStorage.getItem("settings_announcements_seeItSayItSortIt_interval") : 20
+    let seeItInterval = this.configService.getItem("settings_announcements_seeItSayItSortIt_interval") ? +this.configService.getItem("settings_announcements_seeItSayItSortIt_interval") : 20
     seeItInterval = seeItInterval * 60 * 1000
 
-    let smokingInterval = localStorage.getItem("settings_announcements_smoking_interval") ? +localStorage.getItem("settings_announcements_smoking_interval") : 20
+    let smokingInterval = this.configService.getItem("settings_announcements_smoking_interval") ? +this.configService.getItem("settings_announcements_smoking_interval") : 20
     smokingInterval = smokingInterval * 60 * 1000
 
-    if (localStorage.getItem("settings_announcements_cctv") == "true") {
+    if (this.configService.getItem("settings_announcements_cctv") == "true") {
       inters.push(setInterval(() => {
         this.vox.playText(["phraseset.notices.4.2"])
       }, cctvInterval));
     }
 
-    if (localStorage.getItem("settings_announcements_seeItSayItSortIt") == "true") {
+    if (this.configService.getItem("settings_announcements_seeItSayItSortIt") == "true") {
       timeouts.push(setTimeout(() => {
         inters.push(setInterval(() => {
           this.vox.playText(["phraseset.notices.9.2"])
@@ -85,7 +86,7 @@ export class AnnouncementService {
       }, 300000))
     }
 
-    if (localStorage.getItem("settings_announcements_smoking") == "true") {
+    if (this.configService.getItem("settings_announcements_smoking") == "true") {
       timeouts.push(setTimeout(() => {
         inters.push(setInterval(() => {
           this.vox.playText(['phrase.attention_please.0', 0.65, 'phraseset.notices.3.0'])

@@ -57,6 +57,7 @@ import { AnnouncementService } from "./Services/announcement.service";
 import { SearchPageComponent } from './Components/search-page/search-page.component';
 import {BoardModernRgb} from "./Pages/boards/board-modern-rgb/board-modern-rgb";
 import { LoginComponent } from './Pages/login/login.component';
+import {ConfigService} from "./Services/config.service";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCYNEHPUwXR2UnqhJMdR5goqbq0fy1vdo",
@@ -136,7 +137,8 @@ const firebaseConfig = {
     BusDepartureService,
     RouteTransformerDirective,
     BetaFeaturesGuard,
-    AnnouncementService
+    AnnouncementService,
+    ConfigService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

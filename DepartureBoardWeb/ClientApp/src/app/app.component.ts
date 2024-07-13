@@ -19,6 +19,7 @@ import { GlobalEvents } from "./GlobalEvents";
 import { CookieService } from "ngx-cookie-service";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "src/environments/environment";
+import {ConfigService} from "./Services/config.service";
 
 @Component({
   selector: "app-root",
@@ -45,7 +46,8 @@ export class AppComponent implements AfterViewChecked {
     route: ActivatedRoute,
     cookieService: CookieService,
     private http: HttpClient,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    private configService: ConfigService
   ) {
     ThemeService.LoadTheme();
     this.router.events.subscribe((event) => {
@@ -83,8 +85,8 @@ export class AppComponent implements AfterViewChecked {
       }
 
       if (params.token) {
-        localStorage.setItem("settings_departureadmin_uid", params.token);
-        localStorage.setItem("settings_departureadmin_enabled", "true");
+        this.configService.setItem("settings_departureadmin_uid", params.token);
+        this.configService.setItem("settings_departureadmin_enabled", "true");
         GlobalEvents.SettingsChanged.emit();
       }
     });

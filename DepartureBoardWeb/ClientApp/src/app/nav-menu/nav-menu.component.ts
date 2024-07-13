@@ -14,6 +14,7 @@ import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 import { map, shareReplay } from "rxjs/operators";
 import { Observable } from "rxjs";
 import {navItemList} from "./menu-items"
+import {ConfigService} from "../Services/config.service";
 
 @Component({
   selector: "app-nav-menu",
@@ -24,7 +25,7 @@ export class NavMenuComponent {
   showHome: boolean = true;
   includeTopMargin: boolean = true;
   navItemList = navItemList;
-  isBetaEnabled = localStorage.getItem("settings_general_betaFeatures") === "true";
+  isBetaEnabled = this.configService.getItem("settings_general_betaFeatures") === "true";
   showMobileMenu: boolean = false;
   timer;
   fixedMenuPages: Array<string> = [
@@ -55,7 +56,8 @@ export class NavMenuComponent {
     private route: ActivatedRoute,
     private deviceService: DeviceDetectorService,
     public auth: AuthService,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private configService: ConfigService
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {

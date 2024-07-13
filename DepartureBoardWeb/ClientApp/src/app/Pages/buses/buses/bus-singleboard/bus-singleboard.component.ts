@@ -3,6 +3,7 @@ import {BusDepartureService} from "src/app/Services/bus-departure.service";
 import {ActivatedRoute} from "@angular/router";
 import {ToggleConfig} from "src/app/ToggleConfig";
 import {tap, catchError} from "rxjs/operators";
+import {ConfigService} from "../../../../Services/config.service";
 
 @Component({
   selector: "app-bus-singleboard",
@@ -12,7 +13,8 @@ import {tap, catchError} from "rxjs/operators";
 export class BusSingleboardComponent implements OnDestroy {
   constructor(
     private busDepartureService: BusDepartureService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private configService: ConfigService
   ) {
     route.params.subscribe((par) => {
       route.queryParams.subscribe((qur) => {
@@ -28,8 +30,8 @@ export class BusSingleboardComponent implements OnDestroy {
   noBoardsDisplay: boolean = false;
   stopName: string = "";
   showStopName: boolean =
-    localStorage.getItem("settings_buses_showStopName") == "true" || true;
-  includeBothDirection: boolean = localStorage.getItem("settings_buses_includeBothDirection") == "true" || false;
+    this.configService.getItem("settings_buses_showStopName") == "true" || true;
+  includeBothDirection: boolean = this.configService.getItem("settings_buses_includeBothDirection") == "true" || false;
 
   ngOnDestroy() {
     clearInterval(this.interval);

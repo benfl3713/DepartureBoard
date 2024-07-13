@@ -4,12 +4,13 @@ import { Observable } from "rxjs";
 import { Departure } from "../models/departure.model";
 import { SingleBoardResponse } from "../models/singleboard-response.model";
 import { environment } from "src/environments/environment";
+import {ConfigService} from "./config.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class DepartureService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private configService: ConfigService) {}
 
   GetDepartures(
     stationCode: string,
@@ -29,7 +30,7 @@ export class DepartureService {
       params.platform = platform;
     }
     if (!dataSource) {
-      dataSource = localStorage.getItem("settings_general_dataSource");
+      dataSource = this.configService.getItem("settings_general_dataSource");
     }
     if (dataSource) {
       params.dataSource = dataSource;
@@ -42,7 +43,7 @@ export class DepartureService {
       params.includeStopData = includeStopData;
     }
 
-    if (localStorage.getItem("settings_general_includeNonPassengerServices") === "true") {
+    if (this.configService.getItem("settings_general_includeNonPassengerServices") === "true") {
       params.includeNonPassengerServices = true;
     }
 
@@ -77,12 +78,12 @@ export class DepartureService {
       params.platform = platform;
     }
 
-    const dataSource = localStorage.getItem("settings_general_dataSource");
+    const dataSource = this.configService.getItem("settings_general_dataSource");
     if (dataSource) {
       params.dataSource = dataSource;
     }
 
-    if (localStorage.getItem("settings_general_includeNonPassengerServices") === "true") {
+    if (this.configService.getItem("settings_general_includeNonPassengerServices") === "true") {
       params.includeNonPassengerServices = true;
     }
 

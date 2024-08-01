@@ -54,5 +54,21 @@ namespace DepartureBoardWeb.Controllers
 
       return Json(string.Empty);
     }
+    
+    [HttpGet("[action]")]
+    public JsonResult GetStationInfoFromCode(string code = "")
+    {
+      code = code.ToUpper();
+      var station = _stationLookup.Stations?.FirstOrDefault(s => s.Code == code);
+
+      // Get timezone for the UK
+      var offset = TimeZoneInfo.ConvertTime(DateTimeOffset.Now, TimeZoneInfo.FindSystemTimeZoneById("GB")).Offset.Hours;
+      
+      return Json(new
+      {
+        name = station?.Name ?? code,
+        utcOffset = offset
+      });
+    }
   }
 }

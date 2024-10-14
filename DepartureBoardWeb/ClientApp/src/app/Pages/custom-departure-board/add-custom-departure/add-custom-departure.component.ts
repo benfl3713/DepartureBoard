@@ -24,6 +24,7 @@ export class AddCustomDepartureComponent {
   addForm = new FormGroup({
     name: new FormControl(null, [Validators.required]),
     hideExpired: new FormControl(true, [Validators.required]),
+    manualControl: new FormControl(false, [Validators.required]),
   });
   file: File;
   error = '';
@@ -62,6 +63,9 @@ export class AddCustomDepartureComponent {
                   this.addForm.controls["name"].setValue(id);
                   this.addForm.controls["hideExpired"].setValue(
                     result.data()["hideExpired"]
+                  );
+                  this.addForm.controls["manualControl"].setValue(
+                    result.data()["manualControl"]
                   );
                   var theJSON = JSON.stringify(result.data()["jsonData"]);
                   this.data = result.data()["jsonData"];
@@ -145,10 +149,18 @@ export class AddCustomDepartureComponent {
         return false;
       }
 
+      const hideExpired = this.addForm.controls["hideExpired"].value;
+      let manualControl = this.addForm.controls["manualControl"].value;
+
+      if (hideExpired === true) {
+        manualControl = false;
+      }
+
       var toSaveForm = {
         createdDate: new Date(),
         departuresCount: this.data.departures.length,
-        hideExpired: this.addForm.controls["hideExpired"].value,
+        hideExpired: hideExpired,
+        manualControl: manualControl,
         jsonData: this.data,
       };
       this.auth.user$.subscribe((user) => {

@@ -4,7 +4,7 @@
       {{stationName}}
     </h1>
     <div class="row">
-      <h1 class="led col-md-1 col-sm-12">1st</h1>
+      <h1 class="led col-md-1 col-sm-12" *ngIf="firstTime">1st</h1>
       <h1 class="led col-md-1 col-sm-12">{{firstTime | date: 'HH:mm'}}</h1>
       <h1
         class="led col-md-1 col-sm-12 clickable"

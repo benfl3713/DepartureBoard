@@ -5,7 +5,7 @@ import {
   ViewContainerRef,
   OnDestroy,
   OnInit,
-  Input,
+  Input, HostListener,
 } from "@angular/core";
 import {
   ActivatedRoute,
@@ -22,7 +22,7 @@ import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { DepartureService } from "src/app/Services/departure.service";
 import { StationLookupService } from "src/app/Services/station-lookup.service";
 import { Departure } from "src/app/models/departure.model";
-import { Subscription } from "rxjs";
+import {BehaviorSubject, Subscription} from "rxjs";
 import {ServiceStatus} from "../singleboard/singleboard";
 import { AnnouncementService } from "src/app/Services/announcement.service";
 import {BoardModernRgb} from "./board-modern-rgb/board-modern-rgb";
@@ -53,6 +53,7 @@ export class BoardsComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   isLoading = false;
   announcementSub;
+  customDepartureSequence: BehaviorSubject<number> = new BehaviorSubject(0);
 
   constructor(
     private route: ActivatedRoute,
@@ -288,7 +289,10 @@ export class BoardsComponent implements OnInit, OnDestroy {
                   validDepartures = departures;
                 }
 
-                this.ProcessDepartures(validDepartures.slice(0, this.displays));
+                this.subscriptions.push(this.customDepartureSequence.subscribe(startIndex => {
+                  const index = departureData.manualControl ? startIndex : 0;
+                  this.ProcessDepartures(validDepartures.slice(index, this.displays));
+                }));
               },
               (error) => {
                 ToggleConfig.LoadingBar.next(false);
@@ -347,5 +351,15 @@ export class BoardsComponent implements OnInit, OnDestroy {
 
   isNumber(value: string | number): boolean {
     return value != null && !isNaN(Number(value.toString()));
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    console.log("Key Pressed")
+    if(event.key == "ArrowRight"){
+      this.customDepartureSequence.next(this.customDepartureSequence.value + 1);
+    } else if(event.key == "ArrowLeft"){
+      this.customDepartureSequence.next(this.customDepartureSequence.value -1);
+    }
   }
 }

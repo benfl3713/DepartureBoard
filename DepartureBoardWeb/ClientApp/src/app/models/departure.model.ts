@@ -12,6 +12,7 @@ export interface Departure {
   length: number;
   stops: StationStop[];
   extraDetails: Dictionary<object>;
+  isCancelled?: boolean | undefined;
 }
 
 export interface StationStop {

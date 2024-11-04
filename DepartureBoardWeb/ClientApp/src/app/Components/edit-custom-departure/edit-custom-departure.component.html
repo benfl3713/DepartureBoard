@@ -49,6 +49,8 @@
       </mat-list-item>
     </mat-list>
 
+    <mat-checkbox [(ngModel)]="departure.isCancelled" (ngModelChange)="changedData()">Mark as Cancelled</mat-checkbox><br />
+
     <button mat-flat-button color="primary" (click)="openStopDialog(index)">Add Stop</button><br /><br />
 
     <button mat-flat-button color="warn" type="button" (click)="removeDeparture(index)">

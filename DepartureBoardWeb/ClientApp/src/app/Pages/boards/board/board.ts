@@ -115,6 +115,10 @@ export class Board {
     this.Length = data.length;
     this.information = this.Operator;
 
+    if (data.isCancelled === true) {
+      data.status = ServiceStatus.CANCELLED;
+    }
+
     if (!data.status || data.status < 0) {
       data.status = this.calculateStatus(data);
     }

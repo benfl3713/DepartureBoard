@@ -33,7 +33,7 @@
   </table>
   <div class="board-row bottom">
     <div
-      [ngClass]="{ 'ontime': Status=='On Time', 'late': Status?.includes('Exp'), 'arrived': Status=='Arrived', 'cancelled': Status=='Cancelled'}"
+      [ngClass]="{ 'ontime': Status=='On Time', 'late': (Status?.includes('Exp') || Status === 'Late'), 'arrived': Status=='Arrived', 'cancelled': Status=='Cancelled'}"
     >
       {{Status}}
     </div>

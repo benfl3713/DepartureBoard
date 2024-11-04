@@ -369,7 +369,10 @@ export class SingleBoard implements OnDestroy, OnInit {
                 this.subscriptions.push(this.customDepartureSequence.subscribe(startIndex => {
                   // Calculates the Departure Status's
                   validDepartures.map(d => {
-                    if (d.expectedDeparture) {
+                    if (d.isCancelled) {
+                      d.status = ServiceStatus.CANCELLED;
+                    }
+                    else if (d.expectedDeparture) {
                       d.status = new Date(d.expectedDeparture) > new Date(d.aimedDeparture)
                         ? ServiceStatus.LATE
                         : ServiceStatus.ONTIME;

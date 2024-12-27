@@ -3,7 +3,7 @@
   height: 500px;
   padding: 0;
   padding-left: 5px;
-  font-family: 'Railway', sans-serif;
+  font-family: 'Open Sans', 'Railway', sans-serif;
   margin: 0;
 }
 
@@ -14,11 +14,11 @@
 }
 
 .top-card-arrived {
-  background-color: #00ab39;
+  background-color: #00cc72;
 }
 
 .top-card-normal {
-  background-color: #008cff;
+  background-color: #004afa;
 }
 
 .top-card-late {
@@ -26,5 +26,5 @@
 }
 
 .top-card-cancelled {
-  background-color: #d21010;
+  background-color: #a70105;
 }

@@ -436,6 +436,10 @@ export class SingleBoard implements OnDestroy, OnInit {
       this.customDepartureSequence.next(this.customDepartureSequence.value -1);
     }
   }
+
+  EnterFullscreen() {
+    document.documentElement.requestFullscreen();
+  }
 }
 
 export enum ServiceStatus {

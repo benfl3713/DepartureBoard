@@ -20,6 +20,8 @@ export class DepartureScrollerComponent implements OnInit, OnChanges {
   @Input() departures: Departure[] = [];
   @Input() enableScoll: boolean = true;
   @Input() useArrivals: boolean = false;
+  @Input() showPlatforms: boolean = true;
+  @Input() fontSize?: string;
   index = 0;
   timer;
   currentCount;

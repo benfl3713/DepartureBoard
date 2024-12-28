@@ -45,7 +45,9 @@ export class SettingsComponent implements OnInit {
 
     singleboard_showStationName: new FormControl(false),
     singleboard_alternateSecondRow: new FormControl(true),
+    singleboard_showPlatforms: new FormControl(true),
     singleboard_scrollspeed: new FormControl(300),
+    singleboard_fontsize: new FormControl(40),
 
     departureadmin_uid: new FormControl(""),
     departureadmin_enabled: new FormControl(false),
@@ -103,7 +105,9 @@ export class SettingsComponent implements OnInit {
       general_betaFeatures: false,
       singleboard_showStationName: false,
       singleboard_alternateSecondRow: true,
+      singleboard_showPlatforms: true,
       singleboard_scrollspeed: 300,
+      singleboard_fontsize: null,
       departureadmin_uid: "",
       departureadmin_enabled: false,
       buses_showStopName: true,

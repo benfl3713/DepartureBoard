@@ -46,6 +46,8 @@ export class SingleBoard implements OnDestroy, OnInit {
   subscriptions: Subscription[] = [];
   announcementSub;
   customDepartureSequence: BehaviorSubject<number> = new BehaviorSubject(0);
+  fontSize?: string;
+  showPlatforms: boolean = true;
 
   //first
   firstTime: Date;
@@ -100,6 +102,14 @@ export class SingleBoard implements OnDestroy, OnInit {
         this.configService
           .getItem("settings_singleboard_alternateSecondRow")
           .toLowerCase() == "true";
+    }
+
+    if (this.configService.getItem("settings_singleboard_fontsize")){
+      this.fontSize = this.configService.getItem("settings_singleboard_fontsize") + "px";
+    }
+
+    if (this.configService.getItem("settings_singleboard_showPlatforms")){
+      this.showPlatforms = this.configService.getItem("settings_singleboard_showPlatforms").toLowerCase() == "true";
     }
 
     this.route.params.subscribe(() => {

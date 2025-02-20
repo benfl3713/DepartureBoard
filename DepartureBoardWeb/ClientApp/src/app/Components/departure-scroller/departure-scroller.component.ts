@@ -20,6 +20,8 @@ export class DepartureScrollerComponent implements OnInit, OnChanges {
   @Input() departures: Departure[] = [];
   @Input() enableScoll: boolean = true;
   @Input() useArrivals: boolean = false;
+  @Input() showPlatforms: boolean = true;
+  @Input() fontSize?: string;
   index = 0;
   timer;
   currentCount;
@@ -62,6 +64,10 @@ export class DepartureScrollerComponent implements OnInit, OnChanges {
     } else if (this.enableScoll === false && this.timer) {
       clearInterval(this.timer);
     }
+
+    if (this.departures.length === 0) {
+      this.setDeparture(null, 0);
+    }
   }
 
   ngOnInit() {}
@@ -87,6 +93,11 @@ export class DepartureScrollerComponent implements OnInit, OnChanges {
         departure.platform === "0" ? " " : departure.platform;
       this.currentDestination = departure.destination;
       this.currentStatus = departure.status;
+    } else {
+      this.currentTime = null;
+      this.currentPlatform = "";
+      this.currentDestination = "";
+      this.currentStatus = "";
     }
 
     this.currentCount = count;

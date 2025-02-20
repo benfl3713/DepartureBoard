@@ -21,6 +21,13 @@ import { ControlContainer, FormGroup } from "@angular/forms";
         "
         >Alternate Second Row</mat-slide-toggle
       ><br />
+      <mat-slide-toggle
+        [checked]="form.controls.singleboard_showPlatforms.value"
+        (change)="
+          form.controls.singleboard_showPlatforms.setValue($event.checked)
+        "
+        >Show Platforms</mat-slide-toggle
+      ><br />
       <div class="row">
         <div class="col">
           <label>Scroll Speed</label>
@@ -40,6 +47,32 @@ import { ControlContainer, FormGroup } from "@angular/forms";
         <button
           mat-button
           (click)="SetFormValue('singleboard_scrollspeed', 300)"
+          style="margin-left: 20px"
+          class="btnOrange col-1"
+        >
+          Reset
+        </button>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col">
+          <label>Font Size</label>
+          <input type="range"
+            #singleboardFontSize
+            min="20"
+            max="80"
+            step="5"
+            [value]="form.controls.singleboard_fontsize.value"
+            color="primary"
+            (change)="
+              form.controls.singleboard_fontsize.setValue($event.target['value'])
+            "
+          />
+          <mat-hint>{{ singleboardFontSize.value }}</mat-hint>
+        </div>
+        <button
+          mat-button
+          (click)="SetFormValue('singleboard_fontsize', null)"
           style="margin-left: 20px"
           class="btnOrange col-1"
         >

@@ -1,25 +1,28 @@
-<div class="singleboard-container">
+<div class="singleboard-container" (dblclick)="EnterFullscreen()">
   <div class="singleboard" [ngClass]="{'singleboard-absolute': positionAbsolute}">
     <h1 id="title" class="led centre-text" *ngIf="showStationName">
       {{stationName}}
     </h1>
     <div class="row">
-      <h1 class="led col-md-1 col-sm-12">1st</h1>
-      <h1 class="led col-md-1 col-sm-12">{{firstTime | date: 'HH:mm'}}</h1>
+      <h1 class="led col-md-1 col-sm-12" *ngIf="firstTime" [ngStyle]="{'font-size': fontSize}">1st</h1>
+      <h1 class="led col-md-1 col-sm-12" [ngStyle]="{'font-size': fontSize}">{{firstTime | date: 'HH:mm'}}</h1>
       <h1
         class="led col-md-1 col-sm-12 clickable"
+        [ngStyle]="{'font-size': fontSize}"
         (click)="FilterPlatform(firstPlatform)"
       >
-        {{firstPlatform}}
+        {{showPlatforms ? firstPlatform : ''}}
       </h1>
       <h1
         class="led col-md-7 col-sm-12 clickable"
+        [ngStyle]="{'font-size': fontSize}"
         (click)="ChangeStation(firstDestination)"
       >
         {{firstDestination}}
       </h1>
       <h1
         class="led col-md-2 status"
+        [ngStyle]="{'font-size': fontSize}"
         [ngClass]="{ 'ontime': firstStatus=='On Time', 'late': firstStatus.includes('Exp'), 'arrived': firstStatus=='Arrived', 'cancelled': firstStatus=='Cancelled'}"
       >
         {{firstStatus}}
@@ -29,13 +32,16 @@
       <div
         id="singleboard-information"
         class="led info col-12"
-        style="height: 48px"
+        style="min-height: 48px"
+        [ngStyle]="{'font-size': fontSize}"
       ></div>
     </div>
     <app-departure-scroller
       [departures]="nextDepartures"
       [enableScoll]="alternateSecondRow"
       [useArrivals]="useArrivals"
+      [fontSize]="fontSize"
+      [showPlatforms]="showPlatforms"
     ></app-departure-scroller>
     <h1 class="led time clickable" [routerLink]='["/"]' *ngIf="showClock">
       {{ time | date: 'HH:mm:ss' : 'UTC' }}

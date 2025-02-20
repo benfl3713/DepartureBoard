@@ -1,22 +1,25 @@
 <div class="row" id="departure-scroller">
-  <h1 class="led col-md-1 col-sm-12 clickable" (click)="changeDeparture()">
+  <h1 class="led col-md-1 col-sm-12 clickable" (click)="changeDeparture()" [ngStyle]="{'font-size': fontSize}">
     {{ getNumberWithOrdinal(currentCount) }}
   </h1>
-  <h1 class="led col-md-1 col-sm-12">{{ currentTime | date: "HH:mm" }}</h1>
+  <h1 class="led col-md-1 col-sm-12" [ngStyle]="{'font-size': fontSize}">{{ currentTime | date: "HH:mm" }}</h1>
   <h1
     class="led col-md-1 col-sm-12 clickable"
+    [ngStyle]="{'font-size': fontSize}"
     (click)="FilterPlatform(currentPlatform)"
   >
-    {{ currentPlatform }}
+    {{ showPlatforms ? currentPlatform : '' }}
   </h1>
   <h1
     class="led col-md-7 col-sm-12 clickable"
+    [ngStyle]="{'font-size': fontSize}"
     (click)="ChangeStation(currentDestination)"
   >
     {{ currentDestination }}
   </h1>
   <h1
     class="led col-md-2 status"
+    [ngStyle]="{'font-size': fontSize}"
     [ngClass]="{
       ontime: currentStatus == 'On Time',
       late: currentStatus?.includes('Exp'),

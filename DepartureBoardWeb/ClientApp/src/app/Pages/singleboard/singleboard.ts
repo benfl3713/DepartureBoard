@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from "@angular/core";
+import { Component, HostListener, Input, OnDestroy, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import {
   ActivatedRoute,
@@ -19,7 +19,7 @@ import { SingleBoardResponse } from "src/app/models/singleboard-response.model";
 import { environment } from "src/environments/environment";
 import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { AuthService } from "src/app/Services/auth.service";
-import { Subscription } from "rxjs";
+import {BehaviorSubject, Observable, Subscription} from "rxjs";
 import {AnnouncementService} from "src/app/Services/announcement.service";
 import {ConfigService} from "../../Services/config.service";
 
@@ -45,6 +45,9 @@ export class SingleBoard implements OnDestroy, OnInit {
   nextDepartures: Departure[] = [];
   subscriptions: Subscription[] = [];
   announcementSub;
+  customDepartureSequence: BehaviorSubject<number> = new BehaviorSubject(0);
+  fontSize?: string;
+  showPlatforms: boolean = true;
 
   //first
   firstTime: Date;
@@ -99,6 +102,14 @@ export class SingleBoard implements OnDestroy, OnInit {
         this.configService
           .getItem("settings_singleboard_alternateSecondRow")
           .toLowerCase() == "true";
+    }
+
+    if (this.configService.getItem("settings_singleboard_fontsize")){
+      this.fontSize = this.configService.getItem("settings_singleboard_fontsize") + "px";
+    }
+
+    if (this.configService.getItem("settings_singleboard_showPlatforms")){
+      this.showPlatforms = this.configService.getItem("settings_singleboard_showPlatforms").toLowerCase() == "true";
     }
 
     this.route.params.subscribe(() => {
@@ -229,6 +240,14 @@ export class SingleBoard implements OnDestroy, OnInit {
       this.marquee.appendItem($item);
     }
 
+    if (data.departures.length === 0) {
+      this.firstTime = null;
+      this.firstPlatform = "";
+      this.firstDestination = "";
+      this.firstStatus = "";
+      return;
+    }
+
     // First
     this.firstTime = data.departures[0].aimedDeparture;
     this.firstPlatform = data.departures[0].platform;
@@ -357,31 +376,36 @@ export class SingleBoard implements OnDestroy, OnInit {
                   validDepartures = departures;
                 }
 
-                // Calculates the Departure Status's
-                validDepartures.map(d => {
-                  if (d.expectedDeparture) {
-                    d.status = new Date(d.expectedDeparture) > new Date(d.aimedDeparture)
-                      ? ServiceStatus.LATE
-                      : ServiceStatus.ONTIME;
+                this.subscriptions.push(this.customDepartureSequence.subscribe(startIndex => {
+                  // Calculates the Departure Status's
+                  validDepartures.map(d => {
+                    if (d.isCancelled) {
+                      d.status = ServiceStatus.CANCELLED;
+                    }
+                    else if (d.expectedDeparture) {
+                      d.status = new Date(d.expectedDeparture) > new Date(d.aimedDeparture)
+                        ? ServiceStatus.LATE
+                        : ServiceStatus.ONTIME;
+                    }
+                    else {
+                      d.status = ServiceStatus.ONTIME;
+                    }
+
+                    return d;
+                  });
+
+                  var toViewDepartures = validDepartures.slice(departureData.manualControl ? startIndex : 0, 3);
+
+                  let information = ""
+                  if (toViewDepartures.length > 0){
+                    information = this.GetInformationLine(toViewDepartures[0])
                   }
-                  else {
-                    d.status = ServiceStatus.ONTIME;
-                  }
 
-                  return d;
-                })
-
-                var toViewDepartures = validDepartures.slice(0, 3);
-
-                let information = ""
-                if (toViewDepartures.length > 0){
-                  information = this.GetInformationLine(toViewDepartures[0])
-                }
-
-                this.ProcessDepartures({
-                  departures: toViewDepartures,
-                  information: information
-                });
+                  this.ProcessDepartures({
+                    departures: toViewDepartures,
+                    information: information
+                  });
+                }));
               },
               (error) => {
                 ToggleConfig.LoadingBar.next(false);
@@ -401,6 +425,20 @@ export class SingleBoard implements OnDestroy, OnInit {
     })
 
     return information
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    console.log("Key Pressed")
+    if(event.key == "ArrowRight"){
+      this.customDepartureSequence.next(this.customDepartureSequence.value + 1);
+    } else if(event.key == "ArrowLeft"){
+      this.customDepartureSequence.next(this.customDepartureSequence.value -1);
+    }
+  }
+
+  EnterFullscreen() {
+    document.documentElement.requestFullscreen();
   }
 }
 

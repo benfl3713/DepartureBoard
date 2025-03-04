@@ -37,6 +37,11 @@
       <input matInput type="text" [(ngModel)]="departure.operatorName" (ngModelChange)="changedData()" required />
     </mat-form-field>
 
+    <mat-form-field>
+      <mat-label>Train Length (optional)</mat-label>
+      <input matInput type="number" [(ngModel)]="departure.length" (ngModelChange)="changedData()" />
+    </mat-form-field>
+
     <mat-label>Stops</mat-label>
     <mat-list>
       <mat-list-item *ngFor="let stop of departure?.stops;let stopIndex = index">{{stop.aimedDeparture | date: 'HH:mm'}}

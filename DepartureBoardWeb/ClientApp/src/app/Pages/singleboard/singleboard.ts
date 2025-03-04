@@ -394,7 +394,7 @@ export class SingleBoard implements OnDestroy, OnInit {
                     return d;
                   });
 
-                  var toViewDepartures = validDepartures.slice(departureData.manualControl ? startIndex : 0, 3);
+                  var toViewDepartures = validDepartures.slice(departureData.manualControl ? startIndex : 0);
 
                   let information = ""
                   if (toViewDepartures.length > 0){

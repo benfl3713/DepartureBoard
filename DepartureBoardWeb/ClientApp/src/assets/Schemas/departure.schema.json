@@ -1,8 +1,8 @@
 {
 	"definitions": {},
-	"$schema": "http://json-schema.org/draft-07/schema#", 
-	"$id": "https://example.com/departure.schema.json", 
-	"title": "Root", 
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://example.com/departure.schema.json",
+	"title": "Root",
 	"type": "object",
 	"required": [
 		"stationName",
@@ -10,8 +10,8 @@
 	],
 	"properties": {
 		"stationName": {
-			"$id": "#root/stationName", 
-			"title": "Stationname", 
+			"$id": "#root/stationName",
+			"title": "Stationname",
 			"type": "string",
 			"default": "",
 			"examples": [
@@ -20,13 +20,13 @@
 			"pattern": "^.*$"
 		},
 		"departures": {
-			"$id": "#root/departures", 
-			"title": "Departures", 
+			"$id": "#root/departures",
+			"title": "Departures",
 			"type": "array",
 			"default": [],
 			"items":{
-				"$id": "#root/departures/items", 
-				"title": "Items", 
+				"$id": "#root/departures/items",
+				"title": "Items",
 				"type": "object",
 				"required": [
 					"platform",
@@ -38,8 +38,8 @@
 				],
 				"properties": {
 					"platform": {
-						"$id": "#root/departures/items/platform", 
-						"title": "Platform", 
+						"$id": "#root/departures/items/platform",
+						"title": "Platform",
 						"type": "string",
 						"default": "",
 						"examples": [
@@ -48,8 +48,8 @@
 						"pattern": "^.*$"
 					},
 					"destination": {
-						"$id": "#root/departures/items/destination", 
-						"title": "Destination", 
+						"$id": "#root/departures/items/destination",
+						"title": "Destination",
 						"type": "string",
 						"default": "",
 						"examples": [
@@ -58,8 +58,8 @@
 						"pattern": "^.*$"
 					},
 					"operatorName": {
-						"$id": "#root/departures/items/operatorName", 
-						"title": "Operatorname", 
+						"$id": "#root/departures/items/operatorName",
+						"title": "Operatorname",
 						"type": "string",
 						"default": "",
 						"examples": [
@@ -68,8 +68,8 @@
 						"pattern": "^.*$"
 					},
 					"aimedDeparture": {
-						"$id": "#root/departures/items/aimedDeparture", 
-						"title": "Aimeddeparture", 
+						"$id": "#root/departures/items/aimedDeparture",
+						"title": "Aimeddeparture",
 						"type": "string",
 						"default": "",
 						"examples": [
@@ -78,8 +78,8 @@
 						"pattern": "^.*$"
 					},
 					"expectedDeparture": {
-						"$id": "#root/departures/items/expectedDeparture", 
-						"title": "Expecteddeparture", 
+						"$id": "#root/departures/items/expectedDeparture",
+						"title": "Expecteddeparture",
 						"type": "string",
 						"default": "",
 						"examples": [
@@ -88,8 +88,8 @@
 						"pattern": "^.*$"
 					},
 					"status": {
-						"$id": "#root/departures/items/status", 
-						"title": "Status", 
+						"$id": "#root/departures/items/status",
+						"title": "Status",
 						"type": "string",
 						"default": "",
 						"examples": [
@@ -97,14 +97,23 @@
 						],
 						"pattern": "^.*$"
 					},
+					"length": {
+						"$id": "#root/departures/items/status",
+						"title": "Length",
+						"type": ["integer", "null"],
+						"default": "",
+						"examples": [
+							4
+						]
+					},
 					"stops": {
-						"$id": "#root/departures/items/stops", 
-						"title": "Stops", 
+						"$id": "#root/departures/items/stops",
+						"title": "Stops",
 						"type": "array",
 						"default": [],
 						"items":{
-							"$id": "#root/departures/items/stops/items", 
-							"title": "Items", 
+							"$id": "#root/departures/items/stops/items",
+							"title": "Items",
 							"type": "object",
 							"required": [
 								"stationName",
@@ -112,8 +121,8 @@
 							],
 							"properties": {
 								"stationName": {
-									"$id": "#root/departures/items/stops/items/stationName", 
-									"title": "Stationname", 
+									"$id": "#root/departures/items/stops/items/stationName",
+									"title": "Stationname",
 									"type": "string",
 									"default": "",
 									"examples": [
@@ -122,8 +131,8 @@
 									"pattern": "^.*$"
 								},
 								"aimedDeparture": {
-									"$id": "#root/departures/items/stops/items/aimedDeparture", 
-									"title": "Aimeddeparture", 
+									"$id": "#root/departures/items/stops/items/aimedDeparture",
+									"title": "Aimeddeparture",
 									"type": "string",
 									"default": "",
 									"examples": [

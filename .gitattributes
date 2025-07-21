@@ -67,3 +67,4 @@ DepartureBoardWeb/ClientApp/src/assets/cookie-policy.html linguist-vendored
 DepartureBoardWeb/ClientApp/src/assets/privacy-policy.html linguist-vendored
 TrainDataAPI/Connected[[:space:]]Services/NationalRailDarwin/Reference.cs linguist-vendored
 *.html linguist-vendored
+DepartureBoardWeb/ClientApp/src/assets/css/style.css linguist-vendored

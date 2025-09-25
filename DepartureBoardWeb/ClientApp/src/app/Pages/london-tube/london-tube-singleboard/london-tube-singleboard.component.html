@@ -50,7 +50,7 @@
     <app-tube-departure-scroller [departures]="otherDepartures" [startingNumber]="3"></app-tube-departure-scroller>
 
     <h1 class="led time clickable" [routerLink]='["/"]' *ngIf="showClock">
-      {{ time | date: 'HH:mm:ss' }}
+      {{ time | date: 'HH:mm:ss' : 'UTC' }}
     </h1>
   </div>
 </div>

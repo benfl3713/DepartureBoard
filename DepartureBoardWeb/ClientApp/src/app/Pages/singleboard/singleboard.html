@@ -44,7 +44,7 @@
       [showPlatforms]="showPlatforms"
     ></app-departure-scroller>
     <h1 class="led time clickable" [routerLink]='["/"]' *ngIf="showClock">
-      {{ time | date: 'HH:mm:ss' }}
+      {{ time | date: 'HH:mm:ss' : 'UTC' }}
     </h1>
   </div>
 </div>

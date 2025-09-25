@@ -18,7 +18,7 @@
     No Departures Found for {{ stationName || stationCode }}
   </h1>
   <h1 class="led-bold time clickable" [routerLink]="['/']" *ngIf="showClock">
-    {{ time | date: "HH:mm:ss" }}
+    {{ time | date: "HH:mm:ss" : 'UTC' }}
   </h1>
 
 </div>

@@ -7,14 +7,14 @@
       <h1 class="led col-md-1 col-sm-12" *ngIf="firstTime" [ngStyle]="{'font-size': fontSize}">1st</h1>
       <h1 class="led col-md-1 col-sm-12" [ngStyle]="{'font-size': fontSize}">{{firstTime | date: 'HH:mm'}}</h1>
       <h1
-        class="led col-md-1 col-sm-12 clickable"
+        class="led col-lg-1 d-lg-block d-md-none col-sm-12 clickable"
         [ngStyle]="{'font-size': fontSize}"
         (click)="FilterPlatform(firstPlatform)"
       >
         {{showPlatforms ? firstPlatform : ''}}
       </h1>
       <h1
-        class="led col-md-7 col-sm-12 clickable"
+        class="led col-lg-7 col-md-8 col-sm-12 clickable"
         [ngStyle]="{'font-size': fontSize}"
         (click)="ChangeStation(firstDestination)"
       >

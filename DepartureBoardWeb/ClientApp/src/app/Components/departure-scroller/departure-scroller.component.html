@@ -4,14 +4,14 @@
   </h1>
   <h1 class="led col-md-1 col-sm-12" [ngStyle]="{'font-size': fontSize}">{{ currentTime | date: "HH:mm" }}</h1>
   <h1
-    class="led col-md-1 col-sm-12 clickable"
+    class="led col-lg-1 d-lg-block d-md-none col-sm-12 clickable  "
     [ngStyle]="{'font-size': fontSize}"
     (click)="FilterPlatform(currentPlatform)"
   >
     {{ showPlatforms ? currentPlatform : '' }}
   </h1>
   <h1
-    class="led col-md-7 col-sm-12 clickable"
+    class="led col-lg-7 col-md-8 col-sm-12 clickable"
     [ngStyle]="{'font-size': fontSize}"
     (click)="ChangeStation(currentDestination)"
   >

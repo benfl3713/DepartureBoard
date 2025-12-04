@@ -3,35 +3,35 @@
     <h1 id="title" class="led centre-text" *ngIf="showStationName">
       {{stationName}}
     </h1>
-    <div class="row">
-      <h1 class="led col-md-1 col-sm-12" *ngIf="firstTime" [ngStyle]="{'font-size': fontSize}">1st</h1>
-      <h1 class="led col-md-1 col-sm-12" [ngStyle]="{'font-size': fontSize}">{{firstTime | date: 'HH:mm'}}</h1>
+    <div class="departure-row">
+      <h1 class="led departure-ordinal" *ngIf="firstTime" [ngStyle]="{'font-size': fontSize}">1st</h1>
+      <h1 class="led departure-time" [ngStyle]="{'font-size': fontSize}">{{firstTime | date: 'HH:mm'}}</h1>
       <h1
-        class="led col-lg-1 d-lg-block d-md-none col-sm-12 clickable"
+        class="led departure-platform clickable"
         [ngStyle]="{'font-size': fontSize}"
         (click)="FilterPlatform(firstPlatform)"
       >
         {{showPlatforms ? firstPlatform : ''}}
       </h1>
       <h1
-        class="led col-lg-7 col-md-8 col-sm-12 clickable"
+        class="led departure-destination clickable"
         [ngStyle]="{'font-size': fontSize}"
         (click)="ChangeStation(firstDestination)"
       >
         {{firstDestination}}
       </h1>
       <h1
-        class="led col-md-2 status"
+        class="led departure-status status"
         [ngStyle]="{'font-size': fontSize}"
         [ngClass]="{ 'ontime': firstStatus=='On Time', 'late': firstStatus.includes('Exp'), 'arrived': firstStatus=='Arrived', 'cancelled': firstStatus=='Cancelled'}"
       >
         {{firstStatus}}
       </h1>
     </div>
-    <div class="row">
+    <div class="departure-info-row">
       <div
         id="singleboard-information"
-        class="led info col-12"
+        class="led info"
         style="min-height: 48px"
         [ngStyle]="{'font-size': fontSize}"
       ></div>

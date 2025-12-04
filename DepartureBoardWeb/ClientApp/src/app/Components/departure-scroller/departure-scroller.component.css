@@ -1,0 +1,50 @@
+/* Departure row layout - fixed widths */
+.departure-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.departure-ordinal {
+  flex: 0 0 6%; /* Fixed 6% width */
+  text-align: center;
+}
+
+.departure-time {
+  flex: 0 0 10%; /* Fixed 10% width */
+  text-align: center;
+}
+
+.departure-platform {
+  flex: 0 0 6%; /* Fixed 8% width */
+  text-align: center;
+}
+
+.departure-destination {
+  flex: 1 1 auto; /* Takes remaining space */
+  text-align: left;
+}
+
+.departure-status {
+  flex: 0 0 18%; /* Fixed 18% width */
+  text-align: right;
+}
+
+/* Responsive font scaling for mobile devices */
+@media (max-width: 1024px) {
+  .led {
+    font-size: 1.5em !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .led {
+    font-size: 2em !important;
+  }
+
+  .departure-row {
+    gap: 5px;
+  }
+}

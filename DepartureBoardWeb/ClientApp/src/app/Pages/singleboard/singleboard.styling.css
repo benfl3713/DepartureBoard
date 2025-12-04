@@ -1,7 +1,6 @@
 .singleboard {
-  width: 100%;
-  padding-left: 15px;
-  padding-right: 15px;
+  width: 1920px; /* Fixed width - will scale down */
+  transform-origin: top center;
 }
 
 .singleboard-container {
@@ -9,4 +8,72 @@
   height: 100vh;
   display: flex;
   align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Departure row layout - fixed widths */
+.departure-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.departure-ordinal {
+  flex: 0 0 6%; /* Fixed 6% width */
+  text-align: center;
+}
+
+.departure-time {
+  flex: 0 0 10%; /* Fixed 10% width */
+  text-align: center;
+}
+
+.departure-platform {
+  flex: 0 0 6%; /* Fixed 6% width */
+  text-align: center;
+}
+
+.departure-destination {
+  flex: 1 1 auto; /* Takes remaining space */
+  text-align: left;
+}
+
+.departure-status {
+  flex: 0 0 18%; /* Fixed 18% width */
+  text-align: right;
+}
+
+.departure-info-row {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+
+/* Scale the entire board based on viewport width */
+@media (max-width: 1920px) {
+  .singleboard {
+    width: 100vw;
+  }
+}
+
+/* Increase font size on tablets to maintain readability */
+@media (max-width: 1024px) {
+  .singleboard .led {
+    font-size: 1.5em !important;
+  }
+}
+
+/* Maximum font scaling for very small screens */
+@media (max-width: 480px) {
+  .singleboard .led {
+    font-size: 2em !important;
+  }
+
+  /* Reduce gaps to fit better on small screens */
+  .departure-row {
+    gap: 5px;
+  }
 }

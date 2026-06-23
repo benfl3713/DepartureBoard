@@ -22,6 +22,7 @@ import { AuthService } from "src/app/Services/auth.service";
 import {BehaviorSubject, Observable, Subscription} from "rxjs";
 import {AnnouncementService} from "src/app/Services/announcement.service";
 import {ConfigService} from "../../Services/config.service";
+import {TimeService} from "../../Services/time.service";
 
 @Component({
   selector: "app-singleboard",
@@ -70,13 +71,15 @@ export class SingleBoard implements OnDestroy, OnInit {
     private auth: AuthService,
     private afs: AngularFirestore,
     private announcement: AnnouncementService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private timeService: TimeService
   ) {
-    setInterval(() => {
-      this.time = new Date();
-    }, 1000);
-
-
+    // Subscribe to time service for synchronized time
+    this.subscriptions.push(
+      this.timeService.getCurrentTime$().subscribe((time) => {
+        this.time = time;
+      })
+    );
   }
   ngOnInit(): void {
     const s: UrlSegment[] = this.router.parseUrl(this.router.url).root.children[

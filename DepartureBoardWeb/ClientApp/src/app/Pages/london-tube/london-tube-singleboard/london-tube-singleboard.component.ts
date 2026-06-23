@@ -2,6 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Marquee} from "dynamic-marquee";
 import {LondonTubeService} from "../../../Services/london-tube.service";
 import {ActivatedRoute} from "@angular/router";
+import {TimeService} from "../../../Services/time.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-london-tube-singleboard',
@@ -22,17 +24,20 @@ export class LondonTubeSingleboardComponent implements OnInit, OnDestroy {
   noBoardsDisplay: boolean;
   departureCount: number = 4;
   time = new Date();
-  timeInterval: NodeJS.Timer;
   fetchInterval: NodeJS.Timer;
   marquee: Marquee;
+  subscriptions: Subscription[] = [];
 
-  constructor(private tubeService: LondonTubeService, private route: ActivatedRoute) {
+  constructor(private tubeService: LondonTubeService, private route: ActivatedRoute, private timeService: TimeService) {
+    // Subscribe to time service for synchronized time
+    this.subscriptions.push(
+      this.timeService.getCurrentTime$().subscribe((time) => {
+        this.time = time;
+      })
+    );
   }
 
   ngOnInit(): void {
-    this.timeInterval = setInterval(() => {
-      this.time = new Date();
-    }, 1000);
 
     this.route.paramMap.subscribe(params => {
       this.stationCode = params.get('station');
@@ -68,7 +73,7 @@ export class LondonTubeSingleboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.timeInterval);
+    this.subscriptions.forEach(sub => sub.unsubscribe());
     clearInterval(this.fetchInterval);
   }
 

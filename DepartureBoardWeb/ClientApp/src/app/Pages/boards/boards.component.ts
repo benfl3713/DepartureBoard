@@ -27,6 +27,7 @@ import {ServiceStatus} from "../singleboard/singleboard";
 import { AnnouncementService } from "src/app/Services/announcement.service";
 import {BoardModernRgb} from "./board-modern-rgb/board-modern-rgb";
 import {ConfigService} from "../../Services/config.service";
+import {TimeService} from "../../Services/time.service";
 
 @Component({
   selector: "app-boards",
@@ -65,11 +66,15 @@ export class BoardsComponent implements OnInit, OnDestroy {
     private departureService: DepartureService,
     private stationLookupService: StationLookupService,
     private announcement: AnnouncementService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private timeService: TimeService
   ) {
-    setInterval(() => {
-      this.time = new Date();
-    }, 1000);
+    // Subscribe to time service for synchronized time
+    this.subscriptions.push(
+      this.timeService.getCurrentTime$().subscribe((time) => {
+        this.time = time;
+      })
+    );
   }
 
   ngOnInit() {

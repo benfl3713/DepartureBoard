@@ -1,4 +1,5 @@
-﻿using DepartureBoardCore;
+﻿using System;
+using DepartureBoardCore;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DepartureBoardWeb.Controllers
@@ -17,6 +18,13 @@ namespace DepartureBoardWeb.Controllers
         public IActionResult Ping()
         {
             return Ok();
+        }
+
+        [HttpGet]
+        public int GetTimezoneOffset()
+        {
+            TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/London");
+            return (int)timeZone.GetUtcOffset(DateTime.UtcNow).TotalMinutes;
         }
     }
 }

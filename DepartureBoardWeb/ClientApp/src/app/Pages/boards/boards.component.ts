@@ -22,7 +22,8 @@ import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { DepartureService } from "src/app/Services/departure.service";
 import { StationLookupService } from "src/app/Services/station-lookup.service";
 import { Departure } from "src/app/models/departure.model";
-import {BehaviorSubject, Subscription} from "rxjs";
+import {BehaviorSubject, combineLatest, Subscription} from "rxjs";
+import { switchMap } from "rxjs/operators";
 import {ServiceStatus} from "../singleboard/singleboard";
 import { AnnouncementService } from "src/app/Services/announcement.service";
 import {BoardModernRgb} from "./board-modern-rgb/board-modern-rgb";
@@ -181,26 +182,29 @@ export class BoardsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.departureService
-      .GetDepartures(
-        this.stationCode,
-        this.displays,
-        this.useArrivals,
-        this.platform,
-        null,
-        this.toCrsCode
-      )
-      .subscribe(
-        (response) => {
-          ToggleConfig.LoadingBar.next(false);
-          this.isLoading = false;
-          this.ProcessDepartures(response);
-        },
-        () => {
-          ToggleConfig.LoadingBar.next(false);
-          this.isLoading = false;
-        }
-      );
+    this.subscriptions.push(
+      this.departureService
+        .GetDepartures(
+          this.stationCode,
+          this.displays,
+          this.useArrivals,
+          this.platform,
+          null,
+          this.toCrsCode
+        )
+        .subscribe(
+          (response) => {
+            ToggleConfig.LoadingBar.next(false);
+            this.isLoading = false;
+            this.ProcessDepartures(response);
+          },
+          (error) => {
+            console.error('Error fetching departures:', error);
+            ToggleConfig.LoadingBar.next(false);
+            this.isLoading = false;
+          }
+        )
+    );
   }
 
   ProcessDepartures(data: Departure[]) {
@@ -242,71 +246,70 @@ export class BoardsComponent implements OnInit, OnDestroy {
   }
 
   GetCustomData() {
+    const firestoreData$ = this.auth.user$.pipe(
+      switchMap((user) =>
+        this.afs
+          .collection(`customDepartures/${user.uid}/departures`)
+          .doc(this.stationCode)
+          .valueChanges()
+      )
+    );
+
     this.subscriptions.push(
-      this.auth.user$.subscribe((user) => {
-        this.subscriptions.push(
-          this.afs
-            .collection(`customDepartures/${user.uid}/departures`)
-            .doc(this.stationCode)
-            .valueChanges()
-            .subscribe(
-              (departureData: any) => {
-                ToggleConfig.LoadingBar.next(false);
-                this.isLoading = false;
-                console.debug(departureData);
-                const data = departureData.jsonData;
-                this.noBoardsDisplay = !data;
-                this.stationName = data.stationName;
-                document.title =
-                  (data.stationName || this.stationCode) +
-                  " - Departures - Departure Board";
+      combineLatest([firestoreData$, this.customDepartureSequence]).subscribe(
+        ([departureData, startIndex]: [any, number]) => {
+          ToggleConfig.LoadingBar.next(false);
+          this.isLoading = false;
+          console.debug(departureData);
+          const data = departureData.jsonData;
+          this.noBoardsDisplay = !data;
+          this.stationName = data.stationName;
+          document.title =
+            (data.stationName || this.stationCode) +
+            " - Departures - Departure Board";
 
-                const departures: any[] = data.departures;
-                let validDepartures: any[] = new Array();
-                // Removes expired departures
-                if (departureData.hideExpired == true || false) {
-                  for (let i = 0; i < departures.length; i++) {
-                    if (
-                      Object(departures)[i]["expectedDeparture"] &&
-                      new Date(Object(departures)[i]["expectedDeparture"]) <
-                        new Date()
-                    ) {
-                      console.log(
-                        `Departure has already gone past date ${
-                          Object(departures)[i]["expectedDeparture"]
-                        } - ${<string>Object(departures)[i]["destination"]}`
-                      );
-                    } else if (
-                      Object(departures)[i]["aimedDeparture"] &&
-                      new Date(Object(departures)[i]["aimedDeparture"]) <
-                        new Date()
-                    ) {
-                      console.log(
-                        `Departure has already gone past date ${
-                          Object(departures)[i]["aimedDeparture"]
-                        } - ${<string>Object(departures)[i]["destination"]}`
-                      );
-                    } else {
-                      validDepartures.push(departures[i]);
-                    }
-                  }
-                } else {
-                  validDepartures = departures;
-                }
-
-                this.subscriptions.push(this.customDepartureSequence.subscribe(startIndex => {
-                  const index = departureData.manualControl ? startIndex : 0;
-                  this.ProcessDepartures(validDepartures.slice(index, this.displays));
-                }));
-              },
-              (error) => {
-                ToggleConfig.LoadingBar.next(false);
-                this.isLoading = false;
-                console.log(error);
+          const departures: any[] = data.departures;
+          let validDepartures: any[] = new Array();
+          // Removes expired departures
+          if (departureData.hideExpired == true || false) {
+            for (let i = 0; i < departures.length; i++) {
+              if (
+                Object(departures)[i]["expectedDeparture"] &&
+                new Date(Object(departures)[i]["expectedDeparture"]) <
+                  new Date()
+              ) {
+                console.log(
+                  `Departure has already gone past date ${
+                    Object(departures)[i]["expectedDeparture"]
+                  } - ${<string>Object(departures)[i]["destination"]}`
+                );
+              } else if (
+                Object(departures)[i]["aimedDeparture"] &&
+                new Date(Object(departures)[i]["aimedDeparture"]) <
+                  new Date()
+              ) {
+                console.log(
+                  `Departure has already gone past date ${
+                    Object(departures)[i]["aimedDeparture"]
+                  } - ${<string>Object(departures)[i]["destination"]}`
+                );
+              } else {
+                validDepartures.push(departures[i]);
               }
-            )
-        );
-      })
+            }
+          } else {
+            validDepartures = departures;
+          }
+
+          const index = departureData.manualControl ? startIndex : 0;
+          this.ProcessDepartures(validDepartures.slice(index, index + this.displays));
+        },
+        (error) => {
+          console.error('Error fetching custom departures:', error);
+          ToggleConfig.LoadingBar.next(false);
+          this.isLoading = false;
+        }
+      )
     );
   }
 
@@ -351,7 +354,9 @@ export class BoardsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     clearTimeout(this.refresher);
     this.subscriptions.forEach((s) => s.unsubscribe());
-    this.announcementSub();
+    if (this.announcementSub) {
+      this.announcementSub();
+    }
   }
 
   isNumber(value: string | number): boolean {

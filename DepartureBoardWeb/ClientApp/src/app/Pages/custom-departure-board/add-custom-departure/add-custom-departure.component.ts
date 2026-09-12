@@ -19,12 +19,19 @@ export class AddCustomDepartureComponent {
   isEdit: boolean = false;
   oldId: string;
   title: string = "";
+  repeatIntervals = [
+    { value: 0, label: "No repeat" },
+    { value: 30, label: "Every 30 minutes" },
+    { value: 60, label: "Every 1 hour" },
+    { value: 120, label: "Every 2 hours" },
+  ];
   oldFileHref;
   data: CustomDeparture;
   addForm = new FormGroup({
     name: new FormControl(null, [Validators.required]),
     hideExpired: new FormControl(true, [Validators.required]),
     manualControl: new FormControl(false, [Validators.required]),
+    repeatIntervalMinutes: new FormControl(0, [Validators.required]),
   });
   file: File;
   error = '';
@@ -66,6 +73,9 @@ export class AddCustomDepartureComponent {
                   );
                   this.addForm.controls["manualControl"].setValue(
                     result.data()["manualControl"]
+                  );
+                  this.addForm.controls["repeatIntervalMinutes"].setValue(
+                    result.data()["repeatIntervalMinutes"] ?? 0
                   );
                   var theJSON = JSON.stringify(result.data()["jsonData"]);
                   this.data = result.data()["jsonData"];
@@ -151,6 +161,9 @@ export class AddCustomDepartureComponent {
 
       const hideExpired = this.addForm.controls["hideExpired"].value;
       let manualControl = this.addForm.controls["manualControl"].value;
+      const repeatIntervalMinutes = Number(
+        this.addForm.controls["repeatIntervalMinutes"].value ?? 0
+      );
 
       if (hideExpired === true) {
         manualControl = false;
@@ -161,6 +174,7 @@ export class AddCustomDepartureComponent {
         departuresCount: this.data.departures.length,
         hideExpired: hideExpired,
         manualControl: manualControl,
+        repeatIntervalMinutes: repeatIntervalMinutes,
         jsonData: this.data,
       };
       this.auth.user$.subscribe((user) => {

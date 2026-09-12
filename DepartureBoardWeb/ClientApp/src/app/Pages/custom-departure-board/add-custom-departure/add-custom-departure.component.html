@@ -27,6 +27,14 @@
     <label class="led">Options: </label>
     <mat-checkbox formControlName="hideExpired" style="padding-right: 15px">Hide Expired Departures</mat-checkbox>
     <mat-checkbox *ngIf="!addForm.value.hideExpired" formControlName="manualControl">Manual Control (Use left and right arrow keys)</mat-checkbox>
+    <mat-form-field style="display: block; max-width: 260px; margin-top: 12px;">
+      <mat-label>Repeat Departures</mat-label>
+      <mat-select formControlName="repeatIntervalMinutes">
+        <mat-option *ngFor="let option of repeatIntervals" [value]="option.value">
+          {{ option.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
     <br />
     <button id="btnSave" type="submit" mat-button [disabled]="!addForm.valid || (!file && !data) || isValidData === false" (click)="Save()">
       Save

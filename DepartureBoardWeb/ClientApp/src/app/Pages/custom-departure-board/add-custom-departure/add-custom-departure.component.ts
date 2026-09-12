@@ -75,7 +75,12 @@ export class AddCustomDepartureComponent {
                     result.data()["manualControl"]
                   );
                   this.addForm.controls["repeatIntervalMinutes"].setValue(
-                    result.data()["repeatIntervalMinutes"] ?? 0
+                    this.repeatIntervals.some(
+                      (option) =>
+                        option.value === Number(result.data()["repeatIntervalMinutes"])
+                    )
+                      ? Number(result.data()["repeatIntervalMinutes"])
+                      : 0
                   );
                   var theJSON = JSON.stringify(result.data()["jsonData"]);
                   this.data = result.data()["jsonData"];
@@ -161,9 +166,14 @@ export class AddCustomDepartureComponent {
 
       const hideExpired = this.addForm.controls["hideExpired"].value;
       let manualControl = this.addForm.controls["manualControl"].value;
-      const repeatIntervalMinutes = Number(
+      const selectedRepeatInterval = Number(
         this.addForm.controls["repeatIntervalMinutes"].value ?? 0
       );
+      const repeatIntervalMinutes = this.repeatIntervals.some(
+        (option) => option.value === selectedRepeatInterval
+      )
+        ? selectedRepeatInterval
+        : 0;
 
       if (hideExpired === true) {
         manualControl = false;

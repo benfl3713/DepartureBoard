@@ -2,6 +2,7 @@ import { Departure, StationStop } from "src/app/models/departure.model";
 
 const SUPPORTED_REPEAT_INTERVALS = [30, 60, 120];
 const DEFAULT_REPEAT_WINDOW_HOURS = 24;
+const MAX_EXPANDED_DEPARTURES = 300;
 
 function parseDate(value: string | Date | undefined): Date | null {
   if (!value) {
@@ -96,7 +97,7 @@ export function expandCustomDeparturesWithRepeat(
     });
   }
 
-  return [...expandedDepartures, ...nonRepeatableDepartures].sort((a, b) => {
+  const sortedDepartures = [...expandedDepartures, ...nonRepeatableDepartures].sort((a, b) => {
     const aTime = getDepartureTime(a);
     const bTime = getDepartureTime(b);
 
@@ -114,4 +115,20 @@ export function expandCustomDeparturesWithRepeat(
 
     return aTime - bTime;
   });
+
+  const earliestRelevantTime = nowMs - intervalMs;
+  const latestRelevantTime = nowMs + repeatWindowMs + intervalMs;
+  const relevantDepartures = sortedDepartures.filter((departure) => {
+    const departureTime = getDepartureTime(departure);
+    return (
+      departureTime === null ||
+      (departureTime >= earliestRelevantTime &&
+        departureTime <= latestRelevantTime)
+    );
+  });
+
+  const departuresToReturn =
+    relevantDepartures.length > 0 ? relevantDepartures : sortedDepartures;
+
+  return departuresToReturn.slice(0, MAX_EXPANDED_DEPARTURES);
 }

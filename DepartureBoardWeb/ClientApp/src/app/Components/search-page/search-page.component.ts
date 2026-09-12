@@ -76,7 +76,7 @@ export class SearchPageComponent {
     }
 
     console.log("Loading station", station)
-    return this.departureService.GetDepartures(station.code, 1, false, null, null, null, false)
+    return this.departureService.GetDepartures(station.code, 1, false, null, null, false)
       .pipe(map(s => s.length > 0 ? s[0] : null))
       .pipe(tap(s => this.cachedDepartures[station.code] = s))
   }

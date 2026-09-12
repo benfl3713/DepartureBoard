@@ -52,8 +52,7 @@ export class HomeComponent implements AfterViewInit {
                 "EUS",
                 1,
                 false,
-                null,
-                "REALTIMETRAINS"
+                null
               )
             : new Observable<Departure[]>(obs => obs.complete());
         })

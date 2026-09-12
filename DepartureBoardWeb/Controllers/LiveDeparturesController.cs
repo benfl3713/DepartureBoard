@@ -64,7 +64,7 @@ namespace DepartureBoardWeb.Controllers
 	        {
 		        "NATIONALRAIL" => new NationalRailAPI(),
 		        "DEUTSCHEBAHN" => new DeutscheBahnAPI(),
-                _ => new RealTimeTrainsAPI()
+                _ => new NationalRailAPI()
 	        };
         }
 
@@ -95,8 +95,6 @@ namespace DepartureBoardWeb.Controllers
                 departures.AsParallel().ForAll(d => d.LoadStops(liveDeparturesRequest));
                 foreach (Departure departure in departures)
                 {
-                    if (departure.FromDataSouce == typeof(RealTimeTrainsAPI))
-                        departure.StopsAsOfDepartureStation();
                     departure.FromDataSouce = null;
                 }
             }

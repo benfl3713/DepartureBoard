@@ -39,7 +39,6 @@ export class SettingsComponent implements OnInit {
 
     general_mainColour: new FormControl("#ff9729"),
     general_backgroundColour: new FormControl("black"),
-    general_dataSource: new FormControl("REALTIMETRAINS"),
     general_includeNonPassengerServices: new FormControl(false),
     general_betaFeatures: new FormControl(false),
 
@@ -85,10 +84,6 @@ export class SettingsComponent implements OnInit {
     ThemeService.LoadTheme();
     if (showMessage) {
       this.googleAnalyticsEventsService.emitEvent("Settings", "Saved");
-      this.googleAnalyticsEventsService.emitEvent(
-        "DataSource",
-        localStorage.getItem("settings_general_dataSource")
-      );
       this.notifierService.notify("success", "Settings - Saved Successfully");
     }
     GlobalEvents.SettingsChanged.emit();
@@ -100,7 +95,6 @@ export class SettingsComponent implements OnInit {
       mainboard_showStationName: false,
       general_mainColour: "#ff9729",
       general_backgroundColour: "black",
-      general_dataSource: "REALTIMETRAINS",
       general_includeNonPassengerServices: false,
       general_betaFeatures: false,
       singleboard_showStationName: false,

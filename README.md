@@ -28,15 +28,6 @@ To view a running example head over to
 - Runs using dotnet core so is cross compatible accross operating systems.
 - Uses google firebase as the document storage and user authentication.
 
-# Docker
-
-This project is also build into a docker image every time we merge to master. This means you can run this website very easiy simply by runnning the command  
-```docker run -p 8080:80 -e "RealTimeTrainsToken=[INSERT_REALTIMETRAINS_TOKEN_HERE]" benfl3713/departure-board```  
-This will run the website on port 8080 of the host
-
-There is also a docker-compose file in this repository that will make it easier to spin up the website with the command  
-`docker-compose up`
-
 # Run locally
 
 1. Make sure you have the following installed on your machine
@@ -53,10 +44,10 @@ There is also a docker-compose file in this repository that will make it easier 
     cd DepartureBoardWeb/ClientApp
     npm install
     ```
-4. Create config.xml file inside DepartureBoardWeb, and put the following in, making sure to put you [realtimetrains token](https://api.rtt.io/) in
+4. Create config.xml file inside DepartureBoardWeb, and put the following in, making sure to put your nationalrail tokens (See ConfigService.cs) in
     ```xml
     <Config>
-      <RealTimeTrainsToken>[INSERT_REALTIMETRAINS_TOKEN_HERE]</RealTimeTrainsToken>
+      ... your config here ...
     </Config>
     ```
 5. Either use vscode and press `F5` to run the application, or inside the **DepartureBoardWeb** folder run `dotnet run`

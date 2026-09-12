@@ -17,7 +17,6 @@ export class DepartureService {
     displays: number,
     useArrivals: boolean,
     platform: string = null,
-    dataSource: string = null,
     toCrsCode: string = null,
     includeStopData: boolean = null
   ): Observable<Departure[]> {
@@ -28,12 +27,6 @@ export class DepartureService {
 
     if (platform) {
       params.platform = platform;
-    }
-    if (!dataSource) {
-      dataSource = this.configService.getItem("settings_general_dataSource");
-    }
-    if (dataSource) {
-      params.dataSource = dataSource;
     }
     if (toCrsCode){
       params.toCrsCode = toCrsCode;
@@ -76,11 +69,6 @@ export class DepartureService {
 
     if (platform) {
       params.platform = platform;
-    }
-
-    const dataSource = this.configService.getItem("settings_general_dataSource");
-    if (dataSource) {
-      params.dataSource = dataSource;
     }
 
     if (this.configService.getItem("settings_general_includeNonPassengerServices") === "true") {

@@ -23,6 +23,7 @@ import {BehaviorSubject, Observable, Subscription} from "rxjs";
 import {AnnouncementService} from "src/app/Services/announcement.service";
 import {ConfigService} from "../../Services/config.service";
 import {TimeService} from "../../Services/time.service";
+import { expandCustomDeparturesWithRepeat } from "src/app/Services/custom-departure-repeat.util";
 
 @Component({
   selector: "app-singleboard",
@@ -346,7 +347,10 @@ export class SingleBoard implements OnDestroy, OnInit {
                   (data.stationName || this.stationCode) +
                   " - Departures - Departure Board";
 
-                const departures: any[] = data.departures;
+                const departures: any[] = expandCustomDeparturesWithRepeat(
+                  data.departures,
+                  departureData.repeatIntervalMinutes
+                );
                 let validDepartures: any[] = new Array();
                 // Removes expired departures
                 if (departureData.hideExpired == true || false) {

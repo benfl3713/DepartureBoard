@@ -28,6 +28,7 @@ import { AnnouncementService } from "src/app/Services/announcement.service";
 import {BoardModernRgb} from "./board-modern-rgb/board-modern-rgb";
 import {ConfigService} from "../../Services/config.service";
 import {TimeService} from "../../Services/time.service";
+import { expandCustomDeparturesWithRepeat } from "src/app/Services/custom-departure-repeat.util";
 
 @Component({
   selector: "app-boards",
@@ -261,7 +262,10 @@ export class BoardsComponent implements OnInit, OnDestroy {
                   (data.stationName || this.stationCode) +
                   " - Departures - Departure Board";
 
-                const departures: any[] = data.departures;
+                const departures: any[] = expandCustomDeparturesWithRepeat(
+                  data.departures,
+                  departureData.repeatIntervalMinutes
+                );
                 let validDepartures: any[] = new Array();
                 // Removes expired departures
                 if (departureData.hideExpired == true || false) {

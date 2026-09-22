@@ -91,9 +91,8 @@ export class SingleBoard implements OnDestroy, OnInit {
       this.useArrivals = true;
     }
 
-    if (s && s[0].path && s[0].path.toLowerCase() == "custom-departures") {
-      this.isCustomData = true;
-    }
+    this.isCustomData =
+      !!s && !!s[0]?.path && s[0].path.toLowerCase() == "custom-departures";
 
     if (this.configService.getItem("settings_singleboard_showStationName")) {
       this.showStationName =
@@ -119,6 +118,11 @@ export class SingleBoard implements OnDestroy, OnInit {
 
     this.route.params.subscribe(() => {
       this.route.queryParams.subscribe((queryParams) => {
+        if (this.refresher) {
+          clearTimeout(this.refresher);
+          this.refresher = null;
+        }
+
         this.stationCode = this.route.snapshot.paramMap.get("station") ?? this.stationCode;
         this.toCrsCode = this.route.snapshot.paramMap.get("toCrsCode");
 
@@ -190,6 +194,10 @@ export class SingleBoard implements OnDestroy, OnInit {
         }
 
         if (!this.isCustomData) {
+          if (this.customDepartureSequenceSubscription) {
+            this.customDepartureSequenceSubscription.unsubscribe();
+            this.customDepartureSequenceSubscription = null;
+          }
           this.GetDepartures();
           this.refresher = setInterval(() => this.GetDepartures(), 30000);
         } else {

@@ -97,6 +97,11 @@ export class BoardsComponent implements OnInit, OnDestroy {
   }
 
   SetupDisplay(queryParams) {
+    if (this.refresher) {
+      clearTimeout(this.refresher);
+      this.refresher = null;
+    }
+
     const s: UrlSegment[] = this.router.parseUrl(this.router.url).root.children[
       PRIMARY_OUTLET
     ]?.segments;
@@ -104,9 +109,8 @@ export class BoardsComponent implements OnInit, OnDestroy {
       this.useArrivals = true;
     }
 
-    if (s && s[0].path && s[0].path.toLowerCase() == "custom-departures") {
-      this.isCustomData = true;
-    }
+    this.isCustomData =
+      !!s && !!s[0]?.path && s[0].path.toLowerCase() == "custom-departures";
 
     if (s && s[0].path && s[0].path.toLowerCase() == "modern") {
       this.useModernBoard = true;
@@ -171,6 +175,10 @@ export class BoardsComponent implements OnInit, OnDestroy {
     this.isLoading = true
 
     if (!this.isCustomData) {
+      if (this.customDepartureSequenceSubscription) {
+        this.customDepartureSequenceSubscription.unsubscribe();
+        this.customDepartureSequenceSubscription = null;
+      }
       this.GetDepartures();
       this.refresher = setInterval(() => this.GetDepartures(), 30000);
     } else {

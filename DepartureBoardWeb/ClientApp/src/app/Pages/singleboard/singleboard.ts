@@ -366,7 +366,7 @@ export class SingleBoard implements OnDestroy, OnInit {
                   );
                   let validDepartures: any[] = new Array();
                   // Removes expired departures
-                  if (departureData.hideExpired == true || false) {
+                  if (departureData.hideExpired == true) {
                     for (let i = 0; i < departures.length; i++) {
                       if (
                         Object(departures)[i]["expectedDeparture"] &&

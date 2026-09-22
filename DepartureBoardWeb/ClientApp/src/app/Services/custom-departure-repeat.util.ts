@@ -1,12 +1,24 @@
 import { Departure, StationStop } from "src/app/models/departure.model";
 
-const SUPPORTED_REPEAT_INTERVALS = [30, 60, 120];
+export const CUSTOM_DEPARTURE_REPEAT_INTERVAL_OPTIONS = [
+  { value: 0, label: "No repeat" },
+  { value: 30, label: "Every 30 minutes" },
+  { value: 60, label: "Every 1 hour" },
+  { value: 120, label: "Every 2 hours" },
+];
+const SUPPORTED_REPEAT_INTERVALS = CUSTOM_DEPARTURE_REPEAT_INTERVAL_OPTIONS
+  .map((option) => option.value)
+  .filter((value) => value > 0);
 const DEFAULT_REPEAT_WINDOW_HOURS = 24;
 const MAX_EXPANDED_DEPARTURES = 300;
 
 function parseDate(value: string | Date | undefined): Date | null {
   if (!value) {
     return null;
+  }
+
+  if (value instanceof Date) {
+    return isNaN(value.getTime()) ? null : new Date(value.getTime());
   }
 
   const date = new Date(value);
@@ -74,28 +86,35 @@ export function expandCustomDeparturesWithRepeat(
   }
 
   const intervalMs = repeatIntervalMinutes * 60 * 1000;
-  const departureTimes = repeatableDepartures
-    .map((departure) => getDepartureTime(departure))
-    .filter((time): time is number => time !== null);
-
-  const earliestDeparture = Math.min(...departureTimes);
-  const latestDeparture = Math.max(...departureTimes);
   const nowMs = now.getTime();
   const repeatWindowMs = repeatWindowHours * 60 * 60 * 1000;
-
-  const startCycle = Math.max(0, Math.floor((nowMs - latestDeparture) / intervalMs));
-  const endCycle = Math.max(
-    startCycle,
-    Math.floor((nowMs + repeatWindowMs - earliestDeparture) / intervalMs) + 1
-  );
+  const earliestRelevantTime = nowMs - intervalMs;
+  const latestRelevantTime = nowMs + repeatWindowMs + intervalMs;
 
   const expandedDepartures: Departure[] = [];
-  for (let cycle = startCycle; cycle <= endCycle; cycle++) {
-    const offsetMs = cycle * intervalMs;
-    repeatableDepartures.forEach((departure) => {
+  repeatableDepartures.forEach((departure) => {
+    const departureTime = getDepartureTime(departure);
+    if (departureTime === null) {
+      return;
+    }
+
+    const startCycle = Math.max(
+      0,
+      Math.ceil((earliestRelevantTime - departureTime) / intervalMs)
+    );
+    const endCycle = Math.floor(
+      (latestRelevantTime - departureTime) / intervalMs
+    );
+
+    if (endCycle < startCycle) {
+      return;
+    }
+
+    for (let cycle = startCycle; cycle <= endCycle; cycle++) {
+      const offsetMs = cycle * intervalMs;
       expandedDepartures.push(shiftDeparture(departure, offsetMs));
-    });
-  }
+    }
+  });
 
   const sortedDepartures = [...expandedDepartures, ...nonRepeatableDepartures].sort((a, b) => {
     const aTime = getDepartureTime(a);
@@ -116,8 +135,6 @@ export function expandCustomDeparturesWithRepeat(
     return aTime - bTime;
   });
 
-  const earliestRelevantTime = nowMs - intervalMs;
-  const latestRelevantTime = nowMs + repeatWindowMs + intervalMs;
   const relevantDepartures = sortedDepartures.filter((departure) => {
     const departureTime = getDepartureTime(departure);
     return (

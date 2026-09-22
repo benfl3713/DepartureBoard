@@ -9,6 +9,7 @@ import { GoogleAnalyticsEventsService } from "src/app/Services/google.analytics"
 import { DomSanitizer } from "@angular/platform-browser";
 import { CustomDeparture } from "src/app/models/custom-departure.model";
 import {NotifierService} from "../../../Services/notifier.service";
+import { CUSTOM_DEPARTURE_REPEAT_INTERVAL_OPTIONS } from "src/app/Services/custom-departure-repeat.util";
 
 @Component({
   selector: "app-add-custom-departure",
@@ -19,12 +20,7 @@ export class AddCustomDepartureComponent {
   isEdit: boolean = false;
   oldId: string;
   title: string = "";
-  repeatIntervals = [
-    { value: 0, label: "No repeat" },
-    { value: 30, label: "Every 30 minutes" },
-    { value: 60, label: "Every 1 hour" },
-    { value: 120, label: "Every 2 hours" },
-  ];
+  repeatIntervals = CUSTOM_DEPARTURE_REPEAT_INTERVAL_OPTIONS;
   oldFileHref;
   data: CustomDeparture;
   addForm = new FormGroup({

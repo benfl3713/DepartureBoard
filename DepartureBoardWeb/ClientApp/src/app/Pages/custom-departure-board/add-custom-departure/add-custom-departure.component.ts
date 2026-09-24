@@ -9,6 +9,7 @@ import { GoogleAnalyticsEventsService } from "src/app/Services/google.analytics"
 import { DomSanitizer } from "@angular/platform-browser";
 import { CustomDeparture } from "src/app/models/custom-departure.model";
 import {NotifierService} from "../../../Services/notifier.service";
+import { CUSTOM_DEPARTURE_REPEAT_INTERVAL_OPTIONS } from "src/app/Services/custom-departure-repeat.util";
 
 @Component({
   selector: "app-add-custom-departure",
@@ -19,12 +20,14 @@ export class AddCustomDepartureComponent {
   isEdit: boolean = false;
   oldId: string;
   title: string = "";
+  repeatIntervals = CUSTOM_DEPARTURE_REPEAT_INTERVAL_OPTIONS;
   oldFileHref;
   data: CustomDeparture;
   addForm = new FormGroup({
     name: new FormControl(null, [Validators.required]),
     hideExpired: new FormControl(true, [Validators.required]),
     manualControl: new FormControl(false, [Validators.required]),
+    repeatIntervalMinutes: new FormControl(0, [Validators.required]),
   });
   file: File;
   error = '';
@@ -66,6 +69,14 @@ export class AddCustomDepartureComponent {
                   );
                   this.addForm.controls["manualControl"].setValue(
                     result.data()["manualControl"]
+                  );
+                  this.addForm.controls["repeatIntervalMinutes"].setValue(
+                    this.repeatIntervals.some(
+                      (option) =>
+                        option.value === Number(result.data()["repeatIntervalMinutes"])
+                    )
+                      ? Number(result.data()["repeatIntervalMinutes"])
+                      : 0
                   );
                   var theJSON = JSON.stringify(result.data()["jsonData"]);
                   this.data = result.data()["jsonData"];
@@ -151,6 +162,14 @@ export class AddCustomDepartureComponent {
 
       const hideExpired = this.addForm.controls["hideExpired"].value;
       let manualControl = this.addForm.controls["manualControl"].value;
+      const selectedRepeatInterval = Number(
+        this.addForm.controls["repeatIntervalMinutes"].value ?? 0
+      );
+      const repeatIntervalMinutes = this.repeatIntervals.some(
+        (option) => option.value === selectedRepeatInterval
+      )
+        ? selectedRepeatInterval
+        : 0;
 
       if (hideExpired === true) {
         manualControl = false;
@@ -161,6 +180,7 @@ export class AddCustomDepartureComponent {
         departuresCount: this.data.departures.length,
         hideExpired: hideExpired,
         manualControl: manualControl,
+        repeatIntervalMinutes: repeatIntervalMinutes,
         jsonData: this.data,
       };
       this.auth.user$.subscribe((user) => {

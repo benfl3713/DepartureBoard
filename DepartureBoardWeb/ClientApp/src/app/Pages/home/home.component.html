@@ -1,4 +1,13 @@
 <div class="home">
+  <div
+    *ngIf="bannerAlert.enabled && bannerAlert.message"
+    class="home-banner-alert"
+    [ngClass]="'home-banner-alert--' + bannerAlert.severity"
+    role="alert"
+  >
+    <strong *ngIf="bannerAlert.title">{{ bannerAlert.title }}</strong>
+    <span>{{ bannerAlert.message }}</span>
+  </div>
   <div class="main-slider position-relative header">
     <div class="header-background"></div>
     <div class="header-content">

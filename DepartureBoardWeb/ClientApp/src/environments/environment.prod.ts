@@ -1,5 +1,11 @@
 export const environment = {
   production: true,
   apiBaseUrl: "",
-  enablePWA: false
+  enablePWA: false,
+  homeBannerAlert: {
+    enabled: false,
+    title: "",
+    message: "",
+    severity: "warning"
+  }
 };

@@ -16,6 +16,7 @@ import {
 } from "rxjs/operators";
 import { Departure } from "src/app/models/departure.model";
 import { DepartureService } from "src/app/Services/departure.service";
+import { environment } from "src/environments/environment";
 import { Board } from "../boards/board/board";
 
 @Component({
@@ -33,6 +34,7 @@ export class HomeComponent implements AfterViewInit {
   searchForm = new FormControl();
   isLoadingStations = false;
   hasLoadedExampleBoard = false;
+  bannerAlert = environment.homeBannerAlert;
 
   @ViewChild("board", { read: ViewContainerRef, static: true })
   board: ViewContainerRef;

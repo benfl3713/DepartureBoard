@@ -5,6 +5,10 @@ describe('Home Page Tests', () => {
     cy.get('#home-title').should('have.text', " Led Departure Board ")
   })
 
+  it('Hides the homepage alert when it is not configured', () => {
+    cy.get('.home-banner-alert').should('not.exist')
+  })
+
   it('Clicks Find your station', () => {
     cy.get("#find-your-station").click({scrollBehavior: "center"})
     cy.url().should('eq', Cypress.config().baseUrl + '/#search')

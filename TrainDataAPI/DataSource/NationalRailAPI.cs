@@ -13,7 +13,63 @@ namespace TrainDataAPI
 
         private readonly AccessToken _accessToken = new AccessToken { TokenValue = ConfigService.NationalRail_AccessToken};
         private readonly LDBSVServiceSoapClient _client = new LDBSVServiceSoapClient(LDBSVServiceSoapClient.EndpointConfiguration.LDBSVServiceSoap);
+        
+        private static List<CacheDeparture> cachedDepartures = new List<CacheDeparture>();
+        private static List<CacheDeparture> cachedArrivals = new List<CacheDeparture>();
+
+        public List<Departure> GetLiveDepartures(LiveDeparturesRequest request)
+        {
+            if (ConfigService.UseCaching && ConfigService.CachePeriod > 0)
+            {
+                List<CacheDeparture> result = cachedDepartures.Where(d => d.StationCode == request.stationCode && d.CachedDateTime > DateTime.Now.AddMilliseconds(-ConfigService.CachePeriod)).ToList();
+                if (result.Count > 0)
+                {
+                    var cache = result[0].Departures;
+                    cache.ForEach(d => d.FromDataSouce = typeof(NationalRailAPI));
+                    return cache;
+                }
+            }
+
+            List<Departure> departures = InternalGetLiveDepartures(request);
+
+            if (ConfigService.UseCaching && ConfigService.CachePeriod > 0)
+            {
+                List<CacheDeparture> oldCache = cachedDepartures.Where(d => d.StationCode == request.stationCode).ToList();
+                if (oldCache.Count > 0)
+                    cachedDepartures.Remove(oldCache[0]);
+                cachedDepartures.Add(new CacheDeparture(request.stationCode, departures));
+            }
+
+            return departures;
+        }
+        
         public List<Departure> GetLiveArrivals(LiveDeparturesRequest request)
+        {
+            if (ConfigService.UseCaching && ConfigService.CachePeriod > 0)
+            {
+                List<CacheDeparture> result = cachedArrivals.Where(d => d.StationCode == request.stationCode && d.CachedDateTime > DateTime.Now.AddMilliseconds(-ConfigService.CachePeriod)).ToList();
+                if (result.Count > 0)
+                {
+                    var cache = result[0].Departures;
+                    cache.ForEach(d => d.FromDataSouce = typeof(NationalRailAPI));
+                    return cache;
+                }
+            }
+
+            List<Departure> departures = InternalGetLiveArrivals(request);
+
+            if (ConfigService.UseCaching && ConfigService.CachePeriod > 0)
+            {
+                List<CacheDeparture> oldCache = cachedArrivals.Where(d => d.StationCode == request.stationCode).ToList();
+                if (oldCache.Count > 0)
+                    cachedArrivals.Remove(oldCache[0]);
+                cachedArrivals.Add(new CacheDeparture(request.stationCode, departures));
+            }
+
+            return departures;
+        }
+        
+        private List<Departure> InternalGetLiveArrivals(LiveDeparturesRequest request)
         {
             // If a platform is specified then we can't limit the request count before we then apply the platform filter
             ushort numRows = string.IsNullOrEmpty(request.platform)
@@ -32,7 +88,7 @@ namespace TrainDataAPI
             return departures.Take(request.count).ToList();
         }
 
-        public List<Departure> GetLiveDepartures(LiveDeparturesRequest request)
+        private List<Departure> InternalGetLiveDepartures(LiveDeparturesRequest request)
         {
             // If a platform is specified then we can't limit the request count before we then apply the platform filter
             ushort numRows = string.IsNullOrEmpty(request.platform)

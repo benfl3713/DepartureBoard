@@ -1,8 +1,8 @@
-# See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.158.0/containers/dotnet/.devcontainer/base.Dockerfile
+# See here for image contents: https://github.com/devcontainers/images/tree/main/src/dotnet
 
-# [Choice] .NET version: 5.0, 3.1, 2.1
-ARG VARIANT="5.0"
-FROM mcr.microsoft.com/vscode/devcontainers/dotnetcore:0-${VARIANT}
+# [Choice] .NET version: 10.0, 9.0, 8.0
+ARG VARIANT="10.0"
+FROM mcr.microsoft.com/devcontainers/dotnet:1-${VARIANT}
 
 # [Option] Install Node.js
 ARG INSTALL_NODE="true"

@@ -32,7 +32,7 @@ To view a running example head over to
 
 1. Make sure you have the following installed on your machine
    -  [node.js](https://nodejs.org/en/download/)
-   -  [dotnet 6.0 sdk](https://dotnet.microsoft.com/download/dotnet/6.0)
+   -  [dotnet 10.0 sdk](https://dotnet.microsoft.com/download/dotnet/10.0)
 
 2. Clone this repository locally
     ```bash
@@ -51,4 +51,3 @@ To view a running example head over to
     </Config>
     ```
 5. Either use vscode and press `F5` to run the application, or inside the **DepartureBoardWeb** folder run `dotnet run`
-

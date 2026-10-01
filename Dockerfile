@@ -26,6 +26,7 @@ RUN echo "<Config><RealTimeTrainsToken>$RTT_Token</RealTimeTrainsToken></Config>
 
 # Generate runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:10.0
+ENV ASPNETCORE_HTTP_PORTS=80
 WORKDIR /app
 COPY --from=build-env /app/DepartureBoardWeb/deploy /app
 EXPOSE 80

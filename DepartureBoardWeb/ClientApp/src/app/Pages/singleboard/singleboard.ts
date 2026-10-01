@@ -23,6 +23,7 @@ import {BehaviorSubject, Observable, Subscription} from "rxjs";
 import {AnnouncementService} from "src/app/Services/announcement.service";
 import {ConfigService} from "../../Services/config.service";
 import {TimeService} from "../../Services/time.service";
+import { expandCustomDeparturesWithRepeat } from "src/app/Services/custom-departure-repeat.util";
 
 @Component({
   selector: "app-singleboard",
@@ -47,6 +48,7 @@ export class SingleBoard implements OnDestroy, OnInit {
   subscriptions: Subscription[] = [];
   announcementSub;
   customDepartureSequence: BehaviorSubject<number> = new BehaviorSubject(0);
+  customDepartureSequenceSubscription: Subscription;
   fontSize?: string;
   showPlatforms: boolean = true;
 
@@ -89,9 +91,8 @@ export class SingleBoard implements OnDestroy, OnInit {
       this.useArrivals = true;
     }
 
-    if (s && s[0].path && s[0].path.toLowerCase() == "custom-departures") {
-      this.isCustomData = true;
-    }
+    this.isCustomData =
+      !!s && !!s[0]?.path && s[0].path.toLowerCase() == "custom-departures";
 
     if (this.configService.getItem("settings_singleboard_showStationName")) {
       this.showStationName =
@@ -117,6 +118,11 @@ export class SingleBoard implements OnDestroy, OnInit {
 
     this.route.params.subscribe(() => {
       this.route.queryParams.subscribe((queryParams) => {
+        if (this.refresher) {
+          clearTimeout(this.refresher);
+          this.refresher = null;
+        }
+
         this.stationCode = this.route.snapshot.paramMap.get("station") ?? this.stationCode;
         this.toCrsCode = this.route.snapshot.paramMap.get("toCrsCode");
 
@@ -188,6 +194,10 @@ export class SingleBoard implements OnDestroy, OnInit {
         }
 
         if (!this.isCustomData) {
+          if (this.customDepartureSequenceSubscription) {
+            this.customDepartureSequenceSubscription.unsubscribe();
+            this.customDepartureSequenceSubscription = null;
+          }
           this.GetDepartures();
           this.refresher = setInterval(() => this.GetDepartures(), 30000);
         } else {
@@ -288,6 +298,9 @@ export class SingleBoard implements OnDestroy, OnInit {
 
   ngOnDestroy() {
     clearTimeout(this.refresher);
+    if (this.customDepartureSequenceSubscription) {
+      this.customDepartureSequenceSubscription.unsubscribe();
+    }
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
@@ -346,40 +359,43 @@ export class SingleBoard implements OnDestroy, OnInit {
                   (data.stationName || this.stationCode) +
                   " - Departures - Departure Board";
 
-                const departures: any[] = data.departures;
-                let validDepartures: any[] = new Array();
-                // Removes expired departures
-                if (departureData.hideExpired == true || false) {
-                  for (let i = 0; i < departures.length; i++) {
-                    if (
-                      Object(departures)[i]["expectedDeparture"] &&
-                      new Date(Object(departures)[i]["expectedDeparture"]) <
-                        new Date()
-                    ) {
-                      console.log(
-                        `Departure has already gone past date ${
-                          Object(departures)[i]["expectedDeparture"]
-                        } - ${<string>Object(departures)[i]["destination"]}`
-                      );
-                    } else if (
-                      Object(departures)[i]["aimedDeparture"] &&
-                      new Date(Object(departures)[i]["aimedDeparture"]) <
-                        new Date()
-                    ) {
-                      console.log(
-                        `Departure has already gone past date ${
-                          Object(departures)[i]["aimedDeparture"]
-                        } - ${<string>Object(departures)[i]["destination"]}`
-                      );
-                    } else {
-                      validDepartures.push(departures[i]);
+                const renderCustomDepartures = (startIndex: number) => {
+                  const departures: any[] = expandCustomDeparturesWithRepeat(
+                    data.departures,
+                    departureData.repeatIntervalMinutes
+                  );
+                  let validDepartures: any[] = new Array();
+                  // Removes expired departures
+                  if (departureData.hideExpired == true) {
+                    for (let i = 0; i < departures.length; i++) {
+                      if (
+                        Object(departures)[i]["expectedDeparture"] &&
+                        new Date(Object(departures)[i]["expectedDeparture"]) <
+                          new Date()
+                      ) {
+                        console.log(
+                          `Departure has already gone past date ${
+                            Object(departures)[i]["expectedDeparture"]
+                          } - ${<string>Object(departures)[i]["destination"]}`
+                        );
+                      } else if (
+                        Object(departures)[i]["aimedDeparture"] &&
+                        new Date(Object(departures)[i]["aimedDeparture"]) <
+                          new Date()
+                      ) {
+                        console.log(
+                          `Departure has already gone past date ${
+                            Object(departures)[i]["aimedDeparture"]
+                          } - ${<string>Object(departures)[i]["destination"]}`
+                        );
+                      } else {
+                        validDepartures.push(departures[i]);
+                      }
                     }
+                  } else {
+                    validDepartures = departures;
                   }
-                } else {
-                  validDepartures = departures;
-                }
 
-                this.subscriptions.push(this.customDepartureSequence.subscribe(startIndex => {
                   // Calculates the Departure Status's
                   validDepartures.map(d => {
                     if (d.isCancelled) {
@@ -408,7 +424,21 @@ export class SingleBoard implements OnDestroy, OnInit {
                     departures: toViewDepartures,
                     information: information
                   });
-                }));
+                };
+
+                if (this.customDepartureSequenceSubscription) {
+                  this.customDepartureSequenceSubscription.unsubscribe();
+                }
+                this.customDepartureSequenceSubscription =
+                  this.customDepartureSequence.subscribe((startIndex) => {
+                    renderCustomDepartures(startIndex);
+                  });
+
+                if (!this.refresher) {
+                  this.refresher = setInterval(() => {
+                    this.customDepartureSequence.next(this.customDepartureSequence.value);
+                  }, 30000);
+                }
               },
               (error) => {
                 ToggleConfig.LoadingBar.next(false);

@@ -12,7 +12,7 @@ namespace TrainDataAPI
 {
     /// <summary>
     /// National Rail Live Departure Boards (LDBWS) via the Rail Data Marketplace REST/JSON api (api1.raildata.org.uk).
-    /// Uses the Live Departure Board product (GetDepartureBoard / GetDepBoardWithDetails) and the Live Arrival Board product (GetArrivalBoard).
+    /// Uses the Live Departure Board product (GetDepartureBoard / GetDepBoardWithDetails) and the Live Arrival Board product (GetArrBoardWithDetails).
     /// </summary>
     public class NationalRailV2API : ITrainDatasource
     {
@@ -22,7 +22,6 @@ namespace TrainDataAPI
         private const int MAX_TIME_WINDOW = 120;
 
         private const string DeparturesUrl = "https://api1.raildata.org.uk/1010-live-departure-board-dep1_2/LDBWS/api/20220120";
-        // Unverified: check against the endpoint shown on the Live Arrival Board product page
         private const string ArrivalsUrl = "https://api1.raildata.org.uk/1010-live-arrival-board-arr/LDBWS/api/20220120";
 
         private static readonly HttpClient _httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(15) };
@@ -59,11 +58,10 @@ namespace TrainDataAPI
 
         public List<Departure> GetLiveArrivals(LiveDeparturesRequest request)
         {
-            bool filterPlatform = !string.IsNullOrEmpty(request.platform);
-            int numRows = filterPlatform ? MAX_ROWS : Math.Clamp(request.count, 1, MAX_ROWS);
-
-            string url = BuildBoardUrl(ArrivalsUrl, "GetArrivalBoard", request, numRows);
+            // The arrivals product only serves GetArrBoardWithDetails, which is capped at MAX_ROWS_WITH_DETAILS rows
+            string url = BuildBoardUrl(ArrivalsUrl, "GetArrBoardWithDetails", request, MAX_ROWS_WITH_DETAILS);
             StationBoard board = Get<StationBoard>(url, ConfigService.NationalRailV2_ArrivalsApiKey);
+            CacheCallingPoints(board);
 
             List<Departure> arrivals = DeserialiseServices(board, arrivals: true);
             arrivals = FilterPlatforms(request.platform, arrivals);

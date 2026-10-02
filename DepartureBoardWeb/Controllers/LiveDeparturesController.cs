@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using DepartureBoardCore;
 using DepartureBoardWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using TrainDataAPI;
@@ -62,9 +63,9 @@ namespace DepartureBoardWeb.Controllers
         {
 	        return dataSource?.ToUpper() switch
 	        {
-		        "NATIONALRAIL" => new NationalRailAPI(),
 		        "DEUTSCHEBAHN" => new DeutscheBahnAPI(),
-                _ => new NationalRailAPI()
+                // Prefer the Rail Data Marketplace api once it has been configured
+                _ => string.IsNullOrEmpty(ConfigService.NationalRailV2_ApiKey) ? new NationalRailAPI() : new NationalRailV2API()
 	        };
         }
 
@@ -128,7 +129,7 @@ namespace DepartureBoardWeb.Controllers
                 return string.Empty;
             foreach(StationStop stop in departure.Stops)
             {
-                if(departure.FromDataSouce == typeof(NationalRailAPI) && !foundFirst)
+                if((departure.FromDataSouce == typeof(NationalRailAPI) || departure.FromDataSouce == typeof(NationalRailV2API)) && !foundFirst)
                 {
                     information = "Calling at ";
                     foundFirst = true;

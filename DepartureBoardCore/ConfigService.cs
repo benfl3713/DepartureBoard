@@ -55,6 +55,27 @@ namespace DepartureBoardCore
             }
         }
 
+        public static string NationalRailV2_ApiKey
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_nationalRailV2_ApiKey))
+                    LoadConfig();
+                return _nationalRailV2_ApiKey;
+            }
+        }
+
+        // The arrivals product can have its own key. Falls back to the departures key if not set
+        public static string NationalRailV2_ArrivalsApiKey
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_nationalRailV2_ArrivalsApiKey))
+                    LoadConfig();
+                return string.IsNullOrEmpty(_nationalRailV2_ArrivalsApiKey) ? NationalRailV2_ApiKey : _nationalRailV2_ArrivalsApiKey;
+            }
+        }
+
         public static bool UseCaching
         {
             get
@@ -142,6 +163,8 @@ namespace DepartureBoardCore
         private static string _nationalRail_Username;
         private static string _nationalRail_Password;
         private static string _nationalRail_AccessToken;
+        private static string _nationalRailV2_ApiKey;
+        private static string _nationalRailV2_ArrivalsApiKey;
         private static bool? _useCaching;
         private static int? _cachePeriod;
         private static string _transportApi_app_id;
@@ -165,6 +188,9 @@ namespace DepartureBoardCore
                 _nationalRail_Username = rootElement.Element("NationalRail")?.Element("username")?.Value;
                 _nationalRail_Password = rootElement.Element("NationalRail")?.Element("password")?.Value;
                 _nationalRail_AccessToken = rootElement.Element("NationalRail")?.Element("accessToken")?.Value;
+                XElement nationalRailV2 = rootElement.Element("NationalRailV2");
+                _nationalRailV2_ApiKey = nationalRailV2?.Element("apiKey")?.Value;
+                _nationalRailV2_ArrivalsApiKey = nationalRailV2?.Element("arrivalsApiKey")?.Value;
                 _useCaching = bool.Parse(rootElement.Element("UseCaching")?.Value ?? "false");
                 _cachePeriod = int.Parse(rootElement.Element("CachePeriod")?.Value ?? "0");
                 _transportApi_app_id = rootElement.Element("TransportAPI")?.Element("app_id")?.Value;
@@ -206,6 +232,11 @@ namespace DepartureBoardCore
                 if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("NationalRail_AccessToken")))
                     _nationalRail_AccessToken = Environment.GetEnvironmentVariable("NationalRail_AccessToken");
 
+                if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("NationalRailV2_ApiKey")))
+                    _nationalRailV2_ApiKey = Environment.GetEnvironmentVariable("NationalRailV2_ApiKey");
+                if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("NationalRailV2_ArrivalsApiKey")))
+                    _nationalRailV2_ArrivalsApiKey = Environment.GetEnvironmentVariable("NationalRailV2_ArrivalsApiKey");
+        
                 if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TransportAPI_AppId")))
                     _transportApi_app_id = Environment.GetEnvironmentVariable("TransportAPI_AppId");
                 if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TransportAPI_AppKey")))

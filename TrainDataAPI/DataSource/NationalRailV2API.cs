@@ -45,27 +45,45 @@ namespace TrainDataAPI
             bool withDetails = numRows <= MAX_ROWS_WITH_DETAILS;
             string operation = withDetails ? "GetDepBoardWithDetails" : "GetDepartureBoard";
 
-            string url = BuildBoardUrl(DeparturesUrl, operation, request, numRows);
-            StationBoard board = Get<StationBoard>(url, ConfigService.NationalRailV2_ApiKey);
-
-            if (withDetails)
-                CacheCallingPoints(board);
-
-            List<Departure> departures = DeserialiseServices(board, arrivals: false);
-            departures = FilterPlatforms(request.platform, departures);
-            return departures.Take(request.count).ToList();
+            return FetchServices(DeparturesUrl, operation, ConfigService.NationalRailV2_ApiKey, request, numRows, arrivals: false, cacheStops: withDetails);
         }
 
         public List<Departure> GetLiveArrivals(LiveDeparturesRequest request)
         {
             // The arrivals product only serves GetArrBoardWithDetails, which is capped at MAX_ROWS_WITH_DETAILS rows
-            string url = BuildBoardUrl(ArrivalsUrl, "GetArrBoardWithDetails", request, MAX_ROWS_WITH_DETAILS);
-            StationBoard board = Get<StationBoard>(url, ConfigService.NationalRailV2_ArrivalsApiKey);
-            CacheCallingPoints(board);
+            return FetchServices(ArrivalsUrl, "GetArrBoardWithDetails", ConfigService.NationalRailV2_ArrivalsApiKey, request, MAX_ROWS_WITH_DETAILS, arrivals: true, cacheStops: true);
+        }
 
-            List<Departure> arrivals = DeserialiseServices(board, arrivals: true);
-            arrivals = FilterPlatforms(request.platform, arrivals);
-            return arrivals.Take(request.count).ToList();
+        /// <summary>
+        /// Loads the board for the next MAX_TIME_WINDOW minutes. The api can't look further ahead than that in one call, so when a filter
+        /// (destination or platform) leaves the board short, one more window is loaded to reach up to 4 hours ahead.
+        /// Unfiltered boards never make the extra request.
+        /// </summary>
+        private List<Departure> FetchServices(string baseUrl, string operation, string apiKey, LiveDeparturesRequest request, int numRows, bool arrivals, bool cacheStops)
+        {
+            bool filtered = !string.IsNullOrEmpty(request.toCrsCode) || !string.IsNullOrEmpty(request.platform);
+            List<Departure> services = new List<Departure>();
+
+            foreach (int timeOffset in new[] { 0, MAX_TIME_WINDOW })
+            {
+                string url = BuildBoardUrl(baseUrl, operation, request, numRows, timeOffset);
+                StationBoard board = Get<StationBoard>(url, apiKey);
+
+                if (cacheStops)
+                    CacheCallingPoints(board);
+
+                IEnumerable<Departure> windowServices = FilterPlatforms(request.platform, DeserialiseServices(board, arrivals));
+                foreach (Departure service in windowServices)
+                {
+                    if (!services.Any(s => s.ServiceTimeTableUrl == service.ServiceTimeTableUrl))
+                        services.Add(service);
+                }
+
+                if (!filtered || services.Count >= request.count)
+                    break;
+            }
+
+            return services.Take(request.count).ToList();
         }
 
         public List<StationStop> GetStationStops(string serviceIdentifier, LiveDeparturesRequest request)
@@ -101,9 +119,12 @@ namespace TrainDataAPI
             return false;
         }
 
-        private static string BuildBoardUrl(string baseUrl, string operation, LiveDeparturesRequest request, int numRows)
+        private static string BuildBoardUrl(string baseUrl, string operation, LiveDeparturesRequest request, int numRows, int timeOffset = 0)
         {
             string url = $"{baseUrl.TrimEnd('/')}/{operation}/{Uri.EscapeDataString(request.stationCode)}?numRows={numRows}&timeWindow={MAX_TIME_WINDOW}";
+
+            if (timeOffset != 0)
+                url += $"&timeOffset={timeOffset}";
 
             // Note: the public LDBWS api only returns passenger services so request.includeNonPassenger can't be honoured
             if (!string.IsNullOrEmpty(request.toCrsCode))

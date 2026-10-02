@@ -47,7 +47,7 @@ namespace TrainDataAPI
         {
             if (ConfigService.UseCaching && ConfigService.CachePeriod > 0)
             {
-                List<CacheDeparture> result = cachedArrivals.Where(d => d.StationCode == request.stationCode && d.CachedDateTime > DateTime.Now.AddMilliseconds(-ConfigService.CachePeriod)).ToList();
+                List<CacheDeparture> result = cachedArrivals.Where(d => d.StationCode == request.stationCode && d.CachedDateTime > DateTime.Now.AddMilliseconds(-ConfigService.CachePeriod) && d.Departures.Count >= request.count).ToList();
                 if (result.Count > 0)
                 {
                     var cache = result[0].Departures;

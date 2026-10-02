@@ -222,6 +222,12 @@ namespace DepartureBoardCore
 
                 if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("PrometheusPort")) && int.TryParse(Environment.GetEnvironmentVariable("PrometheusPort"), out int port))
                     _prometheusPort = port;
+                
+                if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("UseCaching")))
+                    _useCaching = bool.Parse(Environment.GetEnvironmentVariable("UseCaching") ?? "false");
+                
+                if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("CachePeriod")))
+                    _cachePeriod = int.Parse(Environment.GetEnvironmentVariable("CachePeriod") ?? "0");
             }
             catch(Exception e) { Console.WriteLine(e.Message); }
         }

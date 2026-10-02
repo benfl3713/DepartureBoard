@@ -197,7 +197,6 @@ export class BoardsComponent implements OnInit, OnDestroy {
         this.displays,
         this.useArrivals,
         this.platform,
-        null,
         this.toCrsCode
       )
       .subscribe(

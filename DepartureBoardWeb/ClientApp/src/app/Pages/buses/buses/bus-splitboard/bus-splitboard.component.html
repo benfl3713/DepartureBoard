@@ -1,0 +1,13 @@
+<div class="splitboard">
+  <ng-container *ngFor="let board of boards; last as isLast">
+    <div class="split-pane">
+      <app-bus-singleboard
+        [embedded]="true"
+        [atco]="board.atco"
+        [count]="count"
+        [dataSource]="board.dataSource"
+      ></app-bus-singleboard>
+    </div>
+    <div class="split-divider" *ngIf="!isLast"></div>
+  </ng-container>
+</div>

@@ -38,6 +38,19 @@
     >
   </p>
 
+  <h4 class="led">Split Screen</h4>
+  <p>
+    To show two bus stops side by side, put both ATCO codes in the url:
+    <a [routerLink]="['/buses/split/490014495R/490014495S']"
+      >https://leddepartureboard.com/buses/split/490014495R/490014495S</a
+    >
+    <br />
+    The boards stack on top of each other on portrait screens. Add
+    <code>?count=6</code> to change the number of departures on both boards,
+    <code>?datasource=</code> to set the data source for both, or
+    <code>?datasource1=</code> / <code>?datasource2=</code> to set it for one side only.
+  </p>
+
   <h4 class="led">Datasource</h4>
   <p>
     Search and Live Departures for London buses are Powered by

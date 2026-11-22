@@ -11,3 +11,8 @@
 span {
   font-size: 34px;
 }
+
+.singleboard.embedded {
+  position: static;
+  transform: none;
+}

@@ -1,0 +1,37 @@
+.splitboard {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.split-pane {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.split-divider {
+  flex: 0 0 2px;
+  margin: 5vh 0;
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Half the width, so shrink the text a little to fit long destinations. */
+:host ::ng-deep .split-pane span {
+  font-size: 28px;
+}
+
+@media (orientation: portrait) {
+  .splitboard {
+    flex-direction: column;
+  }
+
+  .split-divider {
+    margin: 0 5vw;
+  }
+}

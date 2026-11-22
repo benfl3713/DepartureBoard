@@ -11,6 +11,8 @@ const routes: Routes = [
   { path: "", component: BusesComponent },
   { path: "singleboard/:atco", component: BusSingleboardComponent },
   { path: "split/:atco1/:atco2", component: BusSplitboardComponent },
+  { path: "split/:atco1/:atco2/:atco3", component: BusSplitboardComponent },
+  { path: "split/:atco1/:atco2/:atco3/:atco4", component: BusSplitboardComponent },
   { path: "**", redirectTo: "" },
 ];
 

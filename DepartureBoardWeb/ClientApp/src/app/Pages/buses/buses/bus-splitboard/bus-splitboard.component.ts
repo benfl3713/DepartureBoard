@@ -7,12 +7,15 @@ interface SplitBoardConfig {
   dataSource: string;
 }
 
+/** Shows 2-4 bus stops at once: side by side for 2, a 2x2 grid for 3 or 4. */
 @Component({
   selector: "app-bus-splitboard",
   templateUrl: "./bus-splitboard.component.html",
   styleUrls: ["./bus-splitboard.component.css"],
 })
 export class BusSplitboardComponent implements OnInit, OnDestroy {
+  static readonly MaxBoards = 4;
+
   constructor(private route: ActivatedRoute) {}
 
   boards: SplitBoardConfig[] = [];
@@ -23,10 +26,15 @@ export class BusSplitboardComponent implements OnInit, OnDestroy {
     this.subscription = combineLatest([this.route.params, this.route.queryParams])
       .subscribe(([params, queryParams]) => {
         this.count = queryParams.count ?? 4;
-        this.boards = [
-          {atco: params.atco1, dataSource: queryParams.datasource1 ?? queryParams.datasource},
-          {atco: params.atco2, dataSource: queryParams.datasource2 ?? queryParams.datasource},
-        ];
+        this.boards = [];
+        for (let i = 1; i <= BusSplitboardComponent.MaxBoards; i++) {
+          if (params[`atco${i}`]) {
+            this.boards.push({
+              atco: params[`atco${i}`],
+              dataSource: queryParams[`datasource${i}`] ?? queryParams.datasource,
+            });
+          }
+        }
       });
   }
 

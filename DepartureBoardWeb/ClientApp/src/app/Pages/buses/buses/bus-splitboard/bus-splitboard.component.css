@@ -1,24 +1,36 @@
+/*
+ * 2 boards: side by side. Portrait screens stack every board in one column.
+ * 3-4 boards (.grid): 2 columns x 2 rows; a 3rd board leaves the last cell empty.
+ */
 .splitboard {
+  --divider: 2px solid rgba(255, 255, 255, 0.25);
   position: fixed;
   inset: 0;
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+}
+
+.splitboard.grid {
+  grid-template-rows: 1fr 1fr;
 }
 
 .split-pane {
-  flex: 1 1 0;
   min-width: 0;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
 }
 
-.split-divider {
-  flex: 0 0 2px;
-  margin: 5vh 0;
-  background-color: rgba(255, 255, 255, 0.25);
+/* Dividers: left edge of the right-hand column, top edge of the second row. */
+.split-pane:nth-child(even) {
+  border-left: var(--divider);
+}
+
+.splitboard.grid .split-pane:nth-child(n + 3) {
+  border-top: var(--divider);
 }
 
 /* Half the width, so shrink the text a little to fit long destinations. */
@@ -26,12 +38,29 @@
   font-size: 28px;
 }
 
+/* Half the height too, so tighten things up further in the 2x2 grid. */
+:host ::ng-deep .splitboard.grid .split-pane span {
+  font-size: 24px;
+}
+
+:host ::ng-deep .splitboard.grid .split-pane h1 {
+  font-size: 32px;
+}
+
+/* Portrait screens are too narrow for two columns, so stack every board in one column. */
 @media (orientation: portrait) {
-  .splitboard {
-    flex-direction: column;
+  .splitboard,
+  .splitboard.grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    grid-auto-rows: 1fr;
   }
 
-  .split-divider {
-    margin: 0 5vw;
+  .splitboard .split-pane:nth-child(even) {
+    border-left: none;
+  }
+
+  .splitboard .split-pane:nth-child(n + 2) {
+    border-top: var(--divider);
   }
 }

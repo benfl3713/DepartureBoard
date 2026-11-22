@@ -2,7 +2,7 @@
   No Departures Found for {{ atco }}
 </h1>
 <div class="singleboard" [class.embedded]="embedded">
-  <h1 class="led centre-text title" *ngIf="showStopName">
+  <h1 id="title" class="led centre-text" *ngIf="showStopName">
     {{ stopName }}
   </h1>
   <h1 class="led centre-text" *ngIf="noBoardsDisplay && embedded">

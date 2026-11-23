@@ -1,18 +1,16 @@
 /*
- * 2 boards: side by side. Portrait screens stack every board in one column.
- * 3-4 boards (.grid): 2 columns x 2 rows; a 3rd board leaves the last cell empty.
+ * Default: every board stacked vertically, one per row.
+ * .grid (?grid=true): 2 columns - 2 boards side by side, 3-4 boards in a 2x2 grid
+ *   (a 3rd board leaves the last cell empty). Portrait screens always stack.
+ * .many: 3-4 boards, so each one gets less room and the text shrinks.
  */
 .splitboard {
   --divider: 2px solid rgba(255, 255, 255, 0.25);
   position: fixed;
   inset: 0;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr;
-}
-
-.splitboard.grid {
-  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr;
+  grid-auto-rows: 1fr;
 }
 
 .split-pane {
@@ -24,43 +22,40 @@
   overflow: hidden;
 }
 
-/* Dividers: left edge of the right-hand column, top edge of the second row. */
-.split-pane:nth-child(even) {
-  border-left: var(--divider);
-}
-
-.splitboard.grid .split-pane:nth-child(n + 3) {
+/* Stacked: a divider above every board after the first. */
+.split-pane:nth-child(n + 2) {
   border-top: var(--divider);
 }
 
-/* Half the width, so shrink the text a little to fit long destinations. */
+/* Smaller text when sharing the screen. */
 :host ::ng-deep .split-pane span {
   font-size: 28px;
 }
 
-/* Half the height too, so tighten things up further in the 2x2 grid. */
-:host ::ng-deep .splitboard.grid .split-pane span {
+:host ::ng-deep .splitboard.many .split-pane span {
   font-size: 24px;
 }
 
-:host ::ng-deep .splitboard.grid .split-pane h1 {
+:host ::ng-deep .splitboard.many .split-pane h1 {
   font-size: 32px;
+  margin-bottom: 0;
 }
 
-/* Portrait screens are too narrow for two columns, so stack every board in one column. */
-@media (orientation: portrait) {
-  .splitboard,
+/* Grid mode, landscape only: portrait screens are too narrow for two columns. */
+@media (orientation: landscape) {
   .splitboard.grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: none;
-    grid-auto-rows: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 
-  .splitboard .split-pane:nth-child(even) {
-    border-left: none;
+  .splitboard.grid .split-pane:nth-child(n + 2) {
+    border-top: none;
   }
 
-  .splitboard .split-pane:nth-child(n + 2) {
+  .splitboard.grid .split-pane:nth-child(even) {
+    border-left: var(--divider);
+  }
+
+  .splitboard.grid .split-pane:nth-child(n + 3) {
     border-top: var(--divider);
   }
 }

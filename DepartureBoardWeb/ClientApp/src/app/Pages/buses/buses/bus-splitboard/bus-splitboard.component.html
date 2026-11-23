@@ -1,4 +1,4 @@
-<div class="splitboard" [class.grid]="boards.length > 2">
+<div class="splitboard" [class.grid]="grid" [class.many]="boards.length > 2">
   <div class="split-pane" *ngFor="let board of boards">
     <app-bus-singleboard
       [embedded]="true"

@@ -1,9 +1,12 @@
-<h1 class="led centre-text" *ngIf="noBoardsDisplay">
+<h1 class="led centre-text" *ngIf="noBoardsDisplay && !embedded">
   No Departures Found for {{ atco }}
 </h1>
-<div class="singleboard">
+<div class="singleboard" [class.embedded]="embedded">
   <h1 id="title" class="led centre-text" *ngIf="showStopName">
     {{ stopName }}
+  </h1>
+  <h1 class="led centre-text" *ngIf="noBoardsDisplay && embedded">
+    No Departures Found for {{ atco }}
   </h1>
   <div class="row" *ngFor="let departure of departures; index as i">
     <span class="led col-md-1 col-sm-12">{{ i + 1 }}</span>

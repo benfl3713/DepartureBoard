@@ -1,8 +1,9 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
+import {Component, Input, OnChanges, OnDestroy, OnInit} from "@angular/core";
 import {BusDepartureService} from "src/app/Services/bus-departure.service";
 import {ActivatedRoute} from "@angular/router";
 import {ToggleConfig} from "src/app/ToggleConfig";
-import {tap, catchError} from "rxjs/operators";
+import {tap} from "rxjs/operators";
+import {combineLatest, Subscription} from "rxjs";
 import {ConfigService} from "../../../../Services/config.service";
 
 @Component({
@@ -10,42 +11,64 @@ import {ConfigService} from "../../../../Services/config.service";
   templateUrl: "./bus-singleboard.component.html",
   styleUrls: ["./bus-singleboard.component.css"],
 })
-export class BusSingleboardComponent implements OnDestroy {
+export class BusSingleboardComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private busDepartureService: BusDepartureService,
     private route: ActivatedRoute,
     private configService: ConfigService
-  ) {
-    route.params.subscribe((par) => {
-      route.queryParams.subscribe((qur) => {
-        this.SetupBoard(par, qur);
-      });
-    });
-  }
+  ) {}
+
+  /** When true, the board is driven by its inputs instead of the route and is laid out by its parent. */
+  @Input() embedded: boolean = false;
+  @Input() atco: string;
+  @Input() dataSource: string;
+  @Input() count: number = 4;
 
   interval;
-  atco: string;
-  dataSource: string;
-  count: number = 4;
+  routeSubscription: Subscription;
   noBoardsDisplay: boolean = false;
   stopName: string = "";
   showStopName: boolean =
-    this.configService.getItem("settings_buses_showStopName") == "true" || true;
+    this.configService.getItem("settings_buses_showStopName") !== "false";
   includeBothDirection: boolean = this.configService.getItem("settings_buses_includeBothDirection") == "true" || false;
+
+  ngOnInit() {
+    if (this.embedded) {
+      this.SetupBoard();
+      return;
+    }
+
+    this.routeSubscription = combineLatest([this.route.params, this.route.queryParams])
+      .subscribe(([params, queryParams]) => {
+        this.atco = params.atco;
+        this.dataSource = queryParams.datasource;
+        this.count = queryParams.count ?? this.count;
+        this.SetupBoard();
+      });
+  }
+
+  ngOnChanges() {
+    // Only re-setup for later input changes; the first setup happens in ngOnInit.
+    if (this.embedded && this.interval) {
+      this.SetupBoard();
+    }
+  }
 
   ngOnDestroy() {
     clearInterval(this.interval);
+    this.routeSubscription?.unsubscribe();
   }
 
-  SetupBoard(params, queryParams) {
-    this.atco = params.atco;
-    this.dataSource = queryParams.datasource;
-    this.count = queryParams.count ?? this.count;
+  SetupBoard() {
+    if (!this.atco) {
+      return;
+    }
 
     if ((this.dataSource === "TFL" || !this.dataSource) && this.includeBothDirection) {
       this.dataSource = "TFL_ALL";
     }
 
+    clearInterval(this.interval);
     this.interval = setInterval(() => this.GetDepartures(), 30000);
     ToggleConfig.LoadingBar.next(true);
     this.GetDepartures();

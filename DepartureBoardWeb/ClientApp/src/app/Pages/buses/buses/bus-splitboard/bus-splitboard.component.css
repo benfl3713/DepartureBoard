@@ -1,0 +1,61 @@
+/*
+ * Default: every board stacked vertically, one per row.
+ * .grid (?grid=true): 2 columns - 2 boards side by side, 3-4 boards in a 2x2 grid
+ *   (a 3rd board leaves the last cell empty). Portrait screens always stack.
+ * .many: 3-4 boards, so each one gets less room and the text shrinks.
+ */
+.splitboard {
+  --divider: 2px solid rgba(255, 255, 255, 0.25);
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: 1fr;
+}
+
+.split-pane {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Stacked: a divider above every board after the first. */
+.split-pane:nth-child(n + 2) {
+  border-top: var(--divider);
+}
+
+/* Smaller text when sharing the screen. */
+:host ::ng-deep .split-pane span {
+  font-size: 28px;
+}
+
+:host ::ng-deep .splitboard.many .split-pane span {
+  font-size: 24px;
+}
+
+:host ::ng-deep .splitboard.many .split-pane h1 {
+  font-size: 32px;
+  margin-bottom: 0;
+}
+
+/* Grid mode, landscape only: portrait screens are too narrow for two columns. */
+@media (orientation: landscape) {
+  .splitboard.grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .splitboard.grid .split-pane:nth-child(n + 2) {
+    border-top: none;
+  }
+
+  .splitboard.grid .split-pane:nth-child(even) {
+    border-left: var(--divider);
+  }
+
+  .splitboard.grid .split-pane:nth-child(n + 3) {
+    border-top: var(--divider);
+  }
+}
